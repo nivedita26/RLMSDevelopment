@@ -1,0 +1,177 @@
+<div class="rlms-wrapper">
+	<div class="rlms-container add_company"
+		ng-controller="editCompanyCtrl as ctrl">
+		<h1 class="rlms-heading">Edit Company</h1>
+		<div class="container-fluid">
+			<alert ng-show="showAlert" type="{{alert.type}}"> <span
+				ng-bind-html="alert.msg | safe_html"></alert>
+			<form class="form-horizontal row-border" name="addCompanyForm">
+				<fieldset>
+					<legend>Company Details</legend>
+					<div class="form-group col-sm-6">
+						<label class="col-sm-6 control-label">Company Name <sup
+							class="red font-12">*</sup> :
+						</label>
+						<div class="col-sm-6">
+							<input name="companyName" type="text" placeholder="Company Name"
+								required ng-model="editCompany.companyName" class="form-control">
+							<span class="help-block"
+								ng-show="addCompanyForm.companyName.$error.required && addCompanyForm.companyName.$dirty">This
+								field is required</span>
+						</div>
+					</div>
+					<div class="form-group col-sm-6">
+						<label class="col-sm-6 control-label">Owner Name <sup
+							class="red font-12">*</sup> :
+						</label>
+						<div class="col-sm-6">
+							<input name="ownerName" type="text" placeholder="Owner Name"
+								required ng-model="editCompany.ownerName" class="form-control">
+							<span class="help-block"
+								ng-show="addCompanyForm.ownerName.$error.required && addCompanyForm.ownerName.$dirty">This
+								field is required</span>
+						</div>
+					</div>
+					<div class="form-group col-sm-6">
+						<label class="col-sm-6 control-label">Owner Number <sup
+							class="red font-12">*</sup> :
+						</label>
+						<div class="col-sm-6">
+							<input name="ownerNumber" type="number"
+								placeholder="Owner Number" required
+								ng-model="editCompany.ownerNumber" class="form-control">
+							<span class="help-block"
+								ng-show="addCompanyForm.ownerNumber.$error.required && addCompanyForm.ownerNumber.$dirty">This
+								field is required</span>
+						</div>
+					</div>
+					<div class="form-group col-sm-6">
+						<label class="col-sm-6 control-label">Owner Email <sup
+							class="red font-12">*</sup> :
+						</label>
+						<div class="col-sm-6">
+							<input name="ownerEmail" type="email" placeholder="Owner Email"
+								required ng-model="editCompany.ownerEmail" class="form-control">
+							<span class="help-block"
+								ng-show="addCompanyForm.ownerEmail.$error.required && addCompanyForm.ownerEmail.$dirty">This
+								field is required</span>
+						</div>
+					</div>
+
+					<div class="form-group col-sm-6">
+						<label class="col-sm-6 control-label">Address : </label>
+						<div class="col-sm-6">
+							<input name="address" type="text" placeholder="Address"
+								ng-model="editCompany.address" class="form-control">
+						</div>
+					</div>
+					<div class="form-group col-sm-6">
+						<label class="col-sm-6 control-label">Area : </label>
+						<div class="col-sm-6">
+							<input name="area" type="text" placeholder="Area"
+								ng-model="editCompany.area" class="form-control">
+						</div>
+					</div>
+					<div class="form-group col-sm-6">
+						<label class="col-sm-6 control-label">City : </label>
+						<div class="col-sm-6">
+							<input name="city" type="text" placeholder="City"
+								ng-model="editCompany.city" class="form-control">
+						</div>
+					</div>
+					<div class="form-group col-sm-6">
+						<label class="col-sm-6 control-label">Pincode : </label>
+						<div class="col-sm-6">
+							<input name="pinCode" type="number" ng-model="editCompany.pinCode"
+								placeholder="Pincode" class="form-control">
+						</div>
+					</div>
+					<div class="form-group col-sm-6">
+						<label class="col-sm-6 control-label">Contact Number <sup
+							class="red font-12">*</sup> :
+						</label>
+						<div class="col-sm-6">
+							<input name="contactNumber" type="text"
+								placeholder="Contact Number" required
+								ng-model="editCompany.contactNumber" class="form-control">
+							<span class="help-block"
+								ng-show="addCompanyForm.contactNumber.$error.required && addCompanyForm.contactNumber.$dirty">This
+								field is required</span>
+						</div>
+					</div>
+					<div class="form-group col-sm-6">
+						<label class="col-sm-6 control-label">Email <sup
+							class="red font-12">*</sup> :
+						</label>
+						<div class="col-sm-6">
+							<input name="emailId" type="email" placeholder="Email Address"
+								required ng-model="editCompany.emailId" class="form-control">
+							<span class="help-block"
+								ng-show="addCompanyForm.emailId.$error.required && addCompanyForm.emailId.$dirty">This
+								field is required</span>
+						</div>
+					</div>
+				</fieldset>
+				<fieldset>
+					<legend>Tax Details</legend>
+					<div class="form-group col-sm-6">
+						<label class="col-sm-6 control-label">PAN Number <sup
+							class="red font-12">*</sup> :
+						</label>
+						<div class="col-sm-6">
+							<input name="panNumber" type="text" placeholder="PAN Number"
+								required ng-model="editCompany.panNumber" class="form-control">
+							<span class="help-block"
+								ng-show="addCompanyForm.panNumber.$error.required && addCompanyForm.panNumber.$dirty">This
+								field is required</span>
+						</div>
+					</div>
+					<div class="form-group col-sm-6">
+						<label class="col-sm-6 control-label">TIN Number <sup
+							class="red font-12">*</sup> :
+						</label>
+						<div class="col-sm-6">
+							<input name="tinNumber" type="text" placeholder="TIN Number"
+								required ng-model="editCompany.tinNumber" class="form-control">
+							<span class="help-block"
+								ng-show="addCompanyForm.tinNumber.$error.required && addCompanyForm.tinNumber.$dirty">This
+								field is required</span>
+						</div>
+					</div>
+					<div class="form-group col-sm-6">
+						<label class="col-sm-6 control-label">VAT Number <sup
+							class="red font-12">*</sup> :
+						</label>
+						<div class="col-sm-6">
+							<input name="Vat Number" type="text" placeholder="VAT Number"
+								required ng-model="editCompany.vatNumber" class="form-control">
+							<span class="help-block"
+								ng-show="addCompanyForm.vatNumber.$error.required && addCompanyForm.vatNumber.$dirty">This
+								field is required</span>
+						</div>
+					</div>
+				</fieldset>
+				<div class="panel-footer">
+					<div class="row">
+						<div class="col-sm-6">
+							<span ng-click="backPage();"
+								class=" button button-clear fa fa-chevron-circle-left go-back"></span>
+							<!-- <button id="ios-arrow-left" class="" ng-click="backPage();">Back</button> -->
+						</div>
+						<div class="col-sm-6 ">
+							<div class="btn-toolbar">
+								<button class="btn-primary btn"
+									ng-disabled="addCompanyForm.$invalid && addCompanyForm.$pristine"
+									ng-click="submitEditCompany();">Submit</button>
+								<button class="btn-default btn reset-btn"
+									ng-click="backPage();">Reset</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+
+			</panel>
+		</div>
+	</div>
+</div>

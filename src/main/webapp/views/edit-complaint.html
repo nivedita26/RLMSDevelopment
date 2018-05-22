@@ -1,0 +1,90 @@
+<div class="rlms-wrapper">
+	<div class="rlms-container add_customer" ng-controller="editComplaintCtrl">
+		<h1 class="rlms-heading">Edit Complaint</h1>
+		<div class="container-fluid">
+			<alert ng-show="showAlert" type="{{alert.type}}">
+				<span ng-bind-html="alert.msg | safe_html"></alert>
+		<form class="form-horizontal row-border" name="addComplaintForm">
+		<fieldset>
+		  <legend>Complaint Details</legend>
+			<div class="form-group col-sm-6">
+				<label class="col-sm-4 control-label">Number</label>
+				<div class="col-sm-6">
+					<input disabled name="complaintsNumber" type="text" placeholder="Complaint Number" ng-model="editComplaint.complaintsNumber" class="form-control">
+				</div>
+			</div>
+			<div class="form-group col-sm-6">
+			<label class="col-sm-4 control-label">Title</label>
+				<div class="col-sm-6">
+					<input name="complaintsTitle" type="text" placeholder="Complaint Title" ng-model="editComplaint.complaintsTitle" class="form-control">
+				</div>
+			</div>
+			<div class="form-group col-sm-6">
+				<label class="col-sm-4 control-label">Details</label>
+				<div class="col-sm-6">
+					<input name="complaintsRemark" type="text" placeholder="Complaint Details" ng-model="editComplaint.complaintsRemark" class="form-control">
+				</div>
+			</div>
+			<div class="form-group col-sm-6">
+				<label class="col-sm-4 control-label">Registration Date</label>
+				<div class="col-md-6">
+					<input type="text" disabled class="form-control datepicker" datepicker-popup="{{format}}" ng-click="open($event,'regDate')" is-open="editFlag.regDate" ng-model="editComplaint.regDate"/>
+				</div>
+			</div>
+			<div class="form-group col-sm-6">
+				<label class="col-sm-4 control-label">Service Start Date</label>
+				<div class="col-md-6"><input type="text" class="form-control datepicker" datepicker-popup="{{format}}" ng-click="open($event,'serviceStartDate')" is-open="editFlag.serviceStartDate" ng-model="editComplaint.serviceStartDate"/></div>
+			</div>
+			<div class="form-group col-sm-6">
+			<label class="col-sm-4 control-label">Service End Date</label>
+					<div class="col-md-6"><input type="text" class="form-control datepicker" datepicker-popup="{{format}}" ng-click="open($event,'serviceEndDate')" is-open="editFlag.serviceEndDate" ng-model="editComplaint.serviceEndDate"/></div>
+			</div>
+			<!-- <div class="form-group col-sm-6">
+			<label class="col-sm-4 control-label">Address</label>
+				<div class="col-sm-6">
+					<input name="complaintsAddress" disabled type="text" placeholder="Address" ng-model="editComplaint.complaintsAddress" class="form-control">
+				</div>
+			</div>
+			<div class="form-group col-sm-6">
+				<label class="col-sm-4 control-label">City</label>
+				<div class="col-sm-6">
+					<input name="complaintsCity" disabled type="text" placeholder="City" ng-model="editComplaint.complaintsCity" class="form-control">
+				</div>
+			</div> -->
+			<div class="form-group col-sm-6">
+			<label class="col-sm-4 control-label">Status</label>
+				<div class="col-sm-6">
+					<select ng-model="selectedComplaintStatus" ng-options="x for x in complaintStatusArray" class="form-control"></select>
+				</div>
+			</div>
+			<div class="form-group col-sm-6">
+				<label class="col-sm-4 control-label">Technician</label>
+				<div class="col-sm-6">
+					<div class="select-container">
+						<select ng-model="selectedTechnician" ng-options="x.name for x in techniciansForEditComplaints" class="form-control">
+						</select>
+				</div>
+					<!-- <input name="complaintsTechnician" type="text" placeholder="Technician" ng-model="editComplaint.complaintsTechnician" class="form-control"> -->
+				</div>
+			</div>
+		 </fieldset>
+		
+			<div class="panel-footer">
+			<div class="row">
+				<div class="col-sm-6">
+					<span ng-click="backPage();" class=" button button-clear fa fa-chevron-circle-left go-back"></span>
+		</div>
+		<div class="col-sm-6 ">
+			<div class="btn-toolbar">
+				<button class="btn-primary btn" ng-click="submitEditComplaint()">Submit</button>
+				<!-- <button class="btn-default btn" ng-click="resetEditComplaint();">Cancel</button> -->
+			</div>
+		</div>
+	</div>
+</div>
+</form>
+
+</panel>
+</div>
+</div>
+</div>

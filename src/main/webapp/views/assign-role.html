@@ -1,0 +1,78 @@
+<div class="rlms-wrapper">
+<div class="rlms-container assign_role" ng-controller="assignRoleCtrl as ctrl">
+	<h1 class="rlms-heading">Assign Role</h1>
+	<div class="container-fluid" >
+		<alert ng-show="showAlert" type="{{alert.type}}">
+			<span ng-bind-html="alert.msg | safe_html"></alert>
+		<form class="form-horizontal row-border" name="assignRoleForm">
+		<fieldset>
+		  <legend>Role Details</legend>
+		  <div class="form-group">
+				<label class="col-sm-3 control-label">Select Role</label>
+				<div class="col-sm-6">
+					  <ui-select ng-model="selectedRole.selected" title="Choose a Role">
+					    <ui-select-match placeholder="Select or search a role in the list...">{{$select.selected.roleName}}</ui-select-match>
+					    <ui-select-choices repeat="roleIterator in roles | filter: $select.search">
+					      <span ng-bind-html="roleIterator.roleName | highlight: $select.search"></span>
+					    </ui-select-choices>
+					  </ui-select>
+				</div>
+				<button class="btn-sky btn" ng-click="proceedRole()">Proceed</button>
+			</div>
+			
+			<div ng-show="isRoleSelected">
+				<div class="form-group">
+					<label class="col-sm-3 control-label">Select Company</label>
+					<div class="col-sm-6">
+						  <ui-select ng-model="selectedCompany.selected" title="Choose a Company" on-select="loadBranchData();">
+						    <ui-select-match placeholder="Select or search a company in the list...">{{$select.selected.companyName}}</ui-select-match>
+						    <ui-select-choices repeat="companyIterator in companies| filter: $select.search">
+						      <span ng-bind-html="companyIterator.companyName | highlight: $select.search"></span>
+						    </ui-select-choices>
+						  </ui-select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">Select Branch</label>
+					<div class="col-sm-6">
+						  <ui-select ng-model="selectedBranch.selected" title="Choose a Branch">
+						    <ui-select-match placeholder="Select or search a branch in the list...">{{$select.selected.rlmsBranchMaster.branchName}}</ui-select-match>
+						    <ui-select-choices repeat="branchIterator in branches| filter: $select.search">
+						      <span ng-bind-html="branchIterator.rlmsBranchMaster.branchName | highlight: $select.search"></span>
+						    </ui-select-choices>
+						  </ui-select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">Select User</label>
+					<div class="col-sm-6">
+						  <ui-select ng-model="selectedUser.selected" title="Choose a user">
+						    <ui-select-match placeholder="Select or search a user in the list...">{{$select.selected.userName}}</ui-select-match>
+						    <ui-select-choices repeat="userIterator in users| filter: $select.search">
+						      <span ng-bind-html="userIterator.userName | highlight: $select.search"></span>
+						    </ui-select-choices>
+						  </ui-select>
+					</div>
+				</div>
+			</div>
+		 </fieldset>
+		
+			<div class="panel-footer">
+			<div class="row">
+			<div class="col-sm-6">
+					<span></span>
+				</div>
+				<div class="col-sm-6 ">
+					<div class="btn-toolbar">
+						<button class="btn-primary btn" ng-disabled="assignRoleForm.$invalid && assignRoleForm.$pristine" ng-click="submitAssignRole()">Submit</button>
+						<button class="btn-default btn" ng-click="resetAssignRole()">Reset</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		</form>
+		
+	</panel> 	
+	</div>
+</div>
+</div>

@@ -1,0 +1,103 @@
+<div class="rlms-wrapper">
+<div class="rlms-container add_customer" ng-controller="addComplaintCtrl">
+	<h1 class="rlms-heading">Add Complaint</h1>
+	<div class="container-fluid" >
+		<alert ng-show="showAlert" type="{{alert.type}}">
+			<span ng-bind-html="alert.msg | safe_html"></alert>
+		<form class="form-horizontal row-border" name="addComplaintForm">
+		<fieldset>
+		  <legend>Complaint Details</legend>
+		 <!--  <div class="form-group" ng-show="showCompany">
+				<label class="col-sm-3 control-label">Company Name: </label>
+				<div class="col-sm-6">
+					  <ui-select ng-model="selectedCompany.selected" title="Choose a Company" on-select="loadBranchData()">
+					    <ui-select-match placeholder="Select or search a company in the list...">{{$select.selected.companyName}}</ui-select-match>
+					    <ui-select-choices repeat="companyIterator in companies| filter: $select.search">
+					      <span ng-bind-html="companyIterator.companyName | highlight: $select.search"></span>
+					    </ui-select-choices>
+					  </ui-select>
+					  <label class="control-label" ng-bind="companyName"></label>
+				</div>
+			</div> 
+			<div class="form-group" ng-show="showBranch">
+					<label class="col-sm-3 control-label">Branch Name: </label>
+					<div class="col-sm-6">
+						  <!-- <ui-select ng-model="selectedBranch.selected" title="Choose a Branch" on-select="loadCustomerData();">
+						    <ui-select-match placeholder="Select or search a branch in the list...">{{$select.selected.rlmsBranchMaster.branchName}}</ui-select-match>
+						    <ui-select-choices repeat="branchIterator in branches| filter: $select.search">
+						      <span ng-bind-html="branchIterator.rlmsBranchMaster.branchName | highlight: $select.search"></span>
+						    </ui-select-choices>
+						  </ui-select> //comment end
+						  <label class="control-label" ng-bind="branchName"></label>
+					</div>
+				</div>-->
+			<div class="row seprator" >
+				<div class="form-group col-sm-6" >
+					<label class="col-sm-5 control-label">Select Customer</label>
+					<div class="col-sm-7">
+						  <ui-select ng-model="selectedCustomer.selected" title="Choose a Customer" on-select="loadLifts();">
+						    <ui-select-match placeholder="Select Customer">{{$select.selected.firstName}}</ui-select-match>
+						    <ui-select-choices  repeat="customerIterator in cutomers| filter: $select.search">
+						      <span ng-bind-html="customerIterator.firstName | highlight: $select.search"></span>
+						    </ui-select-choices>
+						  </ui-select>
+					</div>
+				</div>
+				<div class="form-group col-sm-6">
+					<label class="col-sm-5 control-label">Select Lift</label>
+					<div class="col-sm-7">
+						  <ui-select ng-model="selectedLift.selected" title="Choose a Lift">
+						    <ui-select-match placeholder="Select Lift">{{$select.selected.liftNumber}}</ui-select-match>
+						    <ui-select-choices repeat="iterator in lifts | filter: $select.search">
+						      <span ng-bind-html="iterator.liftNumber | highlight: $select.search"></span>
+						    </ui-select-choices>
+						  </ui-select>
+					</div>
+				</div>
+			</div>
+			
+			
+			<div class="form-group">
+				<label class="col-sm-3 control-label">Complaint Title</label>
+				<div class="col-sm-6">
+					<input name="complaintsTitle" type="text" placeholder="Complaint Title" ng-model="addComplaint.complaintsTitle" class="form-control">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">Complaint Remark</label>
+				<div class="col-sm-6">
+					<input name="complaintsRemark" type="text" placeholder="Complaint Remark" required ng-model="addComplaint.complaintsRemark" class="form-control">
+					<span class="help-block"
+						ng-show="addComplaintForm.complaintsRemark.$error.required && addComplaintForm.complaintsRemark.$dirty">This
+						field is required</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">From Date</label>
+					<div class="col-md-6"><input type="text" class="form-control datepicker" datepicker-popup="{{format}}" ng-click="open($event,'fromDate')" is-open="openFlag.fromDate" ng-model="addComplaint.fromDate"/></div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">To Date</label>
+					<div class="col-md-6"><input type="text" class="form-control datepicker" datepicker-popup="{{format}}" ng-click="open($event,'toDate')" is-open="openFlag.toDate" ng-model="addComplaint.toDate"/></div>
+			</div>
+		 </fieldset>
+		
+			<div class="panel-footer">
+			<div class="row">
+				<div class="col-sm-6">
+					<span ng-click="backPage();" class=" button button-clear fa fa-chevron-circle-left go-back"></span>
+				</div>
+				<div class="col-sm-6 ">
+					<div class="btn-toolbar">
+						<button class="btn-primary btn" ng-disabled="addComplaintForm.$invalid && addComplaintForm.$pristine" ng-click="submitAddComplaint()">Submit</button>
+						<button class="btn-default btn" ng-click="resetaddComplaint();">Reset</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		</form>
+		
+	</panel> 	
+	</div>
+</div>
+</div>

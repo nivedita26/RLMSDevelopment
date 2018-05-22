@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+  http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+  http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd
+  http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+  http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+
+	<context:component-scan base-package="com.rlms, com.telesist, com.rlms.tests">
+	 <context:exclude-filter type="regex" expression="com.rlms.model"/>
+	</context:component-scan>
+
+	<mvc:annotation-driven/>
+
+	<mvc:default-servlet-handler/>
+	
+	<context:spring-configured/>
+
+	<mvc:resources mapping="resources/**" location="/WEB-INF/resources/,/resources/,/META-INF/resources/" />
+
+	<!-- Default Page Handlers -->
+	<mvc:view-controller path="/login" view-name="login"/>
+	<mvc:view-controller path="/home" view-name="home"/>
+	<mvc:view-controller path="/" view-name="home"/>
+	<mvc:view-controller path="/denied" />
+	<mvc:view-controller path="/uncaughtException" />
+	<mvc:view-controller path="/resourceNotFound" />
+	<mvc:view-controller path="/dataAccessFailure" />
+	<!-- Default Page HAndlers Ends -->
+
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+		p:driverClassName="${jdbc.driverClassName}"
+		p:url="${jdbc.databaseurl}" p:username="${jdbc.username}" p:password="${jdbc.password}" />
+
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix">
+			<value></value>
+		</property>
+		<!-- <property name="suffix">
+			<value>.jsp</value>
+		</property> -->
+    </bean>
+
+    <bean id="viewResolver1" class="org.springframework.web.servlet.view.XmlViewResolver">
+        <property name="order" value="1"/>
+        <property name="location" value="/WEB-INF/views.xml"/>
+    </bean>
+ 
+
+	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource" p:basename="WEB-INF/messages" >
+		<property name="defaultEncoding" value="UTF-8" />
+	</bean>
+		
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" >
+		 <property name="locations">
+        <list>
+            <value>/WEB-INF/jdbc.properties</value>
+            <value>/WEB-INF/messages.properties</value>
+             <value>/WEB-INF/classes/LsmEventIndexConfiguration.properties</value>
+           <!--   <value>/WEB-INF/validations.properties</value>
+	     <value>/WEB-INF/messages.properties</value>
+	     <value>/WEB-INF/XMPPServerDetails.properties</value> -->
+        </list>
+    </property>
+    </bean>
+
+
+	<!-- Hibernate properties starts here -->
+	<bean id="sessionFactory"
+        class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="configLocation">
+            <value>/WEB-INF/hibernate.cfg.xml</value>
+        </property>
+        <property name="annotatedClasses">
+			<list>
+			<value>com.rlms.model.EmailTemplate</value>
+			<value>com.rlms.model.RlmsAccountMaster</value>
+			<value>com.rlms.model.RlmsBranchMaster</value>
+			 <value>com.rlms.model.RlmsCompanyBranchMapDtls</value>
+			 <value>com.rlms.model.RlmsCompanyMaster</value>
+			 <value>com.rlms.model.RlmsCompanyRoleMap</value>
+			 <value>com.rlms.model.RlmsSpocRoleMaster</value>
+			 <value>com.rlms.model.RlmsUserRoles</value>
+			 <value>com.rlms.model.RlmsUsersMaster</value>
+			 <value>com.rlms.model.RlmsBranchCustomerMap</value>			 
+			 <value>com.rlms.model.RlmsComplaintMaster</value>
+			 <value>com.rlms.model.RlmsComplaintTechMapDtls</value>
+			 <value>com.rlms.model.RlmsCustomerMaster</value>
+			 <value>com.rlms.model.RlmsLiftCustomerMap</value>
+			 <value>com.rlms.model.RlmsLiftMaster</value>
+			 <value>com.rlms.model.RlmsFyaTranDtls</value>
+			 <value>com.rlms.model.RlmsMemberMaster</value>
+			 <value>com.rlms.model.RlmsCustomerMemberMap</value>
+			 <value>com.rlms.model.RlmsUserApplicationMapDtls</value>
+			 <value>com.rlms.model.RlmsLiftAmcDtls</value>
+			 <value>com.rlms.model.RlmsSiteVisitDtls</value>
+			 <value>com.rlms.model.RlmsEventDtls</value>
+			 
+		     </list>
+		</property> 
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">${jdbc.dialect}</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                
+               <!--  <prop key="packagesToScan">com.vedar.domain</prop>  -->
+            </props>
+        </property>
+    </bean>
+
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+	
+    <bean id="transactionManager"
+        class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+	
+	
+ <bean id="PropertyUtils" class="com.rlms.utils.PropertyUtils">
+	 <property name="locations">
+	   <list>
+	     <value>/WEB-INF/validations.properties</value>
+	     <value>/WEB-INF/messages.properties</value>
+	     <value>/WEB-INF/XMPPServerDetails.properties</value>
+	    </list>
+	  </property>
+	 </bean> 
+  
+  <!-- <bean id="rlmsEventDao" class="com.rlms.dao.RlmsEventDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean> -->
+
+</beans>

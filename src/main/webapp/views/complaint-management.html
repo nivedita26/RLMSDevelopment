@@ -1,0 +1,329 @@
+<div class="rlms-wrapper">
+	<div class="rlms-container customer-management" ng-controller="complaiantManagementCtrl">
+		<h1 class="rlms-heading">Complaint Management</h1>
+
+		<div class="row">
+			<!-- Start Complaint Dashboard Block -->
+
+		<div class="container" ng-controller="DashboardControllerInditech" ng-show="showDasboardForInditech">   
+
+         <div class="row">
+            <div class="col-md-3">
+               <div class="row">
+                  <div class="col-xs-6" style="color: red">
+                     <a class="info-tiles tiles-{{complaintsData.totalComplaints.color}}" ng-click="openDemoModal('complaints','2,3,5','Total Complaints')">
+                        <div class="tiles-heading">
+                           <div class="text-center" ng-show=complaintsData.totalComplaints.title>{{complaintsData.totalComplaints.title}}</div>
+                        </div>
+                        <div class="tiles-body">
+                           <div class="text-center" ng-show="complaintsData.totalComplaints.text">{{complaintsData.totalComplaints.text}}</div>
+                        </div>
+                     </a>
+                  </div>
+                  <div class="col-xs-6">
+                     <a class="info-tiles tiles-{{complaintsData.totalUnassignedComplaints.color}}" ng-click="openDemoModal('complaints','2','Total Unassigned')">
+                        <div class="tiles-heading">
+                           <div class="text-center">{{complaintsData.totalUnassignedComplaints.title}}</div>
+                        </div>
+                        <div class="tiles-body">
+                           <div class="text-center" ng-show="complaintsData.totalUnassignedComplaints.text">{{complaintsData.totalUnassignedComplaints.text}}</div>
+                        </div>
+                     </a>
+                     <!-- <tile-simple data="{ title: 'Assigned Complaints', text: '9', color: 'amber'}" ng-click="openDemoModal('Assigned Complaints','3')"></tile-simple> -->
+                  </div>
+               </div>
+            </div>
+            <div class="col-md-3">
+               <div class="row">
+                  <div class="col-xs-6">
+                     <a class="info-tiles tiles-{{complaintsData.totalAssignedComplaints.color}}" ng-click="openDemoModal('complaints','3','Total Assigned')">
+                        <div class="tiles-heading">
+                           <div class="text-center">{{complaintsData.totalAssignedComplaints.title}}</div>
+                        </div>
+                        <div class="tiles-body">
+                           <div class="text-center" ng-show="complaintsData.totalAssignedComplaints.text">{{complaintsData.totalAssignedComplaints.text}}</div>
+                        </div>
+                     </a>
+                     <!-- <tile-simple data="{ title: 'Complaints Attempted Today', text: '41', color: 'blue'}" ng-click="openDemoModal('Complaints Attempted Today','3')"></tile-simple> -->
+                  </div>
+                  <div class="col-xs-6">
+                     <a class="info-tiles tiles-{{complaintsData.totalResolvedComplaints.color}}" ng-click="openDemoModal('complaints','5','Total Resolved')">
+                        <div class="tiles-heading">
+                           <div class="text-center">{{complaintsData.totalResolvedComplaints.title}}</div>
+                        </div>
+                        <div class="tiles-body">
+                           <div class="text-center" ng-show="complaintsData.totalResolvedComplaints.text">{{complaintsData.totalResolvedComplaints.text}}</div>
+                        </div>
+                     </a>
+                     <!-- <tile-simple data="{ title: 'Resolved Complaints', text: '9', color: 'green'}" ng-click="openDemoModal('Resolved Complaints','5')"></tile-simple> -->
+                  </div>
+               </div>
+            </div>
+            <div class="col-md-3">
+               <div class="row">
+                  <div class="col-xs-6">
+                     <a class="info-tiles tiles-{{complaintsData.totalPendingComplaints.color}}" ng-click="openDemoModal('complaints','2','Total Pending')">
+                        <div class="tiles-heading">
+                           <div class="text-center">{{complaintsData.totalPendingComplaints.title}}</div>
+                        </div>
+                        <div class="tiles-body">
+                           <div class="text-center" ng-show="complaintsData.totalPendingComplaints.text">{{complaintsData.totalPendingComplaints.text}}</div>
+                        </div>
+                     </a>
+                     <!-- <tile-simple data="{ title: 'Total Complaints', text: '41', color: 'indigo'}" ng-click="openDemoModal('Total Complaints','2,3,5')"></tile-simple> -->
+                  </div>
+                  <div class="col-xs-6">
+                     <a class="info-tiles tiles-{{newCustomerRegistered.color}}" ng-click="openDemoModal('newCustomerRegistered','','New Customers Registered')">
+                        <div class="tiles-heading">
+                           <div class="text-center">{{complaintsData.avgLogPerDay.title}}</div>
+                        </div>
+                        <div class="tiles-body">
+                           <div class="text-center" ng-show="newCustomerRegistered.text">{{complaintsData.avgLogPerDay.text}}</div>
+                        </div>
+                     </a>
+                     <!-- <tile-simple data="{ title: 'New Customers Registered', text: '9', color: 'grey'}" ng-click="openDemoModal('New Customers Registered','2')"></tile-simple> -->
+                  </div>
+               </div>
+            </div>
+
+            <div class="col-md-3">
+            <div class="col-xs-6">
+            	<button class="btn-primary btn rlms-btn" ng-click="goToAddComplaint()">Add Complaint
+            	</button>
+            </div>	
+            </div>
+         </div>
+         <div class="row">
+            <div class="col-md-3">
+               <div class="row">
+                  <div class="col-xs-6" style="color: red">
+                     <a class="info-tiles tiles-{{complaintsData.todaysTotalComplaints.color}}" ng-click="openDemoModal('complaints','2,3,5','Todays Total',true)">
+                        <div class="tiles-heading">
+                           <div class="text-center">{{complaintsData.todaysTotalComplaints.title}}</div>
+                        </div>
+                        <div class="tiles-body">
+                           <div class="text-center" ng-show="complaintsData.todaysTotalComplaints.text">{{complaintsData.todaysTotalComplaints.text}}</div>
+                        </div>
+                     </a>
+                  </div>
+                  <div class="col-xs-6">
+                     <a class="info-tiles tiles-{{complaintsData.todaysUnassignedComplaints.color}}" ng-click="openDemoModal('complaints','2','Todays Unassinged',true)">
+                        <div class="tiles-heading">
+                           <div class="text-center">{{complaintsData.todaysUnassignedComplaints.title}}</div>
+                        </div>
+                        <div class="tiles-body">
+                           <div class="text-center" ng-show="complaintsData.todaysUnassignedComplaints.text">{{complaintsData.todaysUnassignedComplaints.text}}</div>
+                        </div>
+                     </a>
+                     <!-- <tile-simple data="{ title: 'Assigned Complaints', text: '9', color: 'amber'}" ng-click="openDemoModal('Assigned Complaints','3')"></tile-simple> -->
+                  </div>
+               </div>
+            </div>
+            <div class="col-md-3">
+               <div class="row">
+                  <div class="col-xs-6">
+                     <a class="info-tiles tiles-{{complaintsData.todaysAssignedComplaints.color}}" ng-click="openDemoModal('complaints','3','Todays Assigned',true)">
+                        <div class="tiles-heading">
+                           <div class="text-center">{{complaintsData.todaysAssignedComplaints.title}}</div>
+                        </div>
+                        <div class="tiles-body">
+                           <div class="text-center" ng-show="complaintsData.todaysAssignedComplaints.text">{{complaintsData.todaysAssignedComplaints.text}}</div>
+                        </div>
+                     </a>
+                     <!-- <tile-simple data="{ title: 'Complaints Attempted Today', text: '41', color: 'blue'}" ng-click="openDemoModal('Complaints Attempted Today','3')"></tile-simple> -->
+                  </div>
+                  <div class="col-xs-6">
+                     <a class="info-tiles tiles-{{complaintsData.todaysResolvedComplaints.color}}" ng-click="openDemoModal('complaints','5','Todays Resolved',true)">
+                        <div class="tiles-heading">
+                           <div class="text-center">{{complaintsData.todaysResolvedComplaints.title}}</div>
+                        </div>
+                        <div class="tiles-body">
+                           <div class="text-center" ng-show="complaintsData.todaysResolvedComplaints.text">{{complaintsData.todaysResolvedComplaints.text}}</div>
+                        </div>
+                     </a>
+                     <!-- <tile-simple data="{ title: 'Resolved Complaints', text: '9', color: 'green'}" ng-click="openDemoModal('Resolved Complaints','5')"></tile-simple> -->
+                  </div>
+               </div>
+            </div>
+            <div class="col-md-3">
+               <div class="row">
+                  <div class="col-xs-6">
+                     <a class="info-tiles tiles-{{complaintsData.todaysPandingComplaints.color}}" ng-click="openDemoModal('complaints','2','Todays Pemding',true)">
+                        <div class="tiles-heading">
+                           <div class="text-center">{{complaintsData.todaysPandingComplaints.title}}</div>
+                        </div>
+                        <div class="tiles-body">
+                           <div class="text-center" ng-show="complaintsData.todaysPandingComplaints.text">{{complaintsData.todaysPandingComplaints.text}}</div>
+                        </div>
+                     </a>
+                     <!-- <tile-simple data="{ title: 'Total Complaints', text: '41', color: 'indigo'}" ng-click="openDemoModal('Total Complaints','2,3,5')"></tile-simple> -->
+                  </div>
+                  <div class="col-xs-6">
+                     <a class="info-tiles tiles-{{newCustomerRegistered.color}}" ng-click="openDemoModal('complaints','','New Customers Registered')">
+                        <div class="tiles-heading">
+                           <div class="text-center">{{complaintsData.avgResolvedPerDayRegistered.title}}</div>
+                        </div>
+                        <div class="tiles-body">
+                           <div class="text-center" ng-show="newCustomerRegistered.text">{{complaintsData.avgResolvedPerDayRegistered.text}}</div>
+                        </div>
+                     </a>
+                     <!-- <tile-simple data="{ title: 'New Customers Registered', text: '9', color: 'grey'}" ng-click="openDemoModal('New Customers Registered','2')"></tile-simple> -->
+                  </div>
+               </div>
+            </div>
+         </div>
+         </div>
+		   <!--End Complaint Dashboard Block -->
+			
+
+		</div>
+		<div class="filter-section">
+			<div class="form-group">
+				<label class="control-label" ng-show="showCompany">Select Company : </label>
+				<div class="select-container" ng-show="showCompany">
+					<ui-select ng-model="selectedCompany.selected" title="Choose a Company" on-select="loadBranchData();">
+						<ui-select-match placeholder="Select company">{{$select.selected.companyName}}</ui-select-match>
+						<ui-select-choices repeat="companyIterator in companies| filter: $select.search">
+							<span ng-bind-html="companyIterator.companyName | highlight: $select.search"></span>
+						</ui-select-choices>
+					</ui-select>
+				</div>
+				<label class="control-label" ng-show="showBranch">Select Branch</label>
+				<div class="select-container" ng-show="showBranch">
+					<ui-select ng-model="selectedBranch.selected" title="Choose a Branch" on-select="loadCustomerData()">
+						<ui-select-match placeholder="Select Branch">{{$select.selected.rlmsBranchMaster.branchName}}</ui-select-match>
+						<ui-select-choices repeat="branchIterator in branches| filter: $select.search">
+							<span ng-bind-html="branchIterator.rlmsBranchMaster.branchName | highlight: $select.search"></span>
+						</ui-select-choices>
+					</ui-select>
+				</div>
+				<label class="control-label">Select Customer</label>
+				<div class="select-container">
+					<ui-select ng-model="selectedCustomer.selected" title="Choose a Branch" on-select="showWizardFun()">
+						<ui-select-match placeholder="Select Branch">{{$select.selected.firstName}}</ui-select-match>
+						<ui-select-choices repeat="customerIterator in cutomers| filter: $select.search">
+							<span ng-bind-html="customerIterator.firstName | highlight: $select.search"></span>
+						</ui-select-choices>
+					</ui-select>
+				</div>
+				<br>
+					<br>
+						<label class="control-label">Select Call Type</label>
+						<div class="select-container">
+							<ui-select ng-model="selectedCalltype.selected" title="Choose a call type"  on-select="showWizardFun()">
+								<ui-select-match placeholder="Select call type">{{$select.selected.type}}</ui-select-match>
+								<ui-select-choices repeat="callTypeIterator in callType| filter: $select.search">
+									<span ng-bind-html="callTypeIterator.type | highlight: $select.search"></span>
+								</ui-select-choices>
+							</ui-select>
+						</div>
+						<div class="advance-filter-container">
+							<span ng-click="toggleAdvanceFilter()">Show Advance Filter</span>
+						</div>
+					</div>
+				</div>
+				<div class="filter-section" ng-show="showAdvanceFilter">
+					<div class="form-group">
+						<label class="control-label" ng-show="showBranch">Select Date Range</label>
+						<div class="select-container">
+							<div class="input-group">
+								<span class="input-group-addon">
+									<i class="glyphicon glyphicon-calendar"></i>
+								</span>
+								<input type="daterange" class="form-control" daterangepicker="" ng-model="date">
+								</div>
+							</div>
+							<label class="control-label" >Select Lifts : </label>
+							<div class="select-container">
+								<ui-select multiple ng-model="selectedlifts.selected" close-on-select="false" title="Choose lifts">
+									<ui-select-match placeholder="Select lifts in the list...">{{$select.selected[$index].liftNumber}}</ui-select-match>
+									<ui-select-choices repeat="iterator in lifts | filter: $select.search">
+										<span ng-bind-html="iterator.liftNumber | highlight: $select.search"></span>
+									</ui-select-choices>
+								</ui-select>
+							</div>
+							<label class="control-label">Select Status</label>
+							<div class="select-container">
+								<ui-select multiple ng-model="selectedStatus.selected" close-on-select="false"  title="Choose a status">
+									<ui-select-match placeholder="Select status in the list...">{{$select.selected[$index].name}}</ui-select-match>
+									<ui-select-choices repeat="iterator in status | filter: $select.search">
+										<span ng-bind-html="iterator.name | highlight: $select.search"></span>
+									</ui-select-choices>
+								</ui-select>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-12 align-right">
+							<button class="btn-sky btn" ng-click="loadComplaintsList()">Proceed</button>
+							<button class="btn-sky btn margin-left-10" ng-click="resetComplaintList()">Reset</button>
+						</div>
+					</div>
+					<div class="container-fluid" ng-show="showTable">
+						<h5 class="rlms-info">
+							<span class="fa fa-info-circle"></span>List of registered complaints
+							<button class="button button-clear refresh" ng-click="loadComplaintsList();">
+								<i
+					class="fa fa-refresh" aria-hidden="true"></i>
+							</button>
+						</h5>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="input-icon right mb10">
+									<i class="fa fa-search"></i>
+									<input type="text" ng-model="filterOptions.filterText" class="form-control" placeholder="Search Filter">
+									</div>
+									<div class ="data-table" style="min-height:300px;max-height:500px" ng-grid="gridOptions"></div>
+								</div>
+							</div>
+							<!--  <pre>{{gridOptions.selectedItems}}</pre> -->
+							<div class="col-lg-12 align-right">
+								<button class="btn-primary btn rlms-btn" ng-click="assignComplaint()">Assign Complaint</button>
+								<!-- ng-disabled="isAssigned"
+			  -->
+							</div>
+						</div>
+					</div>
+				</div>
+				<script type="text/ng-template" id="assignComplaintTemplate">
+					<div class="modal-header">
+						<h3 class="modal-title">Assign Complaint To Technician</h3>
+					</div>
+					<div class="modal-body">
+						<alert ng-show="showAlert" type="{{alert.type}}">
+							<span ng-bind-html="alert.msg | safe_html">
+							</alert>
+							<div class="form-group">
+								<label class="control-label">Select Technician</label>
+								<div class="select-container">
+									<ui-select ng-model="selectedTechnician.selected" title="Choose a Technician" on-select="loadMap()">
+										<ui-select-match placeholder="Select Branch">{{$select.selected.name}}</ui-select-match>
+										<ui-select-choices repeat="iterator in technicians| filter: $select.search">
+											<span ng-bind-html="iterator.name| highlight: $select.search"></span>
+										</ui-select-choices>
+									</ui-select>
+								</div>
+							</div>
+							<table class="table table-bordered">
+								<thead>
+									<tr>
+										<th>Name</th>
+										<th>Contact Number</th>
+										<th>Assigned Complaints</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>{{selectedTechnician.selected.name}}</td>
+										<td>{{selectedTechnician.selected.contactNumber}}</td>
+										<td>{{selectedTechnician.selected.countOfComplaintsAssigned}}</td>
+									</tr>
+								</tbody>
+								</table>
+								</div>
+								<div class="col-lg-06" id="map"><br><br><br><br><br><br><br><br><br><br></div>
+								<div class="modal-footer">
+									<button class="btn btn-primary" ng-click="submitAssign()">Assign</button>
+									<button class="btn btn-warning" ng-click="cancelAssign()">Cancel</button>
+								</div>
+							</script>

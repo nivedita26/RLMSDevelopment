@@ -1,0 +1,25 @@
+<div class="rlms-wrapper">
+<div class="rlms-container customer-management" ng-controller="workListCtrl">
+	<h1 class="rlms-heading">Work List</h1>
+	<div class="container-fluid">
+	<h5 class="rlms-info"><span class="fa fa-info-circle"></span>Following are the lifts pending for approval</h5>
+	<h5 class="rlms-info">Please select lift</h5>
+	<alert ng-show="showAlert" type="{{alert.type}}">
+				<span ng-bind-html="alert.msg | safe_html"></alert>
+		<div class="row">
+	      <div class="col-md-12">		
+               <div class="input-icon right mb10">
+                   <i class="fa fa-search"></i>
+                   <input type="text" ng-model="filterOptions.filterText" class="form-control" placeholder="Search Filter">
+               </div>
+               <div class ="data-table" style="min-height:300px;max-height:500px" ng-grid="gridOptions"></div>
+	        </div>
+	    </div>
+	    <div class="row">
+		<div class="col-lg-12 align-right">
+			<button class="btn-primary btn rlms-btn" ng-click="approveLift()">Approve</button>
+		</div>	
+	</div>
+	</div>
+</div>
+</div>

@@ -1,0 +1,47 @@
+<div class="rlms-wrapper">
+<div class="rlms-container customer-management" ng-controller="customerManagementCtrl">
+	<h1 class="rlms-heading">Customer Management</h1>
+	<div class="row">
+		<div class="col-lg-12 align-right">
+			<button class="btn-primary btn rlms-btn" ng-click="goToAddCustomer();">Add Customer</button>
+		</div>	
+	</div>
+	<div class="filter-section" ng-show="showBranch">
+		<div class="form-group">
+			<label class="control-label" ng-show="showCompany">Select Company : </label>
+			<div class="select-container" ng-show="showCompany">
+				  <ui-select ng-model="selectedCompany.selected" title="Choose a Company" on-select="loadBranchData();">
+				    <ui-select-match placeholder="Select company">{{$select.selected.companyName}}</ui-select-match>
+				    <ui-select-choices repeat="companyIterator in companies| filter: $select.search">
+				      <span ng-bind-html="companyIterator.companyName | highlight: $select.search"></span>
+				    </ui-select-choices>
+				  </ui-select>
+			</div>
+			<label class=" control-label" ng-show="showBranch">Select Branch</label>
+			<div class="select-container" ng-show="showBranch">
+				  <ui-select ng-model="selectedBranch.selected" title="Choose a Branch">
+				    <ui-select-match placeholder="Select Branch">{{$select.selected.rlmsBranchMaster.branchName}}</ui-select-match>
+				    <ui-select-choices repeat="branchIterator in branches| filter: $select.search">
+				      <span ng-bind-html="branchIterator.rlmsBranchMaster.branchName | highlight: $select.search"></span>
+				    </ui-select-choices>
+				  </ui-select>
+			</div>
+			<button class="btn-sky btn" ng-click="loadCustomerInfo()">Proceed</button>
+			<button class="btn-sky btn margin-left-10" ng-click="resetCustomerList()">Reset</button>
+		</div>
+		
+	</div>
+	<div class="container-fluid" ng-show="showTable">
+	<h5 class="rlms-info"><span class="fa fa-info-circle"></span>List of registered Customers</h5>
+		<div class="row">
+	      <div class="col-md-12">		
+               <div class="input-icon right mb10">
+                   <i class="fa fa-search"></i>
+                   <input type="text" ng-model="filterOptions.filterText" class="form-control" placeholder="Search Filter">
+               </div>
+               <div class ="data-table" style="min-height:300px;max-height:500px" ng-grid="gridOptions"></div>
+	        </div>
+	    </div>
+	</div>
+</div>
+</div>

@@ -1,0 +1,504 @@
+<div class="rlms-wrapper">
+<div class="rlms-container add_lift" ng-controller="addUserCtrl as ctrl">
+	<h1 class="rlms-heading">Add Lift</h1>
+	<div class="filter-section">
+		<alert ng-show="showAlert" type="{{alert.type}}">
+				<span ng-bind-html="alert.msg | safe_html"></alert>
+		<div class="form-group">
+			<label class="control-label" ng-show="showCompany">Select Company : </label>
+			<div class="select-container" ng-show="showCompany">
+				  <ui-select ng-model="selectedCompany.selected" title="Choose a Company" on-select="loadBranchData();">
+				    <ui-select-match placeholder="Select company">{{$select.selected.companyName}}</ui-select-match>
+				    <ui-select-choices repeat="companyIterator in companies| filter: $select.search">
+				      <span ng-bind-html="companyIterator.companyName | highlight: $select.search"></span>
+				    </ui-select-choices>
+				  </ui-select>
+			</div>
+			<label class="control-label" ng-show="showBranch">Select Branch</label>
+			<div class="select-container" ng-show="showBranch">
+				  <ui-select ng-model="selectedBranch.selected" title="Choose a Branch" on-select="loadCustomerData()">
+				    <ui-select-match placeholder="Select Branch">{{$select.selected.rlmsBranchMaster.branchName}}</ui-select-match>
+				    <ui-select-choices repeat="branchIterator in branches| filter: $select.search">
+				      <span ng-bind-html="branchIterator.rlmsBranchMaster.branchName | highlight: $select.search"></span>
+				    </ui-select-choices>
+				  </ui-select>
+			</div>
+		<label class="control-label">Select Customer</label>
+			<div class="select-container">
+				  <ui-select ng-model="selectedCustomer.selected" title="Choose a Branch" on-select="showWizardFun()">
+				    <ui-select-match placeholder="Select Branch">{{$select.selected.firstName}}</ui-select-match>
+				    <ui-select-choices repeat="customerIterator in cutomers| filter: $select.search">
+				      <span ng-bind-html="customerIterator.firstName | highlight: $select.search"></span>
+				    </ui-select-choices>
+				  </ui-select>
+			</div>
+			<!-- <button class="btn-sky btn" ng-click="loadCustomerInfo()">Proceed</button>
+			<button class="btn-sky btn margin-left-10" ng-click="resetCustomerList()">Reset</button> -->
+		</div>
+	</div>
+	<div class="container-fluid" ng-show="showWizard">
+		<form  name="addLiftForm" data-wizard="{finishButton: true, titleClick: true, block: true, validate: true}" class="form-horizontal">
+	<fieldset title="Step 1">
+		<legend>Lift Information</legend>
+		<div class="form-group">
+			<label for="liftNumber" class="col-md-3 control-label">Lift Number<sup class="red font-12">*</sup></label>
+			<div class="col-md-6">
+				<input ng-model="addLift.liftNumber" required class="form-control" name="liftNumber" type="text"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="address" class="col-md-3 control-label">Address </label>
+			<div class="col-md-6"><input ng-model="addLift.address" class="form-control" type="text" name="address" ></div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">Area<sup class="red font-12">*</sup></label>
+			<div class="col-sm-6">
+				<input name="area" type="text"
+					placeholder=""
+					ng-model="addLift.area" class="form-control" required>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">City<sup class="red font-12">*</sup></label>
+			<div class="col-sm-6">
+				<input name="city" type="text"
+					placeholder=""
+					ng-model="addLift.city" class="form-control" required>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">Pincode : </label>
+			<div class="col-sm-6">
+				<input name="pinCode" type="number"
+					ng-model="addLift.pinCode" class="form-control" required>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="latitude" class="col-md-3 control-label">Latitude</label>
+			<div class="col-md-6"><input ng-model="addLift.latitude" class="form-control"  type="text" name="latitude"></div>
+		</div>
+		<div class="form-group">
+			<label for="longitude" class="col-md-3 control-label">Longitude</label>
+			<div class="col-md-6"><input ng-model="addLift.longitude" class="form-control"  type="text" name="longitude"></div>
+		</div>
+		<div class="form-group">
+			<label for="serviceStartDate" class="col-md-3 control-label">Service Start Date <sup class="red font-12">*</sup></label>
+			<div class="col-md-6"><input required type="text" class="form-control datepicker" datepicker-popup="{{format}}" ng-click="open($event,'serviceStartDate')" is-open="openFlag.serviceStartDate" ng-model="addLift.serviceStartDate"/></div>
+		</div>
+		<div class="form-group">
+			<label for="serviceEndDate" class="col-md-3 control-label">Service End Date <sup class="red font-12">*</sup></label>
+			<div class="col-md-6"><input required  type="text" class="form-control datepicker" datepicker-popup="{{format}}" ng-click="open($event,'serviceEndDate')" is-open="openFlag.serviceEndDate" ng-model="addLift.serviceEndDate"/></div>
+		</div>
+		<div class="form-group">
+			<label for="dateOfInstallation" class="col-md-3 control-label">Date Of Installation</label>
+			<div class="col-md-6"><input type="text" class="form-control datepicker" datepicker-popup="{{format}}" ng-click="open($event,'dateOfInstallation')" is-open="openFlag.dateOfInstallation" ng-model="addLift.dateOfInstallation" required/></div>
+		</div>
+		<div class="form-group">
+			<label for="amcStartDate" class="col-md-3 control-label">Amc Start Date</label>
+			<div class="col-md-6"><input type="text" class="form-control datepicker" datepicker-popup="{{format}}" ng-click="open($event,'amcStartDate')" is-open="openFlag.amcStartDate" ng-model="addLift.amcStartDate" required/></div>
+		</div>
+		<div class="form-group">
+			<label for="amcStartDate" class="col-md-3 control-label">Amc End Date</label>
+			<div class="col-md-6"><input type="text" class="form-control datepicker" datepicker-popup="{{format}}" ng-click="open($event,'amcEndDate')" is-open="openFlag.amcEndDate" ng-model="addLift.amcEndDate" required/></div>
+		</div>
+		
+		<div class="form-group">
+			<label for="amcType" class="col-md-3 control-label">Amc Type</label>
+			<!-- <div class="col-md-6"><input ng-model="addLift.amcType" class="form-control"  type="number" name="amcType"></div> -->
+			<!-- <div class="col-sm-6">
+					  <ui-select ng-model="selectedAMCType.selected" title="Choose a AMC Type" ng-required="true">
+					    <ui-select-match placeholder="Select a AMC Type in the list...">{{$select.selected.name}}</ui-select-match> <ui-select-choices
+								repeat="iterator in AMCType| filter: $select.search">
+							<span
+								ng-bind-html="iterator.name | highlight: $select.search"></span>
+							</ui-select-choices>
+					  </ui-select>
+				</div> -->
+				
+			<div class="col-sm-6">
+					  <ui-select ng-model="selectedAMCType.selected" title="Choose a AMC Type" ng-required="true" name="amctype" ng-required="true">
+					    <ui-select-match placeholder="Select a AMC Type in the list...">{{$select.selected.name}}</ui-select-match> <ui-select-choices
+								repeat="iterator in AMCType| filter: $select.search">
+							<span
+								ng-bind-html="iterator.name | highlight: $select.search"></span>
+							</ui-select-choices>
+					  </ui-select>
+				</div>
+				
+		</div>
+		<div class="form-group">
+			<label for="amcAmount" class="col-md-3 control-label">Amc Amount</label>
+			<div class="col-md-6"><input ng-model="addLift.amcAmount" class="form-control"  type="number" name="amcAmount"></div>
+		</div>
+<!-- 		<div class="form-group">
+				<label class="col-sm-3 control-label">Select Customer Type</label>
+				<div class="col-sm-6">
+					  <ui-select ng-model="selectedCustomerType.selected" title="Choose a Customer Type">
+					    <ui-select-match placeholder="Select or search a company in the list...">{{$select.selected.name}}</ui-select-match> <ui-select-choices
+								repeat="iterator in customerType| filter: $select.search">
+							<span
+								ng-bind-html="iterator.name | highlight: $select.search"></span>
+							</ui-select-choices>
+					  </ui-select>
+				</div>
+			</div> -->
+	</fieldset>
+	<fieldset title="Step 2">
+		<legend>Technical Details</legend>
+		<div class="form-group">
+			<label for="doorType" class="col-md-3 control-label">Door Type</label>
+			<!-- <div class="col-md-6"><input ng-model="addLift.doorType" class="form-control"  type="number" name="doorType"></div> -->
+			<div class="col-sm-6">
+					  <ui-select ng-model="selectedDoorType.selected" title="Choose a Door Type">
+					    <ui-select-match placeholder="Select a door type...">{{$select.selected.name}}</ui-select-match> <ui-select-choices
+								repeat="iterator in DoorType| filter: $select.search">
+							<span
+								ng-bind-html="iterator.name | highlight: $select.search"></span>
+							</ui-select-choices>
+					  </ui-select>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="noOfStops" class="col-md-3 control-label">No Of Stops</label>
+			<div class="col-md-6"><input ng-model="addLift.noOfStops" class="form-control"  type="number" name="noOfStops"></div>
+		</div>
+		<div class="form-group">
+			<label for="engineType" class="col-md-3 control-label">Machine Type</label>
+			<!-- <div class="col-md-6"><input ng-model="addLift.engineType" class="form-control"  type="number" name="engineType"></div> -->
+			<div class="col-sm-6">
+					  <ui-select ng-model="selectedEngineMachineType.selected" title="Choose a Door Type">
+					    <ui-select-match placeholder="Select a door type...">{{$select.selected.name}}</ui-select-match> <ui-select-choices
+								repeat="iterator in EngineMachineType| filter: $select.search">
+							<span
+								ng-bind-html="iterator.name | highlight: $select.search"></span>
+							</ui-select-choices>
+					  </ui-select>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="machineMake" class="col-md-3 control-label">Machine Make</label>
+			<div class="col-md-6"><input ng-model="addLift.machineMake" class="form-control"  type="text" name="machineMake"></div>
+		</div>
+		<div class="form-group">
+			<label for="machineCurrent" class="col-md-3 control-label">Machine Current</label>
+			<div class="col-md-6"><input ng-model="addLift.machineCurrent" class="form-control"  type="text" name="machineCurrent"></div>
+		</div>
+		<div class="form-group">
+			<label for="machineCapacity" class="col-md-3 control-label">Machine Capacity</label>
+			<div class="col-md-6"><input ng-model="addLift.machineCapacity" class="form-control"  type="text" name="machineCapacity"></div>
+		</div>
+		<div class="form-group">
+			<label for="breakVoltage" class="col-md-3 control-label">Brake Voltage</label>
+			<div class="col-md-6"><input ng-model="addLift.breakVoltage" class="form-control"  type="text" name="breakVoltage"></div>
+		</div>
+		<div class="form-group">
+			<label for="panelMake" class="col-md-3 control-label">Panel Make</label>
+			<div class="col-md-6"><input ng-model="addLift.panelMake" class="form-control"  type="text" name="panelMake"></div>
+		</div>
+		<div class="form-group">
+			<label for="ard" class="col-md-3 control-label">ARD</label>
+			<div class="col-md-6"><input ng-model="addLift.ard" class="form-control"  type="text" name="ard"></div>
+		</div>
+		<div class="form-group">
+			<label for="noOfBatteries" class="col-md-3 control-label">No Of Batteries</label>
+			<div class="col-md-6"><input ng-model="addLift.noOfBatteries" class="form-control"  type="number" name="noOfBatteries"></div>
+		</div>
+		<div class="form-group">
+			<label for="batteryCapacity" class="col-md-3 control-label">Battery Capacity</label>
+			<div class="col-md-6"><input ng-model="addLift.batteryCapacity" class="form-control"  type="text" name="batteryCapacity"></div>
+		</div>
+		<div class="form-group">
+			<label for="batteryMake" class="col-md-3 control-label">Battery Make</label>
+			<div class="col-md-6"><input ng-model="addLift.batteryMake" class="form-control"  type="text" name="batteryMake"></div>
+		</div>
+		<div class="form-group">
+			<label for="cOPMake" class="col-md-3 control-label">COPMake</label>
+			<div class="col-md-6"><input ng-model="addLift.copMake" class="form-control"  type="text" name="cOPMake"></div>
+		</div>
+		<div class="form-group">
+			<label for="lOPMake" class="col-md-3 control-label">LOPMake</label>
+			<div class="col-md-6"><input ng-model="addLift.lopMake" class="form-control"  type="text" name="lOPMake"></div>
+		</div>
+		<div class="form-group">
+			<label for="collectiveType" class="col-md-3 control-label">Collective Type</label>
+			<div class="col-sm-6">
+					  <ui-select ng-model="selectedCollectiveType.selected" title="Choose a Collective Type">
+					    <ui-select-match placeholder="Select a collective type...">{{$select.selected.name}}</ui-select-match> <ui-select-choices
+								repeat="iterator in CollectiveType |filter: $select.search">
+							<span
+								ng-bind-html="iterator.name | highlight: $select.search"></span>
+							</ui-select-choices>
+					  </ui-select>
+			</div>
+			<!-- <div class="col-md-6"><input ng-model="addLift.collectiveType" class="form-control"  type="number" name="collectiveType"></div> -->
+		</div>
+		<div class="form-group">
+			<label for="simplexDuplex" class="col-md-3 control-label">Simplex Duplex</label>
+			<!-- <div class="col-md-6"><input ng-model="addLift.simplexDuplex" class="form-control"  type="number" name="simplexDuplex"></div> -->
+			<div class="col-sm-6">
+					  <ui-select ng-model="selectedSimplexDuplex.selected" title="Choose a simplexDuplex Type">
+					    <ui-select-match placeholder="Select a simplexDuplex type...">{{$select.selected.name}}</ui-select-match> <ui-select-choices
+								repeat="iterator in SimplexDuplex| filter: $select.search">
+							<span
+								ng-bind-html="iterator.name | highlight: $select.search"></span>
+							</ui-select-choices>
+					  </ui-select>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="autoDoorMake" class="col-md-3 control-label">Auto Door Make</label>
+			<div class="col-md-6"><input ng-model="addLift.autoDoorMake" class="form-control"  type="text" name="autoDoorMake"></div>
+		</div>
+		<div class="form-group">
+			<label for="wiringShceme" class="col-md-3 control-label">Wiring Shceme</label>
+			<!-- <div class="col-md-6"><input ng-model="addLift.wiringShceme" class="form-control"  type="number" name="wiringShceme"></div> -->
+			<div class="col-sm-6">
+					  <ui-select ng-model="selectedWiringScheme.selected" title="Choose a Wiring Scheme Type">
+					    <ui-select-match placeholder="Select a Wiring Scheme type...">{{$select.selected.name}}</ui-select-match> <ui-select-choices
+								repeat="iterator in WiringScheme |filter: $select.search">
+							<span
+								ng-bind-html="iterator.name | highlight: $select.search"></span>
+							</ui-select-choices>
+					  </ui-select>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="fireMode" class="col-md-3 control-label">Fire Mode</label>
+			<!-- <div class="col-md-6"><input ng-model="addLift.fireMode" class="form-control"  type="number" name="fireMode"></div> -->
+			<div class="col-sm-6"><input type="checkbox" ng-model="addLift.fireMode" class="js-switch" ui-switch="{color: '#4697ce', secondaryColor: '#c5cbd1'}" /></div>
+			
+		</div>
+		<div class="form-group">
+			<label for="intercomm" class="col-md-3 control-label">Texr Details</label>
+			<div class="col-md-6"><input ng-model="addLift.intercomm" class="form-control"  type="text" name="intercomm"></div>
+		</div>
+		<div class="form-group">
+			<label for="alarm" class="col-md-3 control-label">Text</label>
+			<div class="col-md-6"><input ng-model="addLift.alarm" class="form-control"  type="text" name="alarm"></div>
+		</div>
+		<div class="form-group">
+			<label for="alarmBattery" class="col-md-3 control-label">Alarm Battery</label>
+			<div class="col-md-6"><input ng-model="addLift.alarmBattery" class="form-control"  type="text" name="alarmBattery"></div>
+		</div>
+		<div class="form-group">
+			<label for="accessControl" class="col-md-3 control-label">Access Control</label>
+			<div class="col-md-6"><input ng-model="addLift.accessControl" class="form-control"  type="text" name="accessControl"></div>
+		</div>
+		<div class="form-group">
+			<label for="imei" class="col-md-3 control-label">IMEI Number</label>
+			<div class="col-md-6"><input ng-model="addLift.imei" class="form-control"  type="number" name="imei"></div>
+		</div>
+<div class="form-group">
+			<label for="lmsEventFromContactNo" class="col-md-3 control-label">Phone Number</label>
+			<div class="col-md-6"><input ng-model="addLift.lmsEventFromContactNo" class="form-control"  type="number" name="lmsEventFromContactNo"></div>
+		</div>
+		
+	</fieldset>
+	<fieldset title="Step 3">
+		<legend>Photos</legend>
+		<div class="form-group">
+				<label class="col-sm-3 control-label">Machine Photo</label>
+				<div class="col-sm-6">
+					<div class="fileinput fileinput-new" data-provides="fileinput">
+						<div class="input-group">
+							<div class="form-control uneditable-input" data-trigger="fileinput">
+								<i class="fa fa-file fileinput-exists"></i>&nbsp;<span class="fileinput-filename"></span>
+							</div>
+							<span class="input-group-addon btn btn-default btn-file">
+								<span class="fileinput-new">Select file</span>
+								<span class="fileinput-exists">Change</span>
+								<input type="file" name="..." ng-model='addLift.machinePhoto' base-sixty-four-input onchange="angular.element(this).scope().setMachinePhoto(this,'Machine')" accept="image/*">
+							</span>
+							<a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput" ng-click="displayMachinePhoto=false;">Remove</a>
+						</div>
+						<img ng-src="{{image_source}}" height="200px" width="200px" ng-show="displayMachinePhoto">
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">Panel Photo</label>
+				<div class="col-sm-6">
+					<div class="fileinput fileinput-new" data-provides="fileinput">
+						<div class="input-group">
+							<div class="form-control uneditable-input" data-trigger="fileinput">
+								<i class="fa fa-file fileinput-exists"></i>&nbsp;<span class="fileinput-filename"></span>
+							</div>
+							<span class="input-group-addon btn btn-default btn-file">
+								<span class="fileinput-new">Select file</span>
+								<span class="fileinput-exists">Change</span>
+								<input type="file" name="..." ng-model='addLift.panelPhoto' base-sixty-four-input onchange="angular.element(this).scope().setMachinePhoto(this,'Panel')" accept="image/*">
+							</span>
+							<a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput" ng-click="displayPanelPhoto = false;">Remove</a>
+						</div>
+						{{addLift.panelPhoto.size}}
+						<img ng-src="{{image_source1}}" height="200px" width="200px" ng-show="displayPanelPhoto">
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">ARDPhoto</label>
+				<div class="col-sm-6">
+					<div class="fileinput fileinput-new" data-provides="fileinput">
+						<div class="input-group">
+							<div class="form-control uneditable-input" data-trigger="fileinput">
+								<i class="fa fa-file fileinput-exists"></i>&nbsp;<span class="fileinput-filename"></span>
+							</div>
+							<span class="input-group-addon btn btn-default btn-file">
+								<span class="fileinput-new">Select file</span>
+								<span class="fileinput-exists">Change</span>
+								<input type="file" name="..." ng-model='addLift.ardPhoto' base-sixty-four-input onchange="angular.element(this).scope().setMachinePhoto(this,'ARD')" accept="image/*">
+							</span>
+							<a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput" ng-click="displayArdPhoto = false;">Remove</a>
+						</div>
+						{{addLift.ardPhoto.size}}
+						<img ng-src="{{image_source2}}" height="200px" width="200px" ng-show="displayArdPhoto">
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">LOPPhoto</label>
+				<div class="col-sm-6">
+					<div class="fileinput fileinput-new" data-provides="fileinput">
+						<div class="input-group">
+							<div class="form-control uneditable-input" data-trigger="fileinput">
+								<i class="fa fa-file fileinput-exists"></i>&nbsp;<span class="fileinput-filename"></span>
+							</div>
+							<span class="input-group-addon btn btn-default btn-file">
+								<span class="fileinput-new">Select file</span>
+								<span class="fileinput-exists">Change</span>
+								<input type="file" name="..." ng-model='addLift.lopPhoto' base-sixty-four-input onchange="angular.element(this).scope().setMachinePhoto(this,'LOP')" accept="image/*">
+							</span>
+							<a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput" ng-click="displayLopPhoto = false;">Remove</a>
+						</div>
+					</div>
+					{{addLift.lopPhoto.size}}
+					<img ng-src="{{image_source3}}" height="200px" width="200px" ng-show="displayLopPhoto">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">COPPhoto</label>
+				<div class="col-sm-6">
+					<div class="fileinput fileinput-new" data-provides="fileinput">
+						<div class="input-group">
+							<div class="form-control uneditable-input" data-trigger="fileinput">
+								<i class="fa fa-file fileinput-exists"></i>&nbsp;<span class="fileinput-filename"></span>
+							</div>
+							<span class="input-group-addon btn btn-default btn-file">
+								<span class="fileinput-new">Select file</span>
+								<span class="fileinput-exists">Change</span>
+								<input type="file" name="..." ng-model='addLift.copPhoto' base-sixty-four-input onchange="angular.element(this).scope().setMachinePhoto(this,'COP')" accept="image/*">
+							</span>
+							<a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput" ng-click="displayCopPhoto = false;">Remove</a>
+						</div>
+						{{addLift.copPhoto.size}}
+						<img ng-src="{{image_source4}}" height="200px" width="200px" ng-show="displayCopPhoto">
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">Cartop Photo</label>
+				<div class="col-sm-6">
+					<div class="fileinput fileinput-new" data-provides="fileinput">
+						<div class="input-group">
+							<div class="form-control uneditable-input" data-trigger="fileinput">
+								<i class="fa fa-file fileinput-exists"></i>&nbsp;<span class="fileinput-filename"></span>
+							</div>
+							<span class="input-group-addon btn btn-default btn-file">
+								<span class="fileinput-new">Select file</span>
+								<span class="fileinput-exists">Change</span>
+								<input type="file" name="..." ng-model='addLift.cartopPhoto' base-sixty-four-input onchange="angular.element(this).scope().setMachinePhoto(this,'CarTop')" accept="image/*">
+							</span>
+							<a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput" ng-click="displayCarTopPhoto = false;">Remove</a>
+						</div>
+					</div>
+					{{addLift.cartopPhoto.size}}
+					<img ng-src="{{image_source5}}" height="200px" width="200px" ng-show="displayCarTopPhoto">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">Auto Door Header Photo</label>
+				<div class="col-sm-6">
+					<div class="fileinput fileinput-new" data-provides="fileinput">
+						<div class="input-group">
+							<div class="form-control uneditable-input" data-trigger="fileinput">
+								<i class="fa fa-file fileinput-exists"></i>&nbsp;<span class="fileinput-filename"></span>
+							</div>
+							<span class="input-group-addon btn btn-default btn-file">
+								<span class="fileinput-new">Select file</span>
+								<span class="fileinput-exists">Change</span>
+								<input type="file" name="..." ng-model='addLift.autoDoorHeaderPhoto' base-sixty-four-input onchange="angular.element(this).scope().setMachinePhoto(this,'Header')" accept="image/*">
+							</span>
+							<a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput" ng-click="displayHeaderPhoto = false;">Remove</a>
+						</div>
+					</div>
+					{{addLift.autoDoorHeaderPhoto.size}}
+					<img ng-src="{{image_source6}}" height="200px" width="200px" ng-show="displayHeaderPhoto">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">Wiring Photo</label>
+				<div class="col-sm-6">
+					<div class="fileinput fileinput-new" data-provides="fileinput">
+						<div class="input-group">
+							<div class="form-control uneditable-input" data-trigger="fileinput">
+								<i class="fa fa-file fileinput-exists"></i>&nbsp;<span class="fileinput-filename"></span>
+							</div>
+							<span class="input-group-addon btn btn-default btn-file">
+								<span class="fileinput-new">Select file</span>
+								<span class="fileinput-exists">Change</span>
+								<input type="file" name="..." ng-model='addLift.wiringPhoto' base-sixty-four-input onchange="angular.element(this).scope().setMachinePhoto(this,'Wiring')" accept="image/*">
+							</span>
+							<a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput" ng-click="displayWiringPhoto = false;">Remove</a>
+						</div>
+					</div>
+					{{addLift.wiringPhoto.size}}
+					<img ng-src="{{image_source7}}" height="200px" width="200px" ng-show="displayWiringPhoto">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">Lobby Photo</label>
+				<div class="col-sm-6">
+					<div class="fileinput fileinput-new" data-provides="fileinput">
+						<div class="input-group">
+							<div class="form-control uneditable-input" data-trigger="fileinput">
+								<i class="fa fa-file fileinput-exists"></i>&nbsp;<span class="fileinput-filename"></span>
+							</div>
+							<span class="input-group-addon btn btn-default btn-file">
+								<span class="fileinput-new">Select file</span>
+								<span class="fileinput-exists">Change</span>
+								<input type="file" name="..." ng-model='addLift.lobbyPhoto' base-sixty-four-input onchange="angular.element(this).scope().setMachinePhoto(this,'Lobby')" accept="image/*">
+							</span>
+							<a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput" ng-click="displayLobbyPhoto = false;">Remove</a>
+						</div>
+					</div>
+					{{addLift.lobbyPhoto.size}}
+				<img ng-src="{{image_source8}}" height="200px" width="200px" ng-show="displayLobbyPhoto">
+				</div>
+				
+			</div>
+	</fieldset>
+	<input type="submit" ng-click="submitAddLift()" class="finish btn-success btn" value="Submit" />
+</form>
+	</panel> 	
+	</div>
+</div>
+</div>
+<script type="text/ng-template" id="selectLiftType">
+	    <div class="modal-header">
+	        <h3 class="modal-title">Select Lift Type</h3>
+	    </div>
+	    <div class="modal-body">
+	        <div class="form-group">
+				<div ng-click="loadSelectedLiftTypeInfo(35)">
+					<a class="lift-type">Auto Door</a>
+				</div>
+				<div ng-click="loadSelectedLiftTypeInfo(36)">
+					<a class="lift-type">Manual Door</a>
+				</div>
+				<div ng-click="loadSelectedLiftTypeInfo(37)">
+					<a class="lift-type">Hydraulic</a>
+				</div>				
+			</div>
+			</div>	
+	    </div>
+	</script>

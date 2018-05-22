@@ -1,0 +1,107 @@
+<div class="rlms-wrapper">
+<div class="rlms-container add_user" ng-controller="editUserCtrl as ctrl">
+	<h1 class="rlms-heading">Edit User</h1>
+	<div class="container-fluid" >
+		<alert ng-show="showAlert" type="{{alert.type}}">
+			<span ng-bind-html="alert.msg | safe_html"></alert>
+		<form class="form-horizontal row-border" name="addUserForm">
+		<fieldset>
+		  <legend>User Details</legend>
+		  <div class="form-group col-sm-6">
+				<label class="col-sm-4 control-label">First Name</label>
+				<div class="col-sm-6">
+					<input name="firstname" type="text" required placeholder="Required Field" ng-model="editUser.firstName" class="form-control">
+					<span class="help-block"
+						ng-show="addUserForm.firstname.$error.required && addUserForm.firstname.$dirty">This
+						field is required</span>
+				</div>
+			</div>
+			 <div class="form-group col-sm-6">
+				<label class="col-sm-4 control-label">Last Name</label>
+				<div class="col-sm-6">
+					<input name="lastName" type="text" required placeholder="Required Field" ng-model="editUser.lastName" class="form-control">
+					<span class="help-block"
+						ng-show="addUserForm.lastName.$error.required && addUserForm.lastName.$dirty">This
+						field is required</span>
+				</div>
+			</div>
+			<div class="form-group col-sm-6">
+			<label class="col-sm-4 control-label">Company</label>
+				<div class="col-sm-6">
+					<input name="company" disabled type="text" placeholder="Company" ng-model="editUser.company" class="form-control">
+				</div>
+			</div>
+			<div class="form-group col-sm-6">
+				<label class="col-sm-4 control-label">Contact Number</label>
+				<div class="col-sm-6">
+					<input name="contactnumber" required type="text" placeholder="Required Field" ng-model="editUser.contactnumber" class="form-control">
+					<span class="help-block"
+						ng-show="addUserForm.contactnumber.$error.required && addUserForm.contactnumber.$dirty">This
+						field is required</span>
+				</div>
+			</div><div class="form-group col-sm-6">
+				<label class="col-sm-4 control-label">Address</label>
+				<div class="col-sm-6">
+					<input name="address" type="text" placeholder="Address" ng-model="editUser.address" class="form-control">
+				</div>
+			</div>
+			<div class="form-group col-sm-6">
+				<label class="col-sm-4 control-label">Area</label>
+				<div class="col-sm-6">
+					<input name="area" type="text" placeholder="Area" ng-model="editUser.area" class="form-control">
+				</div>
+			</div>
+			<div class="form-group col-sm-6">
+			<label class="col-sm-4 control-label">City</label>
+				<div class="col-sm-6">
+					<input name="city" type="text" placeholder="City" ng-model="editUser.city" class="form-control">
+				</div>
+			</div>
+			<div class="form-group col-sm-6">
+			<label class="col-sm-4 control-label">Pincode</label>
+				<div class="col-sm-6">
+					<input name="pincode" type="text" placeholder="Pincode" ng-model="editUser.pincode" class="form-control">
+				</div>
+			</div>
+			<!-- <div class="form-group col-sm-6">
+				<label class="col-sm-4 control-label">Branch</label>
+				<div class="col-sm-6">
+					<input name="branch" type="text" placeholder="Branch" ng-model="editUser.branch" class="form-control">
+				</div>
+			</div> -->
+			<!-- <div class="form-group col-sm-6">
+			<label class="col-sm-4 control-label">Role</label>
+				<div class="col-sm-6">
+					<input name="role" type="text" placeholder="Role" ng-model="editUser.role" class="form-control">
+				</div>
+			</div> -->
+			<div class="form-group col-sm-6">
+				<label class="col-sm-4 control-label">Email Id</label>
+				<div class="col-sm-6">
+					<input name="emailid" type="text" required placeholder="Required Field" ng-model="editUser.emailid" class="form-control">
+					<span class="help-block"
+						ng-show="addUserForm.emailid.$error.required && addUserForm.emailid.$dirty">This
+						field is required</span>
+				</div>
+			</div>
+		 </fieldset>
+		
+			<div class="panel-footer">
+			<div class="row">
+				<div class="col-sm-6">
+					<span ng-click="backPage();" class=" button button-clear fa fa-chevron-circle-left go-back"></span>
+				</div>
+				<div class="col-sm-6 ">
+					<div class="btn-toolbar">
+						<button class="btn-primary btn" ng-disabled="addUserForm.$invalid && addUserForm.$pristine" ng-click="submitEditUser()">Submit</button>
+						<button class="btn-default btn" ng-click="resetAddUser();">Reset</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		</form>
+		
+	</panel> 	
+	</div>
+</div>
+</div>

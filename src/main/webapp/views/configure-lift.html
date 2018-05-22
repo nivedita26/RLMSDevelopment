@@ -1,0 +1,589 @@
+<div class="rlms-wrapper">
+	<div class="rlms-container amc-management" ng-controller="configurLiftController">
+		<h1 class="rlms-heading">Configure Lift</h1>
+		<!-- <div class="filter-section">
+		<div class="form-group margin-b10">
+			<label class="control-label" ng-show="showCompany">Select Company : </label>
+			<div class="select-container" ng-show="showCompany">
+				  <ui-select ng-model="selectedCompany.selected" title="Choose a Company" on-select="loadBranchData();">
+				    <ui-select-match placeholder="Select company">{{$select.selected.companyName}}</ui-select-match>
+				    <ui-select-choices repeat="companyIterator in companies| filter: $select.search">
+				      <span ng-bind-html="companyIterator.companyName | highlight: $select.search"></span>
+				    </ui-select-choices>
+				  </ui-select>
+			</div>
+			<label class="control-label" ng-show="showBranch">Select Branch</label>
+			<div class="select-container" ng-show="showBranch">
+				  <ui-select ng-model="selectedBranch.selected" title="Choose a Branch" on-select="loadCustomerData()">
+				    <ui-select-match placeholder="Select Branch">{{$select.selected.rlmsBranchMaster.branchName}}</ui-select-match>
+				    <ui-select-choices repeat="branchIterator in branches| filter: $select.search">
+				      <span ng-bind-html="branchIterator.rlmsBranchMaster.branchName | highlight: $select.search"></span>
+				    </ui-select-choices>
+				  </ui-select>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-12 align-right">
+				<button class="btn-sky btn" ng-click="loadReportList()">Proceed</button>
+				<button class="btn-sky btn margin-left-10" ng-click="resetReportList()">Reset</button>
+			</div>	
+		</div>
+	</div> -->
+		<div class="container-fluid configure-lift">
+
+			<div id="exTab2" class="container">
+				<ul class="nav nav-tabs">
+					<li class="active"><a id="tab1" href="#1" data-toggle="tab">Configure P</a>
+					</li>
+					<li><a id="tab2" href="#2" data-toggle="tab">Configure B D</a>
+					</li>
+					<li>
+						<a id="tab3" href="#3" data-toggle="tab">Configure A</a>
+					</li>
+					<li><a id="tab4" href="#4" data-toggle="tab">Configure R T C</a>
+					</li>
+				</ul>
+
+				<div class="tab-content ">
+					<div class="tab-pane" id="3">
+					<form name="configureA">
+						<fieldset class="width-70">
+							<legend>configure A</legend>
+
+							<div class="form-group"><label class="col-sm-4 control-label">A0 Home Landing Floor Number : </label>
+								<div class="col-sm-6">
+									<input name="homeLandingFloorNumber" ng-disabled="a.disableHomelanding" type="number" min="0" max="98" required ng-model="a.homeLandingFloorNumber"
+									 class="form-control" title="Home landing or parking floor number" ng-class="{'red':configureA.homeLandingFloorNumber.$invalid}">
+								</div>
+							</div>
+							<div class="col-sm-4"></div><div class="col-sm-6"><p ng-class="{'red':configureA.homeLandingFloorNumber.$invalid}" ng-if="configureA.homeLandingFloorNumber.$invalid && !a.disableHomelanding">Enter parking floor number between 0-98</p></div>
+							<div class="form-group"><label class="col-sm-4 control-label">Disable Home landing : </label>
+								<div class="col-sm-6">
+									<input name="firstName" type="checkbox" title="Value 99 will be passed." required ng-model="a.disableHomelanding" class="form-control">
+								</div>
+							</div>
+							<div class="form-group"><label class="col-sm-4 control-label">A1 Home Landing Time : </label>
+								<div class="col-sm-6">
+									<input name="homeLandingTime" title="A1 Home Landing Time" type="number" ng-model="a.homeLandingTime" class="form-control"
+									 title="Number of idle minutes for lift to start for home landing floor" min="0" max="99" ng-class="{'red':configureA.homeLandingTime.$invalid}">
+								</div>
+							</div>
+							<div class="col-sm-4"></div><div class="col-sm-6"><p ng-class="{'red':configureA.homeLandingTime.$invalid}" ng-if="configureA.homeLandingTime.$invalid">Enter minutes between 0-98</p></div>
+							<div class="form-group"><label class="col-sm-4 control-label">A2 Fire Mode Floor Selection</label>
+								<div class="col-sm-6">
+									<input name="homeLandingTime" type="text" title="Fire floor number in fire mode. Generally lobby floor number." class="form-control">
+								</div>
+							</div>
+							<div class="form-group"><label class="col-sm-4 control-label">A3 Output contactor off delay time at lift stopping</label>
+								<div class="col-sm-6">
+									<input name="homeLandingTime" type="text" title="25 means output contactor will be off after 2.5 sec of lift stopping. (it also acts as door operation delay, counting delay after stopppage, buzzer tick delay)" class="form-control">
+								</div>
+							</div>
+							<div class="form-group"><label class="col-sm-4 control-label">A4 Reed 1 and Reed 2 Timeout</label>
+								<div class="col-sm-6">
+									<input name="homeLandingTime" type="text" class="form-control" title="25 means if slowing and stopping reed pulse does not come in 25 sec, conroller will declare F3 or F4 fault.">
+								</div>
+							</div>
+							<div class="form-group"><label class="col-sm-4 control-label">A5 Lift Run Timeout</label>
+								<div class="col-sm-6">
+									<input name="homeLandingTime" type="text" class="form-control" title="25 means, if for any reason lift is not moving controller will declare tineout fault FF.">
+								</div>
+							</div>
+							<div class="form-group"><label class="col-sm-4 control-label">A6 MODE Flag 2</label>
+								<div class="col-sm-6 bits">
+									<span>
+									<input  type="checkbox" title="Spare" ng-model="a.flag2.bit5" name="a8flag3" class="form-control" ng-change="stateChangedFlag2(this)">
+									<label>Bit 5</label>
+
+								</span>
+									<span>
+									<input  type="checkbox" title="Select for ARD direction selection (UP or DOWN, Default is Down)" ng-model="a.flag2.bit4" name="a8flag3" class="form-control" ng-change="stateChangedFlag2(this)">
+									<label>Bit 4</label>
+								</span>
+									<span>
+									<input  type="checkbox" title="Select to keep the door open after ARD cycle." ng-model="a.flag2.bit3" name="a8flag3" class="form-control" ng-change="stateChangedFlag2(this)">
+									<label>Bit 3</label>
+								</span>
+									<span>
+									<input  type="checkbox" title="select for pulse type fan/tube buttons else on/off buttons." ng-model="a.flag2.bit2" name="a8flag3" class="form-control" ng-change="stateChangedFlag2(this)">
+									<label>Bit 2</label>
+								</span>
+									<span>
+									<input  type="checkbox" title="Select for common LED indications of LOP/COP buttons" ng-model="a.flag2.bit1" name="a8flag3" class="form-control" ng-change="stateChangedFlag2(this)">
+									<label>Bit 1</label>
+								</span>
+									<span>
+									<input  type="checkbox" title="Bit 0, Default 1. 0 for old LOP & COP version in case with non-compatible with new s/w version." ng-model="a.flag2.bit0" name="a8flag3" class="form-control" ng-change="stateChangedFlag2(this)">
+									<label>Bit 0</label>
+								</span>
+									<span>
+									<label>Total=</label>{{aflag2decimalvalue}}
+								</span>
+								</div>
+
+							</div>
+							<div class="form-group"><label class="col-sm-4 control-label">A7 Door closure expeccted time</label>
+								<div class="col-sm-6">
+									<input name="homeLandingTime" type="text" class="form-control" title="10 means if door can not close in 10 sec, Door open and close reattempt will be carried out.">
+								</div>
+							</div>
+							<div class="form-group"><label class="col-sm-4 control-label">A8 MODE FLAG 3</label>
+								<div class="col-sm-6">
+									<span>
+									<input  type="checkbox" title="Select - Time based home landing, Unselect-difference based home landing, in duplex mode." ng-model="a.flag3.bit5" ng-change="stateChangedFlag3()" name="a8flag3" class="form-control">
+									<label>Bit 5</label>
+
+								</span>
+									<span>
+									<input  type="checkbox" title="Select - Approaching floor switch LED blinking, Unselect-Contineous switch LED" ng-model="a.flag3.bit4" ng-change="stateChangedFlag3()" name="a8flag3" class="form-control">
+									<label>Bit 4</label>
+								</span>
+									<span>
+									<input  type="checkbox" title="Select - Tickling type buzzer, Unselect-contineous buzzer" ng-model="a.flag3.bit3" ng-change="stateChangedFlag3()" name="a8flag3" class="form-control">
+									<label>Bit 3</label>
+								</span>
+									<span>
+									<input  type="checkbox" title="Select - Other announcements On." ng-model="a.flag3.bit2" ng-change="stateChangedFlag3()" name="a8flag3" class="form-control">
+									<label>Bit 2</label>
+								</span>
+									<span>
+									<input  type="checkbox" title="Select - Floor announcement ON." ng-model="a.flag3.bit1" ng-change="stateChangedFlag3()" name="a8flag3" class="form-control">
+									<label>Bit 1</label>
+								</span>
+									<span>
+									<input  type="checkbox" title="Select(1) - Misic ON, Unselect(0)- Music Off" ng-model="a.flag3.bit0" ng-change="stateChangedFlag3()" name="a8flag3" class="form-control">
+									<label>Bit 0</label>
+								</span>
+									<span>
+									<label>Total=</label>{{aflag3decimalvalue}}
+								</span>
+
+								</div>
+							</div>
+							<div class="form-group"><label class="col-sm-4 control-label">A9 MODE FLAG 4</label>
+								<div class="col-sm-6">
+									<span>
+									<input  type="checkbox" title="Select to reset all parameters to their default values." ng-model="a.flag4.bit5" ng-change="stateChangedFlag4()" name="a8flag3" class="form-control">
+									<label>Bit 5</label>
+
+								</span>
+									<span>
+									<input  type="checkbox" title="Select to enable LMS operation" ng-model="a.flag4.bit4" ng-change="stateChangedFlag4()" name="a8flag3" class="form-control">
+									<label>Bit 4</label>
+								</span>
+									<span>
+									<input  type="checkbox" title="Select for explkicitly manual mode of door operation of the same output." ng-model="a.flag4.bit3" ng-change="stateChangedFlag4()" name="a8flag3" class="form-control">
+									<label>Bit 3</label>
+								</span>
+									<span>
+									<input  type="checkbox" title="Select for BUZZER operation, Unselect-DC Operation of the same output." ng-model="a.flag4.bit2" ng-change="stateChangedFlag4()" name="a8flag3" class="form-control">
+									<label>Bit 2</label>
+								</span>
+									<span>
+									<input  type="checkbox" title="Select for enabling CAR call cancellation feature." ng-model="a.flag4.bit1" ng-change="stateChangedFlag4()" name="a8flag3" class="form-control">
+									<label>Bit 1</label>
+								</span>
+									<span>
+									<input  type="checkbox" title="Select for RC Bases landing door locks (Otis type) else direct operating lock." ng-model="a.flag4.bit0" ng-change="stateChangedFlag4()" name="a8flag3" class="form-control">
+									<label>Bit 0</label>
+								</span>
+									<span>
+									<label>Total=</label>{{aflag4decimalvalue}}
+								</span>
+								</div>
+
+							</div>
+							<div class="panel-footer">
+								<div class="row">
+									<div class="col-sm-6">
+										<span ng-click="changeTab(2)" class=" button button-clear fa fa-chevron-circle-left go-back"></span>
+									</div>
+									<div class="col-sm-6 ">
+										<div class="btn-toolbar">
+											<button ng-click="changeTab(4)" class="btn-primary btn">Next</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</fieldset>
+						</form>
+					</div>
+					<div class="tab-pane" id="2">
+						<fieldset class="width-70">
+							<legend>Configure B D</legend>
+
+							<div class="form-group" ng-repeat="stops in floorArray">
+								<label class="col-sm-4 control-label">B{{stops}} Floor Enabled/Disabled</label>
+								<div class="col-sm-6">
+									<select>
+										<option>Complete Disabled</option>
+										<option>Landing calls disabled for Master</option>
+										<option>Landing calls disabled for Slave</option>
+										<option>Enabled</option>
+									</select>
+								</div>
+							</div>
+							<hr class="separator">
+
+							<div class="form-group" ng-repeat="stops in floorArray">
+							<label class="col-sm-4 control-label">D{{stops}} Designating the Floors</label>
+
+								<div class="col-sm-6">
+									<input type="text" class="form-control">
+								</div>
+							</div><!-- 
+							<div class="form-group"><label class="col-sm-4 control-label">D1 Designating the Floors</label>
+								<div class="col-sm-6">
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							<div class="form-group"><label class="col-sm-4 control-label">D2 Designating the Floors</label>
+								<div class="col-sm-6">
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							<div class="form-group"><label class="col-sm-4 control-label">D3 Designating the Floors</label>
+								<div class="col-sm-6">
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							<div class="form-group"><label class="col-sm-4 control-label">D4 Designating the Floors</label>
+								<div class="col-sm-6">
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							<div class="form-group"><label class="col-sm-4 control-label">D5 Designating the Floors</label>
+								<div class="col-sm-6">
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							<div class="form-group"><label class="col-sm-4 control-label">D6 Designating the Floors</label>
+								<div class="col-sm-6">
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							<div class="form-group"><label class="col-sm-4 control-label">D7 Designating the Floors</label>
+								<div class="col-sm-6">
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							<div class="form-group"><label class="col-sm-4 control-label">D8 Designating the Floors</label>
+								<div class="col-sm-6">
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							<div class="form-group"><label class="col-sm-4 control-label">D9 Designating the Floors</label>
+								<div class="col-sm-6">
+									<input type="text" class="form-control">
+								</div>
+							</div> -->
+							<!-- <div class="form-group"><label class="col-sm-4 control-label">D 0</label>
+				  <div class="col-sm-6">
+								<div>
+									<input  type="radio" name="floorED" class="form-control">
+									<label>Complete Disabled</label>
+
+								</div>
+								<div>
+									<input  type="radio" name="floorED" class="form-control">
+									<label>Landing calls disabled for Master</label>
+
+								</div>
+								<div>
+									<input  type="radio" name="floorED" class="form-control">
+									<label>Landing calls disabled for Slave</label>
+
+								</div>
+								<div>
+									<input  type="radio" name="floorED" class="form-control">
+									<label>Enabled</label>
+								</div>
+						</div>
+				  </div> -->
+							<div class="panel-footer">
+								<div class="row">
+									<div class="col-sm-6">
+										<span ng-click="changeTab(1)" class=" button button-clear fa fa-chevron-circle-left go-back"></span>
+									</div>
+									<div class="col-sm-6 ">
+										<div class="btn-toolbar">
+											<button ng-click="changeTab(3)" class="btn-primary btn">Next</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</fieldset>
+					</div>
+					<div class="tab-pane active" id="1">
+						<fieldset class="width-70">
+							<legend>Configure P</legend>
+							<form name="myForm">
+							<div class="form-group"><label class="col-sm-4 control-label">P0 No Of Stops</label>
+								<div class="col-sm-6">
+									<!-- <input type="number" class="form-control" min="0" ng-model="p0NumberOfStops" restrict-to="[0-9]">-->
+									<input type="number" title="P0 No Of Stops" name="stops" class="form-control" ng-change="changeStops(p0NumberOfStops)" ng-model="p0NumberOfStops" placeholder="Enter number between 0-23" min="0" max="23" ng-maxlength="2" ng-class="{'red':myForm.stops.$invalid}" />
+								</div>
+							</div>
+							<div class="col-sm-4"></div><div class="col-sm-6"><p ng-class="{'red':myForm.stops.$invalid}" ng-if="myForm.stops.$invalid">Enter number between 0-23</p></div>
+							<div class="form-group"><label class="col-sm-4 control-label">P1 Door Mode</label>
+								<div class="col-sm-6">
+									<div>
+										<input type="radio" name="doormode" class="form-control" title="Manual Door Mode setting" ng-model="manualDoorMode" value="0" ng-click="changeSelection('0')">
+										<label>Manual Door Mode.</label>
+									</div>
+									<div>
+										<input type="radio" name="doormode" class="form-control" title="Auto door : Door open  when level sensor (door zone) is absent" ng-model="autoDoorSensorAbsent" value="1" ng-click="changeSelection('1')">
+										<label>Auto Door, Level sensor ABSENT</label>
+									</div>
+									<div>
+										<input type="radio" name="doormode" class="form-control" title="Auto door : Door open only when level sensor (door zone) is present" ng-model="autoDoorSensorPresent" value="3" ng-click="changeSelection('3')">
+										<label>Auto Door, Level sensor PRESENT.</label>
+									</div>
+								</div>
+							</div>
+							<!-- //if p1 == 0 -->
+							<div class="form-group" ng-show="manualModeSelected"><label class="col-sm-4 control-label">P2 RC ON Time</label>
+								<div class="col-sm-6">
+									<input type="text" class="form-control" title="P2=10 MEANS 1.0 SEC">
+								</div>
+							</div>
+							<div class="form-group" ng-show="manualModeSelected"><label class="col-sm-4 control-label">P3 RC OFF Time</label>
+								<div class="col-sm-6">
+									<input type="text" class="form-control" title="P3=35 MEANS 3.5 SEC">
+								</div>
+							</div>
+							<div class="form-group" ng-show="manualModeSelected"><label class="col-sm-4 control-label">P4 No of RC Cyles</label>
+								<div class="col-sm-6">
+									<input type="text" class="form-control" title="P4=03 MEANS 3 RC ATTEMPTS">
+								</div>
+							</div>
+							<!-- //if p1 == 1 -->
+							<div class="form-group" ng-show="autoDoorSensorModeSelected"><label class="col-sm-4 control-label">P2 Door Open time at Floor reached</label>
+								<div class="col-sm-6">
+									<input type="text" class="form-control" title="P2=10 MEANS 10 SEC DOOR ON">
+								</div>
+							</div>
+							<div class="form-group" ng-show="autoDoorSensorModeSelected"><label class="col-sm-4 control-label">P3 Door Open time Same Floor  LOP Call</label>
+								<div class="col-sm-6">
+									<input type="text" class="form-control" title="P3=5 MEANS 5 SEC DOOR ON">
+								</div>
+							</div>
+							<div class="form-group" ng-show="autoDoorSensorModeSelected"><label class="col-sm-4 control-label">P4 Door Cycles</label>
+								<div class="col-sm-6">
+									<input type="text" class="form-control" title="P4=03 MEANS 3 DOOR CLOSURE ATTEMPTS">
+								</div>
+							</div>
+							<div class="form-group"><label class="col-sm-4 control-label">P5 Stoppage Time</label>
+								<div class="col-sm-6">
+									<!-- <input type="text" class="form-control" title="P5 Stoppage Time"> -->
+									<input type="number" class="form-control" ng-model="stopageTime" title="P5=60 Means, lift stoppage time of 6 sec for multiple call." placeholder="Enter two digit stopage time" name="stopage" min="0" max="99" ng-class="{'red':myForm.stopage.$invalid}" />
+								</div>
+							</div>
+							<div class="col-sm-4"></div><div class="col-sm-6"><p ng-class="{'red':myForm.stopage.$invalid}" ng-if="myForm.stopage.$invalid">Enter two digit stopage time</p></div>
+							<div class="form-group"><label class="col-sm-4 control-label">P6 Mode Flag</label>
+								<div class="col-sm-6">
+									<span>
+									<input  type="checkbox" title="Selected means forced GND floor call at powr on at maintenance speed. (Resetting mode)" ng-model="a.modeflag.bit5" ng-change="stateChangedmodeflag()" name="a8flag3" class="form-control">
+									<label>Bit 5</label>
+
+								</span>
+									<span>
+									<input  type="checkbox" title="Selected means fault detection disabled" ng-model="a.modeflag.bit4" ng-change="stateChangedmodeflag()" name="a8flag3" class="form-control">
+									<label>Bit 4</label>
+								</span>
+									<span>
+									<input  type="checkbox" title="Selected means LOP/COP will show C for car gate open & L for landing door along with floor." ng-model="a.modeflag.bit3" ng-change="stateChangedmodeflag()" name="a8flag3" class="form-control">
+									<label>Bit 3</label>
+								</span>
+									<span>
+									<input  type="checkbox" title="Selected means one push button full collective logic." ng-model="a.modeflag.bit2" ng-change="stateChangedmodeflag()" name="a8flag3" class="form-control">
+									<label>Bit 2</label>
+								</span>
+									<span>
+									<input  type="checkbox" title="Selected means two push button full collective logic else down collective logic." ng-model="a.modeflag.bit1" ng-change="stateChangedmodeflag()" name="a8flag3" class="form-control">
+									<label>Bit 1</label>
+								</span>
+									<span>
+									<input  type="checkbox" title="If selected, cancel all calls and stop, else stop the lift till the stop push button is pressed, no call erase." ng-model="a.modeflag.bit0" ng-change="stateChangedmodeflag()" name="a8flag3" class="form-control">
+									<label title="If selected, cancel all calls and stop, else stop the lift till the stop push button is pressed, no call erase.">Bit 0</label>
+								</span>
+									<span>
+									<label>Total=</label>{{modeflagdecimalvalue}}
+								</span>
+									<!-- <span>
+							<label>Total=</label>{{p6flagdecimalvalue}}
+							</span> -->
+								</div>
+							</div>
+							<div class="form-group"><label class="col-sm-4 control-label">P7 Lift Type</label>
+								<div class="col-sm-6">
+									<select>
+							  	<option>Simplex</option>
+							  	<option>Duplex Master</option>
+							  	<option>Duplex Slave</option>
+							  </select>
+								</div>
+							</div>
+							<div class="form-group"><label class="col-sm-4 control-label">P8 Fan On Time</label>
+								<div class="col-sm-6">
+									<!-- <input type="text" class="form-control" title="P8 Fan On Time"> -->
+									<input type="number" title="P8=20 Means fan off after 2 sec delay after call completion." class="form-control" title="P8 Fan On Time" ng-model="fanOnTime" placeholder="Enter Fan On Time between 0-99" name="fantime" min="0" max="99" ng-class="{'red':myForm.fantime.$invalid}" />
+								</div>
+							</div>
+							<div class="col-sm-4"></div><div class="col-sm-6"><p ng-class="{'red':myForm.fantime.$invalid}" ng-if="myForm.fantime.$invalid">Enter Fan On Time between 0-99</p></div>
+							<div class="form-group"><label class="col-sm-4 control-label">P9 Tube On Time</label>
+								<div class="col-sm-6">
+									<!-- <input type="text" class="form-control" title="P9 Tube On Time"> -->
+									<input type="number" title="P9=5 means tube off after 5 min delay after last call completion." name="tubetime" class="form-control" title="P8 Fan On Time" ng-model="tubeOnTime" placeholder="Enter Tube On Time between 0-99" min="0" max="99" ng-class="{'red':myForm.tubetime.$invalid}" />
+								</div>
+							</div>
+							<div class="col-sm-4"></div><div class="col-sm-6"><p ng-class="{'red':myForm.tubetime.$invalid}" ng-if="myForm.tubetime.$invalid">Enter Tube On Time between 0-99</p></div>
+							<div class="panel-footer">
+								<div class="row">
+									<div class="col-sm-6 ">
+										<div class="btn-toolbar">
+											<button ng-click="changeTab(2)" ng-disabled="!myForm.$valid" class="btn-primary btn">Next</button>
+										</div>
+									</div>
+								</div>
+							</div>
+							</form>
+						</fieldset>
+					</div>
+					<div class="tab-pane" id="4">
+						<fieldset class="width-70">
+							<legend>configure R T C</legend>
+							<div class="form-group"><label class="col-sm-4 control-label">Date</label>
+								<div class="col-sm-6">
+									<input type="text" class="form-control datepicker" datepicker-popup="{{format}}" ng-click="open($event,'Date')" is-open="openFlag.Date"
+									 ng-model="a.Date" ng-change="readDate(a.Date)"/>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 control-label">Time</label>
+								<div class="col-sm-6">
+									<timepicker ng-model="mytime" ng-change="changed()" hour-step="hstep" minute-step="mstep" second-step="sstep" show-meridian="ismeridian" class="timepicker"></timepicker>
+									<!-- <div>
+										<label class="col-sm-3 control-label">Controls</label>
+										<div class="col-sm-6">
+											<button class="btn btn-info" ng-click="toggleMode()">12H / 24H</button>
+											<button class="btn btn-danger" ng-click="clear()">Clear</button>
+										</div>
+									</div> -->
+								</div>
+							</div>
+
+							<div class="form-group"><label class="col-sm-4 control-label">R0 RTC Date(DD)</label>
+								<div class="col-sm-6">
+									<input type="text" title="R0=30 Means 30th day of the month" ng-model="r0RTCDate" class="form-control">
+								</div>
+							</div>
+							<div class="form-group"><label class="col-sm-4 control-label">R1 RTC Month(MM)</label>
+								<div class="col-sm-6">
+									<input type="text" title="R1=12 Means 12th month of a year" ng-model="r1RTCMonth" class="form-control">
+								</div>
+							</div>
+							<div class="form-group"><label class="col-sm-4 control-label">R2 RTC Year (YY)</label>
+								<div class="col-sm-6">
+									<input type="text" title="R2=17 means Year 2017" ng-model="r2RTCYear" class="form-control" >
+								</div>
+							</div>
+							<div class="form-group"><label class="col-sm-4 control-label">R3 RTC Hours (HH)</label>
+								<div class="col-sm-6">
+									<input type="text" title="R3=23 means 23rd hour of the day (11PM)" ng-model="r3RTCHours" class="form-control">
+								</div>
+							</div>
+							<div class="form-group"><label class="col-sm-4 control-label">R4 RTC Minutes (MM))</label>
+								<div class="col-sm-6">
+									<input type="text" title="R4=59 means 59th minute of an hour" ng-model="r4RTCMinutes" class="form-control">
+								</div>
+							</div>
+							<div class="form-group"><label class="col-sm-4 control-label">R5 RTC Seconds (SS)</label>
+								<div class="col-sm-6">
+									<input type="text" title="R5=59 menas 59th second of a minute" ng-model="r5RTCSeconds" class="form-control">
+								</div>
+							</div>
+							<hr>
+							<div ng-show="rtcOptionsForInditechAdmin">
+							<div class="form-group"><label class="col-sm-4 control-label">T0 DATE</label>
+								<div class="col-sm-6">
+									<input type="text" class="form-control" title="T0 DATE">
+								</div>
+							</div>
+							<div class="form-group"><label class="col-sm-4 control-label">T1 Month</label>
+								<div class="col-sm-6">
+									<input type="text" class="form-control" title="T1 Month">
+								</div>
+							</div>
+							<div class="form-group"><label class="col-sm-4 control-label">T2 YEAR</label>
+								<div class="col-sm-6">
+									<input type="text" class="form-control" title="T2 YEAR">
+								</div>
+							</div>
+							<div class="form-group"><label class="col-sm-4 control-label" title="T3 Count">T3 Count</label>
+								<div class="col-sm-6">
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							<div class="form-group"><label class="col-sm-4 control-label">T4 Consumer No MSD 2 digit</label>
+								<div class="col-sm-6">
+									<input type="text" class="form-control" title="Means '12' of consumer number '1234'">
+								</div>
+							</div>
+							<div class="form-group"><label class="col-sm-4 control-label">T5 Consumer No LSD 2 Digit</label>
+								<div class="col-sm-6">
+									<input type="text" class="form-control" title="Means '34' of consumer number '1234'">
+								</div>
+							</div>
+							</div>
+							<hr>
+							<div class="form-group">
+							<div class="col-sm-6">
+								<input name="upsConnected" type="checkbox" title="Check if UPS is connected" ng-model="isUPSConnected" class="form-control">
+								<label>Is UPS Selected</label>
+							</div>
+							</div>
+							<div ng-show="isUPSConnected">
+							<div class="form-group"><label class="col-sm-4 control-label">C0 ARD off Delay</label>
+								<div class="col-sm-6">
+									<input type="text" class="form-control" title="C0 = 20 means, after power failure ARD operation will start after 20 seconds.">
+								</div>
+							</div>
+							<div class="form-group"><label class="col-sm-4 control-label">C1 ARD On Delay</label>
+								<div class="col-sm-6">
+									<input type="text" class="form-control" title="C1 = 90 means ARD cycle will be aborted if not completed in 90 seconds">
+								</div>
+							</div>
+							<div class="form-group"><label class="col-sm-4 control-label">C2 ARD Over off Delay</label>
+								<div class="col-sm-6">
+									<input type="text" class="form-control" title="C2=20 means ARD cycle will be over, all the operatins will be halted till opwer comes back.">
+								</div>
+							</div>
+							<div class="form-group"><label class="col-sm-4 control-label">C3 ARD Direction Reversal delay</label>
+								<div class="col-sm-6">
+									<input type="text" class="form-control" title="C3=30 means if V3F drive decides to change the ARD direction, direction will be reversed in 3 seconds. (in multiple of 10 to be entered">
+								</div>
+							</div>
+							</div>
+							<div class="panel-footer">
+								<div class="row">
+									<div class="col-sm-6">
+										<span ng-click="changeTab(3)" class=" button button-clear fa fa-chevron-circle-left go-back"></span>
+									</div>
+									<div class="col-sm-6 ">
+										<div class="btn-toolbar">
+											<button class="btn-primary btn">Submit</button>
+											<button class="btn-default btn">Reset</button>
+										</div>
+									</div>
+								</div>
+							</div>
+
+						</fieldset>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
