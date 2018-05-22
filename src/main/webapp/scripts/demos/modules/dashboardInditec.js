@@ -1899,7 +1899,8 @@ angular.module('theme.demos.dashboard.indi', [
 	                largeLoad) {
 	            	  if (eventType=="Event") {
 		                  $scope.inout = largeLoad.filter(function (item) {
-		                    return item.eventType === "EVENT";
+		                    //return item.eventType === "EVENT";
+		                    return item.eventType==="EVENT";
 		                  });
 		                  $scope.event.inout.text=$scope.inout.length;
 		                }
