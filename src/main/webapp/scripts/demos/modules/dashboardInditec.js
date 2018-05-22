@@ -1891,6 +1891,7 @@ angular.module('theme.demos.dashboard.indi', [
 	              .constructDataToSendForAllLiftStatus();
 	            serviceApi
 	              .doPostWithData(
+	             // '/RLMS/dashboard/getEventCountForLift',
 	              '/RLMS/dashboard/getEventCountForLift',
 	              dataToSend)
 	              .then(
