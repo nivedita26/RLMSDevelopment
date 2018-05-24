@@ -137,6 +137,8 @@
 		    $scope.format = $scope.formats[0];
 	    //Date Picker End
 		$scope.alert = { type: 'success', msg: 'You successfully Added Lift.',close:true };
+		$scope.alert = { type: 'error', msg: '',close:false };
+
 		$scope.showAlert = false;
 		$scope.showCompany = false;
 		$scope.showBranch = false;
@@ -450,11 +452,19 @@
 				$scope.showAlert = true;
 				var key = Object.keys(response);
 				var successMessage = response[key[0]];
-				$scope.alert.msg = successMessage;
+				if(successMessage!=false){
+				$scope.alert.msg = response[key[1]];
 				$scope.alert.type = "success";
 				initAddLift();
 				$scope.addLiftForm.$setPristine();
 				$scope.addLiftForm.$setUntouched();
+		     	}
+				else{
+					$scope.alert.msg =  response[key[1]];
+					$scope.alert.type="danger"
+					$scope.showAlert = true;
+
+				}
 				
 			},function(error){
 				$scope.showAlert = true;

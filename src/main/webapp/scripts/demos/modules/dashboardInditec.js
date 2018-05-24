@@ -715,7 +715,7 @@ angular.module('theme.demos.dashboard.indi', [
     $scope.getPagedDataAsyncForTechnician = function (pageSize,
     	      page, searchText, activeFlag) {
     	      var url;
-    	      url = '/RLMS/dashboard/getListOfTechniciansForDashboard';
+    	      url = '/RLMS/dashboard//getTotalCountOfTechniciansForBranch';
     	      setTimeout(
     	        function () {
     	          var data;

@@ -23,6 +23,7 @@ import com.rlms.constants.Status;
 import com.rlms.contract.AMCDetailsDto;
 import com.rlms.contract.CustomerDtlsDto;
 import com.rlms.contract.LiftDtlsDto;
+import com.rlms.contract.ResponseDto;
 import com.rlms.contract.UserMetaInfo;
 import com.rlms.dao.BranchDao;
 import com.rlms.dao.CustomerDao;
@@ -76,13 +77,16 @@ public class LiftServiceImpl implements LiftService{
 		return liftsForBranch;
 	}
 	
+	@SuppressWarnings("unused")
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
-	public String validateAndAddNewLiftDtls(LiftDtlsDto dto, UserMetaInfo metaInfo) throws ParseException{
+	public ResponseDto validateAndAddNewLiftDtls(LiftDtlsDto dto, UserMetaInfo metaInfo) throws ParseException{
+		ResponseDto ResponseDto = new ResponseDto();
+	    RlmsLiftMaster liftMaster = new RlmsLiftMaster();
+	   if(liftMaster.getLiftId()==null) {
 		RlmsLiftMaster liftM = this.constructLiftMaster(dto, metaInfo);
 		Integer liftId = this.liftDao.saveLiftM(liftM);
 		liftM.setLiftId(liftId);
-		
 		
 		RlmsLiftCustomerMap liftCustomerMap = this.constructLiftCustomerMap(liftM, dto, metaInfo);
 		Integer liftCustomerMapID = this.liftDao.saveLiftCustomerMap(liftCustomerMap);
@@ -93,8 +97,14 @@ public class LiftServiceImpl implements LiftService{
 		
 		RlmsFyaTranDtls fyaTranDtls = this.constructFyaTranDtls(liftCustomerMap, metaInfo);
 		this.fyaDao.saveFyaTranDtls(fyaTranDtls);
-		return PropertyUtils.getPrpertyFromContext(RlmsErrorType.LIFT_ADDED_SUCCESSFULLY.getMessage());
-		
+		ResponseDto.setStatus(true);
+		ResponseDto.setResponse(RlmsErrorType.LIFT_ADDED_SUCCESSFULLY.getMessage());
+		return ResponseDto;
+
+	     }
+		ResponseDto.setStatus(true);
+		ResponseDto.setResponse("Duplicate lift number");
+    	return ResponseDto;
 	}
 	
 	private AMCDetailsDto constructAMCDtlsDto(RlmsLiftCustomerMap liftCustomerMap){

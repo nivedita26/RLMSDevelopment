@@ -11,7 +11,8 @@ public enum Status {
 	UNDER_WARRANTY(38,"Under Warranty"),
 	RENEWAL_DUE(39,"Renewal Due"),
 	AMC_PENDING(40,"AMC Pending"),
-	UNDER_AMC(41,"Under AMC");
+	UNDER_AMC(41,"Under AMC"),
+	NOT_UNDER_AMC(42,"Not Under AMC");
 	
 	private Integer statusId;
 	private String statusMsg;
@@ -61,6 +62,9 @@ public enum Status {
 			return Status.	AMC_PENDING.getStatusMsg();
 		}else if(statusId == Status.UNDER_AMC.getStatusId()){
 			return Status.UNDER_AMC.getStatusMsg();
+		}
+		else if(statusId == Status.NOT_UNDER_AMC.getStatusId()){
+			return Status.NOT_UNDER_AMC.getStatusMsg();
 		}
 		
 		return "";

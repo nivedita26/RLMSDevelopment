@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.rlms.contract.CustomerDtlsDto;
 import com.rlms.contract.LiftDtlsDto;
+import com.rlms.contract.ResponseDto;
 import com.rlms.contract.UserMetaInfo;
 import com.rlms.model.RlmsLiftCustomerMap;
 
@@ -12,7 +13,7 @@ public interface LiftService {
 
 	public List<RlmsLiftCustomerMap> getAllLiftsForBranch(Integer companyBranchMapId);
 
-	String validateAndAddNewLiftDtls(LiftDtlsDto dto, UserMetaInfo metaInfo) throws ParseException;
+	ResponseDto validateAndAddNewLiftDtls(LiftDtlsDto dto, UserMetaInfo metaInfo) throws ParseException;
 	
 	public String approveLift(LiftDtlsDto liftDtlsDto, UserMetaInfo metaInfo);
 

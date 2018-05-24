@@ -322,4 +322,11 @@ public class LiftDaoImpl implements LiftDao{
 		return (RlmsLiftAmcDtls) criteria.uniqueResult();
 	}
 
+	@Override
+	public RlmsLiftMaster getLiftByLiftNumber(int liftNumber) {
+		Session session = this.sessionFactory.getCurrentSession();
+		Criteria criteria = session.createCriteria(RlmsLiftMaster.class);
+		criteria.add(Restrictions.eq("liftNumber",liftNumber));
+		return (RlmsLiftMaster) criteria.uniqueResult();
+	}
 }

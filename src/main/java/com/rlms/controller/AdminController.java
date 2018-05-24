@@ -330,7 +330,7 @@ public class AdminController extends BaseController{
 	        
 	        try{
 	        	logger.info("Method :: validateAndRegisterNewCustomer");
-	        	reponseDto.setResponse(this.liftService.validateAndAddNewLiftDtls(dto, this.getMetaInfo()));
+	        	reponseDto = this.liftService.validateAndAddNewLiftDtls(dto, this.getMetaInfo());
 	        	
 	        }
 	        catch(Exception e){

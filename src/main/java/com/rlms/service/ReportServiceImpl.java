@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.SystemPropertyUtils;
 
 import com.rlms.constants.AMCType;
 import com.rlms.constants.RLMSConstants;
@@ -181,15 +182,34 @@ public class ReportServiceImpl implements ReportService {
 		Date today = new Date();
 		Date warrantyexpiryDate = DateUtils.addDaysToDate(dateOfInstallation, 365);
 		Date renewalDate = DateUtils.addDaysToDate(amcEndDate, -30);
-		if(DateUtils.isBeforeOrEqualToDate(amcEndDate, warrantyexpiryDate)){
+		/*if(DateUtils.isBeforeOrEqualToDate(amcEndDate, warrantyexpiryDate)){
+
+			amcStatus = Status.UNDER_WARRANTY;*/
+		
+		///calculate warranty for lift
+	
+		if(DateUtils.isBeforeOrEqualToDate(today,warrantyexpiryDate)){
+
 			amcStatus = Status.UNDER_WARRANTY;
-		}else if(DateUtils.isAfterOrEqualTo(renewalDate, today) && DateUtils.isBeforeOrEqualToDate(today, amcEndDate)){
-			amcStatus = Status.RENEWAL_DUE;
-		}else if(DateUtils.isAfterToDate(amcEndDate, today)){
-			amcStatus = Status.AMC_PENDING;
-		}else if(DateUtils.isBeforeOrEqualToDate(amcStartDate, today) &&  DateUtils.isAfterOrEqualTo(today, amcEndDate)){
-			amcStatus = Status.UNDER_AMC;
 		}
+		else if(DateUtils.isAfterOrEqualTo(renewalDate,today) && DateUtils.isBeforeOrEqualToDate(today, amcEndDate)){
+			amcStatus = Status.RENEWAL_DUE;
+		 }
+		/* if(DateUtils.isAfterOrEqualTo(renewalDate, amcEndDate) ){
+			amcStatus = Status.RENEWAL_DUE;
+		}*/
+		 else if(DateUtils.isBeforeToDate(amcEndDate, today)){
+			amcStatus = Status.AMC_PENDING;
+		 }
+		/*else if(DateUtils.isAfterToDate(amcEndDate, amcEndDate)){
+			amcStatus = Status.AMC_PENDING;*/
+		
+	     else if((DateUtils.isBeforeOrEqualToDate(amcStartDate,today))&&(DateUtils.isAfterOrEqualTo(today,amcEndDate))){
+			amcStatus = Status.UNDER_AMC;
+		/*else if(DateUtils.isAfterOrEqualTo(amcStartDate, amcEndDate)){
+			amcStatus = Status.UNDER_AMC;*/
+		}
+	   
 		return amcStatus;
 		
 	}
@@ -241,7 +261,13 @@ public class ReportServiceImpl implements ReportService {
 		
 		if(!StringUtils.isEmpty(dto.getAmcStartDate()) && !StringUtils.isEmpty(dto.getAmcEndDate())){
 			Status amcStatus = this.calculateAMCStatus(dto.getAmcStDate(), dto.getAmcEdDate(), liftCustomerMap.getLiftMaster().getDateOfInstallation());
+		    
+			
 			liftAMCDtls.setStatus(amcStatus.getStatusId());
+			
+		}
+		else {
+			liftAMCDtls.setStatus( Status.AMC_PENDING.getStatusId());
 			
 		}
 		if(null !=dto.getAmcStDate() && null !=dto.getAmcEdDate()){
