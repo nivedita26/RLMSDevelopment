@@ -3,6 +3,7 @@ package com.rlms.dao;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
@@ -21,6 +22,7 @@ import com.rlms.model.RlmsEventDtls;
 import com.rlms.model.RlmsLiftAmcDtls;
 import com.rlms.model.RlmsLiftCustomerMap;
 import com.rlms.model.RlmsLiftMaster;
+import com.rlms.model.RlmsUserRoles;
 import com.rlms.utils.DateUtils;
 
 @Repository
@@ -206,7 +208,24 @@ public class LiftDaoImpl implements LiftDao{
 			 return listOFAMCdtlsForAllLifts;
 		
 	}
-	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getAMCDetilsCountForLifts(List<Integer> listOfLiftsForAMCDtls, AMCDetailsDto dto){		
+		Session session =  this.sessionFactory.getCurrentSession();
+		String str = "";
+		for (Integer mapId : listOfLiftsForAMCDtls) {
+			if (StringUtils.isEmpty(str)) {
+				str = str.concat(String.valueOf(mapId));
+			} else {
+				str = str.concat("," + mapId);
+			}
+		}
+		String sql="SELECT status,count(*) FROM rlms_lift_amc_dtls where lift_customer_map_id in("+str+") group by status";
+		//"SELECT  lift_customer_map_id,status FROM rlms_lift_amc_dtls where lift_customer_map_id in("+str+") group by lift_customer_map_id";
+				
+		SQLQuery query = session.createSQLQuery(sql);
+		List<Object[]>amcStatusCount = query.list();
+		return amcStatusCount;
+	}
 	@SuppressWarnings("unchecked")
 	public List<RlmsLiftAmcDtls> getAllLiftsWithTodaysDueDate(){		
 		
@@ -322,4 +341,11 @@ public class LiftDaoImpl implements LiftDao{
 		return (RlmsLiftAmcDtls) criteria.uniqueResult();
 	}
 
+	@Override
+	public RlmsLiftMaster getLiftByLiftNumber(int liftNumber) {
+		Session session = this.sessionFactory.getCurrentSession();
+		Criteria criteria = session.createCriteria(RlmsLiftMaster.class);
+		criteria.add(Restrictions.eq("liftNumber",liftNumber));
+		return (RlmsLiftMaster) criteria.uniqueResult();
+	}
 }
