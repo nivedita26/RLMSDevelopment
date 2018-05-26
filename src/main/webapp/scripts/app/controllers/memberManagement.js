@@ -222,7 +222,41 @@
 	  	      pagingOptions: $scope.pagingOptions,
 	  	      filterOptions: $scope.filterOptions,
 	  	      multiSelect: false,
-	  	      gridFooterHeight:35
+	  	      gridFooterHeight:35,
+	  	      columnDefs : [ {
+	  	    	  field : "Name",
+	  	    	  displayName:"Name",
+	  	    	  width: "200"
+	  	      },{
+	  	    	  field : "Address",
+	  	    	  displayName:"Address",
+	  	    	  width: "190"
+	  	      }, {
+	  	    	  field : "Branch",
+	  	    	  displayName:"Branch",
+	  	    	  width: "180"
+	  	      },{
+	  	    	  field : "City",
+	  	    	  displayName:"City",
+	  	    	  width: "180"
+	  	      },{
+	  	    	  field : "Contact_Number",
+	  	    	  displayName:"Contact Number",
+	  	    	  width: "190"
+	  	      },  {
+	  	    	  field : "Email_Id",
+	  	    	  displayName:"Email Id",
+	  	    	  width: "200"
+	  	      },{
+	  	    	  cellTemplate :  
+	  	    		  '<button ng-click="$event.stopPropagation(); editThisMember(row.entity);" title="Edit" style="margin-top: 2px;height: 38px;width: 38px;" class="btn-sky"><span class="glyphicon glyphicon-pencil"></span></button>',
+	    		  width : 35
+	  	      },{
+	  	    	  cellTemplate :  
+	  	    		  '<button ng-click="$event.stopPropagation(); deleteMemberDetails(row.entity);" title="Delete" style="margin-top: 2px;height: 38px;width: 38px;" class="btn-sky"><span class="glyphicon glyphicon-remove"></span></button>',
+	  	    	  width : 35
+	  	      }
+			]
 	  	    };
 		
 	}]);
