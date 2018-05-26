@@ -254,7 +254,7 @@ public class DashboardDaoImpl implements DashboardDao {
 			}
 		}
 		Session session = this.sessionFactory.getCurrentSession();
-       String sql ="SELECT lift_customer_map_id,event_type,count(*) FROM rlms_event where lift_customer_map_id in(1,60) group by event_type,lift_customer_map_id order by lift_customer_map_id";
+       String sql ="SELECT lift_customer_map_id,event_type,count(*) FROM rlms_event where lift_customer_map_id in("+str+") group by event_type,lift_customer_map_id order by lift_customer_map_id";
 	    	SQLQuery query = session.createSQLQuery(sql);
 		 	List<Object[]>EventCount = query.list();
 			return EventCount;

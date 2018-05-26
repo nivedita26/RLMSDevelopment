@@ -1,14 +1,15 @@
 (function () {
     'use strict';
 	angular.module('rlmsApp')
-	.controller('addCustomerCtrl', ['$scope', '$filter','serviceApi','$route','utility','$window', function($scope, $filter,serviceApi,$route,utility,$window) {
+	.controller('addCustomerCtrl', ['$scope', '$filter','serviceApi','$route','utility','$window','$rootScope', function($scope, $filter,serviceApi,$route,utility,$window,$rootScope) {
 	initAddCustomer();
 			loadCompayInfo();
-			$scope.alert = { type: 'success', msg: 'You successfully Added Customer.',close:true };
-			//loadBranchListInfo();
+			$scope.alert = { type: 'success', msg: 'You successfully Added Customer.',close:true };			
 			$scope.showAlert = false;
-			$scope.companies = [];
-			$scope.branches = [];
+			$scope.showCompany=false;
+			$scope.showBranch=false;
+			//$scope.companies = [];
+			//$scope.branches = [];
 			function initAddCustomer(){
 				$scope.selectedCompany = {};
 				$scope.selectedBranch = {};
@@ -51,7 +52,7 @@
 						id:15
 					},
 					{
-						name:"COMMERTIAL",
+						name:"COMMERCIAL",
 						id:16
 					},
 					{
@@ -72,6 +73,7 @@
 					}
 				]
 			}
+			
 			//load compay dropdown data
 			function loadCompayInfo(){
 				serviceApi.doPostWithoutData('/RLMS/admin/getAllApplicableCompanies')
@@ -79,6 +81,7 @@
 			    		$scope.companies = response;
 			    });
 			};
+			
 			$scope.loadBranchData = function(){
 				var companyData={};
 				if($scope.showCompany == true){
@@ -99,6 +102,15 @@
 			    	$scope.myData = emptyArray;
 			    });
 			}
+			
+			if($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 1){
+				$scope.showCompany= true;
+				loadCompanyData();
+			}else{
+				$scope.showCompany= false;
+				$scope.loadBranchData();
+			}		  			
+			
 			//Post call add customer
 			$scope.submitAddCustomer = function(){
 				$scope.addCustomer.companyName = $scope.selectedCompany.selected.companyName;
@@ -121,7 +133,7 @@
 					$scope.alert.type = "danger";
 				});
 			}
-			//reset add branch
+			//rese add branch
 			$scope.resetAddCustomer = function(){
 				initAddCustomer();
 			}

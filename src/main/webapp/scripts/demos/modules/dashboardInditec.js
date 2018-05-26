@@ -715,7 +715,8 @@ angular.module('theme.demos.dashboard.indi', [
     $scope.getPagedDataAsyncForTechnician = function (pageSize,
     	      page, searchText, activeFlag) {
     	      var url;
-    	      url = '/RLMS/dashboard//getTotalCountOfTechniciansForBranch';
+    	      url = '/RLMS/dashboard/getTotalCountOfTechniciansForBranch';
+
     	      setTimeout(
     	        function () {
     	          var data;
@@ -796,22 +797,39 @@ angular.module('theme.demos.dashboard.indi', [
     	                $scope.showTable = true;
     	                var userDetails = [];
     	                if (activeFlag=="Active") {
-    	                	largeLoad = largeLoad.filter(function (item) {
-      	                    return item.activeFlag === 1;
-      	                  });
+    	                	/*largeLoad = largeLoad.filter(function (item) {
+    	                		return item.activeFlag === 1;   	                	
+    	                	});*/
+    	                	for (var i = 0; i < largeLoad.length; i++) {
+    	                		
+    	                		if(largeLoad[i].totolActiveTechnician!=null){
+    	                			largeLoad[i].branchName=largeLoad[i].branchName
+    	                			largeLoad[i].city=largeLoad[i].city
+    	                			largeLoad[i].count=largeLoad[i].totolActiveTechnician
+    	                			//totalCount=totalCount+largeLoad[i].totolActiveTechnician;
+    	                		}
+    	                	}
+    	                	   	                	
       	                }
     	                if (activeFlag=="InActive") {
-    	                	largeLoad = largeLoad.filter(function (item) {
-      	                    return item.activeFlag === 0;
-      	                  });
+    	                	/*largeLoad = largeLoad.filter(function (item) {
+    	                		
+      	                    return item.activeFlag === 0;*/
+    	                	for (var i = 0; i < largeLoad.length; i++) {
+    	                		
+    	                		if(largeLoad[i].totalInactiveTechnician!=null){
+    	                			largeLoad[i].branchName=largeLoad[i].branchName
+    	                			largeLoad[i].city=largeLoad[i].city
+    	                			largeLoad[i].count=largeLoad[i].totalInactiveTechnician
+    	                			//totalCount=totalCount+largeLoad[i].totolActiveTechnician;
+    	                		}
+    	                	}
+      	                 // });
       	                }
     	                for (var i = 0; i < largeLoad.length; i++) {
       	                  var userDetailsObj = {};
-      	                  if (!!largeLoad[i].userId) {
+      	                  
       	                    userDetailsObj["No"] = i+1 +".";
-      	                  } else {
-      	                    userDetailsObj["No"] = " - ";
-      	                  }
       	                  
       	                  if (!!largeLoad[i].branchName) {
         	                userDetailsObj["Branch"] = largeLoad[i].branchName;
@@ -823,8 +841,8 @@ angular.module('theme.demos.dashboard.indi', [
       	                  } else {
       	                    userDetailsObj["City"] = " - ";
       	                  }
-      	                  if (!!largeLoad[i].totalTechnicianCount) {
-        	                userDetailsObj["Total_Technician"] = largeLoad[i].totalTechnicianCount;
+      	                  if (!!largeLoad[i].count) {
+        	                userDetailsObj["Total_Technician"] = largeLoad[i].count;
         	              } else {
         	                userDetailsObj["Total_Technician"] = " - ";
         	              }
@@ -850,27 +868,44 @@ angular.module('theme.demos.dashboard.indi', [
     	              .construnctObjeToSendForTechnician();
     	            serviceApi
     	              .doPostWithData(
-    	              '/RLMS/dashboard/getListOfTechniciansForDashboard',
+    	              '/RLMS/dashboard/getTotalCountOfTechniciansForBranch',
     	              dataToSend)
     	              .then(
     	              function (
     	                largeLoad) {
     	                if (technicianStatus=="Active") {
-    	                  $scope.activeTechnicians = largeLoad.filter(function (item) {
-    	                    return item.activeFlag === 1;
-    	                  });
-    	                  $scope.technicianData.activeTechnicians.text=$scope.activeTechnicians.length;
+    	                	var totalCount= 0;
+    	                	for (var i = 0; i < largeLoad.length; i++) {
+    	                		
+    	                		if(largeLoad[i].totolActiveTechnician!=null){
+    	                			totalCount=totalCount+largeLoad[i].totolActiveTechnician;
+    	                		}
+    	                	}
+    	                	  	                 
+    	                  $scope.technicianData.activeTechnicians.text=totalCount;
     	                }
     	                if(technicianStatus=="InActive"){
-    	                	$scope.inactiveTechnicians = largeLoad.filter(function (item) {
-        	                    return item.activeFlag === 0;
-        	                  });
-    	                	if($scope.inactiveTechnicians.length>0){
-    	                		$scope.technicianData.inactiveTechnicians.text=$scope.inactiveTechnicians.length;
+    	                	   	                	
+    	                	var totalCount= 0;
+    	                	for (var i = 0; i < largeLoad.length; i++) {
+    	                		
+    	                		if(largeLoad[i].totalInactiveTechnician!=null){
+    	                			totalCount=totalCount+largeLoad[i].totalInactiveTechnician;
+    	                		}
     	                	}
+    	                	
+    	                		$scope.technicianData.inactiveTechnicians.text=totalCount;
+    	                	
     	                }
     	                if(technicianStatus=="TotalTechnician"){
-        	                  $scope.technicianData.totalTechnicians.text=largeLoad.length;
+    	                	var totalCount= 0;
+    	                	for (var i = 0; i < largeLoad.length; i++) {
+    	                		
+    	                		if(largeLoad[i].count!=null){
+    	                			totalCount=totalCount+largeLoad[i].count;
+    	                		}
+    	                	}
+        	                  $scope.technicianData.totalTechnicians.text=totalCount;
     	                }
     	              });
     	          }, 100);
@@ -1891,25 +1926,51 @@ angular.module('theme.demos.dashboard.indi', [
 	              .constructDataToSendForAllLiftStatus();
 	            serviceApi
 	              .doPostWithData(
-	             // '/RLMS/dashboard/getEventCountForLift',
 	              '/RLMS/dashboard/getEventCountForLift',
 	              dataToSend)
 	              .then(
 	              function (
 	                largeLoad) {
 	            	  if (eventType=="Event") {
-		                  $scope.inout = largeLoad.filter(function (item) {
-		                    return item.eventType === "EVENT";
-		                  });
-		                  $scope.event.inout.text=$scope.inout.length;
+		                  /*$scope.inout = largeLoad.filter(function (item) {
+		                    //return item.eventType === "EVENT";
+		                    return item.eventType==="EVENT";
+		                  });*/
+	            		  var totalCount= 0;
+	  	                	for (var i = 0; i < largeLoad.length; i++) {
+	  	                		
+	  	                		if(largeLoad[i].totolEventCount!=null){
+	  	                			totalCount=totalCount+largeLoad[i].totolEventCount;
+	  	                		}
+	  	                	}
+		                  $scope.event.inout.text=totalCount;
 		                }
 	            	  if (eventType=="Error") {
-		                  $scope.error = largeLoad.filter(function (item) {
+		                  /*$scope.error = largeLoad.filter(function (item) {
 		                    return item.eventType === "ERROR";
-		                  });
-		                  $scope.event.error.text=$scope.error.length;
+		                  });*/
+	            		  var totalCount= 0;
+	  	                	for (var i = 0; i < largeLoad.length; i++) {
+	  	                		
+	  	                		if(largeLoad[i].totalErrorCount!=null){
+	  	                			totalCount=totalCount+largeLoad[i].totalErrorCount;
+	  	                		}
+	  	                	}
+		                  $scope.event.error.text=totalCount;
 
 	            	  }
+	            	  if (eventType=="Response") {
+	            		  var totalCount= 0;
+  	                	for (var i = 0; i < largeLoad.length; i++) {
+  	                		
+  	                		if(largeLoad[i].totalRespCount!=null){
+  	                			totalCount=totalCount+largeLoad[i].totalRespCount;
+  	                		}
+  	                	}
+		                  $scope.event.response.text=totalCount;
+
+	            	  }
+	            	  
 	                //  $scope.event.inout.text=largeLoad.length;
 	              });
 	          }, 100);
@@ -1933,6 +1994,7 @@ angular.module('theme.demos.dashboard.indi', [
 	     
 	      $scope.getCountForEvent("Event");
 	      $scope.getCountForEvent("Error");
+	      $scope.getCountForEvent("Response");
 
 
       $scope.getPagedDataAsyncForEvents = function (pageSize,
@@ -1941,7 +2003,7 @@ angular.module('theme.demos.dashboard.indi', [
     	     // url = '/RLMS/dashboard/getAllInOutEventsData';
     	      var dataToSend = $scope
                 .constructDataToSendForAllLiftStatus();
-    	      url = '/RLMS/dashboard/getListOfEvents',
+    	      url = '/RLMS/dashboard/getEventCountForLift',
     	      setTimeout(
     	        function () {
     	          var data;
@@ -1966,14 +2028,17 @@ angular.module('theme.demos.dashboard.indi', [
   		                    return item.eventType === "ERROR";
   		                  });
   	            	  	}
+  	            	  	if (eventType=="Response") {
+    	            		largeLoad= largeLoad.filter(function (item) {
+    		                    return item.eventType === "RESPONSE";
+    		                  });
+    	            	  	}
           
     	                for (var i = 0; i < largeLoad.length; i++) {
         	                  var userDetailsObj = {};
-        	                  if (!!largeLoad[i].eventId) {
-          	                    userDetailsObj["No"] = i+1;
-          	                  } else {
-          	                    userDetailsObj["No"] = " - ";
-          	                  }
+        	                  
+          	                    userDetailsObj["No"] = i+1 +".";
+          	                  
      	                       if (!!largeLoad[i].branchName) {
       	                    	   userDetailsObj["Branch"] = largeLoad[i].branchName;
       	                       } else {
@@ -1999,11 +2064,19 @@ angular.module('theme.demos.dashboard.indi', [
                 	              } else {
                 	                userDetailsObj["IMEI_No"] = " - ";
                 	              }
-        	                 if (!!largeLoad[i].totalFigure) {
-            	                userDetailsObj["TotalEvents/Error"] = largeLoad[i].totalFigure;
-            	              } else {
-            	                userDetailsObj["TotalEvents/Error"] = " - ";
-            	              }
+        	                  if (eventType=="Response") {
+	    	                	  if (!!largeLoad[i].totalFigure) {
+	            	                userDetailsObj["TotalEvents/Error"] = largeLoad[i].totalFigure;
+	            	              } else {
+	            	                userDetailsObj["TotalEvents/Error"] = " - ";
+	            	              }
+        	                  }else if(eventType=="Response") {
+        	                	  if (!!largeLoad[i].totalFigure) {
+                  	                userDetailsObj["TotalEvents/Error"] = largeLoad[i].totalFigure;
+                  	              } else {
+                  	                userDetailsObj["TotalEvents/Error"] = " - ";
+                  	              }
+        	                  }
         	                  userDetails
         	                    .push(userDetailsObj);
         	                }
@@ -2034,23 +2107,54 @@ angular.module('theme.demos.dashboard.indi', [
     	                $scope.showTable = true;
     	                var userDetails = [];
     	                if (eventType=="Event") {
-    	                	largeLoad = largeLoad.filter(function (item) {
+    	                	/*largeLoad = largeLoad.filter(function (item) {
   		                    return item.eventType === "EVENT";
-  		                  });
+  		                  });*/
+	  	                	for (var i = 0; i < largeLoad.length; i++) {
+	  	                		
+	  	                		if(largeLoad[i].totolEventCount!=null){
+	  	                			largeLoad[i].branchName=largeLoad[i].branchName
+		                			largeLoad[i].city=largeLoad[i].city
+		                			largeLoad[i].totalFigure=largeLoad[i].totolEventCount
+	  	                			
+	  	                		}
+	  	                	}
   		                }
   	            	  	if (eventType=="Error") {
-  	            	  		largeLoad= largeLoad.filter(function (item) {
+  	            	  		/*largeLoad= largeLoad.filter(function (item) {
   		                    return item.eventType === "ERROR";
-  		                  });
+  		                  });*/
+  	            	  		
+  	            	  		for (var i = 0; i < largeLoad.length; i++) {
+  	                		
+  	            	  			if(largeLoad[i].totalErrorCount!=null){
+  	                			
+	  	                			largeLoad[i].branchName=largeLoad[i].branchName
+		                			largeLoad[i].city=largeLoad[i].city
+		                			largeLoad[i].totalFigure=largeLoad[i].totalErrorCount  	                			
+  	            	  			}
+  	            	  		}
   	            	  	}
+  	            	  if (eventType=="Response") {  	            		  
+	            	  		/*largeLoad= largeLoad.filter(function (item) {
+		                    return item.eventType === "ERROR";
+		                  });*/
+  	            		  for (var i = 0; i < largeLoad.length; i++) {
+	                		
+  	            			  if(largeLoad[i].totalRespCount!=null){
+	                			largeLoad[i].branchName=largeLoad[i].branchName
+	                			largeLoad[i].city=largeLoad[i].city
+	                			largeLoad[i].totalFigure=largeLoad[i].totalRespCount
+	                			
+  	            			  }
+  	            		  }
+	            	  }
   	            	  
     	                for (var i = 0; i < largeLoad.length; i++) {
       	                  var userDetailsObj = {};
-      	                  if (!!largeLoad[i].eventId) {
+      	                  
         	                    userDetailsObj["No"] = i+1;
-        	                  } else {
-        	                    userDetailsObj["No"] = " - ";
-        	                  }
+        	                  
       	                       if (!!largeLoad[i].branchName) {
       	                    	   userDetailsObj["Branch"] = largeLoad[i].branchName;
       	                       } else {
@@ -2058,28 +2162,28 @@ angular.module('theme.demos.dashboard.indi', [
       	                       }
       	                       if (!!largeLoad[i].customerName) {
       	                    	   userDetailsObj["Customer"] = largeLoad[i].customerName;
-      	                       } else {
-      	                    	   userDetailsObj["Customer"] = " - ";
-      	                       }
+							   } else {
+								   userDetailsObj["Customer"] = " - ";
+							   }
         	                  if (!!largeLoad[i].eventDescription) {
-        	                    userDetailsObj["EventDescription"] = largeLoad[i].eventDescription;
+        	                	  userDetailsObj["EventDescription"] = largeLoad[i].eventDescription;
         	                  } else {
-        	                    userDetailsObj["EventDescription"] = " - ";
+        	                	  userDetailsObj["EventDescription"] = " - ";
         	                  }       	                  
         	                  if (!!largeLoad[i].date) {
-            	                userDetailsObj["EventDate"] = largeLoad[i].date;
+        	                	  userDetailsObj["EventDate"] = largeLoad[i].date;
             	              } else {
-            	                userDetailsObj["EventDate"] = " - ";
+            	            	  userDetailsObj["EventDate"] = " - ";
             	              }
         	                  if (!!largeLoad[i].imeiNo) {
-                	                userDetailsObj["IMEI_No"] = largeLoad[i].imeiNo;
-                	              } else {
-                	                userDetailsObj["IMEI_No"] = " - ";
-                	              }
-        	                 if (!!largeLoad[i].totalFigure) {
-            	                userDetailsObj["TotalEvents/Error"] = largeLoad[i].totalFigure;
+        	                	  userDetailsObj["IMEI_No"] = largeLoad[i].imeiNo;
             	              } else {
-            	                userDetailsObj["TotalEvents/Error"] = " - ";
+            	            	  userDetailsObj["IMEI_No"] = " - ";
+            	              }
+        	                 if (!!largeLoad[i].totalFigure) {
+        	                	 userDetailsObj["TotalEvents"] = largeLoad[i].totalFigure;
+            	              } else {
+            	            	 userDetailsObj["TotalEvents"] = " - ";
             	              }
       	                  userDetails
       	                    .push(userDetailsObj);

@@ -215,11 +215,11 @@
 					},
 					{
 						id:1,
-						name:'Commertial'
+						name:'Commercial'
 					},
 					{
 						id:2,
-						name:'Bunglo'
+						name:'Bunglow'
 					},
 					{
 						id:3,
@@ -309,7 +309,7 @@
 				},
 				{
 					id:1,
-					name:'NonPluggabel'
+					name:'NonPluggable'
 				}
 			];
 			$scope.addLift={

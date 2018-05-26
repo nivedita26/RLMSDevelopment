@@ -54,22 +54,20 @@
 						  </ui-select>
 					</div>
 				</div>
+				<div class="panel-footer">
+				<div class="row">
+					<div class="col-sm-6 margin-left-40">
+						<div class="btn-toolbar">
+							<button class="btn-primary btn" ng-disabled="assignRoleForm.$invalid && assignRoleForm.$pristine" ng-click="submitAssignRole()">Submit</button>
+							<button class="btn-default btn" ng-click="resetAssignRole()">Reset</button>
+						</div>
+					</div>
+				</div>
+		</div>
 			</div>
 		 </fieldset>
 		
-			<div class="panel-footer">
-			<div class="row">
-			<div class="col-sm-6">
-					<span></span>
-				</div>
-				<div class="col-sm-6 ">
-					<div class="btn-toolbar">
-						<button class="btn-primary btn" ng-disabled="assignRoleForm.$invalid && assignRoleForm.$pristine" ng-click="submitAssignRole()">Submit</button>
-						<button class="btn-default btn" ng-click="resetAssignRole()">Reset</button>
-					</div>
-				</div>
-			</div>
-		</div>
+			
 		</form>
 		
 	</panel> 	
