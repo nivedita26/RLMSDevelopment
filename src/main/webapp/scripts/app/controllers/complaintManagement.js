@@ -654,8 +654,9 @@
 													$rootScope.selectedTechnician=technician;
 												}
 											});
-											window.location.hash = "#/edit-complaint";
+											
 										});
+										window.location.hash = "#/edit-complaint";
 									}
 									
 								};

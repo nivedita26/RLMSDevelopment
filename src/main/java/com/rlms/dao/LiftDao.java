@@ -39,6 +39,10 @@ public interface LiftDao {
 	
 	public List<RlmsLiftAmcDtls> getAMCDetilsForLifts(List<Integer> listOfLiftsForAMCDtls, AMCDetailsDto dto);
 
+	public List<Object[]> getAMCDetilsCountForLifts(List<Integer> listOfLiftsForAMCDtls, AMCDetailsDto dto);
+
+	//public List<RlmsLiftAmcDtls> getAMCDetilsForLiftsBYLiftCustomerMap(List<Integer> listOfLiftsForAMCDtls, AMCDetailsDto dto);
+
 	public Integer saveLiftAMCDtls(RlmsLiftAmcDtls liftAmcDtls);
 	
 	public List<RlmsLiftCustomerMap> getAllLiftsByIds(List<Integer> liftCustomerMapIds);

@@ -1087,7 +1087,7 @@ angular.module('theme.demos.dashboard.indi', [
   	              .constructDataToSendForAllAMCDetails();
   	            serviceApi
   	              .doPostWithData(
-  	              '/RLMS/dashboard/getAllAMCDetails',
+  	              '/RLMS/dashboard/getAllAMCDetailsCount',
   	              dataToSend)
   	              .then(
   	              function (

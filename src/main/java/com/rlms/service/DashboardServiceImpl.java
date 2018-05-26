@@ -24,6 +24,7 @@ import com.rlms.constants.RLMSConstants;
 import com.rlms.constants.SpocRoleConstants;
 import com.rlms.constants.Status;
 import com.rlms.contract.AMCDetailsDto;
+import com.rlms.contract.AMCStatusCount;
 import com.rlms.contract.BranchDtlsDto;
 import com.rlms.contract.ComplaintsDtlsDto;
 import com.rlms.contract.ComplaintsDto;
@@ -160,6 +161,7 @@ public class DashboardServiceImpl implements DashboardService {
 		List<RlmsLiftCustomerMap> listOFApplicableLifts = new ArrayList<RlmsLiftCustomerMap>();
 
 		listOFApplicableLifts = this.liftDao.getAllLiftsByIds(liftCustomerMapId);
+		
 		for (RlmsLiftCustomerMap rlmsLiftCustomerMap : listOFApplicableLifts) {
 			listOfLiftsForAMCDtls.add(rlmsLiftCustomerMap
 					.getLiftCustomerMapId());
@@ -167,6 +169,8 @@ public class DashboardServiceImpl implements DashboardService {
 
 		List<RlmsLiftAmcDtls> listOfAMCDtls = this.liftDao
 				.getAMCDetilsForLifts(listOfLiftsForAMCDtls, amcDetailsDto);
+		
+		
 		Set<Integer> liftIds = new HashSet<Integer>();
 		for (RlmsLiftAmcDtls liftAmcDtls : listOfAMCDtls) {
 			liftIds.add(liftAmcDtls.getLiftCustomerMap().getLiftMaster()
@@ -183,6 +187,50 @@ public class DashboardServiceImpl implements DashboardService {
 		return listOFAMCDetails;
 	}
 
+	@Transactional(propagation = Propagation.REQUIRED)
+	public List<AMCStatusCount> getAMCDetailsCountForDashboard(List<Integer> liftCustomerMapId,AMCDetailsDto amcDetailsDto) {
+		List<AMCDetailsDto> listOFAMCDetails = new ArrayList<AMCDetailsDto>();
+		List<Integer> listOfLiftsForAMCDtls = new ArrayList<Integer>();
+		List<RlmsLiftCustomerMap> listOFApplicableLifts = new ArrayList<RlmsLiftCustomerMap>();
+
+		listOFApplicableLifts = this.liftDao.getAllLiftsByIds(liftCustomerMapId);
+		
+		for (RlmsLiftCustomerMap rlmsLiftCustomerMap : listOFApplicableLifts) {
+			listOfLiftsForAMCDtls.add(rlmsLiftCustomerMap
+					.getLiftCustomerMapId());
+		}
+
+		List<Object[]> listOfAMCDtls = this.liftDao
+				.getAMCDetilsCountForLifts(listOfLiftsForAMCDtls, amcDetailsDto);
+		
+		List<AMCStatusCount> amcStatusCountList = new  ArrayList<>();
+		for (Object[] obj: listOfAMCDtls) {
+			AMCStatusCount amcStatusCount = new AMCStatusCount();
+		//	 String status = Status.getStringFromID((Integer)obj[0]);
+			 amcStatusCount.setStatusId((Integer)obj[0]);
+			 amcStatusCount.setStatusCount((BigInteger)obj[1]);
+			 amcStatusCountList.add(amcStatusCount);
+			 
+		}
+		
+		/*Set<Integer> liftIds = new HashSet<Integer>();
+		for (RlmsLiftAmcDtls liftAmcDtls : listOfAMCDtls) {
+			liftIds.add(liftAmcDtls.getLiftCustomerMap().getLiftMaster()
+					.getLiftId());
+		}
+
+		for (Integer liftId : liftIds) {
+			List<RlmsLiftAmcDtls> listForLift = new ArrayList<RlmsLiftAmcDtls>(
+					listOfAMCDtls);
+			CollectionUtils.filter(listForLift, new LiftPredicate(liftId));
+			listOFAMCDetails.addAll(this.constructListOFAMcDtos(listForLift));
+		}*/
+
+		return amcStatusCountList;
+	}
+	
+	
+	
 	@Transactional(propagation = Propagation.REQUIRED)
 	public List<ComplaintsDto> getListOfComplaintsBy(ComplaintsDtlsDto dto) {
 		List<ComplaintsDto> listOfAllComplaints = new ArrayList<ComplaintsDto>();

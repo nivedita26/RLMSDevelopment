@@ -66,8 +66,28 @@ public enum Status {
 		else if(statusId == Status.NOT_UNDER_AMC.getStatusId()){
 			return Status.NOT_UNDER_AMC.getStatusMsg();
 		}
-		
 		return "";
+	}
+
+		
+		public static int getIdFromString(String status){
+			if(status == Status.UNDER_WARRANTY.getStatusMsg()){
+				return Status.UNDER_WARRANTY.getStatusId();
+				
+			}else if(status == Status.RENEWAL_DUE.getStatusMsg()){
+				return Status.RENEWAL_DUE.getStatusId();
+				
+			}else  if(status == Status.AMC_PENDING.getStatusMsg()){
+				return Status.AMC_PENDING.getStatusId();
+				
+			}else if(status == Status.UNDER_AMC.getStatusMsg()){
+				return Status.UNDER_AMC.getStatusId();
+				
+			}else if(status == Status.NOT_UNDER_AMC.getStatusMsg()){
+					return Status.NOT_UNDER_AMC.getStatusId();
+			}
+					
+		return 0;
 	}
 	
 }

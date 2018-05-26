@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.rlms.constants.RlmsErrorType;
+import com.rlms.constants.Status;
 import com.rlms.contract.AMCDetailsDto;
+import com.rlms.contract.AMCStatusCount;
 import com.rlms.contract.BranchDtlsDto;
 import com.rlms.contract.CompanyDtlsDTO;
 import com.rlms.contract.ComplaintsDtlsDto;
@@ -131,7 +133,87 @@ public class DashBoardController extends BaseController {
 		}
 		return listOFAmcDtls;
 	}
+	@RequestMapping(value = "/getAllAMCDetailsCount", method = RequestMethod.POST)
+	public @ResponseBody
+	List<AMCStatusCount> getAMCDetailsCountForDashboard(@RequestBody AMCDetailsDto amcDetailsDto) throws RunTimeException,
+			ValidationException {
+		List<AMCStatusCount> amcStatusDetailsCountList = new ArrayList<>();
+		List<AMCStatusCount>  amcStatusCounts = new ArrayList<>();
+		List<AMCDetailsDto> listOFAmcDtls = null;
+		List<RlmsCompanyBranchMapDtls> listOfAllBranches = null;
+		List<Integer> companyBranchIds = new ArrayList<>();
 
+		try {
+			logger.info("Method :: getAllBranchesForCompany");
+			listOfAllBranches = this.companyService
+					.getAllBranches(amcDetailsDto.getCompanyId());
+			
+			if(listOfAllBranches!=null && !listOfAllBranches.isEmpty()) {
+			
+			for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
+				companyBranchIds.add(companyBranchMap.getCompanyBranchMapId());
+			}
+
+			List<CustomerDtlsDto> allCustomersForBranch = dashboardService
+					.getAllCustomersForBranch(companyBranchIds);
+			
+			if(allCustomersForBranch!=null && !allCustomersForBranch.isEmpty()) {
+			
+			List<Integer> liftCustomerMapIds = new ArrayList<>();
+			for (CustomerDtlsDto customerDtlsDto : allCustomersForBranch) {
+				LiftDtlsDto dto = new LiftDtlsDto();
+				dto.setBranchCustomerMapId(customerDtlsDto
+						.getBranchCustomerMapId());
+				List<RlmsLiftCustomerMap> list = dashboardService
+						.getAllLiftsForBranchsOrCustomer(dto);
+				
+				if(list!=null && !list.isEmpty()) {
+				for (RlmsLiftCustomerMap rlmsLiftCustomerMap : list) {
+					liftCustomerMapIds.add(rlmsLiftCustomerMap
+							.getLiftCustomerMapId());
+				}
+				
+					amcStatusCounts = this.dashboardService.getAMCDetailsCountForDashboard(liftCustomerMapIds, amcDetailsDto);
+				    if(amcStatusCounts!=null && !amcStatusCounts.isEmpty()) {
+					AMCStatusCount amcStatusCount = new AMCStatusCount();
+						for (AMCStatusCount  statusCount : amcStatusCounts) {
+							if((statusCount.getStatusId())==(Status.UNDER_WARRANTY.getStatusId())){
+								amcStatusCount.setUnderWarrantyCount(statusCount.getStatusCount());
+							}
+							if((statusCount.getStatusId())==(Status.RENEWAL_DUE.getStatusId())){ 
+								amcStatusCount.setRenewalDueCount(statusCount.getStatusCount());
+							}
+							if((statusCount.getStatusId())==(Status.AMC_PENDING.getStatusId())){ 
+								amcStatusCount.setAmcPendingCount(statusCount.getStatusCount());
+							}
+							if((statusCount.getStatusId())==(Status.UNDER_AMC.getStatusId())){ 
+								amcStatusCount.setUnderAMCCount(statusCount.getStatusCount());
+							}
+							if((statusCount.getStatusId())==(Status.NOT_UNDER_AMC.getStatusId())){ 
+								amcStatusCount.setNotUnderAMCCount(statusCount.getStatusCount());
+							}
+						}
+						amcStatusCount.setBranchName(customerDtlsDto.getBranchName());
+						amcStatusCount.setCustomerName(customerDtlsDto.getCustomerName());
+						amcStatusCount.setCity(customerDtlsDto.getCity());
+						
+						amcStatusDetailsCountList.add(amcStatusCount);
+				    	}
+					}
+			}
+			   	}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(ExceptionUtils.getFullStackTrace(e));
+			throw new RunTimeException(
+					ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(),
+					PropertyUtils
+							.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS
+									.getMessage()));
+		}
+		return  amcStatusDetailsCountList;
+	}
 	@RequestMapping(value = "/getListOfTechniciansForDashboard", method = RequestMethod.POST)
 	public @ResponseBody
 	List<UserRoleDtlsDTO> getListOfTechnicians(

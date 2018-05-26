@@ -139,10 +139,21 @@ public class ReportServiceImpl implements ReportService {
 			dto.setLiftNumber(liftAmcDtls.getLiftCustomerMap().getLiftMaster().getLiftNumber());
 			dto.setCity(liftAmcDtls.getLiftCustomerMap().getBranchCustomerMap().getCustomerMaster().getCity());
 			dto.setArea(liftAmcDtls.getLiftCustomerMap().getBranchCustomerMap().getCustomerMaster().getArea());
-			Date tempStartDate = listOFAMCs.get(listOFAMCs.size() - 1).getLiftCustomerMap().getLiftMaster().getAmcStartDate();
-			Date tempEndDate = listOFAMCs.get(listOFAMCs.size() - 1).getLiftCustomerMap().getLiftMaster().getAmcEndDate();
+			Date tempStartDate = listOFAMCs.get(listOFAMCs.size() - 1).getAmcStartDate();
+			/*Date tempEndDate = listOFAMCs.get(listOFAMCs.size() - 1).getLiftCustomerMap().getLiftMaster().getAmcEndDate();
 			Date tempDateOfInstallation = listOFAMCs.get(listOFAMCs.size() - 1).getLiftCustomerMap().getLiftMaster().getDateOfInstallation();
-			dto.setStatus(this.calculateAMCStatus(tempStartDate, tempEndDate, tempDateOfInstallation).getStatusMsg());
+			Date tempWarrantyStartDate = listOFAMCs.get(listOFAMCs.size() - 1).getLiftCustomerMap().getLiftMaster().getServiceStartDate();
+			Date tempWarrantyEndDate = listOFAMCs.get(listOFAMCs.size() - 1).getLiftCustomerMap().getLiftMaster().getServiceEndDate();
+
+			*/
+			Date tempEndDate = listOFAMCs.get(listOFAMCs.size() - 1).getAmcEndDate();
+			Date tempDateOfInstallation = listOFAMCs.get(listOFAMCs.size() - 1).getLiftCustomerMap().getLiftMaster().getDateOfInstallation();
+			Date tempWarrantyStartDate = listOFAMCs.get(listOFAMCs.size() - 1).getLiftCustomerMap().getLiftMaster().getServiceStartDate();
+			Date tempWarrantyEndDate = listOFAMCs.get(listOFAMCs.size() - 1).getLiftCustomerMap().getLiftMaster().getServiceEndDate();
+
+			
+
+			dto.setStatus(this.calculateAMCStatus(tempStartDate, tempEndDate, tempDateOfInstallation,tempWarrantyStartDate,tempWarrantyEndDate).getStatusMsg());
 			dto.setAmcAmount(liftAmcDtls.getAmcAmount());
 			
 			if(i > 0 ){
@@ -177,10 +188,10 @@ public class ReportServiceImpl implements ReportService {
 		return listOFDtos;
 	}
 	
-	private Status calculateAMCStatus(Date amcStartDate, Date amcEndDate, Date dateOfInstallation){
+	private Status calculateAMCStatus(Date amcStartDate, Date amcEndDate, Date dateOfInstallation,Date warrantyStartDate,Date warrantyEndDate) {
 		Status amcStatus = null;
 		Date today = new Date();
-		Date warrantyexpiryDate = DateUtils.addDaysToDate(dateOfInstallation, 365);
+	//	Date warrantyexpiryDate = DateUtils.addDaysToDate(dateOfInstallation, 365);
 		Date renewalDate = DateUtils.addDaysToDate(amcEndDate, -30);
 		/*if(DateUtils.isBeforeOrEqualToDate(amcEndDate, warrantyexpiryDate)){
 
@@ -188,7 +199,7 @@ public class ReportServiceImpl implements ReportService {
 		
 		///calculate warranty for lift
 	
-		if(DateUtils.isBeforeOrEqualToDate(today,warrantyexpiryDate)){
+		if(DateUtils.isBeforeOrEqualToDate(today,warrantyEndDate)){
 
 			amcStatus = Status.UNDER_WARRANTY;
 		}
@@ -260,20 +271,19 @@ public class ReportServiceImpl implements ReportService {
 		}
 		
 		if(!StringUtils.isEmpty(dto.getAmcStartDate()) && !StringUtils.isEmpty(dto.getAmcEndDate())){
-			Status amcStatus = this.calculateAMCStatus(dto.getAmcStDate(), dto.getAmcEdDate(), liftCustomerMap.getLiftMaster().getDateOfInstallation());
+			Status amcStatus = this.calculateAMCStatus(dto.getAmcStDate(), dto.getAmcEdDate(), liftCustomerMap.getLiftMaster().getDateOfInstallation(), liftCustomerMap.getLiftMaster().getServiceStartDate(), liftCustomerMap.getLiftMaster().getServiceEndDate());
 		    
 			
 			liftAMCDtls.setStatus(amcStatus.getStatusId());
 			
 		}
 		else {
-			liftAMCDtls.setStatus( Status.AMC_PENDING.getStatusId());
+			liftAMCDtls.setStatus( Status.NOT_UNDER_AMC.getStatusId());
 			
 		}
 		if(null !=dto.getAmcStDate() && null !=dto.getAmcEdDate()){
-			Status amcStatus = this.calculateAMCStatus(dto.getAmcStDate(), dto.getAmcEdDate(), liftCustomerMap.getLiftMaster().getDateOfInstallation());
+			Status amcStatus = this.calculateAMCStatus(dto.getAmcStDate(), dto.getAmcEdDate(), liftCustomerMap.getLiftMaster().getDateOfInstallation(),liftCustomerMap.getLiftMaster().getServiceStartDate(),liftCustomerMap.getLiftMaster().getServiceEndDate());
 			liftAMCDtls.setStatus(amcStatus.getStatusId());
-			
 		}
 		liftAMCDtls.setAmcAmount(dto.getAmcAmount());
 		liftAMCDtls.setAmcType(dto.getAmcType());
@@ -282,11 +292,8 @@ public class ReportServiceImpl implements ReportService {
 		liftAMCDtls.setCreatedBy(metaInfo.getUserId());
 		liftAMCDtls.setCraetedDate(new Date());
 //	}
-		return liftAMCDtls;
-		
-		
+		return liftAMCDtls;	
 	}
-
 	private void createServiceCalls(ServiceCall serviceCall, UserMetaInfo metaInfo,
 			RlmsLiftCustomerMap liftCustomerMap) throws ParseException {
 		RlmsComplaintMaster complaintMaster = new RlmsComplaintMaster();

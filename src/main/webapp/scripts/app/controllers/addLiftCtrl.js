@@ -455,7 +455,8 @@
 				if(successMessage!=false){
 				$scope.alert.msg = response[key[1]];
 				$scope.alert.type = "success";
-				initAddLift();
+				resetAddLift();
+				//initAddLift();
 				$scope.addLiftForm.$setPristine();
 				$scope.addLiftForm.$setUntouched();
 		     	}
