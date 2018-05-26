@@ -35,8 +35,6 @@
 				    </ui-select-choices>
 				  </ui-select>
 			</div>
-		</div>
-		<div class="form-group margin-b10">
 			<label class="control-label">Select Status</label>
 			<div class="select-container ">
 			   <ui-select multiple ng-model="selectedStatus.selected" close-on-select="false"  title="Choose a status">
@@ -45,7 +43,18 @@
 			      <span ng-bind-html="iterator.name | highlight: $select.search"></span>
 			    </ui-select-choices>
 			  </ui-select>
-  		</div>
+			
+		</div>
+		<!-- <div class="form-group margin-b10">
+			<label class="control-label">Select Status</label>
+			<div class="select-container ">
+			   <ui-select multiple ng-model="selectedStatus.selected" close-on-select="false"  title="Choose a status">
+			    <ui-select-match placeholder="Select status from the list...">{{$select.selected[$index].name}}</ui-select-match>
+			    <ui-select-choices repeat="iterator in status | filter: $select.search">
+			      <span ng-bind-html="iterator.name | highlight: $select.search"></span>
+			    </ui-select-choices>
+			  </ui-select>
+  		</div> -->
 			<!-- <label class="control-label">Select Lift</label>
 			<div class="select-container">
 				  <ui-select multiple ng-model="selectedLift.selected" close-on-select="false" title="Choose lifts">
@@ -56,6 +65,7 @@
 				  </ui-select>
 			</div>	 -->
 		</div>
+		<br>
 		<div class="row">
 			<div class="col-lg-12 align-right">
 				<button class="btn-sky btn" ng-click="loadReportList()">Proceed</button>
@@ -76,8 +86,8 @@
 				  <th >LiftNumber</th>
 				  <th>Technician</th>
 				  <th>Complaint Number</th>
-				  <th>Customer Name</th>
-<!-- 				  <th>Regegister Date</th>
+				  <th>Customer</th>
+<!-- 				  <th>Register Date</th>
 				  <th>Resolve Date</th> -->
 				  <th>Status</th>
 				  <th class="padding0">
@@ -91,7 +101,6 @@
 				  	</table>
 				  </th>
 				 <th>Time Taken</th>
-				   <th>Technician</th>
 				  <th>User Rating</th>
 				 </tr>
 				 <tr rowspan="{{report.listOFAllVisits.length}}" class="table-active" ng-repeat="report in siteViseReport">
@@ -114,7 +123,6 @@
 				  	</table>
 				  </td>
 				  <td>{{report.totalTimeTaken}}</td>
-				   <td>{{report.techName}}</td>
 				  <td ng-if="(report.userRating == 1)">
 				  <ul class="star-rating" class='readonly'>
 				   	<li class="star filled"><i class="fa fa-star"></i></li>

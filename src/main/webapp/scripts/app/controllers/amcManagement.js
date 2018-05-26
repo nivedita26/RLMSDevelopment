@@ -249,7 +249,7 @@
 					width : 140
 		  	  },{
 					field : "area",
-					displayName:"Address",
+					displayName:"Area",
 					width : 140
 		  	  },{
 					field : "branchName",

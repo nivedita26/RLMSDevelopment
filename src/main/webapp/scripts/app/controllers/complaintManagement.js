@@ -70,9 +70,14 @@
 								}
 
 								function loadDefaultComplaintData() {
+									var branchCompanyMapId;
+									if(null != $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls && undefined != $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls){
+										branchCompanyMapId = $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls.companyBranchMapId;
+									}
 									var dataToSend = {
-										branchCompanyMapId : $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyMaster.companyId,
-										branchCustomerMapId : -1,
+										branchCompanyMapId :branchCompanyMapId,
+										companyId : $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyMaster.companyId,
+										//branchCustomerMapId : -1,
 										listOfLiftCustoMapId : [],
 										statusList : [],
 										serviceCallType : 0
@@ -501,6 +506,7 @@
 								// showBranch Flag
 								if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel < 3) {
 									$scope.showBranch = true;
+									loadDefaultComplaintData();
 								} else {
 									$scope.showBranch = false;
 								}
@@ -654,8 +660,9 @@
 													$rootScope.selectedTechnician=technician;
 												}
 											});
-											window.location.hash = "#/edit-complaint";
+											
 										});
+										window.location.hash = "#/edit-complaint";
 									}
 									
 								};
