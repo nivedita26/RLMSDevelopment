@@ -239,7 +239,45 @@
 	  	      pagingOptions: $scope.pagingOptions,
 	  	      filterOptions: $scope.filterOptions,
 	  	      multiSelect: false,
-	  	      gridFooterHeight:35
+	  	      gridFooterHeight:35,
+	  	      columnDefs : [ {
+	  	    	  field : "Name",
+	  	    	  displayName:"Name",
+	  	    	  width: "170"
+	  	      },{
+	  	    	  field : "Address",
+	  	    	  displayName:"Address",
+	  	    	  width: "170"
+	  	      }, {
+	  	    	  field : "Branch",
+	  	    	  displayName:"Branch",
+	  	    	  width: "160"
+	  	      },{
+	  	    	  field : "City",
+	  	    	  displayName:"City",
+	  	    	  width: "160"
+	  	      },{
+	  	    	  field : "Contact_Number",
+	  	    	  displayName:"Contact Number",
+	  	    	  width: "170"
+	  	      },  {
+	  	    	  field : "Email_Id",
+	  	    	  displayName:"Email Id",
+	  	    	  width: "190"
+	  	      },{
+	  	    	  field : "Lift_Count",
+	  	    	  displayName:"Lift Count",
+	  	    	  width: "110"
+	  	      },{
+	  	    	  cellTemplate :  
+	  	    		  '<button ng-click="$event.stopPropagation(); editThisCustomer(row.entity);" title="Edit" style="margin-top: 6px;height: 38px;width: 38px;" class="btn-sky"><span class="glyphicon glyphicon-pencil"></span></button>',
+  	    		  width : 40
+	  	      },{
+	  	    	  cellTemplate :  
+	  	    		  '<button ng-click="$event.stopPropagation(); deleteCustomerDetails(row.entity);" title="Delete" style="margin-top: 6px;height: 38px;width: 38px;" class="btn-sky"><span class="glyphicon glyphicon-remove"></span></button>',
+	  	    	  width : 40
+	  	      }
+			]
 	  	    };
 		
 	}]);
