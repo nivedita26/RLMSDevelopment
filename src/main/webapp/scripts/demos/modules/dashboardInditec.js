@@ -716,6 +716,7 @@ angular.module('theme.demos.dashboard.indi', [
     	      page, searchText, activeFlag) {
     	      var url;
     	      url = '/RLMS/dashboard/getTotalCountOfTechniciansForBranch';
+
     	      setTimeout(
     	        function () {
     	          var data;
@@ -1121,7 +1122,7 @@ angular.module('theme.demos.dashboard.indi', [
   	              .constructDataToSendForAllAMCDetails();
   	            serviceApi
   	              .doPostWithData(
-  	              '/RLMS/dashboard/getAllAMCDetails',
+  	              '/RLMS/dashboard/getAllAMCDetailsCount',
   	              dataToSend)
   	              .then(
   	              function (
