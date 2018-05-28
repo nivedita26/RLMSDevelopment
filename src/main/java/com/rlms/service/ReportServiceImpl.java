@@ -191,6 +191,14 @@ public class ReportServiceImpl implements ReportService {
 	private Status calculateAMCStatus(Date amcStartDate, Date amcEndDate, Date dateOfInstallation,Date warrantyStartDate,Date warrantyEndDate) {
 		Status amcStatus = null;
 		Date today = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			today = sdf.parse(sdf.format(new Date()));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		
 	//	Date warrantyexpiryDate = DateUtils.addDaysToDate(dateOfInstallation, 365);
 		Date renewalDate = DateUtils.addDaysToDate(amcEndDate, -30);
 		/*if(DateUtils.isBeforeOrEqualToDate(amcEndDate, warrantyexpiryDate)){

@@ -140,6 +140,7 @@ public class DashboardServiceImpl implements DashboardService {
 					.getWatchmenNumber());
 			dto.setWatchmenEmail(branchCustomerMap.getCustomerMaster()
 					.getWatchmenEmail());
+			dto.setCustomerName(branchCustomerMap.getCustomerMaster().getCustomerName());
 			if (null != listOfLifts && !listOfLifts.isEmpty()) {
 				dto.setTotalNumberOfLifts(listOfLifts.size());
 			}
