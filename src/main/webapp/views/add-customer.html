@@ -7,7 +7,7 @@
 		<form class="form-horizontal row-border" name="addCustomerForm">
 		<fieldset>
 		  <legend>Customer Details</legend>
-		   <div class="form-group" >
+		   <div class="form-group" ng-show="showCompany" >
 				<label class="col-sm-3 control-label">Select Company</label>
 				<div class="col-sm-6">
 					  <ui-select ng-model="selectedCompany.selected" title="Choose a Company" on-select="loadBranchData()">
@@ -19,7 +19,7 @@
 				</div>
 			</div> 
 			<div class="form-group">
-					<label class="col-sm-3 control-label">Select Branch</label>
+					<label class="col-sm-3 control-label">Select Branch<sup class="red font-12">*</sup></label>
 					<div class="col-sm-6">
 						  <ui-select ng-model="selectedBranch.selected" title="Choose a Branch">
 						    <ui-select-match placeholder="Select or search a branch in the list...">{{$select.selected.rlmsBranchMaster.branchName}}</ui-select-match>
@@ -30,7 +30,7 @@
 					</div>
 				</div>
 			<div class="form-group">
-				<label class="col-sm-3 control-label">Customer Name</label>
+				<label class="col-sm-3 control-label">Customer Name<sup class="red font-12">*</sup></label>
 				<div class="col-sm-6">
 					<input name="firstName" type="text" placeholder="Required Field" required ng-model="addCustomer.firstName" class="form-control">
 					<span class="help-block"
@@ -40,7 +40,7 @@
 			</div>
 			
 			<div class="form-group">
-				<label class="col-sm-3 control-label">Address</label>
+				<label class="col-sm-3 control-label">Address<sup class="red font-12">*</sup></label>
 				<div class="col-sm-6">
 					<input name="address" type="text" placeholder="Required Field" required ng-model="addCustomer.address" class="form-control">
 				</div>
@@ -69,7 +69,7 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-3 control-label">Email ID</label>
+				<label class="col-sm-3 control-label">Email ID<sup class="red font-12">*</sup></label>
 				<div class="col-sm-6">
 					<input name="emailID" type="email" placeholder="Required Field" required ng-model="addCustomer.emailID" class="form-control">
 					<span class="help-block"
@@ -78,7 +78,7 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-3 control-label">Contact Number</label>
+				<label class="col-sm-3 control-label">Contact Number<sup class="red font-12">*</sup></label>
 				<div class="col-sm-6">
 					<input name="cntNumber" type="number" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : this.value.length<10" placeholder="Required Field" required ng-model="addCustomer.cntNumber" class="form-control">
 					<span class="help-block"
@@ -87,7 +87,7 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-3 control-label">Total Number Of Lifts</label>
+				<label class="col-sm-3 control-label">Total Number Of Lifts<sup class="red font-12">*</sup></label>
 				<div class="col-sm-6">
 					<input name="totalNumberOfLifts" type="number" placeholder="Required Field" required ng-model="addCustomer.totalNumberOfLifts" class="form-control">
 					<span class="help-block"
@@ -193,7 +193,7 @@
 			<fieldset>
 		 		 <legend>Tax Details</legend>
 				<div class="form-group">
-					<label class="col-sm-3 control-label">PAN Number</label>
+					<label class="col-sm-3 control-label">PAN Number<sup class="red font-12">*</sup></label>
 					<div class="col-sm-6">
 						<input name="panNumber" type="text" placeholder="Required Field" required ng-model="addCustomer.panNumber" class="form-control">
 						<span class="help-block"
@@ -202,7 +202,7 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-sm-3 control-label">TIN Number</label>
+					<label class="col-sm-3 control-label">TIN Number<sup class="red font-12">*</sup></label>
 					<div class="col-sm-6">
 						<input name="tinNumber" type="text" placeholder="Required Field" required ng-model="addCustomer.tinNumber" class="form-control">
 						<span class="help-block"
@@ -211,7 +211,7 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-sm-3 control-label">VAT Number</label>
+					<label class="col-sm-3 control-label">VAT Number<sup class="red font-12">*</sup></label>
 					<div class="col-sm-6">
 						<input name="vatNumber" type="text" placeholder="Required Field" required ng-model="addCustomer.vatNumber" class="form-control">
 						<span class="help-block"
