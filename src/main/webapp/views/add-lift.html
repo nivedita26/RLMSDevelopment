@@ -82,25 +82,25 @@
 			<div class="col-md-6"><input ng-model="addLift.longitude" class="form-control"  type="text" name="longitude"></div>
 		</div>
 		<div class="form-group">
-			<label for="serviceStartDate" class="col-md-3 control-label">Service Start Date <sup class="red font-12">*</sup></label>
-			<div class="col-md-6"><input required type="text" class="form-control datepicker" datepicker-popup="{{format}}" ng-click="open($event,'serviceStartDate')" is-open="openFlag.serviceStartDate" ng-model="addLift.serviceStartDate"/></div>
+			<label for="serviceStartDate" class="col-md-3 control-label">Warranty Start Date <sup class="red font-12">*</sup></label>
+			<div class="col-md-6"><input  type="text" class="form-control datepicker" datepicker-popup="{{format}}" ng-click="open($event,'serviceStartDate')" is-open="openFlag.serviceStartDate" ng-model="addLift.serviceStartDate" required/></div>
 		</div>
 		<div class="form-group">
-			<label for="serviceEndDate" class="col-md-3 control-label">Service End Date <sup class="red font-12">*</sup></label>
-			<div class="col-md-6"><input required  type="text" class="form-control datepicker" datepicker-popup="{{format}}" ng-click="open($event,'serviceEndDate')" is-open="openFlag.serviceEndDate" ng-model="addLift.serviceEndDate"/></div>
+			<label for="serviceEndDate" class="col-md-3 control-label">Warranty End Date <sup class="red font-12">*</sup></label>
+			<div class="col-md-6"><input  type="text" class="form-control datepicker" datepicker-popup="{{format}}" ng-click="open($event,'serviceEndDate')" is-open="openFlag.serviceEndDate" ng-model="addLift.serviceEndDate" required/></div>
 		</div>
-		<legend>Add AMC</legend>
 		<div class="form-group">
 			<label for="dateOfInstallation" class="col-md-3 control-label">Date Of Installation</label>
 			<div class="col-md-6"><input type="text" class="form-control datepicker" datepicker-popup="{{format}}" ng-click="open($event,'dateOfInstallation')" is-open="openFlag.dateOfInstallation" ng-model="addLift.dateOfInstallation" required/></div>
 		</div>
+		<legend>Add AMC</legend>
 		<div class="form-group">
 			<label for="amcStartDate" class="col-md-3 control-label">Amc Start Date</label>
-			<div class="col-md-6"><input type="text" class="form-control datepicker" datepicker-popup="{{format}}" ng-click="open($event,'amcStartDate')" is-open="openFlag.amcStartDate" ng-model="addLift.amcStartDate" required/></div>
+			<div class="col-md-6"><input type="text" class="form-control datepicker" datepicker-popup="{{format}}" ng-click="open($event,'amcStartDate')" is-open="openFlag.amcStartDate" ng-model="addLift.amcStartDate" /></div>
 		</div>
 		<div class="form-group">
 			<label for="amcStartDate" class="col-md-3 control-label">Amc End Date</label>
-			<div class="col-md-6"><input type="text" class="form-control datepicker" datepicker-popup="{{format}}" ng-click="open($event,'amcEndDate')" is-open="openFlag.amcEndDate" ng-model="addLift.amcEndDate" required/></div>
+			<div class="col-md-6"><input type="text" class="form-control datepicker" datepicker-popup="{{format}}" ng-click="open($event,'amcEndDate')" is-open="openFlag.amcEndDate" ng-model="addLift.amcEndDate" /></div>
 		</div>
 		
 		<div class="form-group">
@@ -286,12 +286,12 @@
 			<div class="col-md-6"><input ng-model="addLift.accessControl" class="form-control"  type="text" name="accessControl"></div>
 		</div>
 		<div class="form-group">
-			<label for="imei" class="col-md-3 control-label">Lift/LMS IMEI Number</label>
-			<div class="col-md-6"><input ng-model="addLift.imei" class="form-control"  type="number" name="imei"required/></div>
+			<label for="imei" class="col-md-3 control-label">IMEI Number</label>
+			<div class="col-md-6"><input ng-model="addLift.imei" class="form-control"  type="number" name="imei" required></div>
 		</div>
 		<div class="form-group">
-			<label for="lmsEventFromContactNo" class="col-md-3 control-label">Phone Number</label>
-			<div class="col-md-6"><input ng-model="addLift.lmsEventFromContactNo" class="form-control"  type="number" name="lmsEventFromContactNo"required></div>
+			<label for="lmsEventFromContactNo" class="col-md-3 control-label">LMS Contact Number</label>
+			<div class="col-md-6"><input ng-model="addLift.lmsEventFromContactNo" class="form-control"  type="number" name="lmsEventFromContactNo" required></div>
 		</div>
 		
 	</fieldset>

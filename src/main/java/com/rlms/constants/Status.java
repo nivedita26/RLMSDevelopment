@@ -11,7 +11,8 @@ public enum Status {
 	UNDER_WARRANTY(38,"Under Warranty"),
 	RENEWAL_DUE(39,"Renewal Due"),
 	AMC_PENDING(40,"AMC Pending"),
-	UNDER_AMC(41,"Under AMC");
+	UNDER_AMC(41,"Under AMC"),
+	NOT_UNDER_AMC(42,"Not Under AMC");
 	
 	private Integer statusId;
 	private String statusMsg;
@@ -62,8 +63,31 @@ public enum Status {
 		}else if(statusId == Status.UNDER_AMC.getStatusId()){
 			return Status.UNDER_AMC.getStatusMsg();
 		}
-		
+		else if(statusId == Status.NOT_UNDER_AMC.getStatusId()){
+			return Status.NOT_UNDER_AMC.getStatusMsg();
+		}
 		return "";
+	}
+
+		
+		public static int getIdFromString(String status){
+			if(status == Status.UNDER_WARRANTY.getStatusMsg()){
+				return Status.UNDER_WARRANTY.getStatusId();
+				
+			}else if(status == Status.RENEWAL_DUE.getStatusMsg()){
+				return Status.RENEWAL_DUE.getStatusId();
+				
+			}else  if(status == Status.AMC_PENDING.getStatusMsg()){
+				return Status.AMC_PENDING.getStatusId();
+				
+			}else if(status == Status.UNDER_AMC.getStatusMsg()){
+				return Status.UNDER_AMC.getStatusId();
+				
+			}else if(status == Status.NOT_UNDER_AMC.getStatusMsg()){
+					return Status.NOT_UNDER_AMC.getStatusId();
+			}
+					
+		return 0;
 	}
 	
 }

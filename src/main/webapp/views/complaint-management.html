@@ -1,6 +1,6 @@
 <div class="rlms-wrapper">
 	<div class="rlms-container customer-management" ng-controller="complaiantManagementCtrl">
-		<h1 class="rlms-heading">Complaint Management</h1>
+		<h1 class="rlms-heading">Operations Management</h1>
 
 		<div class="row">
 			<!-- Start Complaint Dashboard Block -->
@@ -11,7 +11,7 @@
             <div class="col-md-3">
                <div class="row">
                   <div class="col-xs-6" style="color: red">
-                     <a class="info-tiles tiles-{{complaintsData.totalComplaints.color}}" ng-click="openDemoModal('complaints','2,3,5','Total Complaints')">
+                     <a class="info-tiles tiles-{{complaintsData.totalComplaints.color}}" ng-click="openDemoModal('complaints','2,3,5','Total Calls','','List of Total Calls')">
                         <div class="tiles-heading">
                            <div class="text-center" ng-show=complaintsData.totalComplaints.title>{{complaintsData.totalComplaints.title}}</div>
                         </div>
@@ -21,7 +21,7 @@
                      </a>
                   </div>
                   <div class="col-xs-6">
-                     <a class="info-tiles tiles-{{complaintsData.totalUnassignedComplaints.color}}" ng-click="openDemoModal('complaints','2','Total Unassigned')">
+                     <a class="info-tiles tiles-{{complaintsData.totalUnassignedComplaints.color}}" ng-click="openDemoModal('complaints','2','Total Unassigned','','List of Unassigned Calls')">
                         <div class="tiles-heading">
                            <div class="text-center">{{complaintsData.totalUnassignedComplaints.title}}</div>
                         </div>
@@ -36,7 +36,7 @@
             <div class="col-md-3">
                <div class="row">
                   <div class="col-xs-6">
-                     <a class="info-tiles tiles-{{complaintsData.totalAssignedComplaints.color}}" ng-click="openDemoModal('complaints','3','Total Assigned')">
+                     <a class="info-tiles tiles-{{complaintsData.totalAssignedComplaints.color}}" ng-click="openDemoModal('complaints','3','Total Assigned','','List of Assigned Calls')">
                         <div class="tiles-heading">
                            <div class="text-center">{{complaintsData.totalAssignedComplaints.title}}</div>
                         </div>
@@ -47,7 +47,7 @@
                      <!-- <tile-simple data="{ title: 'Complaints Attempted Today', text: '41', color: 'blue'}" ng-click="openDemoModal('Complaints Attempted Today','3')"></tile-simple> -->
                   </div>
                   <div class="col-xs-6">
-                     <a class="info-tiles tiles-{{complaintsData.totalResolvedComplaints.color}}" ng-click="openDemoModal('complaints','5','Total Resolved')">
+                     <a class="info-tiles tiles-{{complaintsData.totalResolvedComplaints.color}}" ng-click="openDemoModal('complaints','5','Total Resolved','','List of Resolved Calls')">
                         <div class="tiles-heading">
                            <div class="text-center">{{complaintsData.totalResolvedComplaints.title}}</div>
                         </div>
@@ -73,7 +73,7 @@
                      <tile-simple data="{ title: 'Total Complaints', text: '41', color: 'indigo'}" ng-click="openDemoModal('Total Complaints','2,3,5')"></tile-simple>
                   </div> -->
                   <div class="col-xs-6">
-                     <a class="info-tiles tiles-{{newCustomerRegistered.color}}" ng-click="openDemoModal('newCustomerRegistered','','New Customers Registered')">
+                     <a class="info-tiles tiles-{{newCustomerRegistered.color}}" ng-click="openDemoModal('newCustomerRegistered','','Average Log per Day','','List of Average Log per Day')">
                         <div class="tiles-heading">
                            <div class="text-center">{{complaintsData.avgLogPerDay.title}}</div>
                         </div>
@@ -88,7 +88,7 @@
 
             <div class="col-md-3">
             <div class="col-xs-6">
-            	<button class="btn-primary btn rlms-btn" ng-click="goToAddComplaint()">Add Complaint
+            	<button class="btn-primary btn rlms-btn" ng-click="goToAddComplaint()">Add Call
             	</button>
             </div>	
             </div>
@@ -97,7 +97,7 @@
             <div class="col-md-3">
                <div class="row">
                   <div class="col-xs-6" style="color: red">
-                     <a class="info-tiles tiles-{{complaintsData.todaysTotalComplaints.color}}" ng-click="openDemoModal('complaints','2,3,5','Todays Total',true)">
+                     <a class="info-tiles tiles-{{complaintsData.todaysTotalComplaints.color}}" ng-click="openDemoModal('complaints','2,3,5','Todays Total Calls',true,'List of Todays Total Calls')">
                         <div class="tiles-heading">
                            <div class="text-center">{{complaintsData.todaysTotalComplaints.title}}</div>
                         </div>
@@ -107,7 +107,7 @@
                      </a>
                   </div>
                   <div class="col-xs-6">
-                     <a class="info-tiles tiles-{{complaintsData.todaysUnassignedComplaints.color}}" ng-click="openDemoModal('complaints','2','Todays Unassinged',true)">
+                     <a class="info-tiles tiles-{{complaintsData.todaysUnassignedComplaints.color}}" ng-click="openDemoModal('complaints','2','Todays Unassinged',true,'List of Todays Unassigned Calls')">
                         <div class="tiles-heading">
                            <div class="text-center">{{complaintsData.todaysUnassignedComplaints.title}}</div>
                         </div>
@@ -122,7 +122,7 @@
             <div class="col-md-3">
                <div class="row">
                   <div class="col-xs-6">
-                     <a class="info-tiles tiles-{{complaintsData.todaysAssignedComplaints.color}}" ng-click="openDemoModal('complaints','3','Todays Assigned',true)">
+                     <a class="info-tiles tiles-{{complaintsData.todaysAssignedComplaints.color}}" ng-click="openDemoModal('complaints','3','Todays Assigned',true'List of Todays Assigned Calls')">
                         <div class="tiles-heading">
                            <div class="text-center">{{complaintsData.todaysAssignedComplaints.title}}</div>
                         </div>
@@ -133,7 +133,7 @@
                      <!-- <tile-simple data="{ title: 'Complaints Attempted Today', text: '41', color: 'blue'}" ng-click="openDemoModal('Complaints Attempted Today','3')"></tile-simple> -->
                   </div>
                   <div class="col-xs-6">
-                     <a class="info-tiles tiles-{{complaintsData.todaysResolvedComplaints.color}}" ng-click="openDemoModal('complaints','5','Todays Resolved',true)">
+                     <a class="info-tiles tiles-{{complaintsData.todaysResolvedComplaints.color}}" ng-click="openDemoModal('complaints','5','Todays Resolved',true'List of Todays Resolved Calls')">
                         <div class="tiles-heading">
                            <div class="text-center">{{complaintsData.todaysResolvedComplaints.title}}</div>
                         </div>
@@ -159,7 +159,7 @@
                      <tile-simple data="{ title: 'Total Complaints', text: '41', color: 'indigo'}" ng-click="openDemoModal('Total Complaints','2,3,5')"></tile-simple>
                   </div> -->
                   <div class="col-xs-6">
-                     <a class="info-tiles tiles-{{newCustomerRegistered.color}}" ng-click="openDemoModal('complaints','','New Customers Registered')">
+                     <a class="info-tiles tiles-{{newCustomerRegistered.color}}" ng-click="openDemoModal('complaints','','Average Resolved Per Day','','List of Average Calls Resolved per Day')">
                         <div class="tiles-heading">
                            <div class="text-center">{{complaintsData.avgResolvedPerDayRegistered.title}}</div>
                         </div>
