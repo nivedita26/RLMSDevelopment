@@ -159,8 +159,9 @@ public class DashBoardController extends BaseController {
 			
 			if(allCustomersForBranch!=null && !allCustomersForBranch.isEmpty()) {
 			
-			List<Integer> liftCustomerMapIds = new ArrayList<>();
 			for (CustomerDtlsDto customerDtlsDto : allCustomersForBranch) {
+				List<Integer> liftCustomerMapIds = new ArrayList<>();
+
 				LiftDtlsDto dto = new LiftDtlsDto();
 				dto.setBranchCustomerMapId(customerDtlsDto
 						.getBranchCustomerMapId());

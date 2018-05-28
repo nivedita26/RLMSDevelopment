@@ -136,15 +136,18 @@ public class LiftDaoImpl implements LiftDao{
 	@SuppressWarnings("unchecked")
 	public List<RlmsLiftCustomerMap> getAllLiftsForBranchsOrCustomer(LiftDtlsDto dto){		
 			 Session session = this.sessionFactory.getCurrentSession();
-			 Criteria criteria = session.createCriteria(RlmsLiftCustomerMap.class)
-					 .createAlias("branchCustomerMap.companyBranchMapDtls", "branchCompanyMap");
+			 Criteria criteria = session.createCriteria(RlmsLiftCustomerMap.class);
+					 criteria.add(Restrictions.eq("branchCustomerMap.branchCustoMapId", dto.getBranchCustomerMapId()));
+					 criteria.add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
+				/*	 .createAlias("branchCustomerMap.companyBranchMapDtls", "branchCompanyMap");
 					 if(null != dto.getBranchCustomerMapId() && !RLMSConstants.MINUS_ONE.getId().equals(dto.getBranchCustomerMapId())){
 						 criteria.add(Restrictions.eq("branchCustomerMap.branchCustoMapId", dto.getBranchCustomerMapId()));
 					 }
 					 if(null != dto.getBranchCompanyMapId()){
 						 criteria.add(Restrictions.eq("branchCompanyMap.companyBranchMapId", dto.getBranchCompanyMapId()));
 					 }
-					 criteria.add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
+					 criteria.add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));*/
+					 
 			 List<RlmsLiftCustomerMap> listOfAllLifts = criteria.list();
 			 return listOfAllLifts;
 		
