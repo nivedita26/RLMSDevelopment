@@ -480,7 +480,7 @@
 //	         })
 			$scope.showWizard = true;
 		}
-		//rese add branch
+		//reset add branch
 		$scope.resetAddLift = function(){
 			$scope.showAlert = false;
 			initAddLift();

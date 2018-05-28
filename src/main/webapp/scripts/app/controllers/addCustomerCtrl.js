@@ -113,7 +113,7 @@
 			
 			//Post call add customer
 			$scope.submitAddCustomer = function(){
-				$scope.addCustomer.companyName = $scope.selectedCompany.selected.companyName;
+				//$scope.addCustomer.companyName = $scope.selectedCompany.selected.companyName;
 				$scope.addCustomer.branchName = $scope.selectedBranch.selected.rlmsBranchMaster.branchName;
 				$scope.addCustomer.branchCompanyMapId = $scope.selectedBranch.selected.companyBranchMapId;
 				$scope.addCustomer.customerType =$scope.selectedCustomerTypes.selected.id;

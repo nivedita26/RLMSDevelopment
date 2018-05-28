@@ -585,7 +585,7 @@ angular.module('theme.demos.dashboard.indi', [
                     } else {
                       userDetailsObj["City"] = " - ";
                     }
-                  if (complaintStatus.includes("2") && complaintStatus.includes("3") && complaintStatus.includes("5")) {
+                  if (complaintStatus.includes("3")) {
                       if (!!largeLoad[i].title) {
                         userDetailsObj["Title"] = largeLoad[i].title;
                       } else {
@@ -987,7 +987,7 @@ angular.module('theme.demos.dashboard.indi', [
       	                }
       	                if(activeFlag==="RenewalForThisMonth"){
       	                	largeLoad = largeLoad.filter(function (item) {
-      	  	                    return (new Date(item.amcEdDate)).getTime() < $scope.todaysDate.getTime();
+      	                		return item.activeFlag === 1 && ((new Date(item.amcEdDate)).getTime() < $scope.todaysDate.getTime());
       	  	                  });
       	                }
       	                for (var i = 0; i < largeLoad.length; i++) {
@@ -1067,7 +1067,7 @@ angular.module('theme.demos.dashboard.indi', [
       	                }
       	                if(activeFlag==="RenewalForThisMonth"){
     	                	largeLoad = largeLoad.filter(function (item) {
-    	  	                    return (new Date(item.amcEdDate)).getTime() < $scope.todaysDate.getTime();
+      	                		return item.activeFlag === 1 && ((new Date(item.amcEdDate)).getTime() <= $scope.todaysDate.getTime());
     	  	                  });
     	                }
       	                for (var i = 0; i < largeLoad.length; i++) {
@@ -1146,7 +1146,7 @@ angular.module('theme.demos.dashboard.indi', [
   	                }
   	                if(amcStatus=="RenewalForThisMonth"){
   	                	$scope.renewalForThisMonthAMC = largeLoad.filter(function (item) {
-    	                    return (new Date(item.amcEdDate)).getTime() < $scope.todaysDate.getTime();
+  	                		return item.activeFlag === 1 && ((new Date(item.amcEdDate)).getTime() <= $scope.todaysDate.getTime());
     	                  });
     	                  $scope.amcDetailsData.totalRenewalForThisMonth.text=$scope.renewalForThisMonthAMC.length;
   	                }
@@ -1464,6 +1464,11 @@ angular.module('theme.demos.dashboard.indi', [
           	              } else {
           	                userDetailsObj["City"] = " - ";
           	              }
+      	                  if (!!largeLoad[i].totalFigure) {
+            	            userDetailsObj["TotalCustomer"] = largeLoad[i].totalFigure;
+            	            } else {
+            	            userDetailsObj["TotalCustomer"] = " - ";
+            	          }
     	                  userDetails
     	                    .push(userDetailsObj);
     	                }
@@ -1517,10 +1522,10 @@ angular.module('theme.demos.dashboard.indi', [
               	              } else {
               	                userDetailsObj["City"] = " - ";
               	              }
-          	                  if (!!largeLoad[i].totalNumberOfLifts) {
-                	            userDetailsObj["TotalFigure"] = largeLoad[i].totalNumberOfLifts;
+          	                  if (!!largeLoad[i].totalFigure) {
+                	            userDetailsObj["TotalCustomer"] = largeLoad[i].totalFigure;
                 	            } else {
-                	            userDetailsObj["TotalFigure"] = " - ";
+                	            userDetailsObj["TotalCustomer"] = " - ";
                 	          }
           	                  
       	                  userDetails
@@ -2105,10 +2110,7 @@ angular.module('theme.demos.dashboard.indi', [
     	                $scope.complaints = largeLoad;
     	                $scope.showTable = true;
     	                var userDetails = [];
-    	                if (eventType=="Event") {
-    	                	/*largeLoad = largeLoad.filter(function (item) {
-  		                    return item.eventType === "EVENT";
-  		                  });*/
+    	                if (eventType=="Event") {    	                	
 	  	                	for (var i = 0; i < largeLoad.length; i++) {
 	  	                		
 	  	                		if(largeLoad[i].totolEventCount!=null){
@@ -2120,10 +2122,6 @@ angular.module('theme.demos.dashboard.indi', [
 	  	                	}
   		                }
   	            	  	if (eventType=="Error") {
-  	            	  		/*largeLoad= largeLoad.filter(function (item) {
-  		                    return item.eventType === "ERROR";
-  		                  });*/
-  	            	  		
   	            	  		for (var i = 0; i < largeLoad.length; i++) {
   	                		
   	            	  			if(largeLoad[i].totalErrorCount!=null){

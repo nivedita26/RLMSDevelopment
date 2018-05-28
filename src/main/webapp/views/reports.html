@@ -82,13 +82,13 @@
 		<div class="row">
 	      <div class="col-md-12 report-container">		
                <table class="table report-table table-bordered table-striped table-responsive">
-				 <tr class="table-active">
-				  <th >LiftNumber</th>
-				  <th>Technician</th>
-				  <th>Complaint Number</th>
+				 <tr class="table-active">				  
+				  <th>Call Id</th>
 				  <th>Customer</th>
 <!-- 				  <th>Register Date</th>
 				  <th>Resolve Date</th> -->
+				  <th >Lift No.</th>
+				  <th>Technician</th>
 				  <th>Status</th>
 				  <th class="padding0">
 				  	<table class="table table-striped table-responsive inner-table margin-b-0">
@@ -96,21 +96,21 @@
 				  			 <th>From Date</th>
 				 			 <th>To Date</th>
 				 			 <th>TimeTaken</th>
-								<th>Remark</th>
+				 			 <th>Remark</th>
 				  		</tr>
 				  	</table>
 				  </th>
-				 <th>Time Taken</th>
+				 <th> Total Time Taken</th>
 				  <th>User Rating</th>
 				 </tr>
 				 <tr rowspan="{{report.listOFAllVisits.length}}" class="table-active" ng-repeat="report in siteViseReport">
-				 {{report.listOFAllVisits.length}}
-				  <td>{{report.liftNumber}}</td>
-				  <td>{{report.techName}}</td>
+				 {{report.listOFAllVisits.length}}				  
 				  <td>{{report.complNumber}}</td>
 				  <td>{{report.customerName}}</td>
-<!-- 				  <td>{{report.complaintRegDate}}</td>
+<!-- 				 <td>{{report.complaintRegDate}}</td>
 				  <td>{{report.complaintResolveDate}}</td> -->
+				  <td>{{report.liftNumber}}</td>
+				  <td>{{report.techName}}</td>
 				  <td>{{report.complaintStatus}}</td>
 				  <td class="padding0">
 				  	<table class="table table-striped table-responsive inner-table margin-b-0">
@@ -118,7 +118,7 @@
 				  			<td>{{visit.fromDateDtr}}</td>
 				  			<td>{{visit.toDateStr}}</td>
 				  			<td>{{visit.totalTime}}</td>
-								<td>{{visit.remark}}</td>
+							<td>{{visit.remark}}</td>
 				  		</tr>
 				  	</table>
 				  </td>
