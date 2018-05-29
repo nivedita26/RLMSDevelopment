@@ -819,32 +819,31 @@ angular.module('theme.demos.dashboard.indi', [
     	                	for (var i = 0; i < largeLoad.length; i++) {
     	                		
     	                		if(largeLoad[i].totalInactiveTechnician!=null){
-    	                			dataCount.branchName=largeLoad[i].branchName
-    	                			dataCount.city=largeLoad[i].city
-    	                			dataCount.count=largeLoad[i].totalInactiveTechnician
-    	                			
-    	                			data.push(dataCount);
+    	                			largeLoad[i].branchName=largeLoad[i].branchName
+    	                			largeLoad[i].city=largeLoad[i].city
+    	                			largeLoad[i].count=largeLoad[i].totalInactiveTechnician
     	                		}
     	                	}
       	                 // });
       	                }
-    	                for (var i = 0; i < data.length; i++) {
+    	                for (var i = 0; i < largeLoad.length; i++) {
       	                  var userDetailsObj = {};
+      	                var dataCount={};
       	                  
       	                    userDetailsObj["No"] = i+1 +".";
       	                  
-      	                  if (!!data[i].branchName) {
-        	                userDetailsObj["Branch"] = data[i].branchName;
+      	                  if (!!largeLoad[i].branchName) {
+        	                userDetailsObj["Branch"] = largeLoad[i].branchName;
         	              } else {
         	                userDetailsObj["Branch"] = " - ";
         	              }
-      	                  if (!!data[i].city) {
-      	                    userDetailsObj["City"] = data[i].city;
+      	                  if (!!largeLoad[i].city) {
+      	                    userDetailsObj["City"] = largeLoad[i].city;
       	                  } else {
       	                    userDetailsObj["City"] = " - ";
       	                  }
-      	                  if (!!data[i].count) {
-        	                userDetailsObj["Total_Technician"] = data[i].count;
+      	                  if (!!largeLoad[i].count) {
+        	                userDetailsObj["Total_Technician"] = largeLoad[i].count;
         	              } else {
         	                userDetailsObj["Total_Technician"] = " - ";
         	              }
