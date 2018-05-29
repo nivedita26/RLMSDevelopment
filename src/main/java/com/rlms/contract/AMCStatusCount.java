@@ -5,9 +5,17 @@ import java.math.BigInteger;
 public class AMCStatusCount {
 
 	private int statusId;
-	
 	private BigInteger statusCount;
+	private int totalLiftCount;
 	
+	public int getTotalLiftCount() {
+		return totalLiftCount;
+	}
+
+	public void setTotalLiftCount(int totalLiftCount) {
+		this.totalLiftCount = totalLiftCount;
+	}
+
 	private String BranchName;
 	private String CustomerName;
 	private String City;
@@ -15,7 +23,17 @@ public class AMCStatusCount {
 	private BigInteger renewalDueCount;
     private BigInteger amcPendingCount;
     private BigInteger underAMCCount;
+	public BigInteger getNotUnderWarranty() {
+		return notUnderWarranty;
+	}
+
+	public void setNotUnderWarranty(BigInteger notUnderWarranty) {
+		this.notUnderWarranty = notUnderWarranty;
+	}
+
 	private BigInteger  notUnderAMCCount;
+	private BigInteger  notUnderWarranty;
+
 	
 	
 	public BigInteger getUnderWarrantyCount() {

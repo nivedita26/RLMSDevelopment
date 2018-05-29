@@ -1478,7 +1478,7 @@ angular.module('theme.demos.dashboard.indi', [
       $scope.getPagedDataAsyncForAllCustomers = function (pageSize,
     	      page, searchText, activeFlag) {
     	      var url;
-    	      url = '/RLMS/dashboard/getListOfCustomerForDashboard';
+    	      url = '/RLMS/dashboard/getCustomerCountForDashboard';
     	      setTimeout(
     	        function () {
     	          var data;
