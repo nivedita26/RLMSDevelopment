@@ -12,8 +12,9 @@ public enum Status {
 	RENEWAL_DUE(39,"Renewal Due"),
 	AMC_PENDING(40,"AMC Pending"),
 	UNDER_AMC(41,"Under AMC"),
-	NOT_UNDER_AMC(42,"Not Under AMC");
-	
+	NOT_UNDER_AMC(42,"Not Under AMC"),
+	NOT_UNDER_Warranty(43,"Not Under Warranty");
+
 	private Integer statusId;
 	private String statusMsg;
 	

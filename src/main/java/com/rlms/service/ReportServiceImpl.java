@@ -211,6 +211,9 @@ public class ReportServiceImpl implements ReportService {
 
 			amcStatus = Status.UNDER_WARRANTY;
 		}
+		else if(DateUtils.isBeforeToDate(warrantyEndDate,today)&&(DateUtils.isAfterToDate(today,amcStartDate))){
+			amcStatus = Status.NOT_UNDER_Warranty;
+		}
 		else if(DateUtils.isAfterOrEqualTo(renewalDate,today) && DateUtils.isBeforeOrEqualToDate(today, amcEndDate)){
 			amcStatus = Status.RENEWAL_DUE;
 		 }
