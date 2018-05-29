@@ -3,7 +3,6 @@ package com.rlms.contract;
 import java.math.BigInteger;
 
 public class EventCountDtls {
-
 	
 	private String BranchName;
 	private String City;
@@ -12,7 +11,6 @@ public class EventCountDtls {
 	private BigInteger totalErrorCount;
 	private BigInteger totalResCount;
 	private String liftNumber;
-	
 	
 	public String getBranchName() {
 		return BranchName;

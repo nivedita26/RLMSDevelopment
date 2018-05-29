@@ -17,9 +17,6 @@ import javax.persistence.Table;
 @Table(name = "rlms_complaint_master")
 public class RlmsComplaintMaster implements Serializable{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private Integer complaintId;
 	private String complaintNumber;

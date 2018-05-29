@@ -1778,7 +1778,7 @@ angular.module('theme.demos.dashboard.indi', [
 	              .constructDataToSendForAllLiftStatus();
 	            serviceApi
 	              .doPostWithData(
-	              '/RLMS/dashboard/getListOfBranchDtlsForDashboard',
+	              '/RLMS/dashboard/getListOfBranchCountDtlsForDashboard',
 	              dataToSend)
 	              .then(
 	              function (
@@ -2038,7 +2038,7 @@ angular.module('theme.demos.dashboard.indi', [
 	      };
       //add event api call
      // $scope.getCountForEvent = function (eventName) {
-	       	   $http({method: 'GET',
+	   /*    	   $http({method: 'GET',
     	        url: '/RLMS/API/addEvents',
     	        params: {from: "9423720625",message:"RLMS,*112233445566712,TEST,E010,XYZ SHORT,FLOOR No.10,12:12 26/05/18;"}
     	    })   .success(function(data) {
@@ -2048,7 +2048,7 @@ angular.module('theme.demos.dashboard.indi', [
 	        .error(function(data) {
 	            alert(data);
 	            console.log('Error: ' + data);
-	        });
+	        });*/
     	  
     	  
 	    // };*/

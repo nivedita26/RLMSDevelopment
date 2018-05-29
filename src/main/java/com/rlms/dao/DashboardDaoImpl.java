@@ -260,5 +260,21 @@ public class DashboardDaoImpl implements DashboardDao {
 			return EventCount;
 		
 	}
-	
+
+@Override
+public List<Object[]> getBranchCountDtlsForDashboard(List<Integer> branchIds) {
+	String str = "";
+	for (Integer mapId : branchIds) {
+		if (StringUtils.isEmpty(str)) {
+			str = str.concat(String.valueOf(mapId));
+		} else {
+			str = str.concat("," + mapId);
+		}
+	}
+	Session session = this.sessionFactory.getCurrentSession();
+   String sql ="SELECT city,count(*) FROM rlms_branch_master  where branch_id in("+str+") group by city";
+    	SQLQuery query = session.createSQLQuery(sql);
+	 	List<Object[]>EventCount = query.list();
+		return EventCount;
+}
 }
