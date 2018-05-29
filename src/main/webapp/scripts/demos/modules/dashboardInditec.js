@@ -716,7 +716,6 @@ angular.module('theme.demos.dashboard.indi', [
     	      page, searchText, activeFlag) {
     	      var url;
     	      url = '/RLMS/dashboard/getTotalCountOfTechniciansForBranch';
-
     	      setTimeout(
     	        function () {
     	          var data;
@@ -796,6 +795,8 @@ angular.module('theme.demos.dashboard.indi', [
     	                $scope.complaints = largeLoad;
     	                $scope.showTable = true;
     	                var userDetails = [];
+    	                var dataCount={};
+    	                var data=[];
     	                if (activeFlag=="Active") {
     	                	/*largeLoad = largeLoad.filter(function (item) {
     	                		return item.activeFlag === 1;   	                	
@@ -803,13 +804,13 @@ angular.module('theme.demos.dashboard.indi', [
     	                	for (var i = 0; i < largeLoad.length; i++) {
     	                		
     	                		if(largeLoad[i].totolActiveTechnician!=null){
-    	                			largeLoad[i].branchName=largeLoad[i].branchName
-    	                			largeLoad[i].city=largeLoad[i].city
-    	                			largeLoad[i].count=largeLoad[i].totolActiveTechnician
-    	                			//totalCount=totalCount+largeLoad[i].totolActiveTechnician;
-    	                		}
-    	                	}
-    	                	   	                	
+    	                			dataCount.branchName=largeLoad[i].branchName
+    	                			dataCount.city=largeLoad[i].city
+    	                			dataCount.count=largeLoad[i].totolActiveTechnician
+    	                			
+    	                			data.push(dataCount);
+    	                		}    	                		
+    	                	}    	                	   	                	
       	                }
     	                if (activeFlag=="InActive") {
     	                	/*largeLoad = largeLoad.filter(function (item) {
@@ -821,13 +822,13 @@ angular.module('theme.demos.dashboard.indi', [
     	                			largeLoad[i].branchName=largeLoad[i].branchName
     	                			largeLoad[i].city=largeLoad[i].city
     	                			largeLoad[i].count=largeLoad[i].totalInactiveTechnician
-    	                			//totalCount=totalCount+largeLoad[i].totolActiveTechnician;
     	                		}
     	                	}
       	                 // });
       	                }
     	                for (var i = 0; i < largeLoad.length; i++) {
       	                  var userDetailsObj = {};
+      	                var dataCount={};
       	                  
       	                    userDetailsObj["No"] = i+1 +".";
       	                  
@@ -971,6 +972,7 @@ angular.module('theme.demos.dashboard.indi', [
       	                $scope.complaints = largeLoad;
       	                $scope.showTable = true;
       	                var userDetails = [];
+      	                
       	                if (activeFlag=="Active") {
       	                	largeLoad = largeLoad.filter(function (item) {
         	                    return item.activeFlag === 1 && ((new Date(item.amcEdDate)).getTime() >= $scope.todaysDate.getTime());
@@ -1051,50 +1053,86 @@ angular.module('theme.demos.dashboard.indi', [
       	                $scope.complaints = largeLoad;
       	                $scope.showTable = true;
       	                var userDetails = [];
+      	                var data = [];
+      	                var dataCount={};
       	                if (activeFlag=="Active") {
-      	                	largeLoad = largeLoad.filter(function (item) {
+      	                	/*largeLoad = largeLoad.filter(function (item) {
         	                    return item.activeFlag === 1 && ((new Date(item.amcEdDate)).getTime() >= $scope.todaysDate.getTime());
-        	                  });
-        	                }
+        	                  });*/
+      	                	
+      	                	for (var i = 0; i < largeLoad.length; i++) {
+    	                		
+    	                		if(largeLoad[i].underAMCCount!=null){
+    	                			dataCount.branchName=largeLoad[i].branchName
+    	                			dataCount.customerName=largeLoad[i].customerName
+    	                			dataCount.city=largeLoad[i].city
+    	                			dataCount.totalAMCCount=largeLoad[i].underAMCCount
+
+    	                			data.push(dataCount);
+    	                		}    	                		
+    	                	}      	                
+      	                }
       	                if (activeFlag=="InActive") {
       	                	largeLoad = largeLoad.filter(function (item) {
         	                    return item.activeFlag === 0;
         	                  });
         	                }
       	                if(activeFlag==="Expire"){
-      	                	largeLoad = largeLoad.filter(function (item) {
-      	  	                    return (new Date(item.amcEdDate)).getTime() < $scope.todaysDate.getTime();
-      	  	                  });
+      	                	
+      	                	for (var i = 0; i < largeLoad.length; i++) {
+    	                		
+    	                		if(largeLoad[i].amcPendingCount!=null){
+    	                			dataCount.branchName=largeLoad[i].branchName
+    	                			dataCount.customerName=largeLoad[i].customerName
+    	                			dataCount.city=largeLoad[i].city
+    	                			dataCount.totalAMCCount=largeLoad[i].amcPendingCount
+    	                			
+    	                			data.push(dataCount);
+    	                		}
+    	                		
+    	                	}
       	                }
       	                if(activeFlag==="RenewalForThisMonth"){
-    	                	largeLoad = largeLoad.filter(function (item) {
+    	                	/*largeLoad = largeLoad.filter(function (item) {
       	                		return item.activeFlag === 1 && ((new Date(item.amcEdDate)).getTime() <= $scope.todaysDate.getTime());
-    	  	                  });
+    	  	                  });*/
+
+      	                	
+      	                	for (var i = 0; i < largeLoad.length; i++) {
+    	                		
+    	                		if(largeLoad[i].renewalDueCount!=null){
+    	                			dataCount.branchName=largeLoad[i].branchName
+    	                			dataCount.customerName=largeLoad[i].customerName
+    	                			dataCount.city=largeLoad[i].city
+    	                			dataCount.totalAMCCount=largeLoad[i].renewalDueCount
+    	                			
+    	                			data.push(dataCount);
+    	                		}
+    	                		
+    	                	}
+      	                
     	                }
-      	                for (var i = 0; i < largeLoad.length; i++) {
+      	                for (var i = 0; i < data.length; i++) {
         	                  var userDetailsObj = {};
-        	                if (!!largeLoad[i].liftNumber) {
         	                    userDetailsObj["No"] = i+1 +".";
-        	                  } else {
-        	                    userDetailsObj["No"] = " - ";
-        	                  }
-        	                  if (!!largeLoad[i].branchName) {
-        	                    userDetailsObj["Branch"] = largeLoad[i].branchName;
+        	                 
+        	                  if (!!data[i].branchName) {
+        	                    userDetailsObj["Branch"] = data[i].branchName;
         	                  } else {
         	                    userDetailsObj["Branch"] = " - ";
         	                  }
-        	                  if (!!largeLoad[i].customerName) {
-        	                    userDetailsObj["Customer"] = largeLoad[i].customerName;
+        	                  if (!!data[i].customerName) {
+        	                    userDetailsObj["Customer"] = data[i].customerName;
         	                  } else {
         	                    userDetailsObj["Customer"] = " - ";
         	                  }
-        	                  if (!!largeLoad[i].city) {
-        	                    userDetailsObj["City"] = largeLoad[i].city;
+        	                  if (!!data[i].city) {
+        	                    userDetailsObj["City"] = data[i].city;
         	                  } else {
         	                    userDetailsObj["City"] = " - ";
         	                  }
-        	                  if (!!largeLoad[i].totalAMCCount) {
-        	                	userDetailsObj["TotalAMC"] = largeLoad[i].totalAMCCount;
+        	                  if (!!data[i].totalAMCCount) {
+        	                	userDetailsObj["TotalAMC"] = data[i].totalAMCCount;
         	                  } else {
         	                	userDetailsObj["TotalAMC"] = " - ";
         	                  }       	                 
@@ -1128,10 +1166,16 @@ angular.module('theme.demos.dashboard.indi', [
   	              function (
   	                largeLoad) {
   	                if (amcStatus=="Active") {
-  	                  $scope.activeAMCDetails = largeLoad.filter(function (item) {
-  	                    return item.activeFlag === 1 && ((new Date(item.amcEdDate)).getTime() >= $scope.todaysDate.getTime());
-  	                  });
-  	                  $scope.amcDetailsData.activeAmc.text=$scope.activeAMCDetails.length;
+
+  	                	var totalCount= 0;
+	                	for (var i = 0; i < largeLoad.length; i++) {
+	                		
+	                		if(largeLoad[i].underAMCCount!=null){
+	                			totalCount=totalCount+largeLoad[i].underAMCCount;
+	                		}
+	                	}
+  	                	
+  	                  $scope.amcDetailsData.activeAmc.text=totalCount;
   	                }
   	                if(amcStatus=="InActive"){
   	                	$scope.inactiveAMCDetails = largeLoad.filter(function (item) {
@@ -1140,16 +1184,28 @@ angular.module('theme.demos.dashboard.indi', [
     	                  $scope.amcDetailsData.inactiveAmc.text=$scope.inactiveAMCDetails.length;
   	                }
   	                if(amcStatus=="Expire"){
-  	                	$scope.expireAMC = largeLoad.filter(function (item) {
-    	                    return (new Date(item.amcEdDate)).getTime() < $scope.todaysDate.getTime();
-    	                  });
-    	                  $scope.amcDetailsData.expiredAmc.text=$scope.expireAMC.length;
+
+  	                	var totalCount= 0;
+	                	for (var i = 0; i < largeLoad.length; i++) {
+	                		
+	                		if(largeLoad[i].amcPendingCount!=null){
+	                			totalCount=totalCount+largeLoad[i].amcPendingCount;
+	                		}
+	                	}
+    	                  $scope.amcDetailsData.expiredAmc.text=totalCount;
   	                }
   	                if(amcStatus=="RenewalForThisMonth"){
-  	                	$scope.renewalForThisMonthAMC = largeLoad.filter(function (item) {
+  	                	/*$scope.renewalForThisMonthAMC = largeLoad.filter(function (item) {
   	                		return item.activeFlag === 1 && ((new Date(item.amcEdDate)).getTime() <= $scope.todaysDate.getTime());
-    	                  });
-    	                  $scope.amcDetailsData.totalRenewalForThisMonth.text=$scope.renewalForThisMonthAMC.length;
+    	                  });*/
+  	                	var totalCount= 0;
+	                	for (var i = 0; i < largeLoad.length; i++) {
+	                		
+	                		if(largeLoad[i].renewalDueCount!=null){
+	                			totalCount=totalCount+largeLoad[i].renewalDueCount;
+	                		}
+	                	}
+    	                  $scope.amcDetailsData.totalRenewalForThisMonth.text=totalCount;
   	                }
   	              });
   	          }, 100);

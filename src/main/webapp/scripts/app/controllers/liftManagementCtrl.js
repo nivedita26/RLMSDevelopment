@@ -292,8 +292,7 @@
 					field : "Branch_Name",
 					displayName:"Branch",
 					width: "140"
-				}
-				, {
+				},{
 					field : "City",
 					displayName:"City",
 					width: "120"
@@ -326,12 +325,8 @@
 					width: "140"
 				},{
 					cellTemplate :  
-			             '<button ng-click="$event.stopPropagation(); editLiftDetails(row.entity);" title="Edit" style="margin-top: 2px;height: 38px;width :38px;" class="btn-sky"><span class="glyphicon glyphicon-pencil"></span></button>',
-					width : 40
-				},{
-					cellTemplate :  
-			             '<button ng-click="$event.stopPropagation(); deleteLiftDetails(row.entity);" title="Delete" style="margin-top: 2px;height: 38px;width :38px;" class="btn-sky"><span class="glyphicon glyphicon-remove"></span></button>',
-					width : 40
+			             '<button ng-click="$event.stopPropagation(); editLiftDetails(row.entity);" title="Edit" style="margin-top: 2px;height: 32px;width :32px;" class="btn-sky"><span class="glyphicon glyphicon-pencil"></span></button>',
+					width : 35
 				}
 				]
 	  	    };
