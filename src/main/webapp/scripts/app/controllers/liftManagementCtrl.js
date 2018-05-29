@@ -302,11 +302,11 @@
 					width: "140"
 				}, {
 					field : "Service_Start_Date",
-					displayName:"Service Start Date",
+					displayName:"Warranty Start Date",
 					width: "140"
 				}, {
 					field : "Service_End_Date",
-					displayName:"Service End Date",
+					displayName:"Warranty End Date",
 					width: "140"
 				},
 				{
