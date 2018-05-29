@@ -109,16 +109,17 @@ public class LiftServiceImpl implements LiftService{
 	
 	private AMCDetailsDto constructAMCDtlsDto(RlmsLiftCustomerMap liftCustomerMap){
 		AMCDetailsDto dto = new AMCDetailsDto();
-		dto.setAmcAmount(liftCustomerMap.getLiftMaster().getAmcAmount());
 		if(liftCustomerMap.getLiftMaster().getAmcStartDate()!=null) {
+		dto.setAmcAmount(liftCustomerMap.getLiftMaster().getAmcAmount());
 		dto.setAmcStartDate(DateUtils.convertDateToStringWithoutTime(liftCustomerMap.getLiftMaster().getAmcStartDate()));
 		dto.setAmcEndDate(DateUtils.convertDateToStringWithoutTime(liftCustomerMap.getLiftMaster().getAmcEndDate()));
 		Date amcDueDate = DateUtils.addDaysToDate(liftCustomerMap.getLiftMaster().getAmcEndDate(), -30);
 		dto.setAmcDueDate(amcDueDate);
+		dto.setAmcType(liftCustomerMap.getLiftMaster().getAmcType());
 		}
 		dto.setLiftCustoMapId(liftCustomerMap.getLiftCustomerMapId());
 		dto.setLiftNumber(liftCustomerMap.getLiftMaster().getLiftNumber());
-		dto.setAmcType(liftCustomerMap.getLiftMaster().getAmcType());
+		
 		return dto;
 		
 	}

@@ -623,8 +623,6 @@ public class DashboardServiceImpl implements DashboardService {
 		  for (RlmsCompanyBranchMapDtls rlmsCompanyBranchMapDtls : listOfAllBranches) {
 			  listOFApplicableBranches.add(rlmsCompanyBranchMapDtls.getCompanyBranchMapId());
 		  }
-		  
-		
 		List<BranchDtlsDto> listOFBranchDtls = new ArrayList<BranchDtlsDto>();
 		for (Integer companyBranchMapId : listOFApplicableBranches) {
 			BranchDtlsDto branchDtlsDto = new BranchDtlsDto();
@@ -638,7 +636,6 @@ public class DashboardServiceImpl implements DashboardService {
 			branchDtlsDto.setCompanyName(rlmsCompanyBranchMapDtls.getRlmsCompanyMaster().getCompanyName());
 			branchDtlsDto.setActiveFlag(rlmsCompanyBranchMapDtls.getActiveFlag());
 		
-			
 			/*List<UserDtlsDto> listOfAllTech = this.getListOFAllTEchnicians(companyBranchMapId);
 			branchDtlsDto.setListOfAllTechnicians(listOfAllTech);
 			if(null != listOfAllTech && !listOfAllTech.isEmpty()){
@@ -653,6 +650,12 @@ public class DashboardServiceImpl implements DashboardService {
 			}*/
 			listOFBranchDtls.add(branchDtlsDto);			
 		}
+		for (BranchDtlsDto branchDtlsDto : listOFBranchDtls) {
+			
+		}
+		
+		
+		
 		return listOFBranchDtls;
 	}
 

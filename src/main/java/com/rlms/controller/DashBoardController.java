@@ -24,6 +24,7 @@ import com.rlms.contract.BranchDtlsDto;
 import com.rlms.contract.CompanyDtlsDTO;
 import com.rlms.contract.ComplaintsDtlsDto;
 import com.rlms.contract.ComplaintsDto;
+import com.rlms.contract.CustomerCountDtls;
 import com.rlms.contract.CustomerDtlsDto;
 import com.rlms.contract.EventCountDtls;
 import com.rlms.contract.EventDtlsDto;
@@ -35,6 +36,7 @@ import com.rlms.dao.LiftDao;
 import com.rlms.exception.ExceptionCode;
 import com.rlms.exception.RunTimeException;
 import com.rlms.exception.ValidationException;
+import com.rlms.model.RlmsBranchCustomerMap;
 import com.rlms.model.RlmsCompanyBranchMapDtls;
 import com.rlms.model.RlmsComplaintTechMapDtls;
 import com.rlms.model.RlmsLiftCustomerMap;
@@ -193,12 +195,17 @@ public class DashBoardController extends BaseController {
 							if((statusCount.getStatusId())==(Status.NOT_UNDER_AMC.getStatusId())){ 
 								amcStatusCount.setNotUnderAMCCount(statusCount.getStatusCount());
 							}
+							
+							if((statusCount.getStatusId())==(Status.NOT_UNDER_Warranty.getStatusId())){ 
+								amcStatusCount.setNotUnderWarranty(statusCount.getStatusCount());
+							}
 						}
 						amcStatusCount.setBranchName(customerDtlsDto.getBranchName());
 						amcStatusCount.setCustomerName(customerDtlsDto.getCustomerName());
 						amcStatusCount.setCity(customerDtlsDto.getCity());
-						
+						amcStatusCount.setTotalLiftCount(list.size());
 						amcStatusDetailsCountList.add(amcStatusCount);
+						
 				    	}
 					}
 			}
@@ -577,6 +584,57 @@ public class DashBoardController extends BaseController {
 		return listOfCustomers;
 	}
 
+	@RequestMapping(value = "/getCustomerCountForDashboard", method = RequestMethod.POST)
+	public @ResponseBody
+	List<CustomerCountDtls> getCustomerCountForDashboard(
+			@RequestBody CustomerDtlsDto customerDtlsDto)
+			throws RunTimeException {
+		List<CustomerCountDtls> listOfCustomersCount = new ArrayList<>();
+		List<RlmsBranchCustomerMap> listOfBranchCustomersMap = null;
+		List<RlmsCompanyBranchMapDtls> listOfAllBranches = null;
+		int activeCount= 0;
+		int inactiveCount=0;
+		try {
+			logger.info("Method :: getAllBranchesForCompany");
+			listOfAllBranches = this.companyService.getAllBranches(customerDtlsDto.getCompanyId());
+			for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
+				activeCount= 0;
+				inactiveCount=0;
+				List<Integer> companyBranchIds = new ArrayList<>();
+				companyBranchIds.add(companyBranchMap.getCompanyBranchMapId());
+				listOfBranchCustomersMap = this.customerService.getAllApplicableCustomersCountForDashboard(companyBranchIds,this.getMetaInfo());
+				if(listOfBranchCustomersMap!=null &&! listOfBranchCustomersMap.isEmpty()){
+					for (RlmsBranchCustomerMap  branchCustomerMap : listOfBranchCustomersMap) {
+						 
+					 	  if(branchCustomerMap.getCustomerMaster().getActiveFlag()==1) {
+					 		  activeCount =activeCount+1;
+					 	  }
+					 	  else {
+					 		  inactiveCount=inactiveCount+1;
+					 	  }
+					}
+					  CustomerCountDtls countDtls = new CustomerCountDtls();
+				      countDtls.setBranchName(companyBranchMap.getRlmsBranchMaster().getBranchName());
+				 	  countDtls.setCity(companyBranchMap.getRlmsBranchMaster().getCity());
+				 	  countDtls.setCustomerCount(listOfBranchCustomersMap.size());
+				 	  countDtls.setActiveFlagCount(activeCount);
+				 	  countDtls.setInactiveFlagCount(inactiveCount);
+				 	  listOfCustomersCount.add(countDtls);
+			}
+	   	} 
+		}catch (Exception e) {
+			logger.error(ExceptionUtils.getFullStackTrace(e));
+			throw new RunTimeException(
+					ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(),
+					PropertyUtils
+							.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS
+									.getMessage()));
+
+		}
+
+		return listOfCustomersCount;
+	}
+
 	@RequestMapping(value = "/getAllCompanyDetailsForDashboard", method = RequestMethod.POST)
 	public @ResponseBody
 	List<CompanyDtlsDTO> getAllCompanyDetailsForDashboard()
@@ -628,13 +686,11 @@ public class DashBoardController extends BaseController {
 	List<BranchDtlsDto> getListOfBranchDtls(@RequestBody BranchDtlsDto dto)
 			throws RunTimeException {
 		List<BranchDtlsDto> listOfBranches = null;
-
 		try {
 			logger.info("Method :: getListOfBranchDtls");
 			listOfBranches = this.dashboardService
 					.getListOfBranchDtlsForDashboard(dto.getCompanyId(),
 							this.getMetaInfo());
-
 		} catch (Exception e) {
 			logger.error(ExceptionUtils.getFullStackTrace(e));
 			throw new RunTimeException(
@@ -642,9 +698,7 @@ public class DashBoardController extends BaseController {
 					PropertyUtils
 							.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS
 									.getMessage()));
-
 		}
-
 		return listOfBranches;
 	}
 

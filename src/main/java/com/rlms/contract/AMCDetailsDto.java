@@ -205,6 +205,4 @@ public class AMCDetailsDto {
 		this.amcServiceCalls = amcServiceCalls;
 	}
 	
-	
-	
 }
