@@ -42,5 +42,7 @@ public interface DashboardDao {
     public List<Object[]> getEventCountDtlsForDashboard(
 			List<Integer> companyBranchIds);
 
+    public List<Object[]> getBranchCountDtlsForDashboard(
+			List<Integer> branchIds);
 
 }

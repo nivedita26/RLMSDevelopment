@@ -20,6 +20,7 @@ import com.rlms.constants.RlmsErrorType;
 import com.rlms.constants.Status;
 import com.rlms.contract.AMCDetailsDto;
 import com.rlms.contract.AMCStatusCount;
+import com.rlms.contract.BranchCountDtls;
 import com.rlms.contract.BranchDtlsDto;
 import com.rlms.contract.CompanyDtlsDTO;
 import com.rlms.contract.ComplaintsDtlsDto;
@@ -585,8 +586,7 @@ public class DashBoardController extends BaseController {
 	}
 
 	@RequestMapping(value = "/getCustomerCountForDashboard", method = RequestMethod.POST)
-	public @ResponseBody
-	List<CustomerCountDtls> getCustomerCountForDashboard(
+	public @ResponseBody List<CustomerCountDtls> getCustomerCountForDashboard(
 			@RequestBody CustomerDtlsDto customerDtlsDto)
 			throws RunTimeException {
 		List<CustomerCountDtls> listOfCustomersCount = new ArrayList<>();
@@ -702,6 +702,25 @@ public class DashBoardController extends BaseController {
 		return listOfBranches;
 	}
 
+	@RequestMapping(value = "/getListOfBranchCountDtlsForDashboard", method = RequestMethod.POST)
+	public @ResponseBody
+	List<BranchCountDtls> getListOfBranchCountDtlsForDashboard(@RequestBody BranchDtlsDto dto)
+			throws RunTimeException {
+		List<BranchCountDtls> branchCountDtls = null;
+		try {
+			logger.info("Method :: getListOfBranchDtls");
+			branchCountDtls = this.dashboardService	.getListOfBranchCountDtlsForDashboard(dto.getCompanyId(),
+							this.getMetaInfo());
+		} catch (Exception e) {
+			logger.error(ExceptionUtils.getFullStackTrace(e));
+			throw new RunTimeException(
+					ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(),
+					PropertyUtils
+							.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS
+									.getMessage()));
+		}
+		return branchCountDtls;
+	}
 	@RequestMapping(value = "/getListOfEvents", method = RequestMethod.POST)
 	public @ResponseBody
 	List<EventDtlsDto> getAllInOutEventsData(@RequestBody EventDtlsDto dto)throws RunTimeException {
