@@ -498,6 +498,5 @@
 			$scope.addLiftForm.$setPristine();
 			$scope.addLiftForm.$setUntouched();
 		}
-		
 	}]);
 })();
