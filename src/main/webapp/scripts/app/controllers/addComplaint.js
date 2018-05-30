@@ -21,7 +21,12 @@
 				$scope.selectedLift = {};			
 				$scope.companyName='';
 <<<<<<< HEAD
+<<<<<<< HEAD
 				$scope.branchName='';							
+=======
+				$scope.branchName='';				
+			
+>>>>>>> 31f9959... call type and title added in add call and edit call;
 =======
 				$scope.branchName='';				
 			
