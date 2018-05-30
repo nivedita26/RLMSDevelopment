@@ -20,7 +20,12 @@
 				$scope.selectedComplaintTitle = {};
 				$scope.selectedLift = {};			
 				$scope.companyName='';
+<<<<<<< HEAD
 				$scope.branchName='';							
+=======
+				$scope.branchName='';				
+			
+>>>>>>> 31f9959... call type and title added in add call and edit call;
 				$scope.addComplaint={
 						branchCompanyMapId:0,
 						liftCustomerMapId:0,
