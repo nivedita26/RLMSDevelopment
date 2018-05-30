@@ -199,8 +199,8 @@
 				</div>
 				<label class="control-label">Select Customer</label>
 				<div class="select-container">
-					<ui-select ng-model="selectedCustomer.selected" title="Choose a Branch" on-select="showWizardFun()">
-						<ui-select-match placeholder="Select Branch">{{$select.selected.firstName}}</ui-select-match>
+					<ui-select ng-model="selectedCustomer.selected" title="Choose a Customer" on-select="showWizardFun()">
+						<ui-select-match placeholder="Select Customer">{{$select.selected.firstName}}</ui-select-match>
 						<ui-select-choices repeat="customerIterator in cutomers| filter: $select.search">
 							<span ng-bind-html="customerIterator.firstName | highlight: $select.search"></span>
 						</ui-select-choices>
@@ -210,8 +210,8 @@
 					<br>
 						<label class="control-label">Select Call Type</label>
 						<div class="select-container">
-							<ui-select ng-model="selectedCalltype.selected" title="Choose a call type"  on-select="showWizardFun()">
-								<ui-select-match placeholder="Select call type">{{$select.selected.type}}</ui-select-match>
+							<ui-select ng-model="selectedCalltype.selected" title="Choose a Call Type"  on-select="showWizardFun()">
+								<ui-select-match placeholder="Select Call Type">{{$select.selected.type}}</ui-select-match>
 								<ui-select-choices repeat="callTypeIterator in callType| filter: $select.search">
 									<span ng-bind-html="callTypeIterator.type | highlight: $select.search"></span>
 								</ui-select-choices>

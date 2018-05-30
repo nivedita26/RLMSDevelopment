@@ -538,12 +538,8 @@ public class ReportServiceImpl implements ReportService {
 					liftCustomerMapIds.add(rlmsLiftCustomerMap
 							.getLiftCustomerMapId());
 				}			}
-			
 		//	logger.info("Method :: getAllBranchesForCompany");
-			
 			listOfEvents = dashBoardDao.getAllEventDtlsForDashboard(liftCustomerMapIds,dto.getEventType());
-		
-		
 		} catch (Exception e) {
 		}
 		return null;
