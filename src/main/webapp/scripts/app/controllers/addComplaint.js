@@ -23,7 +23,7 @@
 
 				$scope.branchName='';				
 			
-			$scope.addComplaint={
+				$scope.addComplaint={
 						branchCompanyMapId:0,
 						liftCustomerMapId:0,
 						branchCustomerMapId:0,
