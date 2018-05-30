@@ -24,6 +24,9 @@ import com.rlms.constants.RlmsErrorType;
 import com.rlms.constants.SpocRoleConstants;
 import com.rlms.constants.Status;
 import com.rlms.contract.AMCDetailsDto;
+import com.rlms.contract.CustomerDtlsDto;
+import com.rlms.contract.EventDtlsDto;
+import com.rlms.contract.LiftDtlsDto;
 import com.rlms.contract.SiteVisitDtlsDto;
 import com.rlms.contract.SiteVisitReportDto;
 import com.rlms.contract.TechnicianWiseReportDTO;
@@ -31,11 +34,16 @@ import com.rlms.contract.UserMetaInfo;
 import com.rlms.contract.UserRolePredicate;
 import com.rlms.dao.BranchDao;
 import com.rlms.dao.ComplaintsDao;
+import com.rlms.dao.DashboardDao;
 import com.rlms.dao.LiftDao;
 import com.rlms.dao.UserRoleDao;
+import com.rlms.exception.ExceptionCode;
+import com.rlms.exception.RunTimeException;
 import com.rlms.model.RlmsBranchCustomerMap;
+import com.rlms.model.RlmsCompanyBranchMapDtls;
 import com.rlms.model.RlmsComplaintMaster;
 import com.rlms.model.RlmsComplaintTechMapDtls;
+import com.rlms.model.RlmsEventDtls;
 import com.rlms.model.RlmsLiftAmcDtls;
 import com.rlms.model.RlmsLiftCustomerMap;
 import com.rlms.model.RlmsLiftMaster;
@@ -64,9 +72,18 @@ public class ReportServiceImpl implements ReportService {
 	@Autowired
 	private UserRoleDao userRoleDao;
 	
+	@Autowired
+	private CompanyService companyService;
+	
 
 	@Autowired
 	private MessagingService messagingService;
+	
+	@Autowired
+	private DashboardService dashboardService;
+	
+	@Autowired
+	private DashboardDao dashBoardDao;
 	
 	@Transactional(propagation = Propagation.REQUIRED)
 	public List<AMCDetailsDto> getAMCDetailsForLifts(AMCDetailsDto dto){
@@ -498,10 +515,38 @@ public class ReportServiceImpl implements ReportService {
 					listOfDynamicValues.add(companyAdmin.getRlmsUserMaster().getFirstName() + " " + companyAdmin.getRlmsUserMaster().getLastName() + " (" + companyAdmin.getRlmsUserMaster().getContactNumber() + ")");
 				}
 			}
-			
 			List<String> toList = new ArrayList<String>();
 			toList.add(rlmsLiftAmcDtls.getLiftCustomerMap().getBranchCustomerMap().getCustomerMaster().getEmailID());
 			this.messagingService.sendAMCMail(listOfDynamicValues, toList, com.rlms.constants.EmailTemplateEnum.AMC_EXPIRED.getTemplateId());
 		}
 	}
+
+	@Override
+	public List<EventDtlsDto> getAllInOutEventsData(EventDtlsDto dto) {
+		List<RlmsEventDtls> listOfEvents = null;
+		try {
+			List<Integer> liftCustomerMapIds = new ArrayList<>();
+			for (Integer integer : dto.getBranchCustomerMapId()) {
+				LiftDtlsDto dtoTemp = new LiftDtlsDto();
+				dtoTemp.setBranchCustomerMapId(10);
+				//dtoTemp.setBranchCustomerMapId(6);
+				
+				dtoTemp.setBranchCustomerMapId(integer);
+				List<RlmsLiftCustomerMap> list = dashboardService
+						.getAllLiftsForBranchsOrCustomer(dtoTemp);
+				for (RlmsLiftCustomerMap rlmsLiftCustomerMap : list) {
+					liftCustomerMapIds.add(rlmsLiftCustomerMap
+							.getLiftCustomerMapId());
+				}			}
+			
+		//	logger.info("Method :: getAllBranchesForCompany");
+			
+			listOfEvents = dashBoardDao.getAllEventDtlsForDashboard(liftCustomerMapIds,dto.getEventType());
+		
+		
+		} catch (Exception e) {
+		}
+		return null;
+	}
+	
 }

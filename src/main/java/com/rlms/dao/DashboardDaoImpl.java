@@ -215,7 +215,7 @@ public class DashboardDaoImpl implements DashboardDao {
 
 	@Override
 	public List<RlmsEventDtls> getAllEventDtlsForDashboard(
-			List<Integer> liftCustMapIds) {
+			List<Integer> liftCustMapIds,String eventType) {
 		Session session = this.sessionFactory.getCurrentSession();
 		Criteria criteria = session.createCriteria(RlmsEventDtls.class).add(
 				Restrictions.in("rlmsLiftCustomerMap.liftCustomerMapId", liftCustMapIds));

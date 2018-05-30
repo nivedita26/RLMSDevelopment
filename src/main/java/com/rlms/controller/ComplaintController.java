@@ -62,7 +62,6 @@ public class ComplaintController extends BaseController{
 		 try{
 	        	logger.info("Method :: validateAndRegisterNewComplaint");
 	        	reponseDto.setResponse(this.complaintsService.validateAndRegisterNewComplaint(dto, this.getMetaInfo()));
-	        	
 	        }
 	        catch(Exception e){
 	        	logger.error(ExceptionUtils.getFullStackTrace(e));
