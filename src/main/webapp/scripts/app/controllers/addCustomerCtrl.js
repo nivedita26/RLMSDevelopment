@@ -8,8 +8,8 @@
 			$scope.showAlert = false;
 			$scope.showCompany=false;
 			$scope.showBranch=false;
-			//$scope.companies = [];
-			//$scope.branches = [];
+			$scope.companies = [];
+			$scope.branches = [];
 			function initAddCustomer(){
 				$scope.selectedCompany = {};
 				$scope.selectedBranch = {};

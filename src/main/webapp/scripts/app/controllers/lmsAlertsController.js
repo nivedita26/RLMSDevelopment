@@ -30,6 +30,7 @@
 						$scope.selectedBranch.selected=undefined;
 						$scope.selectedCustomer.selected=undefined;
 //						$scope.selectedStatus.selected=undefined;
+						//$scope.selectedEventType.selected=undefined;
 						var emptyReports=[];
 						$scope.siteViseReport=emptyReports;
 					});
@@ -41,7 +42,7 @@
 			 $scope.branches = [];
 			 $scope.selectedCustomer = {};
 			 //$scope.selectedStatus = {};
-			 $scope.selectedEventType = {};			 
+			 $scope.selectedEventType = {};
 			 $scope.selectedLift = {};
 			 $scope.selectedAmc = {};
 			 $scope.showMembers = false;
@@ -97,7 +98,7 @@
  	        	 $scope.cutomers = customerData;
  	        	$scope.selectedCustomer.selected=undefined;
 				$scope.selectedStatus.selected=undefined;
-				$scope.selectedEventType.selected=undefined;
+				//$scope.selectedEventType.selected=undefined;
  	         })
 		}
 		if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 3) {
@@ -155,10 +156,10 @@
 	  			if($scope.selectedEventType.selected.length===0){
 	  				alert("Please select Event Type");
 	  			}else{
-	  				if($scope.selectedEventType.selected.length){
-	  					for (var j = 0; j < $scope.selectedEventType.selected.length; j++) {
-	  						tempStatus.push($scope.selectedEventType.selected[j].id);
-	  					}
+	  				//if($scope.selectedEventType.selected.length){
+	  					for (var i = 0; i < $scope.selectedEventType.selected.length; i++) {
+	  						tempStatus.push($scope.selectedEventType.selected[i].eventId);
+	  					//}
 	  				}
 	  			}
 	  		}else{
@@ -182,7 +183,7 @@
 	  				companyBranchMapId:$scope.companyBranchMapIdForCustomer,
 	  				//companyId:9,
 	  				//listOfUserRoleIds:tempListOfUserRoleIds,
-	  				listOfStatusIds:tempStatus,
+	  				listOfEventTypeIds:tempStatus,
 //	  				fromDate:"",
 //	  				toDate:"",
 	  				listOfBranchCustoMapIds:tempbranchCustomerMapIds,

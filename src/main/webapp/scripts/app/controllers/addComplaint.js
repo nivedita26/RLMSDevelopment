@@ -16,10 +16,26 @@
 				$scope.selectedCompany = {};
 				$scope.selectedBranch = {};
 				$scope.selectedCustomer = {};
-				$scope.selectedLift = {};
+				$scope.selectedCallType = {};
+				$scope.selectedComplaintTitle = {};
+				$scope.selectedLift = {};			
 				$scope.companyName='';
-				$scope.branchName='';
-/*				$scope.complaintTitle=[
+				$scope.branchName='';				
+			
+				$scope.addComplaint={
+						branchCompanyMapId:0,
+						liftCustomerMapId:0,
+						branchCustomerMapId:0,
+						companyId:0,
+						callType:'',
+						complaintTitle:'',
+						complaintsRemark:'',
+						registrationType:2,
+						//fromDate:'',
+						//toDate:''
+				};
+				
+				$scope.complaintTitle=[
 					{
 						id : 0,
 						name : 'Stucked between floor'
@@ -92,50 +108,39 @@
 					},{
 						id : 23,
 						name : 'Lift update Parameter'
-					}];
+					}
+					];
 				
-				$scope.calltype=[
+				$scope.callType=[
 					{
-						id:01,
+						id: 1,
 						name:'Lift Installation call'
 					},{
-						id:02,
+						id: 2,
 						name:'Configuration/Settings call'
 					},{
-						id:03,
+						id: 3,
 						name:'AMC call'
 					},{
-						id:04,
+						id: 4,
 						name:'Under Warranty Support call'
 					},{
-						id:05,
+						id: 5,
 						name:'LMS alert call'
 					},{
-						id:06,
+						id: 6,
 						name:'Operator assigned/Generic call'
 					},{
-						id:07,
+						id: 7,
 						name:'User raised call through App'
 					},{
-						id:08,
+						id: 8,
 						name:'User raised call through Telephone'
 					},{
-						id:09,
+						id: 9,
 						name:'Reassign call'
 					}
 				];
-*/				
-				$scope.addComplaint={
-						branchCompanyMapId:0,
-						liftCustomerMapId:0,
-						branchCustomerMapId:0,
-						companyId:0,
-						complaintsTitle:'',
-						complaintsRemark:'',
-						registrationType:2,
-						fromDate:'',
-						toDate:''
-				};
 			}
 			$scope.openFlag={
 					fromDate:false,
@@ -202,6 +207,8 @@
 			}
 			//Post call add customer
 			$scope.submitAddComplaint = function(){
+				$scope.addComplaint.callType = $scope.selectedCallType.selected.id;
+				$scope.addComplaint.complaintTitle = $scope.selectedComplaintTitle.selected.id;
 				$scope.addComplaint.liftCustomerMapId = $scope.selectedLift.selected.liftId;
 				$scope.addComplaint.registrationType = 31;
 				serviceApi.doPostWithData("/RLMS/complaint/validateAndRegisterNewComplaint",$scope.addComplaint)
