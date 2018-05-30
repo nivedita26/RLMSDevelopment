@@ -1987,7 +1987,7 @@ angular.module('theme.demos.dashboard.indi', [
 	              .constructDataToSendForAllLiftStatus();
 	            serviceApi
 	              .doPostWithData(
-	              '/RLMS/dashboard/getEventCountForLift',
+	              '/RLMS/report/getListOfEvents',
 	              dataToSend)
 	              .then(
 	              function (
@@ -2037,10 +2037,12 @@ angular.module('theme.demos.dashboard.indi', [
 	          }, 100);
 	      };
       //add event api call
-     // $scope.getCountForEvent = function (eventName) {
-	   /*    	   $http({method: 'GET',
+    
+  /*   $scope.getCountForEvent = function (eventName) {
+	      	   $http({method: 'GET',
     	        url: '/RLMS/API/addEvents',
-    	        params: {from: "9423720625",message:"RLMS,*112233445566712,TEST,E010,XYZ SHORT,FLOOR No.10,12:12 26/05/18;"}
+    	        params: {from: "9423720625",message:"GMS RLMS,*862462035277835,LMS EVENT,FA,DS OPEN FOR LONG,FLOOR No.03,16:17,30/05/18;"}
+
     	    })   .success(function(data) {
 	           // $scope.names = eval(data);
 	            console.log(data)
@@ -2048,10 +2050,12 @@ angular.module('theme.demos.dashboard.indi', [
 	        .error(function(data) {
 	            alert(data);
 	            console.log('Error: ' + data);
-	        });*/
-    	  
-    	  
-	    // };*/
+	        });
+    
+    	
+     }*/
+	    
+
 	     
 	      $scope.getCountForEvent("Event");
 	      $scope.getCountForEvent("Error");

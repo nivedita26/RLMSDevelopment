@@ -1,6 +1,7 @@
 package com.rlms.contract;
 
 import java.util.Date;
+import java.util.List;
 
 import com.rlms.model.RlmsLiftCustomerMap;
 
@@ -8,14 +9,7 @@ public class EventDtlsDto {
 
 	//private Integer userRoleId;
 	private Integer companyId;
-	public Integer getCompanyId() {
-		return companyId;
-	}
-
-	public void setCompanyId(Integer companyId) {
-		this.companyId = companyId;
-	}
-
+	
 	private Integer eventId;
 	private String eventService;
 	private String imei;
@@ -25,8 +19,52 @@ public class EventDtlsDto {
 	private int floorNo;
 	private String date;
 	private String eventFromContactNo;
+	private List<Integer>branchCustomerMapId; 
 	private RlmsLiftCustomerMap liftCustomerMap;
+	private String liftNumber;
+	private String liftAddress;
+	private String City;
 	
+	public String getLiftNumber() {
+		return liftNumber;
+	}
+
+	public String getLiftAddress() {
+		return liftAddress;
+	}
+
+	public String getCity() {
+		return City;
+	}
+
+	public void setLiftNumber(String liftNumber) {
+		this.liftNumber = liftNumber;
+	}
+
+	public void setLiftAddress(String liftAddress) {
+		this.liftAddress = liftAddress;
+	}
+
+	public void setCity(String city) {
+		City = city;
+	}
+
+	public List<Integer> getBranchCustomerMapId() {
+		return branchCustomerMapId;
+	}
+
+	public void setBranchCustomerMapId(List<Integer> branchCustomerMapId) {
+		this.branchCustomerMapId = branchCustomerMapId;
+	}
+
+	public Integer getCompanyId() {
+		return companyId;
+	}
+
+	public void setCompanyId(Integer companyId) {
+		this.companyId = companyId;
+	}
+
 	public Integer getEventId() {
 		return eventId;
 	}
@@ -82,8 +120,6 @@ public class EventDtlsDto {
 	public void setFloorNo(int floorNo) {
 		this.floorNo = floorNo;
 	}
-
-	
 
 	public String getDate() {
 		return date;

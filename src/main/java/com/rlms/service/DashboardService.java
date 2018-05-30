@@ -55,10 +55,7 @@ public interface DashboardService {
 	public List<BranchDtlsDto> getListOfBranchDtlsForDashboard(Integer companyId, UserMetaInfo metaInfo);
 
 	public List<BranchCountDtls> getListOfBranchCountDtlsForDashboard(Integer companyId, UserMetaInfo metaInfo);
-
 	
-	public List<EventDtlsDto> getListOfEvetnDetails(List<Integer> companyBranchIds,
-			UserMetaInfo metaInfo);
 	
 	public List<ComplaintsDto> getListOfAmcCallsBy(ComplaintsDtlsDto dto);
 	

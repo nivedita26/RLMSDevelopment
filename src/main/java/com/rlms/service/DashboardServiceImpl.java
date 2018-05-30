@@ -725,32 +725,7 @@ public class DashboardServiceImpl implements DashboardService {
 		return branchCountDtlsList;
 	}
 
-	@Override
-	@Transactional(propagation = Propagation.REQUIRED)
-	public List<EventDtlsDto> getListOfEvetnDetails(List<Integer> listCustMap,
-			UserMetaInfo metaInfo) {
-		
-		List<RlmsEventDtls> allEvent = this.dashboardDao.getAllEventDtlsForDashboard(listCustMap);
-		               
-		return 	 this.constructEventDetailsList(allEvent);	
-
-	}
 	
-	
-	 
-/*	private RlmsEventDtls constructVisitDtls(RlmsEventDtls dto) throws ParseException{
-		RlmsEventDtls eventDtls = new RlmsEventDtls();
-		eventDtls.setEventType(dto.getEventType());
-		eventDtls.setEventDescription(dto.getEventDescription());
-	//	eventDtls.setLiftCustomerMapId(dto.getLiftCustomerMapId());
-		eventDtls.setGeneratedDate(DateUtils.convertStringToDateWithTime(dto.getGeneratedDateStr()));
-		eventDtls.setGeneratedBy(dto.getGeneratedBy());
-		eventDtls.setUpdatedDate(DateUtils.convertStringToDateWithTime(dto.getUpdatedDateStr()));
-		eventDtls.setUpdatedBy(dto.getUpdatedBy());
-		eventDtls.setActiveFlag(dto.getActiveFlag());
-		return eventDtls;
-	}
-	*/
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void saveEventDtls(RlmsEventDtls eventDtls){
 		this.dashboardDao.saveEventDtls(eventDtls);
@@ -836,15 +811,15 @@ public class DashboardServiceImpl implements DashboardService {
 		            	   }
 		            	   eventCountDtls.setBranchName(liftCustomerMap.getBranchCustomerMap().getCompanyBranchMapDtls().getRlmsBranchMaster().getBranchName());
 		            	   eventCountDtls.setCity(liftCustomerMap.getBranchCustomerMap().getCompanyBranchMapDtls().getRlmsBranchMaster().getCity());
-		            	   eventCountDtls.setCustomerName(liftCustomerMap.getBranchCustomerMap().getCompanyBranchMapDtls().getRlmsCompanyMaster().getCompanyName());
+		            	   eventCountDtls.setCustomerName(liftCustomerMap.getBranchCustomerMap().getCustomerMaster().getCustomerName());
 		            	   eventCountDtls.setLiftNumber(liftCustomerMap.getLiftMaster().getLiftNumber());
-		            	if(obj[1].equals("LMS EVENT")) {
+		            	if(obj[1].equals("EVENT")) {
 		            		eventCountDtls.setTotolEventCount((BigInteger)obj[2]);
 		            		}
-		            	else if(obj[1].equals("LMS ERROR")) {
+		            	else if(obj[1].equals("ERROR")) {
 		            		eventCountDtls.setTotalErrorCount((BigInteger)obj[2]);
 		            	}
-		            	else if(obj[1].equals("LMS RES")) {
+		            	else if(obj[1].equals("RES")) {
 		            	   eventCountDtls.setTotalResCount((BigInteger)obj[2]);
 		            	}
 		            	 uniqueIdsForLiftCustMapId.add((Integer)obj[0]);

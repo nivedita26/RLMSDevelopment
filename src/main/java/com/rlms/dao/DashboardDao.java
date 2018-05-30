@@ -27,7 +27,7 @@ public interface DashboardDao {
 	public RlmsCompanyBranchMapDtls getCompanyBranchMapDtlsForDashboard(Integer compBranchMapId);
 
 	public List<RlmsEventDtls> getAllEventDtlsForDashboard(
-			List<Integer> companyBranchIds);
+			List<Integer> companyBranchIds,String eventType);
 	
 	public void saveEventDtls(RlmsEventDtls eventDtls);
 	
