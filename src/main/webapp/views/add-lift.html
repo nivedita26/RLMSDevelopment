@@ -151,7 +151,8 @@
 			<!-- <div class="col-md-6"><input ng-model="addLift.doorType" class="form-control"  type="number" name="doorType"></div> -->
 			<div class="col-sm-6">
 					  <ui-select ng-model="selectedDoorType.selected" title="Choose a Door Type">
-					    <ui-select-match placeholder="Select a door type...">{{$select.selected.name}}</ui-select-match> <ui-select-choices
+					    <ui-select-match placeholder="Select a door type...">{{$select.selected.name}}</ui-select-match> 
+					    <ui-select-choices
 								repeat="iterator in DoorType| filter: $select.search">
 							<span
 								ng-bind-html="iterator.name | highlight: $select.search"></span>
