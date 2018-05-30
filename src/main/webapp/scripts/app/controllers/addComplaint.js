@@ -22,7 +22,6 @@
 				$scope.companyName='';
 				$scope.branchName='';				
 			
-
 				$scope.addComplaint={
 						branchCompanyMapId:0,
 						liftCustomerMapId:0,
