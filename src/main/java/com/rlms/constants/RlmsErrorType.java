@@ -46,6 +46,8 @@ public enum RlmsErrorType {
 	
 	private Integer code;
 	private String message;
+	
+	
 	private RlmsErrorType(int code, String message){
 		this.code = code;
 		this.message = message;

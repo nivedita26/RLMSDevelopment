@@ -20,13 +20,18 @@
 				$scope.selectedComplaintTitle = {};
 				$scope.selectedLift = {};			
 				$scope.companyName='';
+<<<<<<< HEAD
 				$scope.branchName='';				
 			
+=======
+				$scope.branchName='';
+>>>>>>> dev_test
 				$scope.addComplaint={
 						branchCompanyMapId:0,
 						liftCustomerMapId:0,
 						branchCustomerMapId:0,
 						companyId:0,
+<<<<<<< HEAD
 						callType:'',
 						complaintTitle:'',
 						complaintsRemark:'',
@@ -141,6 +146,14 @@
 						name:'Reassign call'
 					}
 				];
+=======
+						complaintsTitle:'',
+						complaintsRemark:'',
+						registrationType:2,
+						fromDate:'',
+						toDate:''
+				};
+>>>>>>> dev_test
 			}
 			$scope.openFlag={
 					fromDate:false,
