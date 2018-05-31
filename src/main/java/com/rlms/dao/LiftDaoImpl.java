@@ -345,7 +345,7 @@ public class LiftDaoImpl implements LiftDao{
 	}
 
 	@Override
-	public RlmsLiftMaster getLiftByLiftNumber(int liftNumber) {
+	public RlmsLiftMaster getLiftByLiftNumber(String liftNumber) {
 		Session session = this.sessionFactory.getCurrentSession();
 		Criteria criteria = session.createCriteria(RlmsLiftMaster.class);
 		criteria.add(Restrictions.eq("liftNumber",liftNumber));
