@@ -1,6 +1,7 @@
 package com.rlms.service;
 
 import java.io.UnsupportedEncodingException;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -25,6 +27,7 @@ import com.rlms.constants.SpocRoleConstants;
 import com.rlms.constants.Status;
 import com.rlms.contract.AMCDetailsDto;
 import com.rlms.contract.CustomerDtlsDto;
+import com.rlms.contract.EventCountDtls;
 import com.rlms.contract.EventDtlsDto;
 import com.rlms.contract.LiftDtlsDto;
 import com.rlms.contract.SiteVisitDtlsDto;
@@ -523,26 +526,41 @@ public class ReportServiceImpl implements ReportService {
 
 	@Override
 	public List<EventDtlsDto> getAllInOutEventsData(EventDtlsDto dto) {
-		List<RlmsEventDtls> listOfEvents = null;
+		List<RlmsEventDtls> listOfEvents = new ArrayList<RlmsEventDtls>();
+		List<EventDtlsDto>dtlsDtoList = new ArrayList<EventDtlsDto>();
 		try {
 			List<Integer> liftCustomerMapIds = new ArrayList<>();
-			for (Integer integer : dto.getBranchCustomerMapId()) {
+		//	for (Integer integer : dto.getBranchCustomerMapId()) {
 				LiftDtlsDto dtoTemp = new LiftDtlsDto();
-				dtoTemp.setBranchCustomerMapId(10);
+				dtoTemp.setBranchCustomerMapId(6);
 				//dtoTemp.setBranchCustomerMapId(6);
 				
-				dtoTemp.setBranchCustomerMapId(integer);
+			//	dtoTemp.setBranchCustomerMapId(integer);
 				List<RlmsLiftCustomerMap> list = dashboardService
 						.getAllLiftsForBranchsOrCustomer(dtoTemp);
 				for (RlmsLiftCustomerMap rlmsLiftCustomerMap : list) {
 					liftCustomerMapIds.add(rlmsLiftCustomerMap
 							.getLiftCustomerMapId());
-				}			}
+				}		
+				//}
 		//	logger.info("Method :: getAllBranchesForCompany");
 			listOfEvents = dashBoardDao.getAllEventDtlsForDashboard(liftCustomerMapIds,dto.getEventType());
+	        for (RlmsEventDtls  rlmsEventDtls : listOfEvents) {
+				EventDtlsDto dtlsDto =new EventDtlsDto();
+				dtlsDto.setImei(rlmsEventDtls.getEventType());
+				dtlsDto.setEventDescription(rlmsEventDtls.getEventDescription());
+				DateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+		        format.setTimeZone(TimeZone.getTimeZone("IST"));
+		        String eventDate = format.format(rlmsEventDtls.getEventDate());
+				dtlsDto.setDate(eventDate);
+				dtlsDto.setEventType(rlmsEventDtls.getRlmsLiftCustomerMap().getLiftMaster().getImei());
+				dtlsDto.setLiftNumber(rlmsEventDtls.getRlmsLiftCustomerMap().getLiftMaster().getLiftNumber());
+				dtlsDto.setLiftAddress(rlmsEventDtls.getRlmsLiftCustomerMap().getLiftMaster().getAddress());
+				dtlsDto.setCity(rlmsEventDtls.getRlmsLiftCustomerMap().getLiftMaster().getCity());
+				dtlsDtoList.add(dtlsDto);
+			}
 		} catch (Exception e) {
 		}
-		return null;
+		return dtlsDtoList;
 	}
-	
 }

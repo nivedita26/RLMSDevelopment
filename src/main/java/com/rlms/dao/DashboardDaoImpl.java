@@ -1,13 +1,14 @@
 package com.rlms.dao;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.transaction.Transactional;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -15,6 +16,8 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.rlms.constants.RLMSConstants;
 import com.rlms.model.RlmsCompanyBranchMapDtls;
@@ -214,17 +217,22 @@ public class DashboardDaoImpl implements DashboardDao {
 	}
 
 	@Override
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public List<RlmsEventDtls> getAllEventDtlsForDashboard(
 			List<Integer> liftCustMapIds,String eventType) {
-		Session session = this.sessionFactory.getCurrentSession();
-		Criteria criteria = session.createCriteria(RlmsEventDtls.class).add(
-				Restrictions.in("rlmsLiftCustomerMap.liftCustomerMapId", liftCustMapIds));
 		// .add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId())
-		List<RlmsEventDtls> eventDtls = criteria.list();
+		List<RlmsEventDtls> eventDtls = new ArrayList<>();
+		try {
+			Session session = this.sessionFactory.getCurrentSession();
+			Criteria criteria = session.createCriteria(RlmsEventDtls.class).add(
+					Restrictions.in("rlmsLiftCustomerMap.liftCustomerMapId", liftCustMapIds));
+			eventDtls = criteria.list();
+		} catch (HibernateException e) {
+			e.printStackTrace();
+		}
 		return eventDtls;
 	}
 
-	
 	@Override
 	public void saveEventDtls(RlmsEventDtls eventDtls){
 		this.sessionFactory.getCurrentSession().save(eventDtls);
