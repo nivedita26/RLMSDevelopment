@@ -1826,14 +1826,38 @@ angular.module('theme.demos.dashboard.indi', [
     	                $scope.showTable = true;
     	                var userDetails = [];
     	                if (activeFlag=="Active") {
-    	                	largeLoad = largeLoad.filter(function (item) {
+    	                	/*largeLoad = largeLoad.filter(function (item) {
       	                    return item.activeFlag === 1;
-      	                  });
+      	                  });*/
+    	                	for (var i = 0; i < largeLoad.length; i++) {
+    	                		
+    	                		if(largeLoad[i].customerCount!=null){
+    	                			var dataCount={};
+    	                			dataCount.branchName=largeLoad[i].branchName
+    	                			dataCount.customerName=largeLoad[i].customerName
+    	                			dataCount.city=largeLoad[i].city
+    	                			dataCount.totalFigure=largeLoad[i].customerCount
+
+    	                			data.push(dataCount);
+    	                		}    	                		
+    	                	}
       	                }
     	                if (activeFlag=="InActive") {
-    	                	largeLoad = largeLoad.filter(function (item) {
+    	                	/*largeLoad = largeLoad.filter(function (item) {
       	                    return item.activeFlag === 0;
-      	                  });
+      	                  });*/
+    	                	for (var i = 0; i < largeLoad.length; i++) {
+    	                		
+    	                		if(largeLoad[i].customerCount!=null){
+    	                			var dataCount={};
+    	                			dataCount.branchName=largeLoad[i].branchName
+    	                			dataCount.customerName=largeLoad[i].customerName
+    	                			dataCount.city=largeLoad[i].city
+    	                			dataCount.totalFigure=largeLoad[i].customerCount
+
+    	                			data.push(dataCount);
+    	                		}    	                		
+    	                	}
       	                }
     	                for (var i = 0; i < largeLoad.length; i++) {
     	                	var userDetailsObj = {};
