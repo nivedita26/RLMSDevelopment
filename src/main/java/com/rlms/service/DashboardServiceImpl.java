@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -25,6 +26,7 @@ import com.rlms.constants.SpocRoleConstants;
 import com.rlms.constants.Status;
 import com.rlms.contract.AMCDetailsDto;
 import com.rlms.contract.AMCStatusCount;
+import com.rlms.contract.BranchCountDtls;
 import com.rlms.contract.BranchDtlsDto;
 import com.rlms.contract.ComplaintsDtlsDto;
 import com.rlms.contract.ComplaintsDto;
@@ -650,41 +652,80 @@ public class DashboardServiceImpl implements DashboardService {
 			}*/
 			listOFBranchDtls.add(branchDtlsDto);			
 		}
-		for (BranchDtlsDto branchDtlsDto : listOFBranchDtls) {
-			
-		}
-		
-		
-		
+	
 		return listOFBranchDtls;
 	}
-
-	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
-	public List<EventDtlsDto> getListOfEvetnDetails(List<Integer> listCustMap,
-			UserMetaInfo metaInfo) {
+	public List<BranchCountDtls> getListOfBranchCountDtlsForDashboard(Integer companyId, UserMetaInfo metaInfo){
+		List<Integer> listOfAllApplicableCompanies = new ArrayList<Integer>();
+		List<Integer> listOFApplicableBranches = new ArrayList<Integer>();
+		List<Integer> listOfBranchIds = new ArrayList<Integer>();
 		
-		List<RlmsEventDtls> allEvent = this.dashboardDao.getAllEventDtlsForDashboard(listCustMap);
-		               
-		return 	 this.constructEventDetailsList(allEvent);	
+		List<BranchCountDtls> branchCountDtlsList = new ArrayList<>();
+		listOfAllApplicableCompanies.add(companyId);
+		 List<RlmsCompanyBranchMapDtls> listOfAllBranches = this.dashboardDao.getAllBranchDtlsForDashboard(listOfAllApplicableCompanies);
+		
+		 for (RlmsCompanyBranchMapDtls rlmsCompanyBranchMapDtls : listOfAllBranches) {
+			 listOfBranchIds.add(rlmsCompanyBranchMapDtls.getRlmsBranchMaster().getBranchId());
+		}
+		 List<Object[]> countList = dashboardDao.getBranchCountDtlsForDashboard(listOfBranchIds);
+		 
+		 for (Object[] objects : countList) {
+			  BranchCountDtls branchCountDtls = new BranchCountDtls();
+			  branchCountDtls.setBranchCity(objects[0].toString());
+			  branchCountDtls.setBranchCount((BigInteger)objects[1]);
+			  branchCountDtlsList.add(branchCountDtls);
+		}
+		 
+			List<BranchDtlsDto> listOFBranchDtls = new ArrayList<BranchDtlsDto>();
 
-	}
+		 /*if(listOfAllBranches!=null && !listOfAllBranches.isEmpty()) {
+			 
+	     /*  for (RlmsCompanyBranchMapDtls rlmsCompanyBranchMapDtls : listOfAllBranches) {
+			  BranchCountDtls branchCountDtls = new BranchCountDtls();
+			 if(!listOfCity.contains(rlmsCompanyBranchMapDtls.getRlmsBranchMaster().getCity())){
+				 int branchCount = Collections.frequency(listOfAllBranches, rlmsCompanyBranchMapDtls.getRlmsBranchMaster().getCity());	 
+			     branchCountDtls.setBranchCity(rlmsCompanyBranchMapDtls.getRlmsBranchMaster().getCity());
+			     branchCountDtls.setBranchCount(branchCount);
+			     listOfCity.add(rlmsCompanyBranchMapDtls.getRlmsBranchMaster().getCity());
+			   }
+		     }
+		 }*/
+
+		 /*  for (RlmsCompanyBranchMapDtls rlmsCompanyBranchMapDtls : listOfAllBranches) {
+			  listOFApplicableBranches.add(rlmsCompanyBranchMapDtls.getCompanyBranchMapId());
+		  }
+		for (Integer companyBranchMapId : listOFApplicableBranches) {
+			BranchDtlsDto branchDtlsDto = new BranchDtlsDto();
+			RlmsCompanyBranchMapDtls rlmsCompanyBranchMapDtls = this.dashboardDao.getCompanyBranchMapDtlsForDashboard(companyBranchMapId);
+			branchDtlsDto.setId(rlmsCompanyBranchMapDtls.getRlmsBranchMaster().getBranchId());
+			branchDtlsDto.setBranchName(rlmsCompanyBranchMapDtls.getRlmsBranchMaster().getBranchName());
+			branchDtlsDto.setBranchAddress(rlmsCompanyBranchMapDtls.getRlmsBranchMaster().getBranchAddress());
+			branchDtlsDto.setArea(rlmsCompanyBranchMapDtls.getRlmsBranchMaster().getArea());
+			branchDtlsDto.setCity(rlmsCompanyBranchMapDtls.getRlmsBranchMaster().getCity());
+			branchDtlsDto.setPinCode(rlmsCompanyBranchMapDtls.getRlmsBranchMaster().getPincode());
+			branchDtlsDto.setCompanyName(rlmsCompanyBranchMapDtls.getRlmsCompanyMaster().getCompanyName());
+			branchDtlsDto.setActiveFlag(rlmsCompanyBranchMapDtls.getActiveFlag());
+		
+			List<UserDtlsDto> listOfAllTech = this.getListOFAllTEchnicians(companyBranchMapId);
+			branchDtlsDto.setListOfAllTechnicians(listOfAllTech);
+			if(null != listOfAllTech && !listOfAllTech.isEmpty()){
+				branchDtlsDto.setNumberOfTechnicians(listOfAllTech.size());
+			}
+			List<LiftDtlsDto> listOfAllLifts = this.getListOfAllLifts(companyBranchMapId);
+			if(null != listOfAllLifts){
+				branchDtlsDto.setListOfAllLifts(listOfAllLifts);
+			}
+			if(null != listOfAllLifts){
+				branchDtlsDto.setNumberOfLifts(listOfAllLifts.size());
+			}
+			listOFBranchDtls.add(branchDtlsDto);			
+		}*/
 	
-	
-	 
-/*	private RlmsEventDtls constructVisitDtls(RlmsEventDtls dto) throws ParseException{
-		RlmsEventDtls eventDtls = new RlmsEventDtls();
-		eventDtls.setEventType(dto.getEventType());
-		eventDtls.setEventDescription(dto.getEventDescription());
-	//	eventDtls.setLiftCustomerMapId(dto.getLiftCustomerMapId());
-		eventDtls.setGeneratedDate(DateUtils.convertStringToDateWithTime(dto.getGeneratedDateStr()));
-		eventDtls.setGeneratedBy(dto.getGeneratedBy());
-		eventDtls.setUpdatedDate(DateUtils.convertStringToDateWithTime(dto.getUpdatedDateStr()));
-		eventDtls.setUpdatedBy(dto.getUpdatedBy());
-		eventDtls.setActiveFlag(dto.getActiveFlag());
-		return eventDtls;
+		return branchCountDtlsList;
 	}
-	*/
+
+	
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void saveEventDtls(RlmsEventDtls eventDtls){
 		this.dashboardDao.saveEventDtls(eventDtls);
@@ -770,15 +811,15 @@ public class DashboardServiceImpl implements DashboardService {
 		            	   }
 		            	   eventCountDtls.setBranchName(liftCustomerMap.getBranchCustomerMap().getCompanyBranchMapDtls().getRlmsBranchMaster().getBranchName());
 		            	   eventCountDtls.setCity(liftCustomerMap.getBranchCustomerMap().getCompanyBranchMapDtls().getRlmsBranchMaster().getCity());
-		            	   eventCountDtls.setCustomerName(liftCustomerMap.getBranchCustomerMap().getCompanyBranchMapDtls().getRlmsCompanyMaster().getCompanyName());
+		            	   eventCountDtls.setCustomerName(liftCustomerMap.getBranchCustomerMap().getCustomerMaster().getCustomerName());
 		            	   eventCountDtls.setLiftNumber(liftCustomerMap.getLiftMaster().getLiftNumber());
-		            	if(obj[1].equals("LMS EVENT")) {
+		            	if(obj[1].equals("EVENT")) {
 		            		eventCountDtls.setTotolEventCount((BigInteger)obj[2]);
 		            		}
-		            	else if(obj[1].equals("LMS ERROR")) {
+		            	else if(obj[1].equals("ERROR")) {
 		            		eventCountDtls.setTotalErrorCount((BigInteger)obj[2]);
 		            	}
-		            	else if(obj[1].equals("LMS RES")) {
+		            	else if(obj[1].equals("RES")) {
 		            	   eventCountDtls.setTotalResCount((BigInteger)obj[2]);
 		            	}
 		            	 uniqueIdsForLiftCustMapId.add((Integer)obj[0]);
@@ -786,7 +827,5 @@ public class DashboardServiceImpl implements DashboardService {
 
 					}
 		return 	 eventDtlsDtosList;
-
 	}
-	
 }

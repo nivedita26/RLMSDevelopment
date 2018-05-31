@@ -82,8 +82,8 @@ public class LiftServiceImpl implements LiftService{
 	@Transactional(propagation = Propagation.REQUIRED)
 	public ResponseDto validateAndAddNewLiftDtls(LiftDtlsDto dto, UserMetaInfo metaInfo) throws ParseException{
 		ResponseDto ResponseDto = new ResponseDto();
-	    RlmsLiftMaster liftMaster = new RlmsLiftMaster();
-	   if(liftMaster.getLiftId()==null) {
+	    RlmsLiftMaster liftMaster = liftDao.getLiftByLiftNumber(dto.getLiftNumber());
+	   if(liftMaster==null) {
 		RlmsLiftMaster liftM = this.constructLiftMaster(dto, metaInfo);
 		Integer liftId = this.liftDao.saveLiftM(liftM);
 		liftM.setLiftId(liftId);
