@@ -1601,7 +1601,7 @@ angular.module('theme.demos.dashboard.indi', [
 
     	                			data.push(dataCount);
     	                		}    	                		
-    	                	}      
+    	                	}
       	                }
     	                if (activeFlag=="InActive") {
     	                	/*largeLoad = largeLoad.filter(function (item) {
@@ -1609,7 +1609,7 @@ angular.module('theme.demos.dashboard.indi', [
       	                  });*/
     	                	for (var i = 0; i < largeLoad.length; i++) {
     	                		
-    	                		if(largeLoad[i].inactiveFlagCount!=null){
+    	                		if(largeLoad[i].inactiveFlagCount!="0"){
     	                			var dataCount={};
     	                			dataCount.branchName=largeLoad[i].branchName
     	                			dataCount.customerName=largeLoad[i].customerName
@@ -1750,7 +1750,7 @@ angular.module('theme.demos.dashboard.indi', [
       $scope.getPagedDataAsyncForAllBranches = function (pageSize,
     	      page, searchText, activeFlag) {
     	      var url;
-    	      url = '/RLMS/dashboard/getListOfBranchDtlsForDashboard';
+    	      url = '/RLMS/dashboard/getListOfBranchCountDtlsForDashboard';
     	      setTimeout(
     	        function () {
     	          var data;
@@ -1825,30 +1825,63 @@ angular.module('theme.demos.dashboard.indi', [
     	                $scope.complaints = largeLoad;
     	                $scope.showTable = true;
     	                var userDetails = [];
+    	                var data = [];
     	                if (activeFlag=="Active") {
-    	                	largeLoad = largeLoad.filter(function (item) {
+    	                	/*largeLoad = largeLoad.filter(function (item) {
       	                    return item.activeFlag === 1;
-      	                  });
+      	                  });*/
+    	                	for (var i = 0; i < largeLoad.length; i++) {
+    	                		
+    	                		if(largeLoad[i].activeBranchCount!=null){
+    	                			var dataCount={};
+    	                			dataCount.branchCity=largeLoad[i].branchCity
+    	                			dataCount.branchCount=largeLoad[i].activeBranchCount
+
+    	                			data.push(dataCount);
+    	                		}    	                		
+    	                	}
       	                }
     	                if (activeFlag=="InActive") {
-    	                	largeLoad = largeLoad.filter(function (item) {
+    	                	/*largeLoad = largeLoad.filter(function (item) {
       	                    return item.activeFlag === 0;
-      	                  });
+      	                  });*/
+    	                	for (var i = 0; i < largeLoad.length; i++) {
+    	                		
+    	                		if(largeLoad[i].activeBranchCount!=null){
+    	                			var dataCount={};
+    	                			dataCount.branchCity=largeLoad[i].branchCity
+    	                			dataCount.branchCount=largeLoad[i].activeBranchCount
+
+    	                			data.push(dataCount);
+    	                		}    	                		
+    	                	}
       	                }
-    	                for (var i = 0; i < largeLoad.length; i++) {
+    	                if (activeFlag=="Total") {
+    	                	/*largeLoad = largeLoad.filter(function (item) {
+      	                    return item.activeFlag === 0;
+      	                  });*/
+    	                	for (var i = 0; i < largeLoad.length; i++) {
+    	                		
+    	                		if(largeLoad[i].branchCount!=null){
+    	                			var dataCount={};
+    	                			dataCount.branchCity=largeLoad[i].branchCity
+    	                			dataCount.branchCount=largeLoad[i].branchCount
+
+    	                			data.push(dataCount);
+    	                		}    	                		
+    	                	}
+      	                }
+    	                for (var i = 0; i < data.length; i++) {
     	                	var userDetailsObj = {};
-    	                	if (!!largeLoad[i].id) {
-          	                     userDetailsObj["No"] = i+1;
-          	                  } else {
-          	                    userDetailsObj["No"] = " - ";
-          	                  }
-          	                  if (!!largeLoad[i].city) {
-              	                userDetailsObj["City"] = largeLoad[i].city;
+          	                     userDetailsObj["No"] = i+1 +".";
+
+          	                  if (!!data[i].branchCity) {
+              	                userDetailsObj["City"] = data[i].branchCity;
               	              } else {
               	                userDetailsObj["City"] = " - ";
               	              }
-          	                  if (!!largeLoad[i].totalBranches) {
-            	                userDetailsObj["TotalBranches"] = largeLoad[i].totalBranches;
+          	                  if (!!data[i].branchCount) {
+            	                userDetailsObj["TotalBranches"] = data[i].branchCount;
             	              } else {
             	                userDetailsObj["TotalBranches"] = " - ";
             	              }
@@ -1873,25 +1906,46 @@ angular.module('theme.demos.dashboard.indi', [
 	              .constructDataToSendForAllLiftStatus();
 	            serviceApi
 	              .doPostWithData(
-	              '/RLMS/dashboard/getListOfBranchDtlsForDashboard',
+	              '/RLMS/dashboard/getListOfBranchCountDtlsForDashboard',
 	              dataToSend)
 	              .then(
 	              function (
 	                largeLoad) {
 	                if (liftStatus=="Active") {
-	                  $scope.activeBranches = largeLoad.filter(function (item) {
+	                  /*$scope.activeBranches = largeLoad.filter(function (item) {
 	                    return item.activeFlag === 1;
-	                  });
-	                  $scope.branchDetails.activeBranches.text=$scope.activeBranches.length;
+	                  });*/
+	                	var totalCount=0;
+	                	
+	                	for (var i = 0; i < largeLoad.length; i++) {
+	                		if(largeLoad[i].inactiveBranchCount!=null){
+	                			totalCount=totalCount+largeLoad[i].activeBranchCount;
+	                		}
+	                	}
+	                  $scope.branchDetails.activeBranches.text=totalCount;
 	                }
 	                if(liftStatus=="InActive"){
-	                	$scope.inactiveBranches = largeLoad.filter(function (item) {
+	                	/*$scope.inactiveBranches = largeLoad.filter(function (item) {
 	                    return item.activeFlag === 0;
-	                  });
-	                  $scope.branchDetails.inactiveBranches.text=$scope.inactiveBranches.length;
+	                  });*/
+	                	var totalCount=0;
+	                	
+	                	for (var i = 0; i < largeLoad.length; i++) {
+	                		if(largeLoad[i].inactiveBranchCount!=null){
+	                			totalCount=totalCount+largeLoad[i].inactiveBranchCount;
+	                		}
+	                	}
+	                  $scope.branchDetails.inactiveBranches.text=totalCount;
 	                }
 	                if(liftStatus=="Total"){
-	                  $scope.branchDetails.totalBranches.text=largeLoad.length;
+	                	var totalCount=0;
+	                	
+	                	for (var i = 0; i < largeLoad.length; i++) {
+	                		if(largeLoad[i].branchCount!=null){
+	                			totalCount=totalCount+largeLoad[i].branchCount;
+	                		}
+	                	}
+	                	$scope.branchDetails.totalBranches.text=totalCount;
 	                }
 	              });
 	          }, 100);
