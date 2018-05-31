@@ -36,5 +36,4 @@ public enum PhotoType {
 		this.name = name;
 	}
 	
-	
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.rlms.contract.AMCDetailsDto;
 import com.rlms.contract.AMCStatusCount;
+import com.rlms.contract.BranchCountDtls;
 import com.rlms.contract.BranchDtlsDto;
 import com.rlms.contract.ComplaintsDtlsDto;
 import com.rlms.contract.ComplaintsDto;
@@ -53,8 +54,8 @@ public interface DashboardService {
 	
 	public List<BranchDtlsDto> getListOfBranchDtlsForDashboard(Integer companyId, UserMetaInfo metaInfo);
 
-	public List<EventDtlsDto> getListOfEvetnDetails(List<Integer> companyBranchIds,
-			UserMetaInfo metaInfo);
+	public List<BranchCountDtls> getListOfBranchCountDtlsForDashboard(Integer companyId, UserMetaInfo metaInfo);
+	
 	
 	public List<ComplaintsDto> getListOfAmcCallsBy(ComplaintsDtlsDto dto);
 	

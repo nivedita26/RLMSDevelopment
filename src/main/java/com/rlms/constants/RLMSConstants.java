@@ -14,6 +14,8 @@ public enum RLMSConstants {
 	MINUS_ONE(-1, "Minus One"),
 	NA(10, "NA"),
 	ZERO(0,"Zero");
+	
+	
 	private Integer id;
 	private String name;
 	

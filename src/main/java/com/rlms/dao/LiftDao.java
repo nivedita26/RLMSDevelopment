@@ -67,6 +67,6 @@ public interface LiftDao {
 	
 	public RlmsLiftAmcDtls getRlmsLiftAmcDtlsByLiftCustomerMapId(int rlmsLiftCustomerMapId);
 	
-	public RlmsLiftMaster  getLiftByLiftNumber(int liftNumber);
+	public RlmsLiftMaster  getLiftByLiftNumber(String liftNumber);
 
 }
