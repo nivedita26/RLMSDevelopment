@@ -56,15 +56,37 @@
 				</div>
 			</div>
 			
-			
 			<div class="form-group">
+			<label class="col-sm-3 control-label">Call Type</label>
+			<div class="col-sm-6">
+			   <ui-select ng-model="selectedCallType.selected" title="Choose a call type">
+			    <ui-select-match placeholder="Select Call Type">{{$select.selected.name}}</ui-select-match>
+			    <ui-select-choices repeat="iterator in callType | filter: $select.search">
+			      <span ng-bind-html="iterator.name | highlight: $select.search"></span>
+			    </ui-select-choices>
+			  </ui-select>
+			  </div>
+  			</div>
+  			
+			<div class="form-group">
+  			<label class="col-sm-3 control-label">Complaint Title </label>  			
+				<div class="col-sm-6">
+			   	<ui-select ng-model="selectedComplaintTitle.selected" title="Choose a complaint title">
+			    <ui-select-match placeholder="Select Complaint Title">{{$select.selected.name}}</ui-select-match>
+			    <ui-select-choices repeat="iterator in complaintTitle | filter: $select.search">
+			      <span ng-bind-html="iterator.name | highlight: $select.search"></span>
+			    </ui-select-choices>
+			  </ui-select>
+			  </div>
+  			</div>
+			<!-- <div class="form-group">
 				<label class="col-sm-3 control-label">Complaint Title</label>
 				<div class="col-sm-6">
 					<input name="complaintsTitle" type="text" placeholder="Complaint Title" ng-model="addComplaint.complaintsTitle" class="form-control">
 				</div>
-			</div>
+			</div> -->
 			<div class="form-group">
-				<label class="col-sm-3 control-label">Complaint Remark</label>
+				<label class="col-sm-3 control-label">Complaint Details</label>
 				<div class="col-sm-6">
 					<input name="complaintsRemark" type="text" placeholder="Complaint Remark" required ng-model="addComplaint.complaintsRemark" class="form-control">
 					<span class="help-block"
@@ -72,14 +94,14 @@
 						field is required</span>
 				</div>
 			</div>
-			<div class="form-group">
+			<!-- <div class="form-group">
 				<label class="col-sm-3 control-label">From Date</label>
 					<div class="col-md-6"><input type="text" class="form-control datepicker" datepicker-popup="{{format}}" ng-click="open($event,'fromDate')" is-open="openFlag.fromDate" ng-model="addComplaint.fromDate"/></div>
 			</div>
 			<div class="form-group">
 				<label class="col-sm-3 control-label">To Date</label>
 					<div class="col-md-6"><input type="text" class="form-control datepicker" datepicker-popup="{{format}}" ng-click="open($event,'toDate')" is-open="openFlag.toDate" ng-model="addComplaint.toDate"/></div>
-			</div>
+			</div> -->
 		 </fieldset>
 		
 			<div class="panel-footer">
