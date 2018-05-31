@@ -23,16 +23,20 @@
 					 id:38
 				 },
 				 {
-					 name:"Renewal Due",
+					 name:"Warranty Expired",
 					 id:39
 				 },
 				 {
-					 name:"AMC Pending",
+					 name:"Under AMC",
 					 id:40
 				 },
 				 {
-					 name:"Under AMC",
+					 name:"AMC Renewal Due",
 					 id:41
+				 },
+				 {
+					 name:"AMC Expired",
+					 id:42
 				 }
 			 ]
 			 
