@@ -1,22 +1,22 @@
 package com.rlms.contract;
 
-public class BranchCountDtls {
+import java.math.BigInteger;
 
+public class BranchCountDtls {
 	private String BranchCity;
-	private int BranchCount;
+	private BigInteger BranchCount;
+	
+	public BigInteger getBranchCount() {
+		return BranchCount;
+	}
+	public void setBranchCount(BigInteger branchCount) {
+		BranchCount = branchCount;
+	}
 	public String getBranchCity() {
 		return BranchCity;
-	}
-	public int getBranchCount() {
-		return BranchCount;
 	}
 	public void setBranchCity(String branchCity) {
 		BranchCity = branchCity;
 	}
-	public void setBranchCount(int branchCount) {
-		BranchCount = branchCount;
-	}
-	
-	
 	
 }

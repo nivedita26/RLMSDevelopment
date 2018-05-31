@@ -461,12 +461,12 @@
 				$scope.addLiftForm.$setUntouched();
 		     	}
 				else{
-					$scope.alert.msg =  response[key[1]];
-					$scope.alert.type="danger"
 					$scope.showAlert = true;
-
+					$scope.alert.msg =  response[key[1]];
+					$scope.alert.type="danger";
+					
 				}
-				
+				$scope.alert.type=' ';
 			},function(error){
 				$scope.showAlert = true;
 				$scope.alert.msg = error.exceptionMessage;
