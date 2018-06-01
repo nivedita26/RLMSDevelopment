@@ -211,8 +211,9 @@
 														}
 														$scope.cutomers = customerData;
 														$scope.cutomers
-																.unshift(tempAll);
+														.unshift(tempAll);
 														$scope.selectedCustomer.selected=undefined;
+														$scope.selectedLifts.selected=undefined;
 													})
 								}
 								$scope.loadLifts = function() {
@@ -224,6 +225,7 @@
 											.then(function(liftData) {
 												$scope.lifts = liftData;
 											})
+									
 								}
 								// Toggle Advance Filter
 								$scope.toggleAdvanceFilter = function() {
@@ -632,7 +634,8 @@
 										$window.confirm('Complaint already completed or resolved');
 									}else{
 										$rootScope.editComplaint.complaintsNumber=row.Number.replace(/-/g, '');
-										$rootScope.editComplaint.complaintsTitle=row.Title.replace(/-/g, '');
+										$rootScope.editComplaint.complaintTitle=row.Title.replace(/-/g, '');
+										//$rootScope.editComplaint.callType=row.Title.replace(/-/g, '');
 										$rootScope.editComplaint.complaintsRemark=row.Remark.replace(/-/g, '');
 										$rootScope.editComplaint.complaintsAddress=row.Address.replace(/-/g, '');
 										$rootScope.editComplaint.complaintsCity=row.City.replace(/-/g, '');
