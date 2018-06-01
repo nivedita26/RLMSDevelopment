@@ -199,7 +199,7 @@
 				</div>
 				<label class="control-label">Select Customer</label>
 				<div class="select-container">
-					<ui-select ng-model="selectedCustomer.selected" title="Choose a Customer" on-select="showWizardFun()">
+					<ui-select ng-model="selectedCustomer.selected" title="Choose a Customer" on-select="loadLifts()">
 						<ui-select-match placeholder="Select Customer">{{$select.selected.firstName}}</ui-select-match>
 						<ui-select-choices repeat="customerIterator in cutomers| filter: $select.search">
 							<span ng-bind-html="customerIterator.firstName | highlight: $select.search"></span>
@@ -233,7 +233,7 @@
 								<input type="daterange" class="form-control" daterangepicker="" ng-model="date">
 								</div>
 							</div>
-							<label class="control-label" >Select Lifts : </label>
+							<label class="control-label" >Select Lifts </label>
 							<div class="select-container">
 								<ui-select multiple ng-model="selectedlifts.selected" close-on-select="false" title="Choose lifts">
 									<ui-select-match placeholder="Select lifts in the list...">{{$select.selected[$index].liftNumber}}</ui-select-match>
@@ -261,7 +261,7 @@
 					</div>
 					<div class="container-fluid" ng-show="showTable">
 						<h5 class="rlms-info">
-							<span class="fa fa-info-circle"></span>List of registered complaints
+							<span class="fa fa-info-circle"></span>List of Registered Calls
 							<button class="button button-clear refresh" ng-click="loadComplaintsList();">
 								<i
 					class="fa fa-refresh" aria-hidden="true"></i>
