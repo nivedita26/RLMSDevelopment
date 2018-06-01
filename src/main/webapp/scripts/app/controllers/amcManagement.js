@@ -23,16 +23,20 @@
 					 id:38
 				 },
 				 {
-					 name:"Renewal Due",
-					 id:39
-				 },
-				 {
-					 name:"AMC Pending",
-					 id:40
+					 name:"Warranty Expired",
+					 id:42
 				 },
 				 {
 					 name:"Under AMC",
+					 id:39
+				 },
+				 {
+					 name:"AMC Renewal Due",
 					 id:41
+				 },
+				 {
+					 name:"AMC Expired",
+					 id:40
 				 }
 			 ]
 			 
@@ -303,6 +307,7 @@
 			    	$scope.branches = response;
 			    	$scope.selectedBranch.selected = undefined;
 			    	$scope.selectedCustomer.selected = undefined;
+			    	$scope.selectedLifts.selected = undefined;
 			    	var emptyArray=[];
 			    	$scope.myData = emptyArray;
 			    });
@@ -337,6 +342,7 @@
 							$scope.lifts = liftData;
 						})*/
 	  		var dataToSend = {
+	  				branchCompanyMapId : $scope.selectedBranch.selected.companyBranchMapId,
 					branchCustomerMapId : $scope.selectedCustomer.selected.branchCustomerMapId
 				}
 				serviceApi.doPostWithData('/RLMS/complaint/getAllApplicableLifts',dataToSend)
