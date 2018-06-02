@@ -176,10 +176,10 @@ public class DashBoardController extends BaseController {
 									if ((statusCount.getStatusId()) == (Status.UNDER_AMC.getStatusId())) {
 										amcStatusCount.setUnderAMCCount(statusCount.getStatusCount());
 									}
-									if ((statusCount.getStatusId()) == (Status.NOT_UNDER_AMC.getStatusId())) {
+								/*	if ((statusCount.getStatusId()) == (Status.NOT_UNDER_AMC.getStatusId())) {
 										amcStatusCount.setNotUnderAMCCount(statusCount.getStatusCount());
 									}
-
+*/
 									if ((statusCount.getStatusId()) == (Status.NOT_UNDER_Warranty.getStatusId())) {
 										amcStatusCount.setNotUnderWarranty(statusCount.getStatusCount());
 									}
@@ -258,16 +258,13 @@ public class DashBoardController extends BaseController {
 			throws RunTimeException {
 		List<ComplaintsDto> listOfComplaints = null;
 		List<RlmsCompanyBranchMapDtls> listOfAllBranches = null;
-
 		List<Integer> companyBranchMapIds = new ArrayList<>();
 		List<Integer> branchCustomerMapIds = new ArrayList<>();
 		listOfAllBranches = this.companyService.getAllBranches(dto.getCompanyId());
 		for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
 			companyBranchMapIds.add(companyBranchMap.getCompanyBranchMapId());
 		}
-
 		List<CustomerDtlsDto> allCustomersForBranch = dashboardService.getAllCustomersForBranch(companyBranchMapIds);
-
 		List<Integer> liftCustomerMapIds = new ArrayList<>();
 		for (CustomerDtlsDto customerDtlsDto : allCustomersForBranch) {
 			LiftDtlsDto dtoToGetLifts = new LiftDtlsDto();
@@ -277,18 +274,15 @@ public class DashBoardController extends BaseController {
 				liftCustomerMapIds.add(rlmsLiftCustomerMap.getLiftCustomerMapId());
 			}
 		}
-
 		dto.setListOfLiftCustoMapId(liftCustomerMapIds);
 		try {
 			logger.info("Method :: getListOfComplaints");
 			listOfComplaints = this.dashboardService.getListOfComplaintsBy(dto);
-
 		} catch (Exception e) {
 			logger.error(ExceptionUtils.getFullStackTrace(e));
 			throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(),
 					PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
 		}
-
 		return listOfComplaints;
 	}
 

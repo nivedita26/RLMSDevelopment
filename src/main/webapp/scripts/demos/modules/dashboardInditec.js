@@ -2161,7 +2161,6 @@ angular.module('theme.demos.dashboard.indi', [
 		                  });*/
 	            		  var totalCount= 0;
 	  	                	for (var i = 0; i < largeLoad.length; i++) {
-	  	                		
 	  	                		if(largeLoad[i].totalErrorCount!=null){
 	  	                			totalCount=totalCount+largeLoad[i].totalErrorCount;
 	  	                		}
@@ -2172,15 +2171,12 @@ angular.module('theme.demos.dashboard.indi', [
 	            	  if (eventType=="Response") {
 	            		  var totalCount= 0;
   	                	for (var i = 0; i < largeLoad.length; i++) {
-  	                		
   	                		if(largeLoad[i].totalRespCount!=null){
   	                			totalCount=totalCount+largeLoad[i].totalRespCount;
   	                		}
   	                	}
 		                  $scope.event.response.text=totalCount;
-
 	            	  }
-	            	  
 	                //  $scope.event.inout.text=largeLoad.length;
 	              });
 	          }, 100);
@@ -2198,22 +2194,16 @@ angular.module('theme.demos.dashboard.indi', [
 	            alert(data);
 	            console.log('Error: ' + data);
 	        });
-    	  
-    	  
-	    };
-	     
+    	   };
 	      $scope.getCountForEvent("Event");
 	      $scope.getCountForEvent("Error");
 	      $scope.getCountForEvent("Response");
-
-
-      $scope.getPagedDataAsyncForEvents = function (pageSize,
+          $scope.getPagedDataAsyncForEvents = function (pageSize,
     	      page, searchText, eventType) {
-    	      var url;
-    	     // url = '/RLMS/dashboard/getAllInOutEventsData';
-    	      var dataToSend = $scope
-                .constructDataToSendForAllLiftStatus();
-    	      url = '/RLMS/dashboard/getEventCountForLift',
+    	  var url;
+    	  var dataToSend = $scope.constructDataToSendForAllLiftStatus();
+    	     url = '/RLMS/dashboard/getEventCountForLift',
+     	      //  url = '/RLMS/report/getListOfEvents',
     	      setTimeout(
     	        function () {
     	          var data;
@@ -2243,12 +2233,9 @@ angular.module('theme.demos.dashboard.indi', [
     		                    return item.eventType === "RESPONSE";
     		                  });
     	            	  	}
-          
     	                for (var i = 0; i < largeLoad.length; i++) {
         	                  var userDetailsObj = {};
-        	                  
-          	                    userDetailsObj["No"] = i+1 +".";
-          	                  
+          	                   userDetailsObj["No"] = i+1 +".";
      	                       if (!!largeLoad[i].branchName) {
       	                    	   userDetailsObj["Branch"] = largeLoad[i].branchName;
       	                       } else {
@@ -2325,20 +2312,17 @@ angular.module('theme.demos.dashboard.indi', [
 	  	                			largeLoad[i].branchName=largeLoad[i].branchName
 		                			largeLoad[i].city=largeLoad[i].city
 		                			largeLoad[i].totalFigure=largeLoad[i].totolEventCount
-	  	                			
 		                			data.push(dataCount);
 	  	                		}
 	  	                	}
   		                }
   	            	  	if (eventType=="Error") {
   	            	  		for (var i = 0; i < largeLoad.length; i++) {
-  	                		
   	            	  			if(largeLoad[i].totalErrorCount!=null){
   	            	  				var dataCount={};
 	  	                			largeLoad[i].branchName=largeLoad[i].branchName
 		                			largeLoad[i].city=largeLoad[i].city
 		                			largeLoad[i].totalFigure=largeLoad[i].totalErrorCount  
-		                			
 		                			data.push(dataCount);
   	            	  			}
   	            	  		}
@@ -2348,18 +2332,15 @@ angular.module('theme.demos.dashboard.indi', [
 		                    return item.eventType === "ERROR";
 		                  });*/
   	            		  for (var i = 0; i < largeLoad.length; i++) {
-	                		
   	            			  if(largeLoad[i].totalRespCount!=null){
   	            				var dataCount={};
 	                			largeLoad[i].branchName=largeLoad[i].branchName
 	                			largeLoad[i].city=largeLoad[i].city
 	                			largeLoad[i].totalFigure=largeLoad[i].totalRespCount
-	                			
 	                			data.push(dataCount);
   	            			  }
   	            		  }
 	            	  }
-  	            	  
     	                for (var i = 0; i < largeLoad.length; i++) {
       	                  var userDetailsObj = {};
       	                  

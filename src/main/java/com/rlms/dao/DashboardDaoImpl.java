@@ -226,6 +226,13 @@ public class DashboardDaoImpl implements DashboardDao {
 			Session session = this.sessionFactory.getCurrentSession();
 			Criteria criteria = session.createCriteria(RlmsEventDtls.class).add(
 					Restrictions.in("rlmsLiftCustomerMap.liftCustomerMapId", liftCustMapIds));
+			if(eventType!=null&&eventType=="-1") {
+				eventDtls = criteria.list();
+			}
+			else if(eventType!=null&&eventType!="-1") {
+				criteria.add(Restrictions.eq("eventType", eventType));
+			}
+			
 			eventDtls = criteria.list();
 		} catch (HibernateException e) {
 			e.printStackTrace();
