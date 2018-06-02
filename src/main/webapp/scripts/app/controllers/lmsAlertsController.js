@@ -4,6 +4,7 @@
 	.controller('lmsAlertsCtrl', ['$scope', '$filter','serviceApi','$route','$http','utility','$rootScope', function($scope, $filter,serviceApi,$route,$http,utility,$rootScope) {
 		initReport();
 		$scope.cutomers=[];
+		$scope.eventId=[];
 		$scope.filterOptions = {
 		  	      filterText: '',
 		  	      useExternalFilter: true
@@ -95,9 +96,9 @@
   	    	}
   	    	serviceApi.doPostWithData('/RLMS/admin/getAllCustomersForBranch',branchData)
  	         .then(function(customerData) {
- 	        	 $scope.cutomers = customerData;
+ 	        	$scope.cutomers = customerData;
  	        	$scope.selectedCustomer.selected=undefined;
-				$scope.selectedStatus.selected=undefined;
+				//$scope.selectedStatus.selected=undefined;
 				//$scope.selectedEventType.selected=undefined;
  	         })
 		}
@@ -147,6 +148,23 @@
 				} 
 				
 			}*/
+		/*serviceApi
+		.doPostWithData(
+				'/RLMS/admin/getAllCustomersForBranch',
+				branchData)
+		.then(
+				function(eventData) {
+					var tempAll = {
+						listOfEventTypeIds : -1,
+						eventType : "All"
+					}
+					$scope.eventId = eventData;
+					$scope.eventId
+					.unshift(tempAll);
+					$scope.selectedEventType.selected=undefined;
+					//$scope.selectedLifts.selected=undefined;
+				})*/
+		
 	  	  $scope.resetReportList = function(){
 	  		initReport();
 	  	  }
@@ -155,10 +173,11 @@
 	  		if($scope.selectedEventType.selected){
 	  			if($scope.selectedEventType.selected.length===0){
 	  				alert("Please select Event Type");
-	  			}else{
+	  			}else{	  				
 	  				//if($scope.selectedEventType.selected.length){
-	  					for (var i = 0; i < $scope.selectedEventType.selected.length; i++) {
-	  						tempStatus.push($scope.selectedEventType.selected[i].eventId);
+	  				//var tempStatus = [];
+	  				for (var j = 0; j < $scope.selectedEventType.selected.length; j++) {
+	  					tempStatus.push($scope.selectedEventType.selected[j].id);
 	  					//}
 	  				}
 	  			}

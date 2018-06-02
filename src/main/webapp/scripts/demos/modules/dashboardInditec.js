@@ -900,8 +900,7 @@ angular.module('theme.demos.dashboard.indi', [
     	                	  	                 
     	                  $scope.technicianData.activeTechnicians.text=totalCount;
     	                }
-    	                if(technicianStatus=="InActive"){
-    	                	   	                	
+    	                if (technicianStatus=="InActive") {
     	                	var totalCount= 0;
     	                	for (var i = 0; i < largeLoad.length; i++) {
     	                		
@@ -909,10 +908,10 @@ angular.module('theme.demos.dashboard.indi', [
     	                			totalCount=totalCount+largeLoad[i].totalInactiveTechnician;
     	                		}
     	                	}
-    	                	
-    	                		$scope.technicianData.inactiveTechnicians.text=totalCount;
-    	                	
+    	                	  	                 
+    	                  $scope.technicianData.inactiveTechnicians.text=totalCount;
     	                }
+    	                
     	                if(technicianStatus=="TotalTechnician"){
     	                	var totalCount= 0;
     	                	for (var i = 0; i < largeLoad.length; i++) {

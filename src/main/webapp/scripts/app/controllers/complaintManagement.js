@@ -213,7 +213,7 @@
 														$scope.cutomers
 														.unshift(tempAll);
 														$scope.selectedCustomer.selected=undefined;
-														$scope.selectedLifts.selected=undefined;
+														//$scope.selectedLifts.selected=undefined;
 													})
 								}
 								$scope.loadLifts = function() {
