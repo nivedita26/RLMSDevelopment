@@ -20,12 +20,7 @@
 				$scope.selectedComplaintTitle = {};
 				$scope.selectedLift = {};			
 				$scope.companyName='';
-<<<<<<< HEAD
-			  $scope.branchName='';
-=======
-
-				$scope.branchName='';							
->>>>>>> dev_test
+				$scope.branchName='';
 
 				$scope.addComplaint={
 						branchCompanyMapId:0,
@@ -146,10 +141,6 @@
 						name:'Reassign call'
 					}
 				];
-<<<<<<< HEAD
-
-=======
->>>>>>> dev_test
 			}
 			$scope.openFlag={
 					fromDate:false,
@@ -217,7 +208,7 @@
 			//Post call add customer
 			$scope.submitAddComplaint = function(){
 				$scope.addComplaint.callType = $scope.selectedCallType.selected.id;
-				$scope.addComplaint.complaintTitle = $scope.selectedComplaintTitle.selected.id;
+				$scope.addComplaint.complaintTitle = $scope.selectedComplaintTitle.selected.name;
 				$scope.addComplaint.liftCustomerMapId = $scope.selectedLift.selected.liftId;
 				$scope.addComplaint.registrationType = 31;
 				serviceApi.doPostWithData("/RLMS/complaint/validateAndRegisterNewComplaint",$scope.addComplaint)
@@ -291,6 +282,7 @@
 			    	$scope.branches = response;
 			    	$scope.selectedBranch.selected = undefined;
 			    	$scope.selectedCustomer.selected = undefined;
+			    	$scope.selectedLift.selected =undefined;
 			    	var emptyArray=[];
 			    	$scope.myData = emptyArray;
 			    });
@@ -310,6 +302,7 @@
 	 	         .then(function(customerData) {
 	 	        	 $scope.cutomers = customerData;
 	 	        	 $scope.selectedCustomer.selected = undefined;
+	 	        	 $scope.selectedLift.selected =undefined;
 	 	        	var emptyArray=[];
 			    	$scope.myData = emptyArray;
 	 	         })

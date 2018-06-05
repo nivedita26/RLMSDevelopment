@@ -11,15 +11,18 @@
 		$scope.companies = [];
 		function initAddBranch(){
 			$scope.selectedCompany = {};
+			$scope.selectedStatus={};
 			$scope.addBranch={
 					companyId:'',
 					branchName:'',
 					branchAddress:'',
 					city:'',
 					area:'',
-					pinCode:''
+					pinCode:'',
+					status:''
 			};	
 		    $scope.branchList={};
+		    		    
 		}
 		//load compay dropdown data
 		function loadCompayInfo(){
@@ -30,7 +33,7 @@
 		};
 		//Post call add branch
 		$scope.submitAddBranch = function(){
-			$scope.addBranch.companyId = $scope.selectedCompany.selected.companyId;
+			$scope.addBranch.companyId = $scope.selectedCompany.selected.companyId;			
 			serviceApi.doPostWithData("/RLMS/admin/addNewBranchInCompany",$scope.addBranch)
 			.then(function(response){
 				$scope.showAlert = true;

@@ -79,7 +79,7 @@
 			$scope.modalInstance.dismiss('cancel');
 			serviceApi.doPostWithData('/RLMS/admin/getLiftMasterForType',dataToSend)
 	         .then(function(liftdata) {
-	        	 if(liftdata.blank != true){
+	        	 /*if(liftdata.blank != true){
 	        		 for(var key in liftdata) {
 	        		        if(typeof liftdata[key] !== 'undefined' && typeof liftdata[key] !== 'null') {
 	        		        	if(key == "amcType"){
@@ -100,7 +100,7 @@
 	        		            
 	        		        }
 	        		    }
-	        	 }
+	        	 }*/
 	        	$scope.addLift["address"] = liftdata['address'];
 	        	$scope.addLift["city"] = liftdata['city'];
 	        	$scope.addLift["area"] = liftdata['area'];

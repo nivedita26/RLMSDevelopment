@@ -28,11 +28,11 @@
 				 },
 				 {
 					 name:"Under AMC",
-					 id:39
+					 id:41
 				 },
 				 {
 					 name:"AMC Renewal Due",
-					 id:41
+					 id:39
 				 },
 				 {
 					 name:"AMC Expired",
@@ -307,7 +307,7 @@
 			    	$scope.branches = response;
 			    	$scope.selectedBranch.selected = undefined;
 			    	$scope.selectedCustomer.selected = undefined;
-			    	$scope.selectedLifts.selected = undefined;
+			    	//$scope.selectedLifts.selected = undefined;
 			    	var emptyArray=[];
 			    	$scope.myData = emptyArray;
 			    });
@@ -327,8 +327,9 @@
 	 	         .then(function(customerData) {
 	 	        	 $scope.cutomers = customerData;
 	 	        	 $scope.selectedCustomer.selected = undefined;
-	 	        	var emptyArray=[];
-			    	$scope.myData = emptyArray;
+	 	        	 $scope.selectedLifts.selected = undefined;
+	 	        	 var emptyArray=[];
+	 	        	 $scope.myData = emptyArray;
 	 	         })
 			}
 	  	  $scope.loadLifts = function() {
