@@ -20,8 +20,12 @@
 				$scope.selectedComplaintTitle = {};
 				$scope.selectedLift = {};			
 				$scope.companyName='';
+<<<<<<< HEAD
+			  $scope.branchName='';
+=======
 
 				$scope.branchName='';							
+>>>>>>> dev_test
 
 				$scope.addComplaint={
 						branchCompanyMapId:0,
@@ -142,6 +146,10 @@
 						name:'Reassign call'
 					}
 				];
+<<<<<<< HEAD
+
+=======
+>>>>>>> dev_test
 			}
 			$scope.openFlag={
 					fromDate:false,

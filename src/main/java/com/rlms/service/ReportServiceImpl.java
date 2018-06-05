@@ -177,7 +177,6 @@ public class ReportServiceImpl implements ReportService {
 			dto.setAmcAmount(liftAmcDtls.getAmcAmount());
 			
 			if(i > 0 ){
-				
 				Integer diffInDays = DateUtils.daysBetween(listOFAMCs.get(i).getAmcStartDate(), listOFAMCs.get(i - 1).getAmcEndDate());
 				if(diffInDays > 0){
 					Date slackStartDate = DateUtils.addDaysToDate(listOFAMCs.get(i - 1).getAmcEndDate(), 1);
