@@ -62,14 +62,14 @@
 			<label class="col-sm-3 control-label">City<sup class="red font-12">*</sup></label>
 			<div class="col-sm-6">
 				<input name="city" type="text"
-					placeholder=""
+					placeholder="" onkeypress="return ((event.charCode > 96 && event.charCode < 123) || event.charCode == 8 || event.charCode == 32);"
 					ng-model="addLift.city" class="form-control" required>
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="col-sm-3 control-label">Pincode : </label>
+			<label class="col-sm-3 control-label">Pincode </label>
 			<div class="col-sm-6">
-				<input name="pinCode" type="number"
+				<input name="pinCode" type="number" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : this.value.length<6"
 					ng-model="addLift.pinCode" class="form-control" required>
 			</div>
 		</div>
@@ -288,11 +288,11 @@
 		</div>
 		<div class="form-group">
 			<label for="imei" class="col-md-3 control-label">IMEI Number</label>
-			<div class="col-md-6"><input ng-model="addLift.imei" class="form-control"  type="number" name="imei" required></div>
+			<div class="col-md-6"><input ng-model="addLift.imei" class="form-control" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : this.value.length<15" type="number" name="imei" required></div>
 		</div>
 		<div class="form-group">
 			<label for="lmsEventFromContactNo" class="col-md-3 control-label">LMS Contact Number</label>
-			<div class="col-md-6"><input ng-model="addLift.lmsEventFromContactNo" class="form-control"  type="number" name="lmsEventFromContactNo" required></div>
+			<div class="col-md-6"><input ng-model="addLift.lmsEventFromContactNo" class="form-control" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : this.value.length<10" type="number" name="lmsEventFromContactNo" required></div>
 		</div>
 		
 	</fieldset>

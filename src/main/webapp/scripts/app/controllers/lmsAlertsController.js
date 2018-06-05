@@ -100,7 +100,9 @@
  	        	$scope.selectedCustomer.selected=undefined;
 				//$scope.selectedStatus.selected=undefined;
 				//$scope.selectedEventType.selected=undefined;
+ 	        	
  	         })
+ 	         
 		}
 		if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 3) {
 			$scope.loadCustomerData();
