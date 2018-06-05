@@ -903,8 +903,7 @@ angular.module('theme.demos.dashboard.indi', [
     	                	  	                 
     	                  $scope.technicianData.activeTechnicians.text=totalCount;
     	                }
-    	                if(technicianStatus=="InActive"){
-    	                	   	                	
+    	                if (technicianStatus=="InActive") {
     	                	var totalCount= 0;
     	                	for (var i = 0; i < largeLoad.length; i++) {
     	                		
@@ -912,10 +911,10 @@ angular.module('theme.demos.dashboard.indi', [
     	                			totalCount=totalCount+largeLoad[i].totalInactiveTechnician;
     	                		}
     	                	}
-    	                	
-    	                		$scope.technicianData.inactiveTechnicians.text=totalCount;
-    	                	
+    	                	  	                 
+    	                  $scope.technicianData.inactiveTechnicians.text=totalCount;
     	                }
+    	                
     	                if(technicianStatus=="TotalTechnician"){
     	                	var totalCount= 0;
     	                	for (var i = 0; i < largeLoad.length; i++) {
@@ -1366,12 +1365,12 @@ angular.module('theme.demos.dashboard.indi', [
       	                  });*/
     	                	for (var i = 0; i < largeLoad.length; i++) {
     	                		
-    	                		if(largeLoad[i].notUnderWarrantyCount!=null){
+    	                		if(largeLoad[i].notUnderWarranty!=null || largeLoad[i].renewalDueCount!=null || largeLoad[i].amcPendingCount!=null || largeLoad[i].underAMCCount!=null){
     	                			var dataCount={};
     	                			dataCount.branchName=largeLoad[i].branchName
     	                			dataCount.customerName=largeLoad[i].customerName
     	                			dataCount.city=largeLoad[i].city
-    	                			dataCount.totalLiftCount=largeLoad[i].notUnderWarrantyCount
+    	                			dataCount.totalLiftCount=largeLoad[i].notUnderWarranty + largeLoad[i].renewalDueCount + largeLoad[i].amcPendingCount+ largeLoad[i].underAMCCount
     	                			
     	                			data.push(dataCount);
     	                		}
@@ -1471,8 +1470,8 @@ angular.module('theme.demos.dashboard.indi', [
 	                  });*/
 	                	var totalCount=0;
 	                	for (var i = 0; i < largeLoad.length; i++) {
-	                		if(largeLoad[i].notUnderWarranty!=null){
-	                			totalCount=totalCount+largeLoad[i].notUnderWarranty;	                		
+	                		if(largeLoad[i].notUnderWarranty!=null || largeLoad[i].renewalDueCount!=null || largeLoad[i].amcPendingCount!=null || largeLoad[i].underAMCCount!=null){
+	                			totalCount=totalCount+(largeLoad[i].notUnderWarranty+largeLoad[i].renewalDueCount+largeLoad[i].amcPendingCount+largeLoad[i].underAMCCount);	                		
 	                		}
 	                	}
 	                	$scope.liftStatus.inactiveLiftStatus.text=totalCount;

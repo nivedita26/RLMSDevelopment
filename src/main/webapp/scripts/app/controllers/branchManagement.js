@@ -25,6 +25,7 @@
 			$rootScope.editBranch.pinCode=row.PinCode;
 			window.location.hash = "#/edit-branch";
 		};
+				
 		
 		//-------Branch Details Table---------
 	    $scope.filterOptions = {
@@ -174,10 +175,6 @@
 				,{
 					cellTemplate :  
 			             '<button ng-click="$event.stopPropagation(); editBranchDetails(row.entity);" title="Edit" style="margin-top: 2px;height: 38px;width :38px;" class="btn-sky"><span class="glyphicon glyphicon-pencil"></span></button>',
-					width : 40
-				},{
-					cellTemplate :  
-			             '<button ng-click="$event.stopPropagation(); deleteBranchDetails(row.entity);" title="Delete" style="margin-top: 2px;height: 38px;width :38px;" class="btn-sky"><span class="glyphicon glyphicon-remove"></span></button>',
 					width : 40
 				}
 				]

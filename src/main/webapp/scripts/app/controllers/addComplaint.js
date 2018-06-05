@@ -20,9 +20,7 @@
 				$scope.selectedComplaintTitle = {};
 				$scope.selectedLift = {};			
 				$scope.companyName='';
-
-
-				$scope.branchName='';							
+				$scope.branchName='';
 
 				$scope.addComplaint={
 						branchCompanyMapId:0,
@@ -30,6 +28,7 @@
 						branchCustomerMapId:0,
 						companyId:0,
 						callType:0,
+						callType:'',
 						complaintsTitle:'',
 						complaintsRemark:'',
 						registrationType:2,
@@ -284,6 +283,7 @@
 			    	$scope.branches = response;
 			    	$scope.selectedBranch.selected = undefined;
 			    	$scope.selectedCustomer.selected = undefined;
+			    	$scope.selectedLift.selected =undefined;
 			    	var emptyArray=[];
 			    	$scope.myData = emptyArray;
 			    });
@@ -303,6 +303,7 @@
 	 	         .then(function(customerData) {
 	 	        	 $scope.cutomers = customerData;
 	 	        	 $scope.selectedCustomer.selected = undefined;
+	 	        	 $scope.selectedLift.selected =undefined;
 	 	        	var emptyArray=[];
 			    	$scope.myData = emptyArray;
 	 	         })

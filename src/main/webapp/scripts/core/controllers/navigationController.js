@@ -17,7 +17,7 @@ angular
    	      },
    	      {
    	        label: 'Manage Companies',
-   	        url: '#/company-management'
+   	        url: '#/company-management',
    	      },
    	      {
    	          label: 'Manage Branches',
@@ -46,10 +46,10 @@ angular
    	      ]
    	    },
    	    {
- 	      label: 'Complaints',
+ 	      label: 'Operations',
    	      iconClasses: 'glyphicon glyphicon-user ',
    	      children: [{
-   	          label: 'Manage Complaint',
+   	          label: 'Operational Dashboard',
    	          url: '#/complaint-management'
    	      }
    	      ]

@@ -5,6 +5,15 @@
 		$scope.alert = { type: 'success', msg: 'You successfully Edited Company.',close:true };
 		//function to initialize addCompany Model
 		$scope.showAlert = false;
+		$scope.status=[
+			{
+				id:1,
+				name:"Active"
+			},{
+				id:2,
+				name:"Inactive"
+			}
+		];
 		$scope.editCompany.ownerNumber=parseInt($rootScope.editCompany.ownerNumber,10);
 		//Post call
 		$scope.submitEditCompany = function(){
@@ -23,7 +32,8 @@
 					emailId:$scope.editCompany.emailId,      
 					panNumber:$scope.editCompany.panNumber,    
 					tinNumber:$scope.editCompany.tinNumber,    
-					vatNumber:$scope.editCompany.vatNumber 
+					vatNumber:$scope.editCompany.vatNumber,
+					status:$scope.editComapany.status
 			};
 			serviceApi.doPostWithData("/RLMS/admin/updateCompany",companyData)
 			.then(function(response){
