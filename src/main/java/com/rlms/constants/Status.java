@@ -38,8 +38,6 @@ public enum Status {
 	public void setStatusMsg(String statusMsg) {
 		this.statusMsg = statusMsg;
 	}
-	
-	
 	public static String getStringFromID(Integer statusId){
 		if(statusId == Status.PENDING.getStatusId()){
 			return Status.PENDING.getStatusMsg();
@@ -85,7 +83,6 @@ public enum Status {
 			}/*else if(status == Status.NOT_UNDER_AMC.getStatusMsg()){
 					return Status.NOT_UNDER_AMC.getStatusId();
 			}*/
-					
 		return 0;
 	}
 	

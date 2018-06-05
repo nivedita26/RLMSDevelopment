@@ -351,4 +351,18 @@ public class LiftDaoImpl implements LiftDao{
 		criteria.add(Restrictions.eq("liftNumber",liftNumber));
 		return (RlmsLiftMaster) criteria.uniqueResult();
 	}
+
+	@Override
+	public  RlmsLiftCustomerMap getAllLiftsDetailsByIds(Integer liftCustomerMapIds) {
+
+		Session session = this.sessionFactory.getCurrentSession();
+		 Criteria criteria = session.createCriteria(RlmsLiftCustomerMap.class)
+				 .createAlias("branchCustomerMap.customerMaster", "custo")
+				 .add(Restrictions.eq("custo.customerId", liftCustomerMapIds))
+				 .add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
+		RlmsLiftCustomerMap  listOfAllLifts = (RlmsLiftCustomerMap) criteria.uniqueResult();
+		 return listOfAllLifts;
+	}
+
+	
 }

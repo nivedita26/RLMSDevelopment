@@ -3,7 +3,6 @@ package com.rlms.dao;
 import java.util.Date;
 import java.util.List;
 
-import com.rlms.contract.EventDtlsDto;
 import com.rlms.model.RlmsCompanyBranchMapDtls;
 import com.rlms.model.RlmsComplaintMaster;
 import com.rlms.model.RlmsComplaintTechMapDtls;
@@ -19,6 +18,11 @@ public interface DashboardDao {
 			Integer branchCompanyMapId, Integer branchCustomerMapId,
 			List<Integer> listOfLiftCustoMapId, List<Integer> statusList,
 			Date fromDate, Date toDate,Integer callType);
+	
+	public  List<Object[]> getTotalComplaintsCallTypeCount(List<Integer> liftCustomerMapIds);
+	public  List<Object[]> getTodaysComplaintsCallTypeCount(List<Integer> liftCustomerMapIds);
+	public  List<Object[]> getTotalComplaintsStatusCount(List<Integer> liftCustomerMapIds);
+	public  List<Object[]> getTodaysComplaintsStatusCount(List<Integer> liftCustomerMapIds);
 
 	public RlmsComplaintTechMapDtls getComplTechMapObjByComplaintId(Integer complaintId);
 	public List<RlmsUserRoles> getAllUserWithRoleFor(List<Integer> commpBranchMapId, Integer spocRoleId);

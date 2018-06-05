@@ -155,8 +155,9 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 		complaintMaster.setRegistrationType(dto.getRegistrationType());
 		complaintMaster.setRemark(dto.getComplaintsRemark());
 		complaintMaster.setStatus(Status.PENDING.getStatusId());
+		complaintMaster.setCallType(dto.getCallType());
 		complaintMaster.setTitle(dto.getComplaintsTitle());
-		complaintMaster.setCallType(0);
+				
 		if(RLMSConstants.COMPLAINT_REG_TYPE_ADMIN.getId() == dto.getRegistrationType()){
 				complaintMaster.setCreatedBy(metaInfo.getUserId());				
 				complaintMaster.setUpdatedBy(metaInfo.getUserId());				
@@ -171,8 +172,6 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 		complaintMaster.setCreatedDate(new Date());
 		return complaintMaster;
 	}
-	
-	
 	private ComplaintsDto constructComplaintDto(RlmsComplaintMaster complaintMaster){
 		ComplaintsDto dto = new ComplaintsDto();
 		if(RLMSConstants.COMPLAINT_REG_TYPE_ADMIN.getId().equals(complaintMaster.getRegistrationType())){
@@ -450,17 +449,12 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 			UserRoleDtlsDTO dto = new UserRoleDtlsDTO();
 			dto.setUserId(rlmsUserRoles.getRlmsUserMaster().getUserId());
 			
-			
 			dto.setCompanyBranchMapId(rlmsUserRoles.getRlmsCompanyBranchMapDtls().getCompanyBranchMapId());
 			dto.setName(rlmsUserRoles.getRlmsUserMaster().getFirstName() + " " + rlmsUserRoles.getRlmsUserMaster().getLastName());
 			dto.setContactNumber(rlmsUserRoles.getRlmsUserMaster().getContactNumber());
 			dto.setUserRoleId(rlmsUserRoles.getUserRoleId());
-			
-			
-			
 			dto.setLongitude(rlmsUserRoles.getRlmsUserApplicationMapDetails().getLongitude());
 			dto.setLatitude(rlmsUserRoles.getRlmsUserApplicationMapDetails().getLatitude());
-			
 			
 			 List<Integer> statusList = new ArrayList<Integer>();
 		   	 statusList.add(Status.ASSIGNED.getStatusId());

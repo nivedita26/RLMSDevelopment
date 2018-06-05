@@ -325,8 +325,8 @@ angular.module('theme.demos.dashboard.indi', [
             .construnctObjeToSend(complaintStatusArray);
           serviceApi
             .doPostWithData(
-            '/RLMS/dashboard/getListOfComplaintsForDashboard',
-            dataToSend)
+           // '/RLMS/dashboard/getListOfComplaintsForDashboard',
+       		'/RLMS/dashboard/getListOfTodaysComplaintsCountByStatus',dataToSend)
             .then(
             function (
               largeLoad) {
@@ -542,7 +542,10 @@ angular.module('theme.demos.dashboard.indi', [
     $scope.getPagedDataAsyncForComplaints = function (pageSize,
       page, searchText, complaintStatus, callingModel,isTodaysData) {
       var url;
-      url = '/RLMS/dashboard/getListOfComplaintsForDashboard';
+     // url = '/RLMS/dashboard/getListOfComplaintsForDashboard';
+      
+      url = '/RLMS/dashboard/getListOfTodaysComplaintsCountByStatus';
+      
       setTimeout(
         function () {
           var data;
