@@ -65,8 +65,15 @@ UserRoleDao{
 		 Session session = this.sessionFactory.getCurrentSession();
 		 Criteria criteria = session.createCriteria(RlmsSpocRoleMaster.class)
 				 .add(Restrictions.eq("activeFlag", 1))
-				 .add(Restrictions.gt("roleLevel", metaInfo.getUserRole().getRlmsSpocRoleMaster().getRoleLevel()))
-				 .add(Restrictions.ne("spocRoleId", 8));
+			  	  .add(Restrictions.ne("spocRoleId", 8));
+				// .add(Restrictions.ge("roleLevel", metaInfo.getUserRole().getRlmsSpocRoleMaster().getRoleLevel()));
+				 if(metaInfo.getUserRole().getRlmsSpocRoleMaster().getSpocRoleId()==1) {//||metaInfo.getUserRole().getRlmsSpocRoleMaster().getSpocRoleId()==3||metaInfo.getUserRole().getRlmsSpocRoleMaster().getSpocRoleId()==5) {
+					 criteria.add(Restrictions.gt("roleLevel", metaInfo.getUserRole().getRlmsSpocRoleMaster().getRoleLevel()));
+				 }
+				 else  {
+					 criteria.add(Restrictions.ge("roleLevel", metaInfo.getUserRole().getRlmsSpocRoleMaster().getRoleLevel()));
+					 criteria.add(Restrictions.ne("spocRoleId", metaInfo.getUserRole().getRlmsSpocRoleMaster().getSpocRoleId()));
+				 }
 		 List<RlmsSpocRoleMaster> listOfAllRoles = criteria.list();
 		 return listOfAllRoles;
 	}

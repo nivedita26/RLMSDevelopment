@@ -120,15 +120,11 @@ public class AdminController extends BaseController{
 	        	logger.error(ExceptionUtils.getFullStackTrace(e));
 	        	throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
 	        }
-	 
 	        return listOfAllUsers;
 	    }
-	
-
 	 @RequestMapping(value = "/getAllApplicableCompanies", method = RequestMethod.POST)
 	    public @ResponseBody List<RlmsCompanyMaster> getAllApplicableCompanies() throws RunTimeException {
 	        List<RlmsCompanyMaster> listOfApplicableCompanies = null;
-	        
 	        try{
 	        	logger.info("Method :: getAllApplicableCompanies");
 	        	listOfApplicableCompanies =  this.companyService.getAllCompanies(this.getMetaInfo());
@@ -137,7 +133,6 @@ public class AdminController extends BaseController{
 	        	logger.error(ExceptionUtils.getFullStackTrace(e));
 	        	throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
 	        }
-	 
 	        return listOfApplicableCompanies;
 	    }
 	 //Thgis function will return details of each company to show on company page table
@@ -153,10 +148,8 @@ public class AdminController extends BaseController{
 	        	logger.error(ExceptionUtils.getFullStackTrace(e));
 	        	throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
 	        }
-	 
 	        return listOfApplicableCompaniesDetails;
 	    }
-	 
 	 @RequestMapping(value = "/assignRole", method = RequestMethod.POST)
 	    public @ResponseBody ResponseDto assignRole(@RequestBody UserRoleDtlsDTO userRoleDtlsDTO) throws RunTimeException, ValidationException {
 	        
@@ -536,7 +529,6 @@ public class AdminController extends BaseController{
 	        	logger.error(ExceptionUtils.getFullStackTrace(e));
 	        	throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
 	        }
-	 
 	        return reponseDto;
 	 }
 }
