@@ -13,8 +13,10 @@ public interface LiftService {
 
 	public List<RlmsLiftCustomerMap> getAllLiftsForBranch(Integer companyBranchMapId);
 
-	ResponseDto validateAndAddNewLiftDtls(LiftDtlsDto dto, UserMetaInfo metaInfo) throws ParseException;
+	public ResponseDto validateAndAddNewLiftDtls(LiftDtlsDto dto, UserMetaInfo metaInfo) throws ParseException;
 	
+	//public ResponseDto validateAndUpdateLiftDtls(LiftDtlsDto dto, UserMetaInfo metaInfo) throws ParseException;
+
 	public String approveLift(LiftDtlsDto liftDtlsDto, UserMetaInfo metaInfo);
 
 	List<LiftDtlsDto> getLiftsToBeApproved();
@@ -33,6 +35,4 @@ public interface LiftService {
 	
 	public List<LiftDtlsDto> getLiftCountForBranch(List<Integer> companyBranchIds, UserMetaInfo metaInfo);
 
-	
-	
 }

@@ -39,5 +39,4 @@ public enum RLMSConstants {
 	public void setName(String name) {
 		this.name = name;
 	}
-
 }

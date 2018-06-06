@@ -53,7 +53,7 @@ public class AdminController extends BaseController{
 	private LiftService liftService;
 	
 	@Autowired
-	private ComplaintsService complaintsService;
+	private ComplaintsService sService;
 	
 	private static final Logger logger = Logger.getLogger(AdminController.class);
 	
@@ -327,6 +327,7 @@ public class AdminController extends BaseController{
 	 
 	        return reponseDto;
 	  }
+	 
 	 
 	 @RequestMapping(value = "/getLiftsToBeApproved", method = RequestMethod.POST)
 	    public @ResponseBody List<LiftDtlsDto> getLiftsToBeApproved() throws RunTimeException{

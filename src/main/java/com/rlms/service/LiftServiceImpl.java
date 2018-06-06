@@ -105,6 +105,34 @@ public class LiftServiceImpl implements LiftService{
 		ResponseDto.setResponse("Duplicate lift number");
     	return ResponseDto;
 	}
+	/*@SuppressWarnings("unused")
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
+	public ResponseDto validateAndUpdateLiftDtls(LiftDtlsDto dto, UserMetaInfo metaInfo) throws ParseException{
+		ResponseDto ResponseDto = new ResponseDto();
+	    RlmsLiftMaster liftMaster = liftDao.getLiftByLiftNumber(dto.getLiftNumber());
+	   if(liftMaster==null) {
+		RlmsLiftMaster liftM = this.constructLiftMaster(dto, metaInfo);
+		Integer liftId = this.liftDao.saveLiftM(liftM);
+		liftM.setLiftId(liftId);
+		
+		RlmsLiftCustomerMap liftCustomerMap = this.constructLiftCustomerMap(liftM, dto, metaInfo);
+		Integer liftCustomerMapID = this.liftDao.saveLiftCustomerMap(liftCustomerMap);
+		liftCustomerMap.setLiftCustomerMapId(liftCustomerMapID);
+		
+		AMCDetailsDto amcDetailsDto = this.constructAMCDtlsDto(liftCustomerMap);
+		this.reportService.addAMCDetailsForLift(amcDetailsDto, metaInfo);
+		
+		RlmsFyaTranDtls fyaTranDtls = this.constructFyaTranDtls(liftCustomerMap, metaInfo);
+		this.fyaDao.saveFyaTranDtls(fyaTranDtls);
+		ResponseDto.setStatus(true);
+		ResponseDto.setResponse(RlmsErrorType.LIFT_ADDED_SUCCESSFULLY.getMessage());
+		return ResponseDto;
+	     }
+		ResponseDto.setStatus(true);
+		ResponseDto.setResponse("Duplicate lift number");
+    	return ResponseDto;
+	}*/
 	private AMCDetailsDto constructAMCDtlsDto(RlmsLiftCustomerMap liftCustomerMap){
 		AMCDetailsDto dto = new AMCDetailsDto();
 		//if(liftCustomerMap.getLiftMaster().getAmcStartDate()!=null) {
@@ -278,6 +306,7 @@ public class LiftServiceImpl implements LiftService{
 			dto.setAmcStartDate(liftM.getAmcStartDate());
 			if(null != liftM.getAmcStartDate()){
 				dto.setAmcStartDateStr(DateUtils.convertDateToStringWithoutTime(liftM.getAmcStartDate()));
+				dto.setAmcEndDateStr(DateUtils.convertDateToStringWithoutTime(liftM.getAmcEndDate()));
 			}
 			dto.setAmcType(liftM.getAmcType());
 			
