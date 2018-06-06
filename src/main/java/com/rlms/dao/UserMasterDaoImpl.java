@@ -14,12 +14,12 @@ import org.springframework.stereotype.Repository;
 import com.rlms.constants.RLMSConstants;
 import com.rlms.contract.UserDtlsDto;
 import com.rlms.contract.UserMetaInfo;
+import com.rlms.model.RlmsCustomerMaster;
 import com.rlms.model.RlmsUserRoles;
 import com.rlms.model.RlmsUsersMaster;
 
 @Repository("cbUserMasterDao")
 public class UserMasterDaoImpl implements
-
 
 UserMasterDao{
    
@@ -105,5 +105,7 @@ UserMasterDao{
 		this.sessionFactory.getCurrentSession().update(rlmsUsersMaster);
 
 	}
+
+
 	
 }

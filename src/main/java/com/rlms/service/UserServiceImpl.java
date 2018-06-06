@@ -561,9 +561,7 @@ public class UserServiceImpl implements UserService {
 		userMaster.setUpdatedBy(metaInfo.getUserId());
 		this.userMasterDao.updateUser(userMaster);
 		return statusMessage;
-
 	}
-	
 	@Transactional(propagation = Propagation.REQUIRED)
 	public String deleteUserObj(UserDtlsDto dto, UserMetaInfo metaInfo){
 		String statusMesage = null;
