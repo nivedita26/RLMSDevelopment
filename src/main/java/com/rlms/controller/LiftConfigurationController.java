@@ -41,7 +41,6 @@ public class LiftConfigurationController {
 	        	logger.error(ExceptionUtils.getFullStackTrace(e));
 	        	throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
 	        }
-	 
 	        return reponseDto;
 	}
 }

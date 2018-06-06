@@ -586,5 +586,40 @@ public class CustomerServiceImpl implements CustomerService{
 		}
 		return listOfLiftDtls;
 	}
+	@Transactional(propagation = Propagation.REQUIRED)
+	public String validateAndEditCustomer(CustomerDtlsDto customerDtlsDto,UserMetaInfo metaInfo)
+ {
+		String statusMessage = "User updated successfully";
+		RlmsCustomerMaster  customerMaster = this.customerDao.getCustomerById(customerDtlsDto.getCustomerId());
+		
+		customerMaster.setAddress(customerDtlsDto.getAddress());
+		customerMaster.setCntNumber(customerDtlsDto.getCntNumber());
+		customerMaster.setCustomerName(customerDtlsDto.getFirstName());
+		customerMaster.setCustomerType(customerDtlsDto.getCustomerType());
+		customerMaster.setEmailID(customerDtlsDto.getEmailID());
+		customerMaster.setPanNumber(customerDtlsDto.getPanNumber());
+		customerMaster.setTinNumber(customerDtlsDto.getTinNumber());
+		customerMaster.setCity(customerDtlsDto.getCity());
+		customerMaster.setArea(customerDtlsDto.getArea());
+		customerMaster.setPincode(customerDtlsDto.getPinCode());
+		customerMaster.setVatNumber(customerDtlsDto.getVatNumber());
+		customerMaster.setChairmanName(customerDtlsDto.getChairmanName());
+		customerMaster.setChairmanNumber(customerDtlsDto.getChairmanNumber());
+		customerMaster.setChairmanEmail(customerDtlsDto.getChairmanEmail());
+		customerMaster.setTreasurerName(customerDtlsDto.getTreasurerName());
+		customerMaster.setTreasurerNumber(customerDtlsDto.getTreasurerNumber());
+		customerMaster.setTreasurerEmail(customerDtlsDto.getTreasurerEmail());
+		customerMaster.setSecretaryName(customerDtlsDto.getSecretaryName());
+		customerMaster.setSecretaryNumber(customerDtlsDto.getSecretaryNumber());
+		customerMaster.setSecretaryEmail(customerDtlsDto.getSecretaryEmail());
+		customerMaster.setWatchmenName(customerDtlsDto.getWatchmenName());
+		customerMaster.setWatchmenNumber(customerDtlsDto.getWatchmenNumber());
+		customerMaster.setWatchmenEmail(customerDtlsDto.getWatchmenEmail());
+		customerMaster.setActiveFlag(customerDtlsDto.getActiveFlag());
+		customerMaster.setUpdatedBy(metaInfo.getUserId());
+		customerMaster.setUpdatedDate(new Date());
+		this.customerDao.updateCustomer(customerMaster);
+		return statusMessage;
+	}
 }
 

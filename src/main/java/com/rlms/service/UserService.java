@@ -66,4 +66,6 @@ public interface UserService {
 
 	public String updateTechnicianLocation(UserDtlsDto userDtlsDto,
 			UserMetaInfo metaInfo);
+	
+	public String changePassword(UserDtlsDto userDto);
 }

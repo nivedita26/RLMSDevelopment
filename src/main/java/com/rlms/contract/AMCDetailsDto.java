@@ -12,6 +12,7 @@ public class AMCDetailsDto {
 	private List<Integer> liftCustomerMapId;
 	private List<Integer> listOfBranchCustomerMapId;
 	private List<Integer> listOFStatusIds;
+	
 	private String liftNumber;
 	private String customerName;
 	private String amcStartDate;
@@ -31,6 +32,38 @@ public class AMCDetailsDto {
 	private String area;
 	private Date amcStDate;
 	private Date amcEdDate;
+	
+	private Date serviceStDate;
+	private Date serviceEdDate;
+	
+	private String liftServiceStartDate;
+	private String liftServiceEndDate;
+	public String getLiftServiceStartDate() {
+		return liftServiceStartDate;
+	}
+	public String getLiftServiceEndDate() {
+		return liftServiceEndDate;
+	}
+	public void setLiftServiceStartDate(String liftServiceStartDate) {
+		this.liftServiceStartDate = liftServiceStartDate;
+	}
+	public void setLiftServiceEndDate(String liftServiceEndDate) {
+		this.liftServiceEndDate = liftServiceEndDate;
+	}
+	
+	
+	public Date getServiceStDate() {
+		return serviceStDate;
+	}
+	public Date getServiceEdDate() {
+		return serviceEdDate;
+	}
+	public void setServiceStDate(Date serviceStDate) {
+		this.serviceStDate = serviceStDate;
+	}
+	public void setServiceEdDate(Date serviceEdDate) {
+		this.serviceEdDate = serviceEdDate;
+	}
 	private Date amcDueDate;
 	private Integer activeFlag;
 	private String companyName;

@@ -1,7 +1,6 @@
 package com.rlms.dao;
 
 import java.util.List;
-
 import com.rlms.contract.AMCDetailsDto;
 import com.rlms.contract.LiftDtlsDto;
 import com.rlms.model.RlmsBranchCustomerMap;
@@ -68,5 +67,7 @@ public interface LiftDao {
 	public RlmsLiftAmcDtls getRlmsLiftAmcDtlsByLiftCustomerMapId(int rlmsLiftCustomerMapId);
 	
 	public RlmsLiftMaster  getLiftByLiftNumber(String liftNumber);
+	
+	public  RlmsLiftCustomerMap getAllLiftsDetailsByIds(Integer liftCustomerMapIds);
 
 }

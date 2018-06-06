@@ -165,7 +165,6 @@ public class CustomerDaoImpl implements CustomerDao{
 		 
 		 return criteria.list();
 	}
-	
 	@Override
 	public List<RlmsBranchCustomerMap> getAllCustomersForDashboard(List<Integer> listOfBranchCompanyMapId) {
 		 Session session = this.sessionFactory.getCurrentSession();
@@ -174,5 +173,8 @@ public class CustomerDaoImpl implements CustomerDao{
 		 List<RlmsBranchCustomerMap> listOfCustomers = criteria.list();
 		 return listOfCustomers;
 	}
-
+	@Override
+	public void updateCustomer(RlmsCustomerMaster customerMaster) {
+		this.sessionFactory.getCurrentSession().update(customerMaster);
+	}
 }
