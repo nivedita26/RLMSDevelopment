@@ -628,7 +628,7 @@ public class DashBoardController extends BaseController {
 			logger.info("Method :: getAllBranchesForCompany");
 			listOfAllBranches = this.companyService.getAllBranches(customerDtlsDto.getCompanyId());
 			for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
-				activeCount = 0;
+				activeCount = 0; 
 				inactiveCount = 0;
 				List<Integer> companyBranchIds = new ArrayList<>();
 				companyBranchIds.add(companyBranchMap.getCompanyBranchMapId());

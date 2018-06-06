@@ -648,7 +648,7 @@ public class DashboardServiceImpl implements DashboardService {
 		List<Integer> listOfAllApplicableCompanies = new ArrayList<Integer>();
 		List<Integer> listOFApplicableBranches = new ArrayList<Integer>();
 		List<Integer> listOfBranchIds = new ArrayList<Integer>();
-		
+		List<String> uniqueCityList = new ArrayList<>();
 		List<BranchCountDtls> branchCountDtlsList = new ArrayList<>();
 		listOfAllApplicableCompanies.add(companyId);
 		 List<RlmsCompanyBranchMapDtls> listOfAllBranches = this.dashboardDao.getAllBranchDtlsForDashboard(listOfAllApplicableCompanies);
@@ -657,68 +657,37 @@ public class DashboardServiceImpl implements DashboardService {
 			 listOfBranchIds.add(rlmsCompanyBranchMapDtls.getRlmsBranchMaster().getBranchId());
 		}
 		 List<Object[]> countList = dashboardDao.getBranchCountDtlsForDashboard(listOfBranchIds);
-		 
+		  BranchCountDtls branchCountDtls = null;
 		 for (Object[] objects : countList) {
-			  BranchCountDtls branchCountDtls = new BranchCountDtls();
-			  branchCountDtls.setBranchCity(objects[0].toString());
-			  branchCountDtls.setBranchCount((BigInteger)objects[1]);
-			  branchCountDtlsList.add(branchCountDtls);
+			  String cityName = objects[0].toString();
+			  if(!uniqueCityList.contains(cityName)) {
+				  branchCountDtls = new BranchCountDtls();
+				  branchCountDtls.setBranchCity(objects[0].toString());
+				  if((Integer)objects[1]==1) {
+					  branchCountDtls.setBranchActiveFlagCount((BigInteger)objects[2]);
+				  }
+				  else {
+					  branchCountDtls.setBranchInactiveFlagCount((BigInteger)objects[2]);
+				  }
+			  		uniqueCityList.add(objects[0].toString());
+			  }
+			  else {
+				  		if((Integer)objects[1]==1) {
+				  			branchCountDtls.setBranchActiveFlagCount((BigInteger)objects[2]);
+				  		}
+				  		else {
+				  			branchCountDtls.setBranchInactiveFlagCount((BigInteger)objects[2]);
+				  		}
+				  		branchCountDtlsList.add(branchCountDtls);
+			  }
 		}
-		 
 			List<BranchDtlsDto> listOFBranchDtls = new ArrayList<BranchDtlsDto>();
-
-		 /*if(listOfAllBranches!=null && !listOfAllBranches.isEmpty()) {
-			 
-	     /*  for (RlmsCompanyBranchMapDtls rlmsCompanyBranchMapDtls : listOfAllBranches) {
-			  BranchCountDtls branchCountDtls = new BranchCountDtls();
-			 if(!listOfCity.contains(rlmsCompanyBranchMapDtls.getRlmsBranchMaster().getCity())){
-				 int branchCount = Collections.frequency(listOfAllBranches, rlmsCompanyBranchMapDtls.getRlmsBranchMaster().getCity());	 
-			     branchCountDtls.setBranchCity(rlmsCompanyBranchMapDtls.getRlmsBranchMaster().getCity());
-			     branchCountDtls.setBranchCount(branchCount);
-			     listOfCity.add(rlmsCompanyBranchMapDtls.getRlmsBranchMaster().getCity());
-			   }
-		     }
-		 }*/
-
-		 /*  for (RlmsCompanyBranchMapDtls rlmsCompanyBranchMapDtls : listOfAllBranches) {
-			  listOFApplicableBranches.add(rlmsCompanyBranchMapDtls.getCompanyBranchMapId());
-		  }
-		for (Integer companyBranchMapId : listOFApplicableBranches) {
-			BranchDtlsDto branchDtlsDto = new BranchDtlsDto();
-			RlmsCompanyBranchMapDtls rlmsCompanyBranchMapDtls = this.dashboardDao.getCompanyBranchMapDtlsForDashboard(companyBranchMapId);
-			branchDtlsDto.setId(rlmsCompanyBranchMapDtls.getRlmsBranchMaster().getBranchId());
-			branchDtlsDto.setBranchName(rlmsCompanyBranchMapDtls.getRlmsBranchMaster().getBranchName());
-			branchDtlsDto.setBranchAddress(rlmsCompanyBranchMapDtls.getRlmsBranchMaster().getBranchAddress());
-			branchDtlsDto.setArea(rlmsCompanyBranchMapDtls.getRlmsBranchMaster().getArea());
-			branchDtlsDto.setCity(rlmsCompanyBranchMapDtls.getRlmsBranchMaster().getCity());
-			branchDtlsDto.setPinCode(rlmsCompanyBranchMapDtls.getRlmsBranchMaster().getPincode());
-			branchDtlsDto.setCompanyName(rlmsCompanyBranchMapDtls.getRlmsCompanyMaster().getCompanyName());
-			branchDtlsDto.setActiveFlag(rlmsCompanyBranchMapDtls.getActiveFlag());
-		
-			List<UserDtlsDto> listOfAllTech = this.getListOFAllTEchnicians(companyBranchMapId);
-			branchDtlsDto.setListOfAllTechnicians(listOfAllTech);
-			if(null != listOfAllTech && !listOfAllTech.isEmpty()){
-				branchDtlsDto.setNumberOfTechnicians(listOfAllTech.size());
-			}
-			List<LiftDtlsDto> listOfAllLifts = this.getListOfAllLifts(companyBranchMapId);
-			if(null != listOfAllLifts){
-				branchDtlsDto.setListOfAllLifts(listOfAllLifts);
-			}
-			if(null != listOfAllLifts){
-				branchDtlsDto.setNumberOfLifts(listOfAllLifts.size());
-			}
-			listOFBranchDtls.add(branchDtlsDto);			
-		}*/
-	
-		return branchCountDtlsList;
+		    return branchCountDtlsList;
 	}
-
-	
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void saveEventDtls(RlmsEventDtls eventDtls){
 		this.dashboardDao.saveEventDtls(eventDtls);
 	}
-	
 	@Transactional(propagation = Propagation.REQUIRED)
 	public List<ComplaintsDto> getListOfAmcCallsBy(ComplaintsDtlsDto dto) {
 		List<ComplaintsDto> listOfAllComplaints = new ArrayList<ComplaintsDto>();

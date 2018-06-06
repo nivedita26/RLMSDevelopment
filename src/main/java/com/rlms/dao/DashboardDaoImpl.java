@@ -287,7 +287,12 @@ public List<Object[]> getBranchCountDtlsForDashboard(List<Integer> branchIds) {
 		}
 	}
 	Session session = this.sessionFactory.getCurrentSession();
-   String sql ="SELECT city,count(*) FROM rlms_branch_master  where branch_id in("+str+") group by city";
+	
+	String sql ="SELECT city,active_flag,count(*) FROM rlms_branch_master  where branch_id in ("+str+") group by active_flag,city order by city" ;
+
+	
+	
+  // String sql ="SELECT city,count(*) FROM rlms_branch_master  where branch_id in("+str+") group by city";
     	SQLQuery query = session.createSQLQuery(sql);
 	 	List<Object[]>EventCount = query.list();
 		return EventCount;

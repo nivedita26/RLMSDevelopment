@@ -585,7 +585,16 @@ public class UserServiceImpl implements UserService {
 		this.userRoleDao.mergeUserAppDlts(existingAppDtl);
 		return PropertyUtils.getPrpertyFromContext(RlmsErrorType.TECHNICIAN_LOCATION_UPDATED
 				.getMessage());
+	}
 
+	@Override
+	public String changePassword(UserDtlsDto userDto) {
+		RlmsUsersMaster  rlmsUsersMaster =userMasterDao.getUserByUserId(userDto.getUserId());
+		if(rlmsUsersMaster !=null ) {
+			rlmsUsersMaster.setPassword(userDto.getPassword());
+			userMasterDao.changeUserPassword(rlmsUsersMaster);
+		}
+		return null;
 	}
 
 }

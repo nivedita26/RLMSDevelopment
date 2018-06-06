@@ -21,7 +21,14 @@ public class UserDtlsDto {
 	private String area;
 	private Integer pinCode;
 	private String userRoleName;
+	private String password;
 	
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
 	public String getFirstName() {
 		return firstName;
 	}

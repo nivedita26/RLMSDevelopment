@@ -7,13 +7,11 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.rlms.constants.RLMSConstants;
-import com.rlms.contract.CompanyDtlsDTO;
 import com.rlms.contract.UserDtlsDto;
 import com.rlms.contract.UserMetaInfo;
 import com.rlms.model.RlmsUserRoles;
@@ -36,8 +34,6 @@ UserMasterDao{
 		this.sessionFactory = sessionFactory;
 	}
 
-	
-	
 	public RlmsUsersMaster getUserByEmailID(String emailId)
 	{
 		 Session session = this.sessionFactory.getCurrentSession();
@@ -102,6 +98,12 @@ UserMasterDao{
 		q.setParameter("updatedDate", new Date());
 		q.setParameter("updatedBy", metaInfo.getUserId());
 		q.executeUpdate();
+	}
+	@Override
+	public void changeUserPassword(RlmsUsersMaster rlmsUsersMaster) {
+		
+		this.sessionFactory.getCurrentSession().update(rlmsUsersMaster);
+
 	}
 	
 }
