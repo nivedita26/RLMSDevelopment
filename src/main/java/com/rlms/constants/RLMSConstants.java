@@ -15,8 +15,8 @@ public enum RLMSConstants {
 	NA(10, "NA"),
 	ZERO(0,"Zero");
 	
-	
 	private Integer id;
+	
 	private String name;
 	
 	RLMSConstants(Integer id, String name){
@@ -39,6 +39,5 @@ public enum RLMSConstants {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	
+
 }

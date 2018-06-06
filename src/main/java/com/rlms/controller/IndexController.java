@@ -37,4 +37,11 @@ public class IndexController extends BaseController{
 	  public @ResponseBody UserMetaInfo getMetaInfoObj(){
 		  return this.getMetaInfo();
 	  }
+	  
+	  @RequestMapping(value="changePassword",method = RequestMethod.POST)
+	  public @ResponseBody String changePassword(){
+		  
+		  
+		  return null;
+	  }
 }

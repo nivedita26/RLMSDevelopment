@@ -48,8 +48,6 @@ public class CompanyServiceImpl implements CompanyService{
 	@Autowired
 	private LiftService liftService;
 	
-	
-
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void saveCompanyM(RlmsCompanyMaster rlmsCompanyMaster){
 		this.companyDao.saveCompanyM(rlmsCompanyMaster);
@@ -410,6 +408,7 @@ public class CompanyServiceImpl implements CompanyService{
 		companyMaster.setOwnerNAme(companyDtlsDTO.getOwnerName());
 		companyMaster.setOwnerNumber(companyDtlsDTO.getOwnerNumber());
 		companyMaster.setOwnerEmailId(companyDtlsDTO.getOwnerEmail());
+		companyMaster.setActiveFlag(companyDtlsDTO.getActiveFlag());
 		companyMaster.setUpdatedDate(new Date());
 		companyMaster.setUpdatedBy(metaInfo.getUserId());
 		return companyMaster;
@@ -442,6 +441,7 @@ public class CompanyServiceImpl implements CompanyService{
 		branchMaster.setCity(dto.getCity());
 		branchMaster.setArea(dto.getArea());
 		branchMaster.setPincode(dto.getPinCode());
+		branchMaster.setActiveFlag(dto.getActiveFlag());
 		branchMaster.setUpdatedBy(userMetaInfo.getUserId());
 		branchMaster.setUdpatedDate(new Date());
 		this.companyDao.updateBranchDetails(branchMaster);

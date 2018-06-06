@@ -29,7 +29,6 @@
 		    .then(function(response){
 		    	$scope.roles = response;
 		    });
-		    
 		}
 		//Proceed Role
 		$scope.proceedRole = function(){

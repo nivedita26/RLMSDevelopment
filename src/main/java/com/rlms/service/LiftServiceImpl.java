@@ -100,28 +100,33 @@ public class LiftServiceImpl implements LiftService{
 		ResponseDto.setStatus(true);
 		ResponseDto.setResponse(RlmsErrorType.LIFT_ADDED_SUCCESSFULLY.getMessage());
 		return ResponseDto;
-
 	     }
 		ResponseDto.setStatus(true);
 		ResponseDto.setResponse("Duplicate lift number");
     	return ResponseDto;
 	}
-	
 	private AMCDetailsDto constructAMCDtlsDto(RlmsLiftCustomerMap liftCustomerMap){
 		AMCDetailsDto dto = new AMCDetailsDto();
-		if(liftCustomerMap.getLiftMaster().getAmcStartDate()!=null) {
+		//if(liftCustomerMap.getLiftMaster().getAmcStartDate()!=null) {
+		
+		if(liftCustomerMap.getLiftMaster()!=null) {
+
 		dto.setAmcAmount(liftCustomerMap.getLiftMaster().getAmcAmount());
-		dto.setAmcStartDate(DateUtils.convertDateToStringWithoutTime(liftCustomerMap.getLiftMaster().getAmcStartDate()));
-		dto.setAmcEndDate(DateUtils.convertDateToStringWithoutTime(liftCustomerMap.getLiftMaster().getAmcEndDate()));
-		Date amcDueDate = DateUtils.addDaysToDate(liftCustomerMap.getLiftMaster().getAmcEndDate(), -30);
-		dto.setAmcDueDate(amcDueDate);
-		dto.setAmcType(liftCustomerMap.getLiftMaster().getAmcType());
+		System.out.println(liftCustomerMap.getLiftMaster().getAmcStartDate());
+       if(liftCustomerMap.getLiftMaster().getAmcStartDate()!=null  &&(liftCustomerMap.getLiftMaster().getAmcEndDate()!=null) ) {
+	      	dto.setAmcStartDate(DateUtils.convertDateToStringWithoutTime(liftCustomerMap.getLiftMaster().getAmcStartDate()));
+			dto.setAmcEndDate(DateUtils.convertDateToStringWithoutTime(liftCustomerMap.getLiftMaster().getAmcEndDate()));
+	    	Date amcDueDate = DateUtils.addDaysToDate(liftCustomerMap.getLiftMaster().getAmcEndDate(), -30);
+			dto.setAmcDueDate(amcDueDate);
+			dto.setAmcType(liftCustomerMap.getLiftMaster().getAmcType());
+       }
+      
+		dto.setLiftServiceStartDate(DateUtils.convertDateToStringWithoutTime(liftCustomerMap.getLiftMaster().getServiceStartDate()));
+		dto.setLiftServiceEndDate(DateUtils.convertDateToStringWithoutTime(liftCustomerMap.getLiftMaster().getServiceEndDate()));
 		}
 		dto.setLiftCustoMapId(liftCustomerMap.getLiftCustomerMapId());
 		dto.setLiftNumber(liftCustomerMap.getLiftMaster().getLiftNumber());
-		
 		return dto;
-		
 	}
 	private RlmsFyaTranDtls constructFyaTranDtls(RlmsLiftCustomerMap liftCustomerMap, UserMetaInfo metaInfo){
 		RlmsFyaTranDtls fyaTranDtls = new RlmsFyaTranDtls();

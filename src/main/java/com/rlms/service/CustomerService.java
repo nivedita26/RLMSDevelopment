@@ -7,6 +7,7 @@ import com.rlms.contract.CustomerDtlsDto;
 import com.rlms.contract.LiftDtlsDto;
 import com.rlms.contract.MemberDtlsDto;
 import com.rlms.contract.UserAppDtls;
+import com.rlms.contract.UserDtlsDto;
 import com.rlms.contract.UserMetaInfo;
 import com.rlms.exception.ValidationException;
 import com.rlms.model.RlmsBranchCustomerMap;
@@ -34,4 +35,5 @@ public interface CustomerService {
 	public  List<RlmsBranchCustomerMap> getAllApplicableCustomersCountForDashboard(
 			List<Integer> companyBranchIds, UserMetaInfo metaInfo);
 	public List<LiftDtlsDto> getAllLiftParameters(Integer liftCustomerMapId);
+	public String validateAndEditCustomer(CustomerDtlsDto customerDtlsDto,UserMetaInfo metaInfo);
 }

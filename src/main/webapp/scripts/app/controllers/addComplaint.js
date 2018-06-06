@@ -20,15 +20,16 @@
 				$scope.selectedComplaintTitle = {};
 				$scope.selectedLift = {};			
 				$scope.companyName='';
-				$scope.branchName='';							
+				$scope.branchName='';
 
 				$scope.addComplaint={
 						branchCompanyMapId:0,
 						liftCustomerMapId:0,
 						branchCustomerMapId:0,
 						companyId:0,
+						callType:0,
 						callType:'',
-						complaintTitle:'',
+						complaintsTitle:'',
 						complaintsRemark:'',
 						registrationType:2,
 						//fromDate:'',
@@ -208,7 +209,7 @@
 			//Post call add customer
 			$scope.submitAddComplaint = function(){
 				$scope.addComplaint.callType = $scope.selectedCallType.selected.id;
-				$scope.addComplaint.complaintTitle = $scope.selectedComplaintTitle.selected.name;
+				$scope.addComplaint.complaintsTitle = $scope.selectedComplaintTitle.selected.name;
 				$scope.addComplaint.liftCustomerMapId = $scope.selectedLift.selected.liftId;
 				$scope.addComplaint.registrationType = 31;
 				serviceApi.doPostWithData("/RLMS/complaint/validateAndRegisterNewComplaint",$scope.addComplaint)

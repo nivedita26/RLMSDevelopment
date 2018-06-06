@@ -561,9 +561,7 @@ public class UserServiceImpl implements UserService {
 		userMaster.setUpdatedBy(metaInfo.getUserId());
 		this.userMasterDao.updateUser(userMaster);
 		return statusMessage;
-
 	}
-	
 	@Transactional(propagation = Propagation.REQUIRED)
 	public String deleteUserObj(UserDtlsDto dto, UserMetaInfo metaInfo){
 		String statusMesage = null;
@@ -585,7 +583,16 @@ public class UserServiceImpl implements UserService {
 		this.userRoleDao.mergeUserAppDlts(existingAppDtl);
 		return PropertyUtils.getPrpertyFromContext(RlmsErrorType.TECHNICIAN_LOCATION_UPDATED
 				.getMessage());
+	}
 
+	@Override
+	public String changePassword(UserDtlsDto userDto) {
+		RlmsUsersMaster  rlmsUsersMaster =userMasterDao.getUserByUserId(userDto.getUserId());
+		if(rlmsUsersMaster !=null ) {
+			rlmsUsersMaster.setPassword(userDto.getPassword());
+			userMasterDao.changeUserPassword(rlmsUsersMaster);
+		}
+		return null;
 	}
 
 }
