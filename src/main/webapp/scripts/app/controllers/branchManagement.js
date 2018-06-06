@@ -9,6 +9,17 @@
 		loadCompanyData();
 		$scope.selectedCompany={};
 		$scope.showCompany = false;
+		/*$scope.status=[
+			
+		    {
+	    		id:1,
+	    		name:"Active"
+			},
+			{
+				id:0,
+				name:"Inactive"
+			}
+		]*/
 		function loadCompanyData(){
 			serviceApi.doPostWithoutData('/RLMS/admin/getAllApplicableCompanies')
 		    .then(function(response){
@@ -16,6 +27,7 @@
 		    });
 		}
 		$rootScope.editBranch={};
+		$rootScope.status=[{id:0,name:'Active'},{id:0, name: 'Inactive'}];
 		$scope.editBranchDetails=function(row){
 			$rootScope.editBranch.branchId=row.Branch_Id;
 			$rootScope.editBranch.branchName=row.Branch_Name;
@@ -23,6 +35,7 @@
 			$rootScope.editBranch.area=row.Area;
 			$rootScope.editBranch.city=row.City;
 			$rootScope.editBranch.pinCode=row.PinCode;
+			$rootScope.editBranch.status=row.Status;
 			window.location.hash = "#/edit-branch";
 		};
 				

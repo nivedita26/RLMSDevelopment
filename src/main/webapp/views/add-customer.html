@@ -32,7 +32,7 @@
 			<div class="form-group">
 				<label class="col-sm-3 control-label">Customer Name<sup class="red font-12">*</sup></label>
 				<div class="col-sm-6">
-					<input name="firstName" type="text" placeholder="Required Field" required onkeypress="return ((event.charCode > 96 && event.charCode < 123) || event.charCode == 8 || event.charCode == 32);" ng-model="addCustomer.firstName" class="form-control">
+					<input name="firstName" type="text" placeholder="Required Field" required onkeypress="return ((event.charCode > 64 && event.charCode < 91) ||(event.charCode > 96 && event.charCode < 123) || event.charCode == 8 || event.charCode == 32);" ng-model="addCustomer.firstName" class="form-control">
 					<span class="help-block"
 						ng-show="addCustomerForm.firstName.$error.required && addCustomerForm.firstName.$dirty">This
 						field is required</span>
@@ -56,7 +56,7 @@
 			<div class="form-group">
 				<label class="col-sm-3 control-label">City</label>
 				<div class="col-sm-6">
-					<input name="city" type="text" onkeypress="return ((event.charCode > 96 && event.charCode < 123) || event.charCode == 8 || event.charCode == 32);"
+					<input name="city" type="text" onkeypress="return ((event.charCode > 64 && event.charCode < 91) ||(event.charCode > 96 && event.charCode < 123) || event.charCode == 8 || event.charCode == 32);"
 						placeholder="City"
 						ng-model="addCustomer.city" class="form-control">
 				</div>
@@ -64,7 +64,7 @@
 			<div class="form-group">
 				<label class="col-sm-3 control-label">Pincode</label>
 				<div class="col-sm-6">
-					<input name="pinCode" type="number" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13 || (event.charCode >= 48 && event.charCode <= 57)) ? null : this.value.length<6"
+					<input name="pinCode" type="number" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13 ) ? null : this.value.length<6"
 						ng-model="addCustomer.pinCode" placeholder="Pincode" class="form-control">
 				</div>
 			</div>
@@ -80,7 +80,7 @@
 			<div class="form-group">
 				<label class="col-sm-3 control-label">Contact Number<sup class="red font-12">*</sup></label>
 				<div class="col-sm-6">
-					<input name="cntNumber" type="number" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13 || (event.charCode >= 48 && event.charCode <= 57)) ? null : this.value.length<10" placeholder="Required Field" required ng-model="addCustomer.cntNumber" class="form-control">
+					<input name="cntNumber" type="number" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : this.value.length<10" placeholder="Required Field" required ng-model="addCustomer.cntNumber" class="form-control">
 					<span class="help-block"
 						ng-show="addCustomerForm.cntNumber.$error.required && addCustomerForm.cntNumber.$dirty">This
 						field is required</span>
@@ -111,7 +111,7 @@
 				<div class="form-group">
 					<label class="col-sm-3 control-label">Chairman Name</label>
 					<div class="col-sm-6">
-						<input name="chairmanName" type="text" placeholder="Chairman Name" onkeypress="return ((event.charCode > 96 && event.charCode < 123) || event.charCode == 8 || event.charCode == 32);" ng-model="addCustomer.chairmanName" class="form-control">
+						<input name="chairmanName" type="text" placeholder="Chairman Name" onkeypress="return ((event.charCode > 64 && event.charCode < 91) ||(event.charCode > 96 && event.charCode < 123) || event.charCode == 8 || event.charCode == 32);" ng-model="addCustomer.chairmanName" class="form-control">
 					</div>
 				</div>
 				<div class="form-group">
@@ -123,7 +123,7 @@
 				<div class="form-group">
 					<label class="col-sm-3 control-label">Chairman Number</label>
 					<div class="col-sm-6">
-						<input name="chairmanNumber" type="number" placeholder="Chairman Number" ng-model="addCustomer.chairmanNumber" class="form-control">
+						<input name="chairmanNumber" type="number" placeholder="Chairman Number" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : this.value.length<10"ng-model="addCustomer.chairmanNumber" class="form-control">
 					</div>
 				</div>
 			</fieldset>
@@ -132,7 +132,7 @@
 				<div class="form-group">
 					<label class="col-sm-3 control-label">Secretary Name</label>
 					<div class="col-sm-6">
-						<input name="secretaryName" type="text" placeholder="secretary Name" ng-model="addCustomer.secretaryName" class="form-control">
+						<input name="secretaryName" type="text" placeholder="secretary Name" onkeypress="return ((event.charCode > 64 && event.charCode < 91) ||(event.charCode > 96 && event.charCode < 123) || event.charCode == 8 || event.charCode == 32);"ng-model="addCustomer.secretaryName" class="form-control">
 					</div>
 				</div>
 				<div class="form-group">
@@ -144,7 +144,7 @@
 				<div class="form-group">
 					<label class="col-sm-3 control-label">Secretary Number</label>
 					<div class="col-sm-6">
-						<input name="secretaryNumber" type="number" placeholder="secretary Number" ng-model="addCustomer.secretaryNumber" class="form-control">
+						<input name="secretaryNumber" type="number" placeholder="secretary Number" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : this.value.length<10"ng-model="addCustomer.secretaryNumber" class="form-control">
 					</div>
 				</div>
 			</fieldset>
@@ -153,7 +153,7 @@
 				<div class="form-group">
 					<label class="col-sm-3 control-label">Treasurer Name</label>
 					<div class="col-sm-6">
-						<input name="treasurerName" type="text" placeholder="treasurer Name" onkeypress="return ((event.charCode > 96 && event.charCode < 123) || event.charCode == 8 || event.charCode == 32);" ng-model="addCustomer.treasurerName" class="form-control">
+						<input name="treasurerName" type="text" placeholder="treasurer Name" onkeypress="return ((event.charCode > 64 && event.charCode < 91) ||(event.charCode > 96 && event.charCode < 123) || event.charCode == 8 || event.charCode == 32);" ng-model="addCustomer.treasurerName" class="form-control">
 					</div>
 				</div>
 				<div class="form-group">
@@ -165,7 +165,7 @@
 				<div class="form-group">
 					<label class="col-sm-3 control-label">Treasurer Number</label>
 					<div class="col-sm-6">
-						<input name="treasurerNumber" type="number" placeholder="treasurer Number" ng-model="addCustomer.treasurerNumber" class="form-control">
+						<input name="treasurerNumber" type="number" placeholder="treasurer Number" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : this.value.length<10" ng-model="addCustomer.treasurerNumber" class="form-control">
 					</div>
 				</div>
 			</fieldset>
@@ -174,7 +174,7 @@
 				<div class="form-group">
 					<label class="col-sm-3 control-label">Watchmen Name</label>
 					<div class="col-sm-6">
-						<input name="watchmenName" type="text" placeholder="watchmen Name" onkeypress="return ((event.charCode > 96 && event.charCode < 123) || event.charCode == 8 || event.charCode == 32);" ng-model="addCustomer.watchmenName" class="form-control">
+						<input name="watchmenName" type="text" placeholder="watchmen Name" onkeypress="return ((event.charCode > 64 && event.charCode < 91) ||(event.charCode > 96 && event.charCode < 123) || event.charCode == 8 || event.charCode == 32);" ng-model="addCustomer.watchmenName" class="form-control">
 					</div>
 				</div>
 				<div class="form-group">
@@ -186,7 +186,7 @@
 				<div class="form-group">
 					<label class="col-sm-3 control-label">Watchmen Number</label>
 					<div class="col-sm-6">
-						<input name="watchmenNumber" type="number" placeholder="watchmen Number" ng-model="addCustomer.watchmenNumber" class="form-control">
+						<input name="watchmenNumber" type="number" placeholder="watchmen Number" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : this.value.length<10" ng-model="addCustomer.watchmenNumber" class="form-control">
 					</div>
 				</div>
 			</fieldset>
@@ -213,7 +213,7 @@
 				<div class="form-group">
 					<label class="col-sm-3 control-label">GSTI Number<sup class="red font-12">*</sup></label>
 					<div class="col-sm-6">
-						<input name="vatNumber" type="text" placeholder="Required Field" onkeypress="return ((event.charCode > 96 && event.charCode < 123) || event.charCode == 8 || event.charCode == 32 || (event.charCode >= 48 && event.charCode <= 57));" required ng-model="addCustomer.vatNumber" class="form-control">
+						<input name="vatNumber" type="text" placeholder="Required Field" onkeypress="return ((event.charCode > 64 && event.charCode < 91) ||(event.charCode > 96 && event.charCode < 123) || event.charCode == 8 || event.charCode == 32 || (event.charCode >= 48 && event.charCode <= 57));" required ng-model="addCustomer.vatNumber" class="form-control">
 						<span class="help-block"
 							ng-show="addCustomerForm.vatNumber.$error.required && addCustomerForm.vatNumber.$dirty">This
 							field is required</span>

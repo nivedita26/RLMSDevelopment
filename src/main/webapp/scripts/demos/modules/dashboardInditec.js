@@ -1831,10 +1831,10 @@ angular.module('theme.demos.dashboard.indi', [
       	                  });*/
     	                	for (var i = 0; i < largeLoad.length; i++) {
     	                		
-    	                		if(largeLoad[i].activeBranchCount!=null){
+    	                		if(largeLoad[i].branchActiveFlagCount!=null){
     	                			var dataCount={};
     	                			dataCount.branchCity=largeLoad[i].branchCity
-    	                			dataCount.branchCount=largeLoad[i].activeBranchCount
+    	                			dataCount.branchCount=largeLoad[i].branchActiveFlagCount
 
     	                			data.push(dataCount);
     	                		}    	                		
@@ -1846,10 +1846,10 @@ angular.module('theme.demos.dashboard.indi', [
       	                  });*/
     	                	for (var i = 0; i < largeLoad.length; i++) {
     	                		
-    	                		if(largeLoad[i].activeBranchCount!=null){
+    	                		if(largeLoad[i].branchInActiveFlagCount!=null){
     	                			var dataCount={};
     	                			dataCount.branchCity=largeLoad[i].branchCity
-    	                			dataCount.branchCount=largeLoad[i].activeBranchCount
+    	                			dataCount.branchCount=largeLoad[i].branchInActiveFlagCount
 
     	                			data.push(dataCount);
     	                		}    	                		
@@ -1861,10 +1861,10 @@ angular.module('theme.demos.dashboard.indi', [
       	                  });*/
     	                	for (var i = 0; i < largeLoad.length; i++) {
     	                		
-    	                		if(largeLoad[i].branchCount!=null){
+    	                		if(largeLoad[i].branchActiveFlagCount!=null ||largeLoad[i].branchInActiveFlagCount!=null){
     	                			var dataCount={};
     	                			dataCount.branchCity=largeLoad[i].branchCity
-    	                			dataCount.branchCount=largeLoad[i].branchCount
+    	                			dataCount.branchCount=largeLoad[i].branchInActiveFlagCount +largeLoad[i].branchActiveFlagCount 
 
     	                			data.push(dataCount);
     	                		}    	                		
@@ -1917,8 +1917,8 @@ angular.module('theme.demos.dashboard.indi', [
 	                	var totalCount=0;
 	                	
 	                	for (var i = 0; i < largeLoad.length; i++) {
-	                		if(largeLoad[i].inactiveBranchCount!=null){
-	                			totalCount=totalCount+largeLoad[i].activeBranchCount;
+	                		if(largeLoad[i].branchActiveFlagCount!=null){
+	                			totalCount=totalCount+largeLoad[i].branchActiveFlagCount;
 	                		}
 	                	}
 	                  $scope.branchDetails.activeBranches.text=totalCount;
@@ -1930,8 +1930,8 @@ angular.module('theme.demos.dashboard.indi', [
 	                	var totalCount=0;
 	                	
 	                	for (var i = 0; i < largeLoad.length; i++) {
-	                		if(largeLoad[i].inactiveBranchCount!=null){
-	                			totalCount=totalCount+largeLoad[i].inactiveBranchCount;
+	                		if(largeLoad[i].branchInActiveFlagCount!=null){
+	                			totalCount=totalCount+largeLoad[i].branchInActiveFlagCount;
 	                		}
 	                	}
 	                  $scope.branchDetails.inactiveBranches.text=totalCount;
@@ -1940,8 +1940,8 @@ angular.module('theme.demos.dashboard.indi', [
 	                	var totalCount=0;
 	                	
 	                	for (var i = 0; i < largeLoad.length; i++) {
-	                		if(largeLoad[i].branchCount!=null){
-	                			totalCount=totalCount+largeLoad[i].branchCount;
+	                		if(largeLoad[i].branchInActiveFlagCount!=null ||largeLoad[i].branchActiveFlagCount!=null){
+	                			totalCount=totalCount+largeLoad[i].branchInActiveFlagCount +largeLoad[i].branchActiveFlagCount ;
 	                		}
 	                	}
 	                	$scope.branchDetails.totalBranches.text=totalCount;

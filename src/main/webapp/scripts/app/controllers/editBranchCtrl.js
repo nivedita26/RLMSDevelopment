@@ -20,17 +20,7 @@
 					status:''
 			};	
 		    $scope.branchList={};
-		    
-		    $scope.status=[
-		    	{
-		    		id:1,
-		    		name:"Active"
-		    	},
-		    	{
-		    		id:2,
-		    		name:"Inactive"
-		    	}
-		    ];
+		    	   
 		}
 		//load compay dropdown data
 		function loadCompayInfo(){
