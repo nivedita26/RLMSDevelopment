@@ -16,6 +16,8 @@ public interface CustomerDao {
 	public List<RlmsBranchCustomerMap> getAllCustomersForBranches(	List<Integer> listOfBranchCompanyMapId);
 	public RlmsMemberMaster getMemberByCntNo(String phoneNumber);
 	public Integer saveMemberM(RlmsMemberMaster memberMaster);
+	public void updateMember(RlmsMemberMaster memberMaster);
+
 	public RlmsCustomerMaster getCustomerById(Integer customerId);
 	public Integer saveCustomerMemberMap(RlmsCustomerMemberMap customerMemberMap);
 	public List<RlmsCustomerMemberMap> getAllCustomersForMember(Integer memberId);

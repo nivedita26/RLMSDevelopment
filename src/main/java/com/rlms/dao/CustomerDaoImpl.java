@@ -59,7 +59,6 @@ public class CustomerDaoImpl implements CustomerDao{
 
 	@Override
 	public Integer saveCustomerM(RlmsCustomerMaster customerMaster) {
-		// TODO Auto-generated method stub
 		Integer customerId = (Integer) this.sessionFactory.getCurrentSession().save(customerMaster);
 		return customerId;
 		
@@ -67,7 +66,6 @@ public class CustomerDaoImpl implements CustomerDao{
 	
 	@Override
 	public Integer saveCustomerMemberMap(RlmsCustomerMemberMap customerMemberMap) {
-		// TODO Auto-generated method stub
 		Integer customerId = (Integer) this.sessionFactory.getCurrentSession().save(customerMemberMap);
 		return customerId;
 		
@@ -75,7 +73,6 @@ public class CustomerDaoImpl implements CustomerDao{
 	
 	@Override
 	public Integer saveMemberM(RlmsMemberMaster memberMaster) {
-		// TODO Auto-generated method stub
 		Integer customerId = (Integer) this.sessionFactory.getCurrentSession().save(memberMaster);
 		return customerId;
 		
@@ -176,5 +173,9 @@ public class CustomerDaoImpl implements CustomerDao{
 	@Override
 	public void updateCustomer(RlmsCustomerMaster customerMaster) {
 		this.sessionFactory.getCurrentSession().update(customerMaster);
+	}
+	@Override
+	public void updateMember(RlmsMemberMaster memberMaster) {
+		this.sessionFactory.getCurrentSession().update(memberMaster);
 	}
 }

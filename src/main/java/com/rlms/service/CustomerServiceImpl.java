@@ -260,6 +260,17 @@ public class CustomerServiceImpl implements CustomerService{
 		return statusMessage;
 		
 	}
+	@Transactional(propagation = Propagation.REQUIRED)
+	public String validateAndUpdateNewMember(MemberDtlsDto memberDtlsDto, UserMetaInfo metaInfo) throws ValidationException{
+		String statusMessage = "";
+		if(this.validateMemberDtls(memberDtlsDto)){
+			RlmsMemberMaster  memberMaster = this.constructMemberMaster(memberDtlsDto, metaInfo);
+			this.customerDao.updateMember(memberMaster);
+			statusMessage = PropertyUtils.getPrpertyFromContext(RlmsErrorType.MEMBER_EDIT_SUCCESSFUL.getMessage());
+		}
+		return statusMessage;
+		
+	}
 	
 	private boolean validateMemberDtls(MemberDtlsDto memberDtlsDto) throws ValidationException{
 		boolean isValidMember = true;
@@ -275,7 +286,7 @@ public class CustomerServiceImpl implements CustomerService{
 	private RlmsMemberMaster constructMemberMaster(MemberDtlsDto memberDtlsDto, UserMetaInfo metaInfo){
 	
 		RlmsMemberMaster memberMaster = new RlmsMemberMaster();
-		memberMaster.setActiveFlag(RLMSConstants.ACTIVE.getId());
+		memberMaster.setActiveFlag(memberDtlsDto.getActiveFlag());
 		memberMaster.setAddress(memberDtlsDto.getAddress());
 		memberMaster.setContactNumber(memberDtlsDto.getContactNumber());
 		memberMaster.setEmailId(memberDtlsDto.getEmailId());
@@ -286,9 +297,9 @@ public class CustomerServiceImpl implements CustomerService{
 		memberMaster.setPincode(memberDtlsDto.getPinCode());
 		memberMaster.setUpdatedBy(metaInfo.getUserId());
 		memberMaster.setUpdatedDate(new Date());
-		memberMaster.setCreatedBy(metaInfo.getUserId());
-		memberMaster.setCreatedDate(new Date());
-		memberMaster.setRegistrationDate(new Date());
+	//	memberMaster.setCreatedBy(metaInfo.getUserId());
+	//	memberMaster.setCreatedDate(new Date());
+	//	memberMaster.setRegistrationDate(new Date());
 		return memberMaster;
 	}
 	
