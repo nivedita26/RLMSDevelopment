@@ -7,9 +7,20 @@
 		//loadBranchListInfo();
 		$scope.showAlert = false;
 		$scope.companies = [];
+		 $scope.activeFlag=[			
+			    {
+		    		id:0,
+		    		name:"Active"
+				},
+				{
+					id:1,
+					name:"Inactive"
+				}
+			];
+		
 		function initAddBranch(){
 			$scope.selectedCompany = {};
-			$scope.selectedStatus = {};
+			$scope.selectedActiveFlag = {};
 			$scope.addBranch={
 					companyId:'',
 					branchName:'',
@@ -17,10 +28,10 @@
 					city:'',
 					area:'',
 					pinCode:'',
-					status:''
+					//activeFlag:''
 			};	
 		    $scope.branchList={};
-		    	   
+		   
 		}
 		//load compay dropdown data
 		function loadCompayInfo(){
@@ -39,8 +50,8 @@
 					area:$scope.editBranch.area,
 					city:$scope.editBranch.city,
 					pinCode:$scope.editBranch.pinCode,
-					status:$scope.editBranch.id
-			};
+					//activeFlag:$scope.editBranch.activeFlag
+					};
 			serviceApi.doPostWithData("/RLMS/admin/editBranchInCompany",branchData)
 			.then(function(response){
 				$scope.showAlert = true;

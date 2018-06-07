@@ -14,6 +14,20 @@
 			 $scope.branches=[];
 			 $scope.showTable = false;
 		} 
+		
+		$rootScope.editCustomer={};
+		$scope.editCustomerDetails=function(row){
+			$rootScope.editCustomer.branchId=row.Branch_Id;
+			$rootScope.editCustomer.branchName=row.Branch_Name;
+			$rootScope.editCustomer.branchAddress=row.Address;
+			$rootScope.editCustomer.area=row.Area;
+			$rootScope.editCustomer.city=row.City;
+			$rootScope.editCustomer.pinCode=row.PinCode;
+			$rootScope.editCustomer.selectedActiveFlag;
+			//$rootScope.editBranch.activeFlag=row.activeFlag;
+			window.location.hash = "#/edit-customer";
+		};
+		
 		function loadCompanyData(){
 			serviceApi.doPostWithoutData('/RLMS/admin/getAllApplicableCompanies')
 		    .then(function(response){
@@ -270,12 +284,8 @@
 	  	    	  width: "110"
 	  	      },{
 	  	    	  cellTemplate :  
-	  	    		  '<button ng-click="$event.stopPropagation(); editThisCustomer(row.entity);" title="Edit" style="margin-top: 6px;height: 38px;width: 38px;" class="btn-sky"><span class="glyphicon glyphicon-pencil"></span></button>',
+	  	    		  '<button ng-click="$event.stopPropagation(); editCustomerDetails(row.entity);" title="Edit" style="margin-top: 6px;height: 38px;width: 38px;" class="btn-sky"><span class="glyphicon glyphicon-pencil"></span></button>',
   	    		  width : 40
-	  	      },{
-	  	    	  cellTemplate :  
-	  	    		  '<button ng-click="$event.stopPropagation(); deleteCustomerDetails(row.entity);" title="Delete" style="margin-top: 6px;height: 38px;width: 38px;" class="btn-sky"><span class="glyphicon glyphicon-remove"></span></button>',
-	  	    	  width : 40
 	  	      }
 			]
 	  	    };
