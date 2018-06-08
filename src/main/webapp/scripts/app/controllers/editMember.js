@@ -37,7 +37,7 @@
 			memberData = {
 					id:$rootScope.editMember.branchId,
 					branchName:$scope.editMember.branchName,
-					contactNumber:$scope.editUser.contactnumber,
+					contactNumber:$scope.editMember.contactnumber,
 					firstName:$scope.editMember.firstName,
 					area:$scope.editMember.area,
 					city:$scope.editMember.city,

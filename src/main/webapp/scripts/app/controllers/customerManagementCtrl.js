@@ -23,7 +23,7 @@
 			$rootScope.editCustomer.customerId=row.customerId;
 			$rootScope.editCustomer.firstName=row.Name;
 			//$rootScope.editCustomer.lastName=row.lastName;
-			//$rootScope.editUser.cntNumber=row.Contact_Number;
+			$rootScope.editCustomer.cntNumber=row.Contact_Number.replace(/-/g, '');
 			$rootScope.editCustomer.address=row.Address.replace(/-/g, '');
 			$rootScope.editCustomer.area=row.Area;
 			$rootScope.editCustomer.city=row.City.replace(/-/g, '');

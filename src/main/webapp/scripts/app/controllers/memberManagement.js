@@ -18,7 +18,7 @@
 			$rootScope.editMember.city=row.City;
 			$rootScope.editMember.pinCode=row.PinCode;
 			$rootScope.editMember.emailId=row.Email_Id.replace(/-/g, '');
-			$rootScope.editUser.contactnumber=row.Contact_Number.replace(/-/g, '');
+			$rootScope.editMember.contactnumber=row.Contact_Number.replace(/-/g, '')
 			window.location.hash = "#/edit-member";
 		};
 		function initMemberList(){

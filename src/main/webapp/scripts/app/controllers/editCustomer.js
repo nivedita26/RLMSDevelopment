@@ -129,7 +129,7 @@
 						firstName:$scope.editCustomer.firstName,
 						address:$scope.editCustomer.address,
 						area:$scope.editCustomer.area,
-						cntNumber:$scope.editUser.cntNumber,
+						cntNumber:$scope.editCustomer.cntNumber,
 						emailID:$scope.editCustomer.emailID,
 						city:$scope.editCustomer.city,
 						pinCode:$scope.editCustomer.pinCode,
