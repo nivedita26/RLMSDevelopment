@@ -69,5 +69,7 @@ public interface LiftDao {
 	public RlmsLiftMaster  getLiftByLiftNumber(String liftNumber);
 	
 	public  RlmsLiftCustomerMap getAllLiftsDetailsByIds(Integer liftCustomerMapIds);
+	
+	public RlmsLiftMaster getLiftById(Integer liftId);
 
 }
