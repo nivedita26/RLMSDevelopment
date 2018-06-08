@@ -8,12 +8,44 @@
 		$scope.goToAddCustomer = function(){
 			window.location.hash = "#/add-customer";
 		}
+		$scope.editCustomer =function(){
+			window.location.hash = "#/edit-customer";
+		};
 		function initCustomerList(){
 			 $scope.selectedCompany={};
 			 $scope.selectedBranch = {};
 			 $scope.branches=[];
 			 $scope.showTable = false;
 		} 
+		
+		$rootScope.editCustomer={};
+		$scope.editCustomerDetails=function(row){
+			$rootScope.editCustomer.customerId=row.customerId;
+			$rootScope.editCustomer.firstName=row.Name;
+			//$rootScope.editCustomer.lastName=row.lastName;
+			//$rootScope.editUser.cntNumber=row.Contact_Number;
+			$rootScope.editCustomer.address=row.Address.replace(/-/g, '');
+			$rootScope.editCustomer.area=row.Area;
+			$rootScope.editCustomer.city=row.City.replace(/-/g, '');
+			$rootScope.editCustomer.pinCode=row.PinCode;
+			$rootScope.editCustomer.emailID=row.Email_Id.replace(/-/g, '');
+			$rootScope.editCustomer.totalNumberOfLifts=row.Lift_Count;
+			$rootScope.editCustomer.chairmanName=row.ChairmanName.replace(/-/g, '');
+			$rootScope.editCustomer.chairmanNumber=row.ChairmanNumber.replace(/-/g, '');
+			$rootScope.editCustomer.chairmanEmail=row.ChairmanEmail.replace(/-/g, '');
+			$rootScope.editCustomer.secretaryName=row.SecretaryName.replace(/-/g, '');
+			$rootScope.editCustomer.secretaryNumber=row.SecretaryNumber.replace(/-/g, '');
+			$rootScope.editCustomer.secretaryEmail=row.SecretaryEmail.replace(/-/g, '');
+			$rootScope.editCustomer.treasurerName=row.TreasurerName.replace(/-/g, '');
+			$rootScope.editCustomer.treasurerNumber=row.TreasurerNumber.replace(/-/g, '');
+			$rootScope.editCustomer.treasurerEmail=row.TreasurerEmail.replace(/-/g, '');
+			$rootScope.editCustomer.watchmenName=row.WatchmenName.replace(/-/g, '');
+			$rootScope.editCustomer.watchmenNumber=row.WatchmenNumber.replace(/-/g, '');
+			$rootScope.editCustomer.watchmenEmail=row.WatchmenEmail.replace(/-/g, '');
+			$rootScope.editCustomer.activeFlag=row.ActiveFlag.replace(/-/g, '');
+			window.location.hash = "#/edit-customer";
+		};
+		
 		function loadCompanyData(){
 			serviceApi.doPostWithoutData('/RLMS/admin/getAllApplicableCompanies')
 		    .then(function(response){
@@ -186,7 +218,81 @@
 	  	        		}else{
 	  	        			userDetailsObj["Lift_Count"] =" - ";
 	  	        		}
-	  	        		
+	  	        		if(!!largeLoad[i].area){
+	  	        			userDetailsObj["Area"] =largeLoad[i].area;
+	  	        		}else{
+	  	        			userDetailsObj["Area"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].pinCode){
+	  	        			userDetailsObj["PinCode"] =largeLoad[i].pinCode;
+	  	        		}else{
+	  	        			userDetailsObj["PinCode"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].activeFlag){
+	  	        			userDetailsObj["ActiveFlag"] =largeLoad[i].activeFlag;
+	  	        		}else{
+	  	        			userDetailsObj["ActiveFlag"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].chairmanName){
+	  	        			userDetailsObj["ChairmanName"] =largeLoad[i].chairmanName;
+	  	        		}else{
+	  	        			userDetailsObj["ChairmanName"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].chairmanNumber){
+	  	        			userDetailsObj["ChairmanNumber"] =largeLoad[i].chairmanNumber;
+	  	        		}else{
+	  	        			userDetailsObj["ChairmanNumber"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].chairmanEmail){
+	  	        			userDetailsObj["ChairmanEmail"] =largeLoad[i].chairmanEmail;
+	  	        		}else{
+	  	        			userDetailsObj["ChairmanEmail"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].treasurerName){
+	  	        			userDetailsObj["TreasurerName"] =largeLoad[i].treasurerName;
+	  	        		}else{
+	  	        			userDetailsObj["TreasurerName"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].treasurerEmail){
+	  	        			userDetailsObj["TreasurerEmail"] =largeLoad[i].treasurerEmail;
+	  	        		}else{
+	  	        			userDetailsObj["TreasurerEmail"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].treasurerNumber){
+	  	        			userDetailsObj["TreasurerNumber"] =largeLoad[i].treasurerNumber;
+	  	        		}else{
+	  	        			userDetailsObj["TreasurerNumber"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].secretaryEmail){
+	  	        			userDetailsObj["SecretaryEmail"] =largeLoad[i].secretaryEmail;
+	  	        		}else{
+	  	        			userDetailsObj["SecretaryEmail"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].secretaryName){
+	  	        			userDetailsObj["SecretaryName"] =largeLoad[i].secretaryName;
+	  	        		}else{
+	  	        			userDetailsObj["SecretaryName"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].secretaryNumber){
+	  	        			userDetailsObj["SecretaryNumber"] =largeLoad[i].secretaryNumber;
+	  	        		}else{
+	  	        			userDetailsObj["SecretaryNumber"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].watchmenEmail){
+	  	        			userDetailsObj["WatchmenEmail"] =largeLoad[i].watchmenEmail;
+	  	        		}else{
+	  	        			userDetailsObj["WatchmenEmail"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].watchmenNumber){
+	  	        			userDetailsObj["WatchmenNumber"] =largeLoad[i].watchmenNumber;
+	  	        		}else{
+	  	        			userDetailsObj["WatchmenNumber"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].watchmenName){
+	  	        			userDetailsObj["WatchmenName"] =largeLoad[i].watchmenName;
+	  	        		}else{
+	  	        			userDetailsObj["WatchmenName"] =" - ";
+	  	        		}
 	  	        		userDetails.push(userDetailsObj);
 	  	        	  }
 	  	            $scope.setPagingData(userDetails, page, pageSize);
@@ -270,12 +376,8 @@
 	  	    	  width: "110"
 	  	      },{
 	  	    	  cellTemplate :  
-	  	    		  '<button ng-click="$event.stopPropagation(); editThisCustomer(row.entity);" title="Edit" style="margin-top: 6px;height: 38px;width: 38px;" class="btn-sky"><span class="glyphicon glyphicon-pencil"></span></button>',
+	  	    		  '<button ng-click="$event.stopPropagation(); editCustomerDetails(row.entity);" title="Edit" style="margin-top: 6px;height: 38px;width: 38px;" class="btn-sky"><span class="glyphicon glyphicon-pencil"></span></button>',
   	    		  width : 40
-	  	      },{
-	  	    	  cellTemplate :  
-	  	    		  '<button ng-click="$event.stopPropagation(); deleteCustomerDetails(row.entity);" title="Delete" style="margin-top: 6px;height: 38px;width: 38px;" class="btn-sky"><span class="glyphicon glyphicon-remove"></span></button>',
-	  	    	  width : 40
 	  	      }
 			]
 	  	    };
