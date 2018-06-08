@@ -14,6 +14,7 @@
 		function initCustomerList(){
 			 $scope.selectedCompany={};
 			 $scope.selectedBranch = {};
+			 $scope.selectedActiveFlag = {};
 			 $scope.branches=[];
 			 $scope.showTable = false;
 		} 
@@ -26,6 +27,7 @@
 			$rootScope.editCustomer.cntNumber=row.Contact_Number.replace(/-/g, '');
 			$rootScope.editCustomer.address=row.Address.replace(/-/g, '');
 			$rootScope.editCustomer.area=row.Area;
+			$rootScope.editCustomer.customerType=row.CustomerType;
 			$rootScope.editCustomer.city=row.City.replace(/-/g, '');
 			$rootScope.editCustomer.pinCode=row.PinCode;
 			$rootScope.editCustomer.emailID=row.Email_Id.replace(/-/g, '');
@@ -42,7 +44,7 @@
 			$rootScope.editCustomer.watchmenName=row.WatchmenName.replace(/-/g, '');
 			$rootScope.editCustomer.watchmenNumber=row.WatchmenNumber.replace(/-/g, '');
 			$rootScope.editCustomer.watchmenEmail=row.WatchmenEmail.replace(/-/g, '');
-			$rootScope.editCustomer.activeFlag=row.ActiveFlag.replace(/-/g, '');
+			$rootScope.editCustomer.activeFlag=row.Active_Flag;
 			window.location.hash = "#/edit-customer";
 		};
 		
@@ -229,9 +231,9 @@
 	  	        			userDetailsObj["PinCode"] =" - ";
 	  	        		}
 	  	        		if(!!largeLoad[i].activeFlag){
-	  	        			userDetailsObj["ActiveFlag"] =largeLoad[i].activeFlag;
+	  	        			userDetailsObj["Active_Flag"] =largeLoad[i].activeFlag;
 	  	        		}else{
-	  	        			userDetailsObj["ActiveFlag"] =" - ";
+	  	        			userDetailsObj["Active_Flag"] =" - ";
 	  	        		}
 	  	        		if(!!largeLoad[i].chairmanName){
 	  	        			userDetailsObj["ChairmanName"] =largeLoad[i].chairmanName;

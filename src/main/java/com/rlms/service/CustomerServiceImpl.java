@@ -263,11 +263,11 @@ public class CustomerServiceImpl implements CustomerService{
 	@Transactional(propagation = Propagation.REQUIRED)
 	public String validateAndUpdateNewMember(MemberDtlsDto memberDtlsDto, UserMetaInfo metaInfo) throws ValidationException{
 		String statusMessage = "";
-		if(this.validateMemberDtls(memberDtlsDto)){
+		//if(this.validateMemberDtls(memberDtlsDto)){
 			RlmsMemberMaster  memberMaster = this.constructMemberMaster(memberDtlsDto, metaInfo);
 			this.customerDao.updateMember(memberMaster);
 			statusMessage = PropertyUtils.getPrpertyFromContext(RlmsErrorType.MEMBER_EDIT_SUCCESSFUL.getMessage());
-		}
+		//}
 		return statusMessage;
 		
 	}
@@ -286,7 +286,7 @@ public class CustomerServiceImpl implements CustomerService{
 	private RlmsMemberMaster constructMemberMaster(MemberDtlsDto memberDtlsDto, UserMetaInfo metaInfo){
 	
 		RlmsMemberMaster memberMaster = new RlmsMemberMaster();
-		memberMaster.setActiveFlag(memberDtlsDto.getActiveFlag());
+		//memberMaster.setActiveFlag(memberDtlsDto.getActiveFlag());
 		memberMaster.setAddress(memberDtlsDto.getAddress());
 		memberMaster.setContactNumber(memberDtlsDto.getContactNumber());
 		memberMaster.setEmailId(memberDtlsDto.getEmailId());

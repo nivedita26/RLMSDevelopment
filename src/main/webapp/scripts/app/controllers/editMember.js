@@ -12,11 +12,12 @@
 			$scope.selectedCompany = {};
 			$scope.selectedActiveFlag = {};
 			$scope.addMember={
-					companyId:'',
-					branchName:'',
-					branchAddress:'',
+					memberId:'',
+					//branchName:'',
+					//branchAddress:'',
 					city:'',
 					area:'',
+					address:'',
 					pinCode:'',
 					contactNumber:'',
 					emailId:'',
@@ -35,15 +36,17 @@
 		$scope.submitEditMember= function(){
 			var memberData = {};
 			memberData = {
-					id:$rootScope.editMember.branchId,
-					branchName:$scope.editMember.branchName,
+					id:$rootScope.editMember.MemberId,
+					//branchName:$scope.editMember.branchName,
 					contactNumber:$scope.editMember.contactnumber,
 					firstName:$scope.editMember.firstName,
+					address:$scope.editMember.address,
+					emailId:$scope.editMember.emailId,
 					area:$scope.editMember.area,
 					city:$scope.editMember.city,
 					pinCode:$scope.editMember.pinCode,
 					};
-			serviceApi.doPostWithData("/RLMS/admin/editBranchInCompany",memberData)
+			serviceApi.doPostWithData("/RLMS/admin/validateAndUpdateMember",memberData)
 			.then(function(response){
 				$scope.showAlert = true;
 				var key = Object.keys(response);
@@ -52,6 +55,24 @@
 				$scope.alert.type = "success";
 				$scope.addBranchForm.$setPristine();
 				$scope.addBranchForm.$setUntouched();
+			},function(error){
+				$scope.showAlert = true;
+				$scope.alert.msg = error.exceptionMessage;
+				$scope.alert.type = "danger";
+			});
+		}
+		$scope.submitAddMember = function(){
+			$scope.addMember.branchCustoMapId = $scope.selectedCustomer.selected.branchCustomerMapId;
+			serviceApi.doPostWithData("/RLMS/admin/validateAndRegisterNewMember",$scope.addMember)
+			.then(function(response){
+				$scope.showAlert = true;
+				var key = Object.keys(response);
+				var successMessage = response[key[0]];
+				$scope.alert.msg = successMessage;
+				$scope.alert.type = "success";
+				initAddMember();
+				$scope.addMemberForm.$setPristine();
+				$scope.addMemberForm.$setUntouched();
 			},function(error){
 				$scope.showAlert = true;
 				$scope.alert.msg = error.exceptionMessage;
