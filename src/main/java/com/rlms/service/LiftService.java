@@ -8,6 +8,7 @@ import com.rlms.contract.LiftDtlsDto;
 import com.rlms.contract.ResponseDto;
 import com.rlms.contract.UserMetaInfo;
 import com.rlms.model.RlmsLiftCustomerMap;
+import com.rlms.model.RlmsLiftMaster;
 
 public interface LiftService {
 
@@ -34,5 +35,7 @@ public interface LiftService {
 	public List<LiftDtlsDto> getLiftStatusForBranch(List<Integer> companyBranchIds, UserMetaInfo metaInfo);
 	
 	public List<LiftDtlsDto> getLiftCountForBranch(List<Integer> companyBranchIds, UserMetaInfo metaInfo);
+
+	public void updateLiftParams(RlmsLiftMaster liftMaster);
 
 }

@@ -217,7 +217,12 @@ public class ReportServiceImpl implements ReportService {
 		if(DateUtils.isBeforeToDate(warrantyEndDate,today)&&(DateUtils.isAfterToDate(today,amcStartDate))){
 			amcStatus = Status.NOT_UNDER_Warranty;
 		}
-		else if(DateUtils.isAfterOrEqualTo(renewalDate,today) && DateUtils.isBeforeOrEqualToDate(today, amcEndDate)){
+		/*else if(DateUtils.isAfterOrEqualTo(renewalDate,today) && DateUtils.isBeforeOrEqualToDate(today, amcEndDate)){
+			amcStatus = Status.RENEWAL_DUE;
+		 }*/
+		int renewalDays = DateUtils.daysBetween(today,renewalDate);
+		if(renewalDays<=30 &&renewalDays>=0) {
+		//	if((DateUtils.isAfterOrEqualTo(renewalDate,today)) && (DateUtils.isBeforeOrEqualToDate(today, amcEndDate))){
 			amcStatus = Status.RENEWAL_DUE;
 		 }
 		 else if(DateUtils.isBeforeToDate(amcEndDate, today)){
@@ -384,6 +389,7 @@ public class ReportServiceImpl implements ReportService {
 		List<TechnicianWiseReportDTO> technicianList = new ArrayList<TechnicianWiseReportDTO>();
 		
 		List<RlmsUserRoles> listOfAllTechnicians = this.userRoleDao.getAllUserWithRoleForBranch(dto.getBranchCompanyMapId(), null, SpocRoleConstants.TECHNICIAN.getSpocRoleId());
+		
 		
 		
 		for (RlmsUserRoles userRoles : listOfAllTechnicians) {

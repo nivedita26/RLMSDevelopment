@@ -286,7 +286,7 @@ public class CustomerServiceImpl implements CustomerService{
 	private RlmsMemberMaster constructMemberMaster(MemberDtlsDto memberDtlsDto, UserMetaInfo metaInfo){
 	
 		RlmsMemberMaster memberMaster = new RlmsMemberMaster();
-		memberMaster.setActiveFlag(memberDtlsDto.getActiveFlag());
+	//	memberMaster.setActiveFlag(memberDtlsDto.getActiveFlag());
 		memberMaster.setAddress(memberDtlsDto.getAddress());
 		memberMaster.setContactNumber(memberDtlsDto.getContactNumber());
 		memberMaster.setEmailId(memberDtlsDto.getEmailId());
@@ -419,6 +419,7 @@ public class CustomerServiceImpl implements CustomerService{
 			dto.setPinCode(rlmsCustomerMemberMap.getRlmsMemberMaster().getPincode());
 			dto.setEmailId(rlmsCustomerMemberMap.getRlmsMemberMaster().getEmailId());
 			dto.setAddress(rlmsCustomerMemberMap.getRlmsMemberMaster().getAddress());
+			dto.setMemberId(rlmsCustomerMemberMap.getRlmsMemberMaster().getMemberId());
 			
 			listOfMemberDtls.add(dto);
 		}

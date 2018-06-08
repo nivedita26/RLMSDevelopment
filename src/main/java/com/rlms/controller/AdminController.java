@@ -28,6 +28,7 @@ import com.rlms.exception.RunTimeException;
 import com.rlms.exception.ValidationException;
 import com.rlms.model.RlmsCompanyBranchMapDtls;
 import com.rlms.model.RlmsCompanyMaster;
+import com.rlms.model.RlmsLiftMaster;
 import com.rlms.model.RlmsSpocRoleMaster;
 import com.rlms.service.CompanyService;
 import com.rlms.service.ComplaintsService;
@@ -314,7 +315,7 @@ public class AdminController extends BaseController{
 	 @RequestMapping(value = "/validateAndRegisterNewLift", method = RequestMethod.POST)
 	    public @ResponseBody ResponseDto validateAndRegisterNewLift(@RequestBody LiftDtlsDto dto) throws RunTimeException, ValidationException {
 		 ResponseDto reponseDto = new ResponseDto();
-	        
+	       
 	        try{
 	        	logger.info("Method :: validateAndRegisterNewCustomer");
 	        	reponseDto = this.liftService.validateAndAddNewLiftDtls(dto, this.getMetaInfo());
@@ -359,7 +360,6 @@ public class AdminController extends BaseController{
 	        	logger.error(ExceptionUtils.getFullStackTrace(e));
 	        	throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
 	        }
-	 
 	        return reponseDto;
 	  }
 	 @RequestMapping(value = "/getLiftDetailsForBranch", method = RequestMethod.POST)
@@ -544,4 +544,18 @@ public class AdminController extends BaseController{
 	        }
 	        return reponseDto;
 	  }
+	 
+	 @RequestMapping(value = "/lift/updateLiftParams", method = RequestMethod.POST)
+	    public @ResponseBody ResponseDto validateAndUpdateLiftDetails(@RequestBody RlmsLiftMaster dto) throws RunTimeException, ValidationException {
+		 ResponseDto reponseDto = new ResponseDto();
+	     try{
+	          	this.liftService.updateLiftParams(dto);
+	      }
+	        catch(Exception e){
+	        	throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
+	        }
+	       return reponseDto;
+	  }
+
+
 }

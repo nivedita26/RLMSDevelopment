@@ -610,5 +610,185 @@ public class LiftServiceImpl implements LiftService{
         return listOfAllDtos;
 		
 	}
-	
+	@Transactional(propagation = Propagation.REQUIRED)
+		public void updateLiftParams(RlmsLiftMaster liftMaster){
+		
+			RlmsLiftMaster liftM = this.liftDao.getLiftById(liftMaster.getLiftId());
+			
+			if(null != liftM){
+				if(null != liftMaster.getAccessControl() && !liftMaster.getAccessControl().isEmpty()){
+					liftM.setAccessControl(liftMaster.getAccessControl());
+				}
+				
+				if(null != liftMaster.getAlarm() ){
+					liftM.setAlarm(liftMaster.getAlarm());
+				}
+				
+				if(null != liftMaster.getAmcType()){
+					liftM.setAmcType(liftMaster.getAmcType());
+				}
+				
+				if(null != liftMaster.getCollectiveType()){
+					liftM.setCollectiveType(liftMaster.getCollectiveType());
+				}
+				
+				if(null != liftMaster.getDoorType() ){
+					liftM.setDoorType(liftMaster.getDoorType());
+				}
+				
+				if(null != liftMaster.getEngineType()){
+					liftM.setEngineType(liftMaster.getEngineType());
+				}
+				
+				if(null != liftMaster.getFireMode()){
+					liftM.setFireMode(liftMaster.getFireMode());
+				}
+				
+				if(null != liftMaster.getLiftType()){
+					liftM.setLiftType(liftMaster.getLiftType());
+				}
+				
+				if(null != liftMaster.getNoOfBatteries()){
+					liftM.setNoOfBatteries(liftMaster.getNoOfBatteries());
+				}
+				
+				
+				if(null != liftMaster.getPincode()){
+					liftM.setPincode(liftMaster.getPincode());
+				}
+				
+				
+				if(null != liftMaster.getSimplexDuplex()){
+					liftM.setSimplexDuplex(liftMaster.getSimplexDuplex());
+				}
+				
+				
+				if(null != liftMaster.getStatus()){
+					liftM.setStatus(liftMaster.getStatus());
+				}
+				
+				if(null != liftMaster.getWiringShceme()){
+					liftM.setWiringShceme(liftMaster.getWiringShceme());
+				}
+				if(null != liftMaster.getAddress() && !liftMaster.getAddress().isEmpty()){
+					liftM.setAddress(liftMaster.getAddress());
+				}
+				if(null != liftMaster.getAlarmBattery() && !liftMaster.getAlarmBattery().isEmpty()){
+					liftM.setAlarmBattery(liftMaster.getAlarmBattery());
+				}
+				if(null != liftMaster.getAmcAmount()){
+					liftM.setAmcAmount(liftMaster.getAmcAmount());
+				}
+				if(null != liftMaster.getAmcEndDate()){
+					liftM.setAmcEndDate(liftMaster.getAmcEndDate());
+				}
+				if(null != liftMaster.getAmcStartDate()){
+					liftM.setAmcStartDate(liftMaster.getAmcStartDate());
+				}
+				if(null != liftMaster.getARD() && !liftMaster.getARD().isEmpty() ){
+					liftM.setARD(liftMaster.getARD());
+				}
+				if(null != liftMaster.getARDPhoto()){
+					liftM.setARDPhoto(liftMaster.getARDPhoto());
+				}
+				if(null != liftMaster.getArea() && !liftMaster.getArea().isEmpty()){
+					liftM.setArea(liftMaster.getArea());
+				}
+				if(null != liftMaster.getAutoDoorHeaderPhoto()){
+					liftM.setAutoDoorHeaderPhoto(liftMaster.getAutoDoorHeaderPhoto());
+				}
+				if(null != liftMaster.getAutoDoorMake() && !liftMaster.getAutoDoorMake().isEmpty()){
+					liftM.setAutoDoorMake(liftMaster.getAutoDoorMake());
+				}
+				if(null != liftMaster.getBatteryCapacity() && !liftMaster.getBatteryCapacity().isEmpty()){
+					liftM.setBatteryCapacity(liftMaster.getBatteryCapacity());
+				}
+				
+				if(null != liftMaster.getBatteryMake() && !liftMaster.getBatteryMake().isEmpty()){
+					liftM.setBatteryMake(liftMaster.getBatteryMake());
+				}
+				if(null != liftMaster.getBreakVoltage() && !liftMaster.getBreakVoltage().isEmpty()){
+					liftM.setBreakVoltage(liftMaster.getBreakVoltage());
+				}
+				if(null != liftMaster.getCartopPhoto()){
+					liftM.setCartopPhoto(liftMaster.getCartopPhoto());
+				}
+				if(null != liftMaster.getCity() && !liftMaster.getCity().isEmpty()){
+					liftM.setCity(liftMaster.getCity());
+				}
+				if(null != liftMaster.getCOPMake() && !liftMaster.getCOPMake().isEmpty()){
+					liftM.setCOPMake(liftMaster.getCOPMake());
+				}
+				if(null != liftMaster.getCOPPhoto()){
+					liftM.setCOPPhoto(liftMaster.getCOPPhoto());
+				}
+				if(null != liftMaster.getDateOfInstallation()){
+					liftM.setDateOfInstallation(liftMaster.getDateOfInstallation());
+				}
+				
+				if(null != liftMaster.getIntercomm() && !liftMaster.getIntercomm().isEmpty()){
+					liftM.setIntercomm(liftMaster.getIntercomm());
+				}
+				if(null != liftMaster.getLatitude() && !liftMaster.getLatitude().isEmpty()){
+					liftM.setLatitude(liftMaster.getLatitude());
+				}
+				
+				
+				if(null != liftMaster.getLiftNumber() && !liftMaster.getLiftNumber().isEmpty()){
+					liftM.setLiftNumber(liftMaster.getLiftNumber());
+				}
+				
+				
+				if(null != liftMaster.getLobbyPhoto()){
+					liftM.setLobbyPhoto(liftMaster.getLobbyPhoto());
+				}
+				
+				if(null != liftMaster.getLongitude() && !liftMaster.getLongitude().isEmpty()){
+					liftM.setLongitude(liftMaster.getLongitude());
+				}
+				if(null != liftMaster.getLOPMake() && !liftMaster.getLOPMake().isEmpty()){
+					liftM.setLOPMake(liftMaster.getLOPMake());
+				}
+				if(null != liftMaster.getLOPPhoto()){
+					liftM.setLOPPhoto(liftMaster.getLOPPhoto());
+				}
+				if(null != liftMaster.getMachineCapacity() && !liftMaster.getMachineCapacity().isEmpty()){
+					liftM.setMachineCapacity(liftMaster.getMachineCapacity());
+				}
+				if(null != liftMaster.getMachineCurrent() && !liftMaster.getMachineCurrent().isEmpty()){
+					liftM.setMachineCurrent(liftMaster.getMachineCurrent());
+				}
+				if(null != liftMaster.getMachineMake() && !liftMaster.getMachineMake().isEmpty()){
+					liftM.setMachineMake(liftMaster.getMachineMake());
+				}
+				if(null != liftMaster.getMachinePhoto()){
+					liftM.setMachinePhoto(liftMaster.getMachinePhoto());
+				}
+				
+				if(null != liftMaster.getNoOfStops() && !liftMaster.getNoOfStops().isEmpty()){
+					liftM.setNoOfStops(liftMaster.getNoOfStops());
+				}
+				if(null != liftMaster.getPanelMake() && !liftMaster.getPanelMake().isEmpty()){
+					liftM.setPanelMake(liftMaster.getPanelMake());
+				}
+				if(null != liftMaster.getPanelPhoto()){
+					liftM.setPanelPhoto(liftMaster.getPanelPhoto());
+				}
+				if(null != liftMaster.getServiceEndDate()){
+					liftM.setServiceEndDate(liftMaster.getServiceEndDate());
+				}
+				if(null != liftMaster.getServiceStartDate()){
+					liftM.setServiceStartDate(liftMaster.getServiceStartDate());
+				}
+				
+				if(null != liftMaster.getWiringPhoto() ){
+					liftM.setWiringPhoto(liftMaster.getWiringPhoto());
+				}
+				
+				if(null != liftMaster.getImei() ){
+					liftM.setImei(liftMaster.getImei());
+				}
+				this.liftDao.mergeLiftM(liftM);
+				}
+		}
 }
