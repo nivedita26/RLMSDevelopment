@@ -84,8 +84,8 @@ public class AMCMonitorServiceImpl implements AMCMonitorService{
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		int diff = DateUtils.daysBetween(today,renewalDate);
-		if(diff<=30 &&diff>=0) {
+		int renewalDays = DateUtils.daysBetween(today,renewalDate);
+		if(renewalDays<=30 &&renewalDays>=0) {
 		//	if((DateUtils.isAfterOrEqualTo(renewalDate,today)) && (DateUtils.isBeforeOrEqualToDate(today, amcEndDate))){
 			amcStatus = Status.RENEWAL_DUE.getStatusId();
 		 }

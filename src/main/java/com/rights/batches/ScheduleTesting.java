@@ -25,7 +25,7 @@ public class ScheduleTesting {
 		System.out.println("Batch start");
 		 try {
 			 aMCMonitorService.getAllAMCDtlsAndUpdateStatus();
-			 this.reportService.changeStatusToAMCExpiryAndNotifyUser();
+			 // this.reportService.changeStatusToAMCExpiryAndNotifyUser();
 			 // this.executeAMCBatch();
 		} catch (Exception e) {
 			e.printStackTrace();

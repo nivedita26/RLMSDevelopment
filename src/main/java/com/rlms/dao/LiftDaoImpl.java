@@ -87,7 +87,6 @@ public class LiftDaoImpl implements LiftDao{
 		}
 		return status;		
 	}
-	
 	@Override
 	public Integer saveLiftCustomerMap(RlmsLiftCustomerMap liftCustomerMap){
 		return (Integer) this.sessionFactory.getCurrentSession().save(liftCustomerMap);
@@ -366,6 +365,15 @@ public class LiftDaoImpl implements LiftDao{
 		RlmsLiftCustomerMap  listOfAllLifts = (RlmsLiftCustomerMap) criteria.uniqueResult();
 		 return listOfAllLifts;
 	}
-
 	
+	@SuppressWarnings("unchecked")
+	public RlmsLiftMaster getLiftById(Integer liftId){		
+			 Session session = this.sessionFactory.getCurrentSession();
+			 Criteria criteria = session.createCriteria(RlmsLiftMaster.class)					 
+					 .add(Restrictions.eq("liftId", liftId));
+					 
+			 RlmsLiftMaster liftM = (RlmsLiftMaster)criteria.uniqueResult();
+			 return liftM;
+		
+	}
 }
