@@ -33,5 +33,28 @@ public enum CustomerType {
 		this.type = type;
 	}
 	
-	
+	 public static String getStringFromID(Integer customerTypeId){
+			if(customerTypeId == CustomerType.BUNGLO.getId()){
+				return CustomerType.BUNGLO.getType();
+			}
+			else if(customerTypeId == CustomerType.COMMERTIAL.getId()){
+				return CustomerType.COMMERTIAL.getType();
+			}
+			else if(customerTypeId == CustomerType.DUMB_WAITER.getId()){
+				return CustomerType.DUMB_WAITER.getType();
+			}
+			else if(customerTypeId == CustomerType.GOODS.getId()){
+				return CustomerType.GOODS.getType();
+			}
+			else if(customerTypeId == CustomerType.HOSPITAL.getId()){
+				return CustomerType.HOSPITAL.getType();
+				
+			}
+			else if(customerTypeId == CustomerType.RESIDENTIAL.getId()){
+				return CustomerType.RESIDENTIAL.getType();
+				
+			}
+			return "";
+			
+	 }
 }
