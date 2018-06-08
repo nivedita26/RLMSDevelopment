@@ -326,6 +326,7 @@ angular.module('theme.demos.dashboard.indi', [
           serviceApi
             .doPostWithData(
            // '/RLMS/dashboard/getListOfComplaintsForDashboard',
+
        		'/RLMS/dashboard/getListOfTotalComplaintsCountByCallType',dataToSend)
             .then(
             function (
@@ -1968,7 +1969,7 @@ angular.module('theme.demos.dashboard.indi', [
 	                	
 	                	for (var i = 0; i < largeLoad.length; i++) {
 	                		if(largeLoad[i].branchInActiveFlagCount!=null ||largeLoad[i].branchActiveFlagCount!=null){
-	                			totalCount=totalCount+largeLoad[i].branchInActiveFlagCount +largeLoad[i].branchActiveFlagCount ;
+	                			totalCount=totalCount+(largeLoad[i].branchInActiveFlagCount +largeLoad[i].branchActiveFlagCount) ;
 	                		}
 	                	}
 	                	$scope.branchDetails.totalBranches.text=totalCount;

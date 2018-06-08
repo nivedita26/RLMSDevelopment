@@ -103,9 +103,5 @@ UserMasterDao{
 	public void changeUserPassword(RlmsUsersMaster rlmsUsersMaster) {
 		
 		this.sessionFactory.getCurrentSession().update(rlmsUsersMaster);
-
 	}
-
-
-	
 }

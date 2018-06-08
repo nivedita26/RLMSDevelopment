@@ -53,7 +53,7 @@ public class AdminController extends BaseController{
 	private LiftService liftService;
 	
 	@Autowired
-	private ComplaintsService complaintsService;
+	private ComplaintsService sService;
 	
 	private static final Logger logger = Logger.getLogger(AdminController.class);
 	
@@ -328,6 +328,7 @@ public class AdminController extends BaseController{
 	        return reponseDto;
 	  }
 	 
+	 
 	 @RequestMapping(value = "/getLiftsToBeApproved", method = RequestMethod.POST)
 	    public @ResponseBody List<LiftDtlsDto> getLiftsToBeApproved() throws RunTimeException{
 		 List<LiftDtlsDto> listOfInActiveLifts = new ArrayList<LiftDtlsDto>();
@@ -385,7 +386,6 @@ public class AdminController extends BaseController{
 	        try{
 	        	logger.info("Method :: validateAndRegisterNewMember");
 	        	reponseDto.setResponse(this.customerService.validateAndRegisterNewMember(memberDtlsDto, this.getMetaInfo()));
-	        	
 	        }
 	        catch(Exception e){
 	        	logger.error(ExceptionUtils.getFullStackTrace(e));
@@ -394,7 +394,19 @@ public class AdminController extends BaseController{
 	 
 	        return reponseDto;
 	 }
-	 
+	 @RequestMapping(value = "/validateAndUpdateMember", method = RequestMethod.POST)
+	 public @ResponseBody ResponseDto validateAndUpdateMember(@RequestBody MemberDtlsDto memberDtlsDto) throws RunTimeException{
+		 ResponseDto reponseDto = new ResponseDto();
+	        try{
+	        	logger.info("Method :: validateAndUpdateNewMember");
+	        	reponseDto.setResponse(this.customerService.validateAndUpdateNewMember(memberDtlsDto, this.getMetaInfo()));
+	        }
+	        catch(Exception e){
+	        	logger.error(ExceptionUtils.getFullStackTrace(e));
+	        	throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
+	        }
+	        return reponseDto;
+	 }
 	 @RequestMapping(value = "/getListOfAllMemberDtls", method = RequestMethod.POST)
 	 public @ResponseBody List<MemberDtlsDto> getListOfAllMemberDtls(@RequestBody MemberDtlsDto memberDtlsDto) throws RunTimeException{
 		 List<MemberDtlsDto> listOFMembers = new ArrayList<MemberDtlsDto>();

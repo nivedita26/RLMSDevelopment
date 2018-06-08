@@ -26,6 +26,8 @@ public enum RlmsErrorType {
 	COMPLAINT_REG_SUCCESSFUL(19,"complaint_reg_successful"),
 	MEMBER_WITH_SAME_CONTACT_NO(20,"member_with_same_contact_no"),
 	MEMBER_REG_SUCCESSFUL(30,"member_reg_successful"),
+	MEMBER_EDIT_SUCCESSFUL(30,"member_edit_successful"),
+
 	INVALID_CONTACT_NUMBER(31,"invalid_contact_number"),
 	COMPLAINT_ASSIGNED_SUUCESSFULLY(32,"complaint_assigned_suucessfully"),
 	COMPLAINT_ASSIGNED_ALREADY(32,"complaint_assigned_already"),

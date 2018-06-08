@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.SystemPropertyUtils;
 
 import com.rlms.constants.AMCType;
 import com.rlms.constants.RLMSConstants;
@@ -26,8 +25,6 @@ import com.rlms.constants.RlmsErrorType;
 import com.rlms.constants.SpocRoleConstants;
 import com.rlms.constants.Status;
 import com.rlms.contract.AMCDetailsDto;
-import com.rlms.contract.CustomerDtlsDto;
-import com.rlms.contract.EventCountDtls;
 import com.rlms.contract.EventDtlsDto;
 import com.rlms.contract.LiftDtlsDto;
 import com.rlms.contract.SiteVisitDtlsDto;
@@ -40,16 +37,12 @@ import com.rlms.dao.ComplaintsDao;
 import com.rlms.dao.DashboardDao;
 import com.rlms.dao.LiftDao;
 import com.rlms.dao.UserRoleDao;
-import com.rlms.exception.ExceptionCode;
-import com.rlms.exception.RunTimeException;
 import com.rlms.model.RlmsBranchCustomerMap;
-import com.rlms.model.RlmsCompanyBranchMapDtls;
 import com.rlms.model.RlmsComplaintMaster;
 import com.rlms.model.RlmsComplaintTechMapDtls;
 import com.rlms.model.RlmsEventDtls;
 import com.rlms.model.RlmsLiftAmcDtls;
 import com.rlms.model.RlmsLiftCustomerMap;
-import com.rlms.model.RlmsLiftMaster;
 import com.rlms.model.RlmsSiteVisitDtls;
 import com.rlms.model.RlmsUserRoles;
 import com.rlms.model.ServiceCall;
@@ -167,8 +160,6 @@ public class ReportServiceImpl implements ReportService {
 			Date tempDateOfInstallation = listOFAMCs.get(listOFAMCs.size() - 1).getLiftCustomerMap().getLiftMaster().getDateOfInstallation();
 			Date tempWarrantyStartDate = listOFAMCs.get(listOFAMCs.size() - 1).getLiftCustomerMap().getLiftMaster().getServiceStartDate();
 			Date tempWarrantyEndDate = listOFAMCs.get(listOFAMCs.size() - 1).getLiftCustomerMap().getLiftMaster().getServiceEndDate();
-
-			
 
 			dto.setStatus(this.calculateAMCStatus(tempStartDate, tempEndDate, tempDateOfInstallation,tempWarrantyStartDate,tempWarrantyEndDate).getStatusMsg());
 			dto.setAmcAmount(liftAmcDtls.getAmcAmount());
@@ -484,14 +475,13 @@ public class ReportServiceImpl implements ReportService {
 			this.messagingService.sendAMCMail(listOfDynamicValues, toList, com.rlms.constants.EmailTemplateEnum.AMC_RENEWAL.getTemplateId());
 		}
 	}
-	
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void changeStatusToAMCExpiryAndNotifyUser() throws UnsupportedEncodingException{
 		List<RlmsLiftAmcDtls> listOfAllLifts = this.liftDao.getAllLiftsWithTodaysExpiryDate();
 		for (RlmsLiftAmcDtls rlmsLiftAmcDtls : listOfAllLifts) {
 			rlmsLiftAmcDtls.setStatus(Status.AMC_PENDING.getStatusId());
 			this.liftDao.mergeLiftAMCDtls(rlmsLiftAmcDtls);
-			
+
 			List<String> listOfDynamicValues = new ArrayList<String>();
 			listOfDynamicValues.add(rlmsLiftAmcDtls.getLiftCustomerMap().getLiftMaster().getLiftNumber());
 			listOfDynamicValues.add(rlmsLiftAmcDtls.getLiftCustomerMap().getBranchCustomerMap().getCustomerMaster().getAddress()+ ", " + rlmsLiftAmcDtls.getLiftCustomerMap().getBranchCustomerMap().getCustomerMaster().getArea() + ", " + rlmsLiftAmcDtls.getLiftCustomerMap().getBranchCustomerMap().getCustomerMaster().getCity());
@@ -512,6 +502,7 @@ public class ReportServiceImpl implements ReportService {
 		}
 	}
 
+	
 	@Override
 	public List<EventDtlsDto> getAllInOutEventsData(EventDtlsDto dto) {
 		List<RlmsEventDtls> listOfEvents = new ArrayList<RlmsEventDtls>();

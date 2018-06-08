@@ -60,6 +60,7 @@ public class DashBoardController extends BaseController {
 
 	@Autowired
 	private CompanyService companyService;
+	
 	@Autowired
 	private LiftDao liftDao;
 
@@ -107,15 +108,7 @@ public class DashBoardController extends BaseController {
 				}
 			}
 			listOFAmcDtls = this.dashboardService.getAMCDetailsForDashboard(liftCustomerMapIds, amcDetailsDto);
-
-			/*
-			 * //testing of complaintAssignment API ComplaintsDto complaintsDto = new
-			 * ComplaintsDto(); complaintsDto.setComplaintId(2);
-			 * complaintsDto.setUserRoleId(17); complaintsDto.setServiceCallType(0);
-			 * complaintsService.assignComplaint(complaintsDto, this.getMetaInfo());
-			 */
-
-		} catch (Exception e) {
+			} catch (Exception e) {
 			e.printStackTrace();
 			logger.error(ExceptionUtils.getFullStackTrace(e));
 			throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(),

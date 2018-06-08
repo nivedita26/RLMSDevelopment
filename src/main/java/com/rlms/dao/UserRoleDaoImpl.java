@@ -2,12 +2,14 @@ package com.rlms.dao;
 
 import java.util.List;
 
+
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.rlms.constants.RLMSConstants;
 import com.rlms.constants.SpocRoleConstants;
@@ -30,8 +32,6 @@ UserRoleDao{
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
-	
-	
 	
 	public RlmsUserRoles getUserRoleObj(Integer userID, String userName, String password){
 		 Session session = this.sessionFactory.getCurrentSession();
@@ -130,6 +130,7 @@ UserRoleDao{
 	}*/
 	
 	@SuppressWarnings("unchecked")
+	@Transactional(readOnly=true)
 	public List<RlmsUserRoles> getAllUserWithRoleForBranch(Integer commpBranchMapId, Integer spocRoleId){
 		 Session session = this.sessionFactory.getCurrentSession();
 		 Criteria criteria = session.createCriteria(RlmsUserRoles.class)
@@ -142,6 +143,7 @@ UserRoleDao{
 	}
 	
 	@SuppressWarnings("unchecked")
+	@Transactional(readOnly=true)
 	public RlmsUserRoles getUserWithRoleForCompany(Integer companyId, Integer spocRoleId){
 		 Session session = this.sessionFactory.getCurrentSession();
 		 Criteria criteria = session.createCriteria(RlmsUserRoles.class)
