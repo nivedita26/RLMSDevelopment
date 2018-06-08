@@ -1,0 +1,193 @@
+<div class="rlms-wrapper">
+<div class="rlms-container edit_customer" ng-controller="editCustomerCtrl">
+	<h1 class="rlms-heading">Edit Customer</h1>
+	<div class="container-fluid" >
+		<alert ng-show="showAlert" type="{{alert.type}}">
+			<span ng-bind-html="alert.msg | safe_html"></alert>
+		<form class="form-horizontal row-border" name="addCustomerForm">
+		<fieldset>
+		  <legend>Customer Details</legend>
+		   
+			<div class="form-group">
+				<label class="col-sm-3 control-label">Customer Name<sup class="red font-12">*</sup></label>
+				<div class="col-sm-6">
+					<input name="firstname" type="text" required placeholder="Required Field" ng-model="editCustomer.firstName" class="form-control">
+					<span class="help-block"
+						ng-show="addUserForm.firstname.$error.required && addUserForm.firstname.$dirty">This
+						field is required</span>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label class="col-sm-3 control-label">Address<sup class="red font-12">*</sup></label>
+				<div class="col-sm-6">
+					<input name="address" type="text" placeholder="Address" ng-model="editCustomer.address" class="form-control">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">Area</label>
+				<div class="col-sm-6">
+					 <input name="area" type="text"
+						placeholder="Area"
+						ng-model="editCustomer.area" class="form-control">						
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">City</label>
+				<div class="col-sm-6">
+					<input name="city" type="text" onkeypress="return ((event.charCode > 64 && event.charCode < 91) ||(event.charCode > 96 && event.charCode < 123) || event.charCode == 8 || event.charCode == 32);"
+						placeholder="City"
+						ng-model="editCustomer.city" class="form-control">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">Pincode</label>
+				<div class="col-sm-6">
+					<input name="pinCode" type="number" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13 ) ? null : this.value.length<6"
+						ng-model="editCustomer.pinCode" placeholder="Pincode" class="form-control">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">Email ID<sup class="red font-12">*</sup></label>
+				<div class="col-sm-6">
+					<input name="emailID" type="email" placeholder="Required Field" required ng-model="editCustomer.emailID" class="form-control">
+					<span class="help-block"
+						ng-show="addCustomerForm.emailID.$error.required && addCustomerForm.emailID.$dirty">This
+						field is required</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">Contact Number<sup class="red font-12">*</sup></label>
+				<div class="col-sm-6">
+					<input name="cntNumber" type="number" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : this.value.length<10" placeholder="Required Field" required ng-model="editCustomer.cntNumber" class="form-control">
+					<span class="help-block"
+						ng-show="addCustomerForm.cntNumber.$error.required && addCustomerForm.cntNumber.$dirty">This
+						field is required</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">Total Number Of Lifts<sup class="red font-12">*</sup></label>
+				<div class="col-sm-6">
+					<input name="totalNumberOfLifts" type="number" placeholder="Required Field" required ng-model="editCustomer.totalNumberOfLifts" class="form-control">
+					<span class="help-block"
+						ng-show="addCustomerForm.totalNumberOfLifts.$error.required && addCustomerForm.totalNumberOfLifts.$dirty">This
+						field is required</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">Customer Type</label>
+				<div class="col-sm-6">
+						  <ui-select ng-model="selectedCustomerTypes.selected" title="Choose a Branch">
+						    <ui-select-match placeholder="Select or search a branch in the list...">{{$select.selected.name}}</ui-select-match>
+						    <ui-select-choices repeat="iterator in customerTypes | filter: $select.search">
+						      <span ng-bind-html="iterator.name | highlight: $select.search"></span>
+						    </ui-select-choices>
+						  </ui-select>
+				</div>
+			</div>
+			<fieldset>
+		 		 <legend>Chairman Details</legend>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">Chairman Name</label>
+					<div class="col-sm-6">
+						<input name="chairmanName" type="text" placeholder="Chairman Name" onkeypress="return ((event.charCode > 64 && event.charCode < 91) ||(event.charCode > 96 && event.charCode < 123) || event.charCode == 8 || event.charCode == 32);" ng-model="editCustomer.chairmanName" class="form-control">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">Chairman Email</label>
+					<div class="col-sm-6">
+						<input name="chairmanEmail" type="email" placeholder="chairmanEmail"  ng-model="editCustomer.chairmanEmail" class="form-control">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">Chairman Number</label>
+					<div class="col-sm-6">
+						<input name="chairmanNumber" type="number" placeholder="Chairman Number" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : this.value.length<10"ng-model="editCustomer.chairmanNumber" class="form-control">
+					</div>
+				</div>
+			</fieldset>
+			<fieldset>
+		 		 <legend>Secretary Details</legend>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">Secretary Name</label>
+					<div class="col-sm-6">
+						<input name="secretaryName" type="text" placeholder="secretary Name" onkeypress="return ((event.charCode > 64 && event.charCode < 91) ||(event.charCode > 96 && event.charCode < 123) || event.charCode == 8 || event.charCode == 32);"ng-model="editCustomer.secretaryName" class="form-control">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">Secretary Email</label>
+					<div class="col-sm-6">
+						<input name="secretaryEmail" type="email" placeholder="secretaryEmail" ng-model="editCustomer.secretaryEmail" class="form-control">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">Secretary Number</label>
+					<div class="col-sm-6">
+						<input name="secretaryNumber" type="number" placeholder="secretary Number" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : this.value.length<10"ng-model="editCustomer.secretaryNumber" class="form-control">
+					</div>
+				</div>
+			</fieldset>
+			<fieldset>
+		 		 <legend>Treasurer Details</legend>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">Treasurer Name</label>
+					<div class="col-sm-6">
+						<input name="treasurerName" type="text" placeholder="treasurer Name" onkeypress="return ((event.charCode > 64 && event.charCode < 91) ||(event.charCode > 96 && event.charCode < 123) || event.charCode == 8 || event.charCode == 32);" ng-model="editCustomer.treasurerName" class="form-control">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">Treasurer Email</label>
+					<div class="col-sm-6">
+						<input name="treasurerEmail" type="email" placeholder="treasurerEmail" ng-model="editCustomer.treasurerEmail" class="form-control">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">Treasurer Number</label>
+					<div class="col-sm-6">
+						<input name="treasurerNumber" type="number" placeholder="treasurer Number" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : this.value.length<10" ng-model="editCustomer.treasurerNumber" class="form-control">
+					</div>
+				</div>
+			</fieldset>
+			<fieldset>
+		 		 <legend>Watchmen Details</legend>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">Watchmen Name</label>
+					<div class="col-sm-6">
+						<input name="watchmenName" type="text" placeholder="watchmen Name" onkeypress="return ((event.charCode > 64 && event.charCode < 91) ||(event.charCode > 96 && event.charCode < 123) || event.charCode == 8 || event.charCode == 32);" ng-model="editCustomer.watchmenName" class="form-control">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">Watchmen Email</label>
+					<div class="col-sm-6">
+						<input name="watchmenEmail" type="email" placeholder="watchmenEmail" ng-model="editCustomer.watchmenEmail" class="form-control">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">Watchmen Number</label>
+					<div class="col-sm-6">
+						<input name="watchmenNumber" type="number" placeholder="watchmen Number" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : this.value.length<10" ng-model="editCustomer.watchmenNumber" class="form-control">
+					</div>
+				</div>
+			</fieldset>
+			</div>
+		 </fieldset>
+		
+			<div class="panel-footer">
+			<div class="row">
+				<div class="col-sm-6">
+					<span ng-click="backPage();" class=" button button-clear fa fa-chevron-circle-left go-back"></span>
+				</div>
+				<div class="col-sm-6 ">
+					<div class="btn-toolbar">
+						<button class="btn-primary btn" ng-disabled="addCustomerForm.$invalid && addCustomerForm.$pristine" ng-click="submitAddCustomer()">Submit</button>
+						<button class="btn-default btn" ng-click="resetAddBranch();">Reset</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		</form>
+		
+	</panel> 	
+	</div>
+</div>
+</div>

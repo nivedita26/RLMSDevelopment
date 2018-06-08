@@ -80,7 +80,7 @@
 										//branchCustomerMapId : -1,
 										listOfLiftCustoMapId : [],
 										statusList : [],
-										serviceCallType : 0
+										//serviceCallType : 1
 									};
 									serviceApi
 											.doPostWithData('/RLMS/complaint/getListOfComplaints', dataToSend)
@@ -634,7 +634,7 @@
 										$window.confirm('Complaint already completed or resolved');
 									}else{
 										$rootScope.editComplaint.complaintsNumber=row.Number.replace(/-/g, '');
-										//$rootScope.editComplaint.complaintTitle=row.Title.replace(/-/g, '');
+										$rootScope.editComplaint.complaintsTitle=row.Title.replace(/-/g, '');
 										$rootScope.editComplaint.callType=row.Title.replace(/-/g, '');
 										$rootScope.editComplaint.complaintsRemark=row.Remark.replace(/-/g, '');
 										$rootScope.editComplaint.complaintsAddress=row.Address.replace(/-/g, '');

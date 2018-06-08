@@ -326,13 +326,21 @@ angular.module('theme.demos.dashboard.indi', [
           serviceApi
             .doPostWithData(
            // '/RLMS/dashboard/getListOfComplaintsForDashboard',
-       		'/RLMS/dashboard/getListOfTotalComplaintsCountByStatus',dataToSend)
+
+       		'/RLMS/dashboard/getListOfTotalComplaintsCountByCallType',dataToSend)
             .then(
             function (
               largeLoad) {
               if (complaintStatusArray.includes('2') && complaintStatusArray.length == 1 && largeLoad.length > 0) {
-                $scope.complaintsData.totalPendingComplaints.text = largeLoad.length;
-                $scope.complaintsData.totalUnassignedComplaints.text = largeLoad.length;
+            	  var totalCount=0;
+            	  for (var i = 0; i < largeLoad.length; i++)
+            	  {
+            		  if(largeLoad[i].totalCallTypeCount!=null){
+            			  totalCount=totalCount+largeLoad[i].totalCallTypeCount;
+            		  }
+            	  }
+                $scope.complaintsData.totalPendingComplaints.text = totalCount;
+                $scope.complaintsData.totalUnassignedComplaints.text = totalCount;
                 $scope.todaysUnassignedComplaints = largeLoad.filter(function (item) {
                   return (new Date(item.updatedDate)).getTime() === $scope.todaysDate.getTime();
                 });
@@ -365,7 +373,15 @@ angular.module('theme.demos.dashboard.indi', [
                 }
               }
               if (complaintStatusArray.includes('2') && complaintStatusArray.length == 3 && largeLoad.length > 0) {
-                $scope.complaintsData.totalComplaints.text = largeLoad.length;
+                
+            	  var totalCount=0;
+            	  for (var i = 0; i < largeLoad.length; i++)
+            	  {
+            		  if(largeLoad[i].totalCallTypeCount!=null){
+            			  totalCount=totalCount+largeLoad[i].totalCallTypeCount;
+            		  }
+            	  }
+            	  $scope.complaintsData.totalComplaints.text = totalCount;                
                 $scope.todaysTotalComplaints = largeLoad.filter(function (item) {
                   return (new Date(item.updatedDate)).getTime() === $scope.todaysDate.getTime();
                 });
@@ -544,7 +560,7 @@ angular.module('theme.demos.dashboard.indi', [
       var url;
      // url = '/RLMS/dashboard/getListOfComplaintsForDashboard';
       
-      url = '/RLMS/dashboard/getListOfTodaysComplaintsCountByStatus';
+      url = '/RLMS/dashboard/getListOfTodaysComplaintsCountByCallType';
       
       setTimeout(
         function () {
@@ -568,7 +584,7 @@ angular.module('theme.demos.dashboard.indi', [
                 }
                 for (var i = 0; i < largeLoad.length; i++) {
                   var userDetailsObj = {};
-                  if (!!largeLoad[i].complaintNumber) {
+                  /*if (!!largeLoad[i].complaintNumber) {
                     userDetailsObj["No"] = i+1 +".";
                   } else {
                     userDetailsObj["No"] = " - ";
@@ -599,7 +615,18 @@ angular.module('theme.demos.dashboard.indi', [
                     userDetailsObj["Total_Complaints"] = largeLoad[i].totalComplaints;
                   } else {
                     userDetailsObj["Total_Complaints"] = " - ";
-                  }
+                  }*/
+                  
+                  if (!!largeLoad[i].callType) {
+                      userDetailsObj["Call-Type"] = largeLoad[i].callType;
+                    } else {
+                      userDetailsObj["Call-Type"] = " - ";
+                    }
+                  if (!!largeLoad[i].totalCallTypeCount) {
+                      userDetailsObj["TotalCount"] = largeLoad[i].totalCallTypeCount;
+                    } else {
+                      userDetailsObj["TotalCount"] = " - ";
+                    }
                   userDetails
                     .push(userDetailsObj);
                 }
@@ -624,7 +651,7 @@ angular.module('theme.demos.dashboard.indi', [
             var dataToSend = $scope
               .construnctObjeToSend(complaintStatus);
             serviceApi
-              .doPostWithData(url,
+              .doPostWithData('/RLMS/dashboard/getListOfTotalComplaintsCountByCallType',
               dataToSend)
               .then(
               function (
@@ -639,22 +666,20 @@ angular.module('theme.demos.dashboard.indi', [
                 }
                 for (var i = 0; i < largeLoad.length; i++) {
                   var userDetailsObj = {};
-                  if (!!largeLoad[i].complaintNumber) {
+                  
                     userDetailsObj["No"] = i+1 +".";
+                  
+                  if (!!largeLoad[i].callType) {
+                    userDetailsObj["CallType"] = largeLoad[i].callType;
                   } else {
-                    userDetailsObj["No"] = " - ";
+                    userDetailsObj["CallType"] = " - ";
                   }
-                  if (!!largeLoad[i].branchName) {
-                    userDetailsObj["Branch"] = largeLoad[i].branchName;
+                  if (!!largeLoad[i].totalCallTypeCount) {
+                    userDetailsObj["TotalCount"] = largeLoad[i].totalCallTypeCount;
                   } else {
-                    userDetailsObj["Branch"] = " - ";
+                    userDetailsObj["TotalCount"] = " - ";
                   }
-                  if (!!largeLoad[i].customerName) {
-                    userDetailsObj["Customer"] = largeLoad[i].customerName;
-                  } else {
-                    userDetailsObj["Customer"] = " - ";
-                  }
-                  if (!!largeLoad[i].city) {
+                  /*if (!!largeLoad[i].city) {
                     userDetailsObj["City"] = largeLoad[i].city;
                   } else {
                     userDetailsObj["City"] = " - ";
@@ -670,7 +695,7 @@ angular.module('theme.demos.dashboard.indi', [
                     userDetailsObj["Total_Complaints"] = largeLoad[i].totalComplaints;
                   } else {
                     userDetailsObj["Total_Complaints"] = " - ";
-                  }
+                  }*/
                   userDetails
                     .push(userDetailsObj);
                 }
@@ -1977,7 +2002,7 @@ angular.module('theme.demos.dashboard.indi', [
       $scope.getPagedDataAsyncForAllCompanies = function (pageSize,
     	      page, searchText, activeFlag) {
     	      var url;
-    	      url = '/RLMS/dashboard/getAllCompanyDetailsForDashboard';
+    	      url = '/RLMS/dashboard/getListOfBranchCountDtlsForDashboard';
     	      setTimeout(
     	        function () {
     	          var data;

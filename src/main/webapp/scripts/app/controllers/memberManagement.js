@@ -8,6 +8,19 @@
 		$scope.goToAddMember = function(){
 			window.location.hash = "#/add-member";
 		}
+		
+		$rootScope.editMember={};
+		$scope.editMemberDetails=function(row){
+			$rootScope.editMember.branchId=row.Branch_Id;
+			$rootScope.editMember.branchAddress=row.Address;
+			$rootScope.editMember.firstName=row.Name;
+			$rootScope.editMember.area=row.Area;
+			$rootScope.editMember.city=row.City;
+			$rootScope.editMember.pinCode=row.PinCode;
+			$rootScope.editMember.emailId=row.Email_Id.replace(/-/g, '');
+			$rootScope.editUser.contactnumber=row.Contact_Number.replace(/-/g, '');
+			window.location.hash = "#/edit-member";
+		};
 		function initMemberList(){
 			 $scope.selectedCompany={};
 			 $scope.selectedBranch = {};
@@ -129,6 +142,7 @@
 	  	        			detailsObj["Email_Id"] =" - ";
 	  	        		}
 	  	        		
+	  	        		
 	  	        		details.push(detailsObj);
 	  	        	  }
 	  	            data = details.filter(function(item) {
@@ -176,7 +190,17 @@
 	  	        			detailsObj["Email_Id"] =largeLoad[i].emailId;
 	  	        		}else{
 	  	        			detailsObj["Email_Id"] =" - ";
-	  	        		}	
+	  	        		}
+	  	        		if(!!largeLoad[i].pinCode){
+	  	        			detailsObj["PinCode"] =largeLoad[i].pinCode;
+	  	        		}else{
+	  	        			detailsObj["PinCode"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].area){
+	  	        			detailsObj["Area"] =largeLoad[i].area;
+	  	        		}else{
+	  	        			detailsObj["Area"] =" - ";
+	  	        		}
 	  	        		details.push(detailsObj);
 	  	        	  }
 	  	            $scope.setPagingData(details, page, pageSize);
@@ -249,7 +273,7 @@
 	  	    	  width: "200"
 	  	      },{
 	  	    	  cellTemplate :  
-	  	    		  '<button ng-click="$event.stopPropagation(); editThisMember(row.entity);" title="Edit" style="margin-top: 2px;height: 38px;width: 38px;" class="btn-sky"><span class="glyphicon glyphicon-pencil"></span></button>',
+	  	    		  '<button ng-click="$event.stopPropagation(); editMemberDetails(row.entity);" title="Edit" style="margin-top: 2px;height: 38px;width: 38px;" class="btn-sky"><span class="glyphicon glyphicon-pencil"></span></button>',
 	    		  width : 35
 	  	      },{
 	  	    	  cellTemplate :  

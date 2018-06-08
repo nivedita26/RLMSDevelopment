@@ -76,15 +76,15 @@
 					branchCustomerMapId:$scope.selectedCustomer.selected.branchCustomerMapId
 			}
 			$scope.addLift.liftType=liftTypeId;
-			if(liftTypeId == 35){
+			if(liftTypeId == 1){
 				
 				var liftTypeName ="Auto Door"
 					
-			}else if(liftTypeId == 36){
+			}else if(liftTypeId == 2){
 				
 				var liftTypeName ="Manual Door"
 					
-			}else if(liftTypeId == 37){
+			}else if(liftTypeId == 3){
 				
 				var liftTypeName ="Hydraulic"
 			}
