@@ -326,7 +326,7 @@ angular.module('theme.demos.dashboard.indi', [
           serviceApi
             .doPostWithData(
            // '/RLMS/dashboard/getListOfComplaintsForDashboard',
-       		'/RLMS/dashboard/getListOfTodaysComplaintsCountByStatus',dataToSend)
+       		'/RLMS/dashboard/getListOfTotalComplaintsCountByStatus',dataToSend)
             .then(
             function (
               largeLoad) {

@@ -166,7 +166,7 @@ public class CustomerDaoImpl implements CustomerDao{
 	public List<RlmsBranchCustomerMap> getAllCustomersForDashboard(List<Integer> listOfBranchCompanyMapId) {
 		 Session session = this.sessionFactory.getCurrentSession();
 		 Criteria criteria = session.createCriteria(RlmsBranchCustomerMap.class)
-				 .add(Restrictions.in("companyBranchMapDtls.companyBranchMapId", listOfBranchCompanyMapId));
+				 		.add(Restrictions.in("companyBranchMapDtls.companyBranchMapId", listOfBranchCompanyMapId));
 		 List<RlmsBranchCustomerMap> listOfCustomers = criteria.list();
 		 return listOfCustomers;
 	}

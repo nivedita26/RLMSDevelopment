@@ -821,8 +821,9 @@ List<ComplaintsCount> complaintsCountsList =  new ArrayList<>();
 List<Object[]> complaintCount = dashboardDao.getTotalComplaintsStatusCount(dto.getListOfLiftCustoMapId());
 	for (Object[] objects : complaintCount) {
 		ComplaintsCount complaintsCount = new ComplaintsCount();
-		complaintsCount.setCallStatus((Status.getStringFromID((Integer)objects[0])));
-		complaintsCount.setTotalCallStatusCount((BigInteger)objects[1]);
+		complaintsCount.setCallType(RLMSCallType.getStringFromID((Integer)objects[0]));
+		complaintsCount.setCallStatus(Status.getStringFromID((Integer)objects[1]));
+		complaintsCount.setTotalCallStatusCount((BigInteger)objects[2]);
 		complaintsCountsList.add(complaintsCount);
 	}
 return complaintsCountsList;
@@ -834,8 +835,9 @@ List<ComplaintsCount> complaintsCountsList =  new ArrayList<>();
 List<Object[]> complaintCount = dashboardDao.getTodaysComplaintsStatusCount(dto.getListOfLiftCustoMapId());
 	for (Object[] objects : complaintCount) {
 		ComplaintsCount complaintsCount = new ComplaintsCount();
-		complaintsCount.setCallStatus((Status.getStringFromID((Integer)objects[0])));
-		complaintsCount.setTodaysCallStatusCount((BigInteger)objects[1]);
+		complaintsCount.setCallType(RLMSCallType.getStringFromID((Integer)objects[0]));
+		complaintsCount.setCallStatus(Status.getStringFromID((Integer)objects[1]));
+		complaintsCount.setTodaysCallStatusCount((BigInteger)objects[2]);
 		complaintsCountsList.add(complaintsCount);
 	}
 return complaintsCountsList;

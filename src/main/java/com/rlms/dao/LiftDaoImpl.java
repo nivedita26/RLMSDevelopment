@@ -12,6 +12,8 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.rlms.constants.RLMSConstants;
 import com.rlms.constants.Status;
@@ -97,6 +99,7 @@ public class LiftDaoImpl implements LiftDao{
 	}
 	
 	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void mergeLiftAMCDtls(RlmsLiftAmcDtls liftAmcDtls){
 		this.sessionFactory.getCurrentSession().merge(liftAmcDtls);
 	}

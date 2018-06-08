@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.scheduling.annotation.Scheduled;
 
 import com.rlms.service.ReportService;
 
@@ -30,7 +31,6 @@ public class AMCMonitor {
 			logger.error(ExceptionUtils.getFullStackTrace(e));	 
 		}
 	}
-	
 	private void executeAMCBatch() throws UnsupportedEncodingException{
 		this.reportService.changeStatusToAMCExpiryAndNotifyUser();
 		this.reportService.changeStatusToAMCRenewalAndNotifyUser();
