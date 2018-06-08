@@ -4,7 +4,7 @@
 	.controller('editCustomerCtrl', ['$scope', '$filter','serviceApi','$route','utility','$window','$rootScope', function($scope, $filter,serviceApi,$route,utility,$window,$rootScope) {
 	initAddCustomer();
 			loadCompayInfo();
-			$scope.alert = { type: 'success', msg: 'You successfully Added Customer.',close:true };			
+			$scope.alert = { type: 'success', msg: 'You successfully Edited Customer.',close:true };			
 			$scope.showAlert = false;
 			$scope.showCompany=false;
 			$scope.showBranch=false;
@@ -43,8 +43,7 @@
 						watchmenName :'',
 						watchmenNumber :'',
 						watchmenEmail :'',
-					//	gstNumber:'',
-						
+						activeFlag:'',
 						
 				};	
 				$scope.customerTypes = [
@@ -73,6 +72,16 @@
 						id:20
 					}
 				]
+				$scope.activeFlag=[
+					{
+						name:"InActive",
+						id:0
+					},
+					{
+						name:"Active",
+						id:1
+					}
+				];
 			}
 			
 			//load compay dropdown data
@@ -94,7 +103,7 @@
 							companyId : $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyMaster.companyId
 						}
 	  	    	}
-			    serviceApi.doPostWithData('/RLMS/admin/getAllBranchesForCompany',companyData)
+			    serviceApi.doPostWithData('/RLMS/admin/getListOfCustomerDtls',companyData)
 			    .then(function(response){
 			    	$scope.branches = response;
 			    	$scope.selectedBranch.selected = undefined;
@@ -113,17 +122,41 @@
 			}		  			
 			
 			//Post call add customer
-			$scope.submitEditCustomer = function(){
-				//$scope.addCustomer.companyName = $scope.selectedCompany.selected.companyName;
-				/*$scope.editCustomer.branchName = $scope.selectedBranch.selected.rlmsBranchMaster.branchName;
-				$scope.editCustomer.branchCompanyMapId = $scope.selectedBranch.selected.companyBranchMapId;
-				$scope.editCustomer.customerType =$scope.selectedCustomerTypes.selected.id;*/
-				
+			$scope.submitEditCustomer = function(){		
 				var customerData={};
 				customerData={
-						
-				}
-				
+						customerId: $rootScope.editCustomer.customerId,
+						firstName:$scope.editCustomer.firstName,
+						address:$scope.editCustomer.address,
+						area:$scope.editCustomer.area,
+						cntNumber:$scope.editUser.cntNumber,
+						emailID:$scope.editCustomer.emailID,
+						city:$scope.editCustomer.city,
+						pinCode:$scope.editCustomer.pinCode,
+						activeFlag:$scope.editCustomer.activeFlag
+				}				
+				serviceApi.doPostWithData("/RLMS/admin/validateAndRegisterUpdateCustomer",$scope.customerData)
+				.then(function(response){
+					$scope.showAlert = true;
+					var key = Object.keys(response);
+					var successMessage = response[key[0]];
+					$scope.alert.msg = successMessage;
+					$scope.alert.type = "success";
+					initAddCustomer();
+					$scope.addCustomerForm.$setPristine();
+					$scope.addCustomerForm.$setUntouched();
+				},function(error){
+					$scope.showAlert = true;
+					$scope.alert.msg = error.exceptionMessage;
+					$scope.alert.type = "danger";
+				});
+			}
+			
+			$scope.submitAddCustomer = function(){
+				//$scope.addCustomer.companyName = $scope.selectedCompany.selected.companyName;
+				$scope.addCustomer.branchName = $scope.selectedBranch.selected.rlmsBranchMaster.branchName;
+				$scope.addCustomer.branchCompanyMapId = $scope.selectedBranch.selected.companyBranchMapId;
+				$scope.addCustomer.customerType =$scope.selectedCustomerTypes.selected.id;
 				serviceApi.doPostWithData("/RLMS/admin/validateAndRegisterNewCustomer",$scope.addCustomer)
 				.then(function(response){
 					$scope.showAlert = true;
@@ -143,6 +176,8 @@
 			//rese add branch
 			$scope.resetAddCustomer = function(){
 				initAddCustomer();
+				$scope.addCustomerForm.$setPristine();
+				$scope.addCustomerForm.$setUntouched();
 			}
 			$scope.backPage =function(){
 				 $window.history.back();

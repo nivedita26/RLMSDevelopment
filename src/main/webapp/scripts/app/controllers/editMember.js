@@ -1,25 +1,25 @@
 (function () {
     'use strict';
 	angular.module('rlmsApp')
-	.controller('editBranchCtrl', ['$scope', '$filter','serviceApi','$route','$http','utility','$window','$rootScope', function($scope, $filter,serviceApi,$route,$http,utility,$window,$rootScope) {
+	.controller('editMemberCtrl', ['$scope', '$filter','serviceApi','$route','$http','utility','$window','$rootScope', function($scope, $filter,serviceApi,$route,$http,utility,$window,$rootScope) {
 		//initialize add Branch
-		$scope.alert = { type: 'success', msg: 'You successfully Edited Branch.',close:true };
+		$scope.alert = { type: 'success', msg: 'You successfully Edited Member.',close:true };
 		//loadBranchListInfo();
 		$scope.showAlert = false;
 		$scope.companies = [];
-		 $scope.activeFlag=['Active','Inactive'];
-		
-		function initAddBranch(){
+
+		function initEditMember(){
 			$scope.selectedCompany = {};
 			$scope.selectedActiveFlag = {};
-			$scope.addBranch={
+			$scope.addMember={
 					companyId:'',
 					branchName:'',
 					branchAddress:'',
 					city:'',
 					area:'',
 					pinCode:'',
-					activeFlag:''
+					contactNumber:'',
+					emailId:'',
 			};	
 		    $scope.branchList={};
 		   
@@ -32,18 +32,18 @@
 		    });
 		};
 		//Post call add branch
-		$scope.submitEditBranch = function(){
-			var branchData = {};
-			branchData = {
-					id:$rootScope.editBranch.branchId,
-					branchName:$scope.editBranch.branchName,
-					branchAddress:$scope.editBranch.branchAddress,
-					area:$scope.editBranch.area,
-					city:$scope.editBranch.city,
-					pinCode:$scope.editBranch.pinCode,
-					activeFlag:$scope.editBranch.activeFlag
+		$scope.submitEditMember= function(){
+			var memberData = {};
+			memberData = {
+					id:$rootScope.editMember.branchId,
+					branchName:$scope.editMember.branchName,
+					contactNumber:$scope.editUser.contactnumber,
+					firstName:$scope.editMember.firstName,
+					area:$scope.editMember.area,
+					city:$scope.editMember.city,
+					pinCode:$scope.editMember.pinCode,
 					};
-			serviceApi.doPostWithData("/RLMS/admin/editBranchInCompany",branchData)
+			serviceApi.doPostWithData("/RLMS/admin/editBranchInCompany",memberData)
 			.then(function(response){
 				$scope.showAlert = true;
 				var key = Object.keys(response);
