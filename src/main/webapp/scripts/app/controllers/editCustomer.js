@@ -43,7 +43,8 @@
 						watchmenName :'',
 						watchmenNumber :'',
 						watchmenEmail :'',
-						activeFlag:'',
+						activeFlag:'1',
+						customerId:''
 						
 				};	
 				$scope.customerTypes = [
@@ -133,9 +134,22 @@
 						emailID:$scope.editCustomer.emailID,
 						city:$scope.editCustomer.city,
 						pinCode:$scope.editCustomer.pinCode,
-						activeFlag:$scope.editCustomer.activeFlag
+						activeFlag:$scope.editCustomer.activeFlag,
+						chairmanName :$scope.editCustomer.chairmanName,
+						chairmanNumber :$scope.editCustomer.chairmanNumber,
+						chairmanEmail :$scope.editCustomer.chairmanEmail,
+						secretaryName :$scope.editCustomer.secretaryName,
+						secretaryNumber :$scope.editCustomer.secretaryNumber,
+						secretaryEmail :$scope.editCustomer.secretaryEmail,
+						treasurerName :$scope.editCustomer.treasurerName,
+						treasurerNumber :$scope.editCustomer.treasurerNumber,
+						treasurerEmail :$scope.editCustomer.treasurerEmail,
+						watchmenName :$scope.editCustomer.watchmenName,
+						watchmenNumber :$scope.editCustomer.watchmenNumber,
+						watchmenEmail :$scope.editCustomer.watchmenEmail,
+						customerType:$scope.editCustomer.customerType
 				}				
-				serviceApi.doPostWithData("/RLMS/admin/validateAndRegisterUpdateCustomer",$scope.customerData)
+				serviceApi.doPostWithData("/RLMS/admin/validateAndUpdateCustomer",$scope.customerData)
 				.then(function(response){
 					$scope.showAlert = true;
 					var key = Object.keys(response);

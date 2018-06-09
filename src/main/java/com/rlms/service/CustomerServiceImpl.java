@@ -266,12 +266,17 @@ public class CustomerServiceImpl implements CustomerService{
 	@Transactional(propagation = Propagation.REQUIRED)
 	public String validateAndUpdateNewMember(MemberDtlsDto memberDtlsDto, UserMetaInfo metaInfo) throws ValidationException{
 		String statusMessage = "";
+<<<<<<< HEAD
 		RlmsMemberMaster memberMaster = this.customerDao.getMemberById(memberDtlsDto.getMemberId()) ;
 		if(memberMaster!=null){
 	       memberMaster = this.constructMemberMaster(memberDtlsDto, memberMaster,metaInfo);
+=======
+		//if(this.validateMemberDtls(memberDtlsDto)){
+			RlmsMemberMaster  memberMaster = this.constructMemberMaster(memberDtlsDto, metaInfo);
+>>>>>>> d8f9623f22553ac588537b414647a3ca72ec4e01
 			this.customerDao.updateMember(memberMaster);
 			statusMessage = PropertyUtils.getPrpertyFromContext(RlmsErrorType.MEMBER_EDIT_SUCCESSFUL.getMessage());
-		}
+		//}
 		return statusMessage;
 	}
 	private boolean validateMemberDtls(MemberDtlsDto memberDtlsDto) throws ValidationException{
@@ -286,8 +291,13 @@ public class CustomerServiceImpl implements CustomerService{
 	
 	private RlmsMemberMaster constructMemberMaster(MemberDtlsDto memberDtlsDto,RlmsMemberMaster memberMaster, UserMetaInfo metaInfo){
 	
+<<<<<<< HEAD
 		//RlmsMemberMaster memberMaster = new RlmsMemberMaster();
 	//	memberMaster.setActiveFlag(memberDtlsDto.getActiveFlag());
+=======
+		RlmsMemberMaster memberMaster = new RlmsMemberMaster();
+
+>>>>>>> d8f9623f22553ac588537b414647a3ca72ec4e01
 		memberMaster.setAddress(memberDtlsDto.getAddress());
 		memberMaster.setContactNumber(memberDtlsDto.getContactNumber());
 		memberMaster.setEmailId(memberDtlsDto.getEmailId());

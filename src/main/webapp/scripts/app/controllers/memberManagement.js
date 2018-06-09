@@ -11,14 +11,14 @@
 		
 		$rootScope.editMember={};
 		$scope.editMemberDetails=function(row){
-			$rootScope.editMember.branchId=row.Branch_Id;
-			$rootScope.editMember.branchAddress=row.Address;
+			$rootScope.editMember.memberId=row.MemberId;
+			$rootScope.editMember.address=row.Address;
 			$rootScope.editMember.firstName=row.Name;
 			$rootScope.editMember.area=row.Area;
 			$rootScope.editMember.city=row.City;
 			$rootScope.editMember.pinCode=row.PinCode;
 			$rootScope.editMember.emailId=row.Email_Id.replace(/-/g, '');
-			$rootScope.editMember.contactnumber=row.Contact_Number.replace(/-/g, '')
+			$rootScope.editMember.contactnumber=row.Contact_Number.replace(/-/g, '');
 			window.location.hash = "#/edit-member";
 		};
 		function initMemberList(){
@@ -110,6 +110,11 @@
 	  	        	  var details=[];
 	  	        	  for(var i=0;i<largeLoad.length;i++){
 	  	        		var detailsObj={};
+	  	        		if(!!largeLoad[i].memberId){
+	  	        			detailsObj["MemberId"] =largeLoad[i].firstName + " " +largeLoad[i].memberId;
+	  	        		}else{
+	  	        			detailsObj["MemberId"] =" - ";
+	  	        		}
 	  	        		if(!!largeLoad[i].firstName){
 	  	        			detailsObj["Name"] =largeLoad[i].firstName + " " +largeLoad[i].lastName;
 	  	        		}else{
@@ -161,6 +166,11 @@
 	  	        	  var details=[];
 	  	        	  for(var i=0;i<largeLoad.length;i++){
 		  	        	var detailsObj={};
+		  	        	if(!!largeLoad[i].memberId){
+	  	        			detailsObj["MemberId"] =largeLoad[i].firstName + " " +largeLoad[i].memberId;
+	  	        		}else{
+	  	        			detailsObj["MemberId"] =" - ";
+	  	        		}
 	  	        		if(!!largeLoad[i].firstName){
 	  	        			detailsObj["Name"] =largeLoad[i].firstName + " " + largeLoad[i].lastName;
 	  	        		}else{
