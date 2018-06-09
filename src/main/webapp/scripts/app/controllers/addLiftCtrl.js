@@ -76,10 +76,23 @@
 					branchCustomerMapId:$scope.selectedCustomer.selected.branchCustomerMapId
 			}
 			$scope.addLift.liftType=liftTypeId;
+			if(liftTypeId == 1){
+				
+				var liftTypeName ="Auto Door"
+					
+			}else if(liftTypeId == 2){
+				
+				var liftTypeName ="Manual Door"
+					
+			}else if(liftTypeId == 3){
+				
+				var liftTypeName ="Hydraulic"
+			}
+			$scope.addLift.liftTypeName=liftTypeName;
 			$scope.modalInstance.dismiss('cancel');
 			serviceApi.doPostWithData('/RLMS/admin/getLiftMasterForType',dataToSend)
 	         .then(function(liftdata) {
-	        	 if(liftdata.blank != true){
+	        	 /*if(liftdata.blank != true){
 	        		 for(var key in liftdata) {
 	        		        if(typeof liftdata[key] !== 'undefined' && typeof liftdata[key] !== 'null') {
 	        		        	if(key == "amcType"){
@@ -100,7 +113,7 @@
 	        		            
 	        		        }
 	        		    }
-	        	 }
+	        	 }*/
 	        	$scope.addLift["address"] = liftdata['address'];
 	        	$scope.addLift["city"] = liftdata['city'];
 	        	$scope.addLift["area"] = liftdata['area'];
@@ -324,6 +337,7 @@
 					longitude : '',
 					serviceStartDate : '',
 					serviceEndDate : '',
+					warrantyPeriod:'',
 					dateOfInstallation : '',
 					amcStartDate : '',
 					amcEndDate:'',
@@ -446,6 +460,7 @@
 			}else{
 				$scope.addLift.fireMode = 0;
 			}
+			$scope.addLift.liftTypeName=liftTypeName;
 			$scope.addLift.branchCustomerMapId = $scope.selectedCustomer.selected.branchCustomerMapId
 			serviceApi.doPostWithData("/RLMS/admin/validateAndRegisterNewLift",$scope.addLift)
 			.then(function(response){

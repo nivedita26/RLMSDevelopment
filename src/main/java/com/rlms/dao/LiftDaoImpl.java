@@ -12,6 +12,8 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.rlms.constants.RLMSConstants;
 import com.rlms.constants.Status;
@@ -85,7 +87,6 @@ public class LiftDaoImpl implements LiftDao{
 		}
 		return status;		
 	}
-	
 	@Override
 	public Integer saveLiftCustomerMap(RlmsLiftCustomerMap liftCustomerMap){
 		return (Integer) this.sessionFactory.getCurrentSession().save(liftCustomerMap);
@@ -97,6 +98,7 @@ public class LiftDaoImpl implements LiftDao{
 	}
 	
 	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void mergeLiftAMCDtls(RlmsLiftAmcDtls liftAmcDtls){
 		this.sessionFactory.getCurrentSession().merge(liftAmcDtls);
 	}
@@ -350,5 +352,28 @@ public class LiftDaoImpl implements LiftDao{
 		Criteria criteria = session.createCriteria(RlmsLiftMaster.class);
 		criteria.add(Restrictions.eq("liftNumber",liftNumber));
 		return (RlmsLiftMaster) criteria.uniqueResult();
+	}
+
+	@Override
+	public  RlmsLiftCustomerMap getAllLiftsDetailsByIds(Integer liftCustomerMapIds) {
+
+		Session session = this.sessionFactory.getCurrentSession();
+		 Criteria criteria = session.createCriteria(RlmsLiftCustomerMap.class)
+				 .createAlias("branchCustomerMap.customerMaster", "custo")
+				 .add(Restrictions.eq("custo.customerId", liftCustomerMapIds))
+				 .add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
+		RlmsLiftCustomerMap  listOfAllLifts = (RlmsLiftCustomerMap) criteria.uniqueResult();
+		 return listOfAllLifts;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public RlmsLiftMaster getLiftById(Integer liftId){		
+			 Session session = this.sessionFactory.getCurrentSession();
+			 Criteria criteria = session.createCriteria(RlmsLiftMaster.class)					 
+					 .add(Restrictions.eq("liftId", liftId));
+					 
+			 RlmsLiftMaster liftM = (RlmsLiftMaster)criteria.uniqueResult();
+			 return liftM;
+		
 	}
 }

@@ -1,6 +1,7 @@
 package com.rlms.service;
 
 import java.io.UnsupportedEncodingException;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -16,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.SystemPropertyUtils;
 
 import com.rlms.constants.AMCType;
 import com.rlms.constants.RLMSConstants;
@@ -24,7 +25,6 @@ import com.rlms.constants.RlmsErrorType;
 import com.rlms.constants.SpocRoleConstants;
 import com.rlms.constants.Status;
 import com.rlms.contract.AMCDetailsDto;
-import com.rlms.contract.CustomerDtlsDto;
 import com.rlms.contract.EventDtlsDto;
 import com.rlms.contract.LiftDtlsDto;
 import com.rlms.contract.SiteVisitDtlsDto;
@@ -37,16 +37,12 @@ import com.rlms.dao.ComplaintsDao;
 import com.rlms.dao.DashboardDao;
 import com.rlms.dao.LiftDao;
 import com.rlms.dao.UserRoleDao;
-import com.rlms.exception.ExceptionCode;
-import com.rlms.exception.RunTimeException;
 import com.rlms.model.RlmsBranchCustomerMap;
-import com.rlms.model.RlmsCompanyBranchMapDtls;
 import com.rlms.model.RlmsComplaintMaster;
 import com.rlms.model.RlmsComplaintTechMapDtls;
 import com.rlms.model.RlmsEventDtls;
 import com.rlms.model.RlmsLiftAmcDtls;
 import com.rlms.model.RlmsLiftCustomerMap;
-import com.rlms.model.RlmsLiftMaster;
 import com.rlms.model.RlmsSiteVisitDtls;
 import com.rlms.model.RlmsUserRoles;
 import com.rlms.model.ServiceCall;
@@ -122,9 +118,6 @@ public class ReportServiceImpl implements ReportService {
 			CollectionUtils.filter(listForLift, new LiftPredicate(liftId));
 			listOFAMCDetails.addAll(this.constructListOFAMcDtos(listForLift));
 		}
-		
-		
-		
 		return listOFAMCDetails;
 	}
 	
@@ -168,13 +161,10 @@ public class ReportServiceImpl implements ReportService {
 			Date tempWarrantyStartDate = listOFAMCs.get(listOFAMCs.size() - 1).getLiftCustomerMap().getLiftMaster().getServiceStartDate();
 			Date tempWarrantyEndDate = listOFAMCs.get(listOFAMCs.size() - 1).getLiftCustomerMap().getLiftMaster().getServiceEndDate();
 
-			
-
 			dto.setStatus(this.calculateAMCStatus(tempStartDate, tempEndDate, tempDateOfInstallation,tempWarrantyStartDate,tempWarrantyEndDate).getStatusMsg());
 			dto.setAmcAmount(liftAmcDtls.getAmcAmount());
 			
 			if(i > 0 ){
-				
 				Integer diffInDays = DateUtils.daysBetween(listOFAMCs.get(i).getAmcStartDate(), listOFAMCs.get(i - 1).getAmcEndDate());
 				if(diffInDays > 0){
 					Date slackStartDate = DateUtils.addDaysToDate(listOFAMCs.get(i - 1).getAmcEndDate(), 1);
@@ -214,45 +204,37 @@ public class ReportServiceImpl implements ReportService {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		
-		
-	//	Date warrantyexpiryDate = DateUtils.addDaysToDate(dateOfInstallation, 365);
-		Date renewalDate = DateUtils.addDaysToDate(amcEndDate, -30);
-		/*if(DateUtils.isBeforeOrEqualToDate(amcEndDate, warrantyexpiryDate)){
-
-			amcStatus = Status.UNDER_WARRANTY;*/
-		
-		///calculate warranty for lift
-	
 		if(DateUtils.isBeforeOrEqualToDate(today,warrantyEndDate)){
-
 			amcStatus = Status.UNDER_WARRANTY;
 		}
-		else if(DateUtils.isBeforeToDate(warrantyEndDate,today)&&(DateUtils.isAfterToDate(today,amcStartDate))){
+	   if(amcStartDate==null && amcEndDate==null) {
+		   if(DateUtils.isBeforeToDate(warrantyEndDate,today)){
+				amcStatus = Status.NOT_UNDER_Warranty;
+		   }
+	   }
+		if(amcStartDate!=null &&amcEndDate!=null ) {
+		Date renewalDate = DateUtils.addDaysToDate(amcEndDate, -30);
+		if(DateUtils.isBeforeToDate(warrantyEndDate,today)&&(DateUtils.isAfterToDate(today,amcStartDate))){
 			amcStatus = Status.NOT_UNDER_Warranty;
 		}
-		else if(DateUtils.isAfterOrEqualTo(renewalDate,today) && DateUtils.isBeforeOrEqualToDate(today, amcEndDate)){
+		/*else if(DateUtils.isAfterOrEqualTo(renewalDate,today) && DateUtils.isBeforeOrEqualToDate(today, amcEndDate)){
+			amcStatus = Status.RENEWAL_DUE;
+		 }*/
+		int renewalDays = DateUtils.daysBetween(today,renewalDate);
+		if(renewalDays<=30 &&renewalDays>=0) {
+		//	if((DateUtils.isAfterOrEqualTo(renewalDate,today)) && (DateUtils.isBeforeOrEqualToDate(today, amcEndDate))){
 			amcStatus = Status.RENEWAL_DUE;
 		 }
-		/* if(DateUtils.isAfterOrEqualTo(renewalDate, amcEndDate) ){
-			amcStatus = Status.RENEWAL_DUE;
-		}*/
 		 else if(DateUtils.isBeforeToDate(amcEndDate, today)){
-			amcStatus = Status.AMC_PENDING;
-		 }
-		/*else if(DateUtils.isAfterToDate(amcEndDate, amcEndDate)){
-			amcStatus = Status.AMC_PENDING;*/
-		
-	     else if((DateUtils.isBeforeOrEqualToDate(amcStartDate,today))&&(DateUtils.isAfterOrEqualTo(today,amcEndDate))){
-			amcStatus = Status.UNDER_AMC;
-		/*else if(DateUtils.isAfterOrEqualTo(amcStartDate, amcEndDate)){
-			amcStatus = Status.UNDER_AMC;*/
+				amcStatus = Status.AMC_PENDING;
+			 }
+		 else if((DateUtils.isBeforeOrEqualToDate(amcStartDate,today))&&(DateUtils.isAfterOrEqualTo(today,amcEndDate))){
+				amcStatus = Status.UNDER_AMC;
+			
+			}
 		}
-	   
 		return amcStatus;
-		
 	}
-	
 	@Transactional(propagation = Propagation.REQUIRED)
 	public String addAMCDetailsForLift(AMCDetailsDto dto, UserMetaInfo metaInfo) throws ParseException{
 		RlmsLiftAmcDtls liftAmcDtls = this.constructLiftAMCDtls(dto, metaInfo);
@@ -264,24 +246,28 @@ public class ReportServiceImpl implements ReportService {
 	    RlmsLiftAmcDtls liftAMCDtls = new RlmsLiftAmcDtls();
 		RlmsLiftCustomerMap liftCustomerMap = this.liftDao.getLiftCustomerMapById(dto.getLiftCustoMapId());
 	    liftAMCDtls = 	liftDao.getRlmsLiftAmcDtlsByLiftCustomerMapId(liftCustomerMap.getLiftCustomerMapId());	
-	   if(liftAMCDtls==null) {
+	    if(liftAMCDtls==null) {
 		   liftAMCDtls = new RlmsLiftAmcDtls();
 	   }
-			
 		List<ServiceCall> amacServiceCalls=dto.getAmcServiceCalls();
 		if(amacServiceCalls !=null && !amacServiceCalls.isEmpty()) {
 			for (ServiceCall serviceCall : amacServiceCalls) {
 				createServiceCalls(serviceCall,metaInfo, liftCustomerMap);
 			}
 		}
+		if(!StringUtils.isEmpty(dto.getLiftServiceStartDate())){
+			dto.setServiceStDate(DateUtils.convertStringToDateWithoutTime(dto.getLiftServiceStartDate()));
+		}
+		if(!StringUtils.isEmpty(dto.getLiftServiceEndDate())){
+			dto.setServiceEdDate(DateUtils.convertStringToDateWithoutTime(dto.getLiftServiceEndDate()));
+		}
 		if(!StringUtils.isEmpty(dto.getAmcEndDate())){
 			dto.setAmcEdDate(DateUtils.convertStringToDateWithoutTime(dto.getAmcEndDate()));
 		}
-		
 		if(!StringUtils.isEmpty(dto.getAmcStartDate())){
 			dto.setAmcStDate(DateUtils.convertStringToDateWithoutTime(dto.getAmcStartDate()));
 		}
-		System.out.println("***********"+RLMSConstants.ACTIVE.getId());
+		//System.out.println("***********"+RLMSConstants.ACTIVE.getId());
 		liftAMCDtls.setActiveFlag(RLMSConstants.ACTIVE.getId());
 		if(null != dto.getAmcEdDate()){
 			liftAMCDtls.setAmcDueDate(DateUtils.addDaysToDate(dto.getAmcEdDate(), -30));
@@ -297,18 +283,19 @@ public class ReportServiceImpl implements ReportService {
 		if(null != liftCustomerMap){
 			liftAMCDtls.setLiftCustomerMap(liftCustomerMap);
 		}
-		
+		if(!StringUtils.isEmpty(dto.getLiftServiceStartDate()) && !StringUtils.isEmpty(dto.getLiftServiceEndDate())){
+			Status amcStatus = this.calculateAMCStatus(dto.getAmcStDate(), dto.getAmcEdDate(), liftCustomerMap.getLiftMaster().getDateOfInstallation(), liftCustomerMap.getLiftMaster().getServiceStartDate(), liftCustomerMap.getLiftMaster().getServiceEndDate());
+			liftAMCDtls.setStatus(amcStatus.getStatusId());
+		}
 		if(!StringUtils.isEmpty(dto.getAmcStartDate()) && !StringUtils.isEmpty(dto.getAmcEndDate())){
 			Status amcStatus = this.calculateAMCStatus(dto.getAmcStDate(), dto.getAmcEdDate(), liftCustomerMap.getLiftMaster().getDateOfInstallation(), liftCustomerMap.getLiftMaster().getServiceStartDate(), liftCustomerMap.getLiftMaster().getServiceEndDate());
-		    
-			
 			liftAMCDtls.setStatus(amcStatus.getStatusId());
-			
 		}
-		else {
+		
+		/*else {
 			liftAMCDtls.setStatus( Status.NOT_UNDER_AMC.getStatusId());
 			
-		}
+		}*/
 		if(null !=dto.getAmcStDate() && null !=dto.getAmcEdDate()){
 			Status amcStatus = this.calculateAMCStatus(dto.getAmcStDate(), dto.getAmcEdDate(), liftCustomerMap.getLiftMaster().getDateOfInstallation(),liftCustomerMap.getLiftMaster().getServiceStartDate(),liftCustomerMap.getLiftMaster().getServiceEndDate());
 			liftAMCDtls.setStatus(amcStatus.getStatusId());
@@ -404,6 +391,7 @@ public class ReportServiceImpl implements ReportService {
 		List<RlmsUserRoles> listOfAllTechnicians = this.userRoleDao.getAllUserWithRoleForBranch(dto.getBranchCompanyMapId(), null, SpocRoleConstants.TECHNICIAN.getSpocRoleId());
 		
 		
+		
 		for (RlmsUserRoles userRoles : listOfAllTechnicians) {
 			listOfUserRoleIds.add(userRoles.getUserRoleId());
 		}
@@ -493,14 +481,13 @@ public class ReportServiceImpl implements ReportService {
 			this.messagingService.sendAMCMail(listOfDynamicValues, toList, com.rlms.constants.EmailTemplateEnum.AMC_RENEWAL.getTemplateId());
 		}
 	}
-	
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void changeStatusToAMCExpiryAndNotifyUser() throws UnsupportedEncodingException{
 		List<RlmsLiftAmcDtls> listOfAllLifts = this.liftDao.getAllLiftsWithTodaysExpiryDate();
 		for (RlmsLiftAmcDtls rlmsLiftAmcDtls : listOfAllLifts) {
 			rlmsLiftAmcDtls.setStatus(Status.AMC_PENDING.getStatusId());
 			this.liftDao.mergeLiftAMCDtls(rlmsLiftAmcDtls);
-			
+
 			List<String> listOfDynamicValues = new ArrayList<String>();
 			listOfDynamicValues.add(rlmsLiftAmcDtls.getLiftCustomerMap().getLiftMaster().getLiftNumber());
 			listOfDynamicValues.add(rlmsLiftAmcDtls.getLiftCustomerMap().getBranchCustomerMap().getCustomerMaster().getAddress()+ ", " + rlmsLiftAmcDtls.getLiftCustomerMap().getBranchCustomerMap().getCustomerMaster().getArea() + ", " + rlmsLiftAmcDtls.getLiftCustomerMap().getBranchCustomerMap().getCustomerMaster().getCity());
@@ -521,28 +508,43 @@ public class ReportServiceImpl implements ReportService {
 		}
 	}
 
+	
 	@Override
 	public List<EventDtlsDto> getAllInOutEventsData(EventDtlsDto dto) {
-		List<RlmsEventDtls> listOfEvents = null;
+		List<RlmsEventDtls> listOfEvents = new ArrayList<RlmsEventDtls>();
+		List<EventDtlsDto>dtlsDtoList = new ArrayList<EventDtlsDto>();
 		try {
 			List<Integer> liftCustomerMapIds = new ArrayList<>();
 			for (Integer integer : dto.getBranchCustomerMapId()) {
 				LiftDtlsDto dtoTemp = new LiftDtlsDto();
-				dtoTemp.setBranchCustomerMapId(10);
+			  //dtoTemp.setBranchCustomerMapId(6);
 				//dtoTemp.setBranchCustomerMapId(6);
-				
-				dtoTemp.setBranchCustomerMapId(integer);
+			 //dtoTemp.setBranchCustomerMapId(integer);
 				List<RlmsLiftCustomerMap> list = dashboardService
 						.getAllLiftsForBranchsOrCustomer(dtoTemp);
 				for (RlmsLiftCustomerMap rlmsLiftCustomerMap : list) {
 					liftCustomerMapIds.add(rlmsLiftCustomerMap
 							.getLiftCustomerMapId());
-				}			}
+				}		
+			}
 		//	logger.info("Method :: getAllBranchesForCompany");
 			listOfEvents = dashBoardDao.getAllEventDtlsForDashboard(liftCustomerMapIds,dto.getEventType());
+	        for (RlmsEventDtls  rlmsEventDtls : listOfEvents) {
+				EventDtlsDto dtlsDto =new EventDtlsDto();
+				dtlsDto.setImei(rlmsEventDtls.getEventType());
+				dtlsDto.setEventDescription(rlmsEventDtls.getEventDescription());
+				DateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+		        format.setTimeZone(TimeZone.getTimeZone("IST"));
+		        String eventDate = format.format(rlmsEventDtls.getEventDate());
+				dtlsDto.setDate(eventDate);
+				dtlsDto.setEventType(rlmsEventDtls.getRlmsLiftCustomerMap().getLiftMaster().getImei());
+				dtlsDto.setLiftNumber(rlmsEventDtls.getRlmsLiftCustomerMap().getLiftMaster().getLiftNumber());
+				dtlsDto.setLiftAddress(rlmsEventDtls.getRlmsLiftCustomerMap().getLiftMaster().getAddress());
+				dtlsDto.setCity(rlmsEventDtls.getRlmsLiftCustomerMap().getLiftMaster().getCity());
+				dtlsDtoList.add(dtlsDto);
+			}
 		} catch (Exception e) {
 		}
-		return null;
+		return dtlsDtoList;
 	}
-	
 }

@@ -80,7 +80,7 @@
 										//branchCustomerMapId : -1,
 										listOfLiftCustoMapId : [],
 										statusList : [],
-										serviceCallType : 0
+										//serviceCallType : 1
 									};
 									serviceApi
 											.doPostWithData('/RLMS/complaint/getListOfComplaints', dataToSend)
@@ -211,8 +211,9 @@
 														}
 														$scope.cutomers = customerData;
 														$scope.cutomers
-																.unshift(tempAll);
+														.unshift(tempAll);
 														$scope.selectedCustomer.selected=undefined;
+														//$scope.selectedLifts.selected=undefined;
 													})
 								}
 								$scope.loadLifts = function() {
@@ -224,6 +225,7 @@
 											.then(function(liftData) {
 												$scope.lifts = liftData;
 											})
+									
 								}
 								// Toggle Advance Filter
 								$scope.toggleAdvanceFilter = function() {
@@ -633,6 +635,7 @@
 									}else{
 										$rootScope.editComplaint.complaintsNumber=row.Number.replace(/-/g, '');
 										$rootScope.editComplaint.complaintsTitle=row.Title.replace(/-/g, '');
+										$rootScope.editComplaint.callType=row.Title.replace(/-/g, '');
 										$rootScope.editComplaint.complaintsRemark=row.Remark.replace(/-/g, '');
 										$rootScope.editComplaint.complaintsAddress=row.Address.replace(/-/g, '');
 										$rootScope.editComplaint.complaintsCity=row.City.replace(/-/g, '');
@@ -640,7 +643,7 @@
 										$rootScope.editComplaint.serviceEndDate=row.Service_End_Date;
 										$rootScope.editComplaint.serviceStartDate=row.Service_StartDate;
 										$rootScope.selectedComplaintStatus=row.Status;
-										//$rootScope.editComplaint.complaintsStatus=row.Status.replace(/-/g, '');
+										$rootScope.editComplaint.complaintsStatus=row.Status.replace(/-/g, '');
 										var dataToSend ={
 												complaintId:row.Number
 										}

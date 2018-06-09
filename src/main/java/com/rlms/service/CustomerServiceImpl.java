@@ -260,6 +260,17 @@ public class CustomerServiceImpl implements CustomerService{
 		return statusMessage;
 		
 	}
+	@Transactional(propagation = Propagation.REQUIRED)
+	public String validateAndUpdateNewMember(MemberDtlsDto memberDtlsDto, UserMetaInfo metaInfo) throws ValidationException{
+		String statusMessage = "";
+		//if(this.validateMemberDtls(memberDtlsDto)){
+			RlmsMemberMaster  memberMaster = this.constructMemberMaster(memberDtlsDto, metaInfo);
+			this.customerDao.updateMember(memberMaster);
+			statusMessage = PropertyUtils.getPrpertyFromContext(RlmsErrorType.MEMBER_EDIT_SUCCESSFUL.getMessage());
+		//}
+		return statusMessage;
+		
+	}
 	
 	private boolean validateMemberDtls(MemberDtlsDto memberDtlsDto) throws ValidationException{
 		boolean isValidMember = true;
@@ -275,7 +286,7 @@ public class CustomerServiceImpl implements CustomerService{
 	private RlmsMemberMaster constructMemberMaster(MemberDtlsDto memberDtlsDto, UserMetaInfo metaInfo){
 	
 		RlmsMemberMaster memberMaster = new RlmsMemberMaster();
-		memberMaster.setActiveFlag(RLMSConstants.ACTIVE.getId());
+
 		memberMaster.setAddress(memberDtlsDto.getAddress());
 		memberMaster.setContactNumber(memberDtlsDto.getContactNumber());
 		memberMaster.setEmailId(memberDtlsDto.getEmailId());
@@ -286,9 +297,9 @@ public class CustomerServiceImpl implements CustomerService{
 		memberMaster.setPincode(memberDtlsDto.getPinCode());
 		memberMaster.setUpdatedBy(metaInfo.getUserId());
 		memberMaster.setUpdatedDate(new Date());
-		memberMaster.setCreatedBy(metaInfo.getUserId());
-		memberMaster.setCreatedDate(new Date());
-		memberMaster.setRegistrationDate(new Date());
+	//	memberMaster.setCreatedBy(metaInfo.getUserId());
+	//	memberMaster.setCreatedDate(new Date());
+	//	memberMaster.setRegistrationDate(new Date());
 		return memberMaster;
 	}
 	
@@ -408,6 +419,7 @@ public class CustomerServiceImpl implements CustomerService{
 			dto.setPinCode(rlmsCustomerMemberMap.getRlmsMemberMaster().getPincode());
 			dto.setEmailId(rlmsCustomerMemberMap.getRlmsMemberMaster().getEmailId());
 			dto.setAddress(rlmsCustomerMemberMap.getRlmsMemberMaster().getAddress());
+			dto.setMemberId(rlmsCustomerMemberMap.getRlmsMemberMaster().getMemberId());
 			
 			listOfMemberDtls.add(dto);
 		}
@@ -585,6 +597,41 @@ public class CustomerServiceImpl implements CustomerService{
 			listOfLiftDtls.add(dto);
 		}
 		return listOfLiftDtls;
+	}
+	@Transactional(propagation = Propagation.REQUIRED)
+	public String validateAndEditCustomer(CustomerDtlsDto customerDtlsDto,UserMetaInfo metaInfo)
+ {
+		String statusMessage = "User updated successfully";
+		RlmsCustomerMaster  customerMaster = this.customerDao.getCustomerById(customerDtlsDto.getCustomerId());
+		
+		customerMaster.setAddress(customerDtlsDto.getAddress());
+		customerMaster.setCntNumber(customerDtlsDto.getCntNumber());
+		customerMaster.setCustomerName(customerDtlsDto.getFirstName());
+		customerMaster.setCustomerType(customerDtlsDto.getCustomerType());
+		customerMaster.setEmailID(customerDtlsDto.getEmailID());
+		customerMaster.setPanNumber(customerDtlsDto.getPanNumber());
+		customerMaster.setTinNumber(customerDtlsDto.getTinNumber());
+		customerMaster.setCity(customerDtlsDto.getCity());
+		customerMaster.setArea(customerDtlsDto.getArea());
+		customerMaster.setPincode(customerDtlsDto.getPinCode());
+		customerMaster.setVatNumber(customerDtlsDto.getVatNumber());
+		customerMaster.setChairmanName(customerDtlsDto.getChairmanName());
+		customerMaster.setChairmanNumber(customerDtlsDto.getChairmanNumber());
+		customerMaster.setChairmanEmail(customerDtlsDto.getChairmanEmail());
+		customerMaster.setTreasurerName(customerDtlsDto.getTreasurerName());
+		customerMaster.setTreasurerNumber(customerDtlsDto.getTreasurerNumber());
+		customerMaster.setTreasurerEmail(customerDtlsDto.getTreasurerEmail());
+		customerMaster.setSecretaryName(customerDtlsDto.getSecretaryName());
+		customerMaster.setSecretaryNumber(customerDtlsDto.getSecretaryNumber());
+		customerMaster.setSecretaryEmail(customerDtlsDto.getSecretaryEmail());
+		customerMaster.setWatchmenName(customerDtlsDto.getWatchmenName());
+		customerMaster.setWatchmenNumber(customerDtlsDto.getWatchmenNumber());
+		customerMaster.setWatchmenEmail(customerDtlsDto.getWatchmenEmail());
+		customerMaster.setActiveFlag(customerDtlsDto.getActiveFlag());
+		customerMaster.setUpdatedBy(metaInfo.getUserId());
+		customerMaster.setUpdatedDate(new Date());
+		this.customerDao.updateCustomer(customerMaster);
+		return statusMessage;
 	}
 }
 

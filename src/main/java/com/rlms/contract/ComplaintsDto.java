@@ -2,8 +2,6 @@ package com.rlms.contract;
 
 import java.util.Date;
 
-import com.rlms.model.RlmsLiftCustomerMap;
-
 public class ComplaintsDto {
 
 	private String complaintNumber;
@@ -250,13 +248,10 @@ public class ComplaintsDto {
 	public void setCity(String city) {
 		this.city = city;
 	}
-
 	public Integer getServiceCallType() {
 		return serviceCallType;
 	}
-
 	public void setServiceCallType(Integer serviceCallType) {
 		this.serviceCallType = serviceCallType;
 	}
-
 }

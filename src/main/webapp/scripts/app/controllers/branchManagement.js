@@ -8,7 +8,9 @@
 		$scope.showTable = false;
 		loadCompanyData();
 		$scope.selectedCompany={};
+		$scope.selectedActiveFlag = {};
 		$scope.showCompany = false;
+		
 		function loadCompanyData(){
 			serviceApi.doPostWithoutData('/RLMS/admin/getAllApplicableCompanies')
 		    .then(function(response){
@@ -16,6 +18,7 @@
 		    });
 		}
 		$rootScope.editBranch={};
+		//$rootScope.activeFlag=['Active','Inactive'];
 		$scope.editBranchDetails=function(row){
 			$rootScope.editBranch.branchId=row.Branch_Id;
 			$rootScope.editBranch.branchName=row.Branch_Name;
@@ -23,8 +26,11 @@
 			$rootScope.editBranch.area=row.Area;
 			$rootScope.editBranch.city=row.City;
 			$rootScope.editBranch.pinCode=row.PinCode;
+			$rootScope.editBranch.selectedActiveFlag;
+			//$rootScope.editBranch.activeFlag=row.activeFlag;
 			window.location.hash = "#/edit-branch";
 		};
+				
 		
 		//-------Branch Details Table---------
 	    $scope.filterOptions = {
@@ -170,14 +176,9 @@
 				}, {
 					field : "City",
 					displayName:"City"
-				}
-				,{
-					cellTemplate :  
-			             '<button ng-click="$event.stopPropagation(); editBranchDetails(row.entity);" title="Edit" style="margin-top: 2px;height: 38px;width :38px;" class="btn-sky"><span class="glyphicon glyphicon-pencil"></span></button>',
-					width : 40
 				},{
 					cellTemplate :  
-			             '<button ng-click="$event.stopPropagation(); deleteBranchDetails(row.entity);" title="Delete" style="margin-top: 2px;height: 38px;width :38px;" class="btn-sky"><span class="glyphicon glyphicon-remove"></span></button>',
+			             '<button ng-click="$event.stopPropagation(); editBranchDetails(row.entity);" title="Edit" style="margin-top: 2px;height: 38px;width :38px;" class="btn-sky"><span class="glyphicon glyphicon-pencil"></span></button>',
 					width : 40
 				}
 				]

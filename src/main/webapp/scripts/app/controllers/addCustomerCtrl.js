@@ -42,9 +42,7 @@
 						treasurerEmail :'',
 						watchmenName :'',
 						watchmenNumber :'',
-						watchmenEmail :'',
-					//	gstNumber:'',
-						
+						watchmenEmail :'',						
 						
 				};	
 				$scope.customerTypes = [
@@ -134,7 +132,7 @@
 					$scope.alert.type = "danger";
 				});
 			}
-			//rese add branch
+			//reset add branch
 			$scope.resetAddCustomer = function(){
 				initAddCustomer();
 			}

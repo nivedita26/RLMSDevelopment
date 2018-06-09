@@ -45,6 +45,21 @@
 						ng-model="editBranch.pinCode" placeholder="Pincode" class="form-control">
 				</div>
 			</div>
+			<div class="form-group col-sm-6">
+				<label class="col-sm-4 control-label">Status</label>
+				<div class="col-sm-6">
+			   		<!-- <ui-select ng-model="selectedActiveFlag.selected" title="Choose a Status">
+			    		<ui-select-match placeholder="Select a Status">{{$select.selected.name}}</ui-select-match>
+			    		<ui-select-choices repeat="iterator in activeFlag | filter: $select.search">
+			     		<span ng-bind-html="iterator.name | highlight: $select.search"></span>
+			    		</ui-select-choices>
+			  		</ui-select> -->
+			  		<div class="select-container">
+						<select ng-model="selectedActiveFlag" ng-options="x for x in activeFlag" class="form-control">
+						</select>
+				</div>
+  				</div>
+				</div>
 		 </fieldset>
 		
 			<div class="panel-footer">

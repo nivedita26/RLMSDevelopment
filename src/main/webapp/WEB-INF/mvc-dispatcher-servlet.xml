@@ -8,13 +8,14 @@
   http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd
   http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+  
 
 	<context:component-scan base-package="com.rlms, com.telesist, com.rlms.tests">
 	 <context:exclude-filter type="regex" expression="com.rlms.model"/>
 	</context:component-scan>
 
 	<mvc:annotation-driven/>
-
+	
 	<mvc:default-servlet-handler/>
 	
 	<context:spring-configured/>
@@ -130,8 +131,6 @@
 	  </property>
 	 </bean> 
   
-  <!-- <bean id="rlmsEventDao" class="com.rlms.dao.RlmsEventDaoImpl">
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean> -->
-
-</beans>
+     <bean id="schedular" class="com.rights.batches.ScheduleTesting"></bean>
+ 
+	</beans>

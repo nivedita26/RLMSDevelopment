@@ -325,14 +325,22 @@ angular.module('theme.demos.dashboard.indi', [
             .construnctObjeToSend(complaintStatusArray);
           serviceApi
             .doPostWithData(
-            '/RLMS/dashboard/getListOfComplaintsForDashboard',
-            dataToSend)
+           // '/RLMS/dashboard/getListOfComplaintsForDashboard',
+
+       		'/RLMS/dashboard/getListOfTotalComplaintsCountByCallType',dataToSend)
             .then(
             function (
               largeLoad) {
               if (complaintStatusArray.includes('2') && complaintStatusArray.length == 1 && largeLoad.length > 0) {
-                $scope.complaintsData.totalPendingComplaints.text = largeLoad.length;
-                $scope.complaintsData.totalUnassignedComplaints.text = largeLoad.length;
+            	  var totalCount=0;
+            	  for (var i = 0; i < largeLoad.length; i++)
+            	  {
+            		  if(largeLoad[i].totalCallTypeCount!=null){
+            			  totalCount=totalCount+largeLoad[i].totalCallTypeCount;
+            		  }
+            	  }
+                $scope.complaintsData.totalPendingComplaints.text = totalCount;
+                $scope.complaintsData.totalUnassignedComplaints.text = totalCount;
                 $scope.todaysUnassignedComplaints = largeLoad.filter(function (item) {
                   return (new Date(item.updatedDate)).getTime() === $scope.todaysDate.getTime();
                 });
@@ -365,7 +373,15 @@ angular.module('theme.demos.dashboard.indi', [
                 }
               }
               if (complaintStatusArray.includes('2') && complaintStatusArray.length == 3 && largeLoad.length > 0) {
-                $scope.complaintsData.totalComplaints.text = largeLoad.length;
+                
+            	  var totalCount=0;
+            	  for (var i = 0; i < largeLoad.length; i++)
+            	  {
+            		  if(largeLoad[i].totalCallTypeCount!=null){
+            			  totalCount=totalCount+largeLoad[i].totalCallTypeCount;
+            		  }
+            	  }
+            	  $scope.complaintsData.totalComplaints.text = totalCount;                
                 $scope.todaysTotalComplaints = largeLoad.filter(function (item) {
                   return (new Date(item.updatedDate)).getTime() === $scope.todaysDate.getTime();
                 });
@@ -542,7 +558,10 @@ angular.module('theme.demos.dashboard.indi', [
     $scope.getPagedDataAsyncForComplaints = function (pageSize,
       page, searchText, complaintStatus, callingModel,isTodaysData) {
       var url;
-      url = '/RLMS/dashboard/getListOfComplaintsForDashboard';
+     // url = '/RLMS/dashboard/getListOfComplaintsForDashboard';
+      
+      url = '/RLMS/dashboard/getListOfTodaysComplaintsCountByCallType';
+      
       setTimeout(
         function () {
           var data;
@@ -565,7 +584,7 @@ angular.module('theme.demos.dashboard.indi', [
                 }
                 for (var i = 0; i < largeLoad.length; i++) {
                   var userDetailsObj = {};
-                  if (!!largeLoad[i].complaintNumber) {
+                  /*if (!!largeLoad[i].complaintNumber) {
                     userDetailsObj["No"] = i+1 +".";
                   } else {
                     userDetailsObj["No"] = " - ";
@@ -596,7 +615,18 @@ angular.module('theme.demos.dashboard.indi', [
                     userDetailsObj["Total_Complaints"] = largeLoad[i].totalComplaints;
                   } else {
                     userDetailsObj["Total_Complaints"] = " - ";
-                  }
+                  }*/
+                  
+                  if (!!largeLoad[i].callType) {
+                      userDetailsObj["Call-Type"] = largeLoad[i].callType;
+                    } else {
+                      userDetailsObj["Call-Type"] = " - ";
+                    }
+                  if (!!largeLoad[i].totalCallTypeCount) {
+                      userDetailsObj["TotalCount"] = largeLoad[i].totalCallTypeCount;
+                    } else {
+                      userDetailsObj["TotalCount"] = " - ";
+                    }
                   userDetails
                     .push(userDetailsObj);
                 }
@@ -621,7 +651,7 @@ angular.module('theme.demos.dashboard.indi', [
             var dataToSend = $scope
               .construnctObjeToSend(complaintStatus);
             serviceApi
-              .doPostWithData(url,
+              .doPostWithData('/RLMS/dashboard/getListOfTotalComplaintsCountByCallType',
               dataToSend)
               .then(
               function (
@@ -636,22 +666,20 @@ angular.module('theme.demos.dashboard.indi', [
                 }
                 for (var i = 0; i < largeLoad.length; i++) {
                   var userDetailsObj = {};
-                  if (!!largeLoad[i].complaintNumber) {
+                  
                     userDetailsObj["No"] = i+1 +".";
+                  
+                  if (!!largeLoad[i].callType) {
+                    userDetailsObj["CallType"] = largeLoad[i].callType;
                   } else {
-                    userDetailsObj["No"] = " - ";
+                    userDetailsObj["CallType"] = " - ";
                   }
-                  if (!!largeLoad[i].branchName) {
-                    userDetailsObj["Branch"] = largeLoad[i].branchName;
+                  if (!!largeLoad[i].totalCallTypeCount) {
+                    userDetailsObj["TotalCount"] = largeLoad[i].totalCallTypeCount;
                   } else {
-                    userDetailsObj["Branch"] = " - ";
+                    userDetailsObj["TotalCount"] = " - ";
                   }
-                  if (!!largeLoad[i].customerName) {
-                    userDetailsObj["Customer"] = largeLoad[i].customerName;
-                  } else {
-                    userDetailsObj["Customer"] = " - ";
-                  }
-                  if (!!largeLoad[i].city) {
+                  /*if (!!largeLoad[i].city) {
                     userDetailsObj["City"] = largeLoad[i].city;
                   } else {
                     userDetailsObj["City"] = " - ";
@@ -667,7 +695,7 @@ angular.module('theme.demos.dashboard.indi', [
                     userDetailsObj["Total_Complaints"] = largeLoad[i].totalComplaints;
                   } else {
                     userDetailsObj["Total_Complaints"] = " - ";
-                  }
+                  }*/
                   userDetails
                     .push(userDetailsObj);
                 }
@@ -804,6 +832,7 @@ angular.module('theme.demos.dashboard.indi', [
     	                	for (var i = 0; i < largeLoad.length; i++) {
     	                		
     	                		if(largeLoad[i].totolActiveTechnician!=null){
+    	                			var dataCount={};
     	                			dataCount.branchName=largeLoad[i].branchName
     	                			dataCount.city=largeLoad[i].city
     	                			dataCount.count=largeLoad[i].totolActiveTechnician
@@ -813,37 +842,51 @@ angular.module('theme.demos.dashboard.indi', [
     	                	}    	                	   	                	
       	                }
     	                if (activeFlag=="InActive") {
-    	                	/*largeLoad = largeLoad.filter(function (item) {
-    	                		
-      	                    return item.activeFlag === 0;*/
+    	                	
     	                	for (var i = 0; i < largeLoad.length; i++) {
     	                		
     	                		if(largeLoad[i].totalInactiveTechnician!=null){
-    	                			largeLoad[i].branchName=largeLoad[i].branchName
-    	                			largeLoad[i].city=largeLoad[i].city
-    	                			largeLoad[i].count=largeLoad[i].totalInactiveTechnician
+    	                			var dataCount={};
+    	                			dataCount.branchName=largeLoad[i].branchName
+    	                			dataCount.city=largeLoad[i].city
+    	                			dataCount.count=largeLoad[i].totalInactiveTechnician
+    	                			
+    	                			data.push(dataCount);
     	                		}
     	                	}
-      	                 // });
       	                }
-    	                for (var i = 0; i < largeLoad.length; i++) {
+    	                if (activeFlag=="Total") {
+    	                	
+    	                	for (var i = 0; i < largeLoad.length; i++) {
+    	                		
+    	                		if(largeLoad[i].count!=null){
+    	                			var dataCount={};
+    	                			dataCount.branchName=largeLoad[i].branchName
+    	                			dataCount.city=largeLoad[i].city
+    	                			dataCount.count=largeLoad[i].count
+    	                			
+    	                			data.push(dataCount);
+    	                		}
+    	                	}
+      	                }
+    	                for (var i = 0; i < data.length; i++) {
       	                  var userDetailsObj = {};
       	                var dataCount={};
       	                  
       	                    userDetailsObj["No"] = i+1 +".";
       	                  
-      	                  if (!!largeLoad[i].branchName) {
-        	                userDetailsObj["Branch"] = largeLoad[i].branchName;
+      	                  if (!!data[i].branchName) {
+        	                userDetailsObj["Branch"] = data[i].branchName;
         	              } else {
         	                userDetailsObj["Branch"] = " - ";
         	              }
-      	                  if (!!largeLoad[i].city) {
-      	                    userDetailsObj["City"] = largeLoad[i].city;
+      	                  if (!!data[i].city) {
+      	                    userDetailsObj["City"] = data[i].city;
       	                  } else {
       	                    userDetailsObj["City"] = " - ";
       	                  }
-      	                  if (!!largeLoad[i].count) {
-        	                userDetailsObj["Total_Technician"] = largeLoad[i].count;
+      	                  if (!!data[i].count) {
+        	                userDetailsObj["Total_Technician"] = data[i].count;
         	              } else {
         	                userDetailsObj["Total_Technician"] = " - ";
         	              }
@@ -885,8 +928,7 @@ angular.module('theme.demos.dashboard.indi', [
     	                	  	                 
     	                  $scope.technicianData.activeTechnicians.text=totalCount;
     	                }
-    	                if(technicianStatus=="InActive"){
-    	                	   	                	
+    	                if (technicianStatus=="InActive") {
     	                	var totalCount= 0;
     	                	for (var i = 0; i < largeLoad.length; i++) {
     	                		
@@ -894,10 +936,10 @@ angular.module('theme.demos.dashboard.indi', [
     	                			totalCount=totalCount+largeLoad[i].totalInactiveTechnician;
     	                		}
     	                	}
-    	                	
-    	                		$scope.technicianData.inactiveTechnicians.text=totalCount;
-    	                	
+    	                	  	                 
+    	                  $scope.technicianData.inactiveTechnicians.text=totalCount;
     	                }
+    	                
     	                if(technicianStatus=="TotalTechnician"){
     	                	var totalCount= 0;
     	                	for (var i = 0; i < largeLoad.length; i++) {
@@ -1063,6 +1105,7 @@ angular.module('theme.demos.dashboard.indi', [
       	                	for (var i = 0; i < largeLoad.length; i++) {
     	                		
     	                		if(largeLoad[i].underAMCCount!=null){
+    	                			var dataCount={};
     	                			dataCount.branchName=largeLoad[i].branchName
     	                			dataCount.customerName=largeLoad[i].customerName
     	                			dataCount.city=largeLoad[i].city
@@ -1070,7 +1113,8 @@ angular.module('theme.demos.dashboard.indi', [
 
     	                			data.push(dataCount);
     	                		}    	                		
-    	                	}      	                
+    	                	}      
+      	                	
       	                }
       	                if (activeFlag=="InActive") {
       	                	largeLoad = largeLoad.filter(function (item) {
@@ -1082,25 +1126,24 @@ angular.module('theme.demos.dashboard.indi', [
       	                	for (var i = 0; i < largeLoad.length; i++) {
     	                		
     	                		if(largeLoad[i].amcPendingCount!=null){
+    	                			var dataCount={};
     	                			dataCount.branchName=largeLoad[i].branchName
     	                			dataCount.customerName=largeLoad[i].customerName
     	                			dataCount.city=largeLoad[i].city
     	                			dataCount.totalAMCCount=largeLoad[i].amcPendingCount
     	                			
     	                			data.push(dataCount);
-    	                		}
-    	                		
-    	                	}
-      	                }
+    	                		}    	                		
+    	                	}      	                	
+      	                }      	                    	              
       	                if(activeFlag==="RenewalForThisMonth"){
     	                	/*largeLoad = largeLoad.filter(function (item) {
       	                		return item.activeFlag === 1 && ((new Date(item.amcEdDate)).getTime() <= $scope.todaysDate.getTime());
-    	  	                  });*/
-
-      	                	
+    	  	                  });*/      	                	
       	                	for (var i = 0; i < largeLoad.length; i++) {
     	                		
     	                		if(largeLoad[i].renewalDueCount!=null){
+    	                			var dataCount={};
     	                			dataCount.branchName=largeLoad[i].branchName
     	                			dataCount.customerName=largeLoad[i].customerName
     	                			dataCount.city=largeLoad[i].city
@@ -1237,7 +1280,7 @@ angular.module('theme.demos.dashboard.indi', [
       $scope.getPagedDataAsyncForAllLiftStatus = function (pageSize,
     	      page, searchText, activeFlag) {
     	      var url;
-    	      url = '/RLMS/dashboard/getLiftStatus';
+    	      url = '/RLMS/dashboard/getAllAMCDetailsCount';
     	      setTimeout(
     	        function () {
     	          var data;
@@ -1322,82 +1365,80 @@ angular.module('theme.demos.dashboard.indi', [
     	                $scope.complaints = largeLoad;
     	                $scope.showTable = true;
     	                var userDetails = [];
+    	                var data=[];
     	                if (activeFlag=="Active") {
-    	                	largeLoad = largeLoad.filter(function (item) {
+    	                	/*largeLoad = largeLoad.filter(function (item) {
       	                    return item.activeFlag === 1;
-      	                  });
+      	                  });*/
+    	                	for (var i = 0; i < largeLoad.length; i++) {
+    	                		
+    	                		if(largeLoad[i].underWarrantyCount!=null){
+    	                			var dataCount={};
+    	                			dataCount.branchName=largeLoad[i].branchName
+    	                			dataCount.customerName=largeLoad[i].customerName
+    	                			dataCount.city=largeLoad[i].city
+    	                			dataCount.totalLiftCount=largeLoad[i].underWarrantyCount
+    	                			
+    	                			data.push(dataCount);
+    	                		}
+    	                		
+    	                	}
       	                }
     	                if (activeFlag=="InActive") {
-    	                	largeLoad = largeLoad.filter(function (item) {
+    	                	/*largeLoad = largeLoad.filter(function (item) {
       	                    return item.activeFlag === 0;
-      	                  });
+      	                  });*/
+    	                	for (var i = 0; i < largeLoad.length; i++) {
+    	                		
+    	                		if(largeLoad[i].notUnderWarranty!=null || largeLoad[i].renewalDueCount!=null || largeLoad[i].amcPendingCount!=null || largeLoad[i].underAMCCount!=null){
+    	                			var dataCount={};
+    	                			dataCount.branchName=largeLoad[i].branchName
+    	                			dataCount.customerName=largeLoad[i].customerName
+    	                			dataCount.city=largeLoad[i].city
+    	                			dataCount.totalLiftCount=largeLoad[i].notUnderWarranty + largeLoad[i].renewalDueCount + largeLoad[i].amcPendingCount+ largeLoad[i].underAMCCount
+    	                			
+    	                			data.push(dataCount);
+    	                		}
+    	                		
+    	                	}
       	                }if(activeFlag=="Total"){
-      	                	serviceApi
-          	              .doPostWithData('/RLMS/dashboard/getLiftCount', dataToSend)
-          	              .then(
-          	              function (largeLoad){
-          	            	$scope.complaints = largeLoad;
-        	                $scope.showTable = true;
-        	                var userDetails = [];
-        	                
-        	                for (var i = 0; i < largeLoad.length; i++) {
-          	                  var userDetailsObj = {};
-          	                           	                	  
-          	                	  userDetailsObj["No"] = i+1;          	                	                 	                  
-                	           if (!!largeLoad[i].branchName) {
-                	              userDetailsObj["Branch"] = largeLoad[i].branchName;
-              	               }else {
-                	              userDetailsObj["Branch"] = " - ";
-                	           }
-                	           if (!!largeLoad[i].customerName) {
-                  	              userDetailsObj["Customer"] = largeLoad[i].customerName;
-                  	           } else {
-                  	              userDetailsObj["Customer"] = " - ";
-                  	           }
-            	  	       	   if(!!largeLoad[i].city){
-            	  	  		      userDetailsObj["City"] =largeLoad[i].city;
-            	  	       	   }else{
-            	  	       		  userDetailsObj["City"] =" - ";
-            	  	           }
-                	           if (!!largeLoad[i].totalLiftCountForCustomer) {
-                  	              userDetailsObj["TotalLifts"] = largeLoad[i].totalLiftCountForCustomer;
-                  	           } else {
-                  	              userDetailsObj["TotalLifts"] = " - ";
-                  	           }
-          	                  userDetails
-          	                    .push(userDetailsObj);
-          	                }
-        	                $scope
-      	                  .setPagingDataForComplaints(
-      	                  userDetails,
-      	                  page,
-      	                  pageSize);
-          	              });
+      	                	for (var i = 0; i < largeLoad.length; i++) {
+    	                		
+    	                		if(largeLoad[i].totalLiftCount!=null){
+    	                			var dataCount={};
+    	                			dataCount.branchName=largeLoad[i].branchName
+    	                			dataCount.customerName=largeLoad[i].customerName
+    	                			dataCount.city=largeLoad[i].city
+    	                			dataCount.totalLiftCount=largeLoad[i].totalLiftCount
+    	                			
+    	                			data.push(dataCount);
+    	                		}
+    	                		
+    	                	}
+      	                	
       	                }
-    	                for (var i = 0; i < largeLoad.length; i++) {
+    	                for (var i = 0; i < data.length; i++) {
     	                	var userDetailsObj = {};
-    	                if (!!largeLoad[i].liftId) {
+    	                
       	                    userDetailsObj["No"] =i+1 + ".";
-      	                  } else {
-      	                    userDetailsObj["No"] = " - ";
-      	                  }
-      	                  if (!!largeLoad[i].branchName) {
-      	                    userDetailsObj["Branch"] = largeLoad[i].branchName;
+      	                  
+      	                  if (!!data[i].branchName) {
+      	                    userDetailsObj["Branch"] = data[i].branchName;
       	                  } else {
       	                    userDetailsObj["Branch"] = " - ";
       	                  }
-      	                  if (!!largeLoad[i].customerName) {
-        	                userDetailsObj["Customer"] = largeLoad[i].customerName;
+      	                  if (!!data[i].customerName) {
+        	                userDetailsObj["Customer"] = data[i].customerName;
         	              } else {
         	                userDetailsObj["Customer"] = " - ";
         	              }
-  	  	        		  if(!!largeLoad[i].city){
-  	  	        			userDetailsObj["City"] =largeLoad[i].city;
+  	  	        		  if(!!data[i].city){
+  	  	        			userDetailsObj["City"] =data[i].city;
   	  	        		  }else{
   	  	        			userDetailsObj["City"] =" - ";
   	  	        		  }
-      	                  if (!!largeLoad[i].totalFigure) {
-        	                 userDetailsObj["TotalLifts"] = largeLoad[i].totalFigure;
+      	                  if (!!data[i].totalLiftCount) {
+        	                 userDetailsObj["TotalLifts"] = data[i].totalLiftCount;
         	              } else {
         	                 userDetailsObj["TotalLifts"] = " - ";
         	              }
@@ -1430,25 +1471,44 @@ angular.module('theme.demos.dashboard.indi', [
 	              .constructDataToSendForAllLiftStatus();
 	            serviceApi
 	              .doPostWithData(
-	              '/RLMS/dashboard/getLiftStatus',
+	              '/RLMS/dashboard/getAllAMCDetailsCount',
 	              dataToSend)
 	              .then(
 	              function (
 	                largeLoad) {
 	                if (liftStatus=="Active") {
-	                  $scope.activeLiftStatus = largeLoad.filter(function (item) {
+	                  /*$scope.activeLiftStatus = largeLoad.filter(function (item) {
 	                    return item.activeFlag === 1;
-	                  });
-	                  $scope.liftStatus.activeLiftStatus.text=$scope.activeLiftStatus.length;
+	                  });*/
+	                	var totalCount=0;
+	                	for (var i = 0; i < largeLoad.length; i++) {
+	                		if(largeLoad[i].underWarrantyCount!=null){
+	                			totalCount=totalCount+largeLoad[i].underWarrantyCount;
+	                		}	                		
+	                	}
+	                	
+	                	$scope.liftStatus.activeLiftStatus.text=totalCount;
 	                }
 	                if(liftStatus=="InActive"){
-	                	$scope.inactiveLiftStatus = largeLoad.filter(function (item) {
+	                	/*$scope.inactiveLiftStatus = largeLoad.filter(function (item) {
 	                    return item.activeFlag === 0;
-	                  });
-	                  $scope.liftStatus.inactiveLiftStatus.text=$scope.inactiveLiftStatus.length;
+	                  });*/
+	                	var totalCount=0;
+	                	for (var i = 0; i < largeLoad.length; i++) {
+	                		if(largeLoad[i].notUnderWarranty!=null || largeLoad[i].renewalDueCount!=null || largeLoad[i].amcPendingCount!=null || largeLoad[i].underAMCCount!=null){
+	                			totalCount=totalCount+(largeLoad[i].notUnderWarranty+largeLoad[i].renewalDueCount+largeLoad[i].amcPendingCount+largeLoad[i].underAMCCount);	                		
+	                		}
+	                	}
+	                	$scope.liftStatus.inactiveLiftStatus.text=totalCount;
 	                }
 	                if(liftStatus=="Total"){
-	                  $scope.liftStatus.totalInstalled.text=largeLoad.length;
+	                	var totalCount=0;
+	                	for (var i = 0; i < largeLoad.length; i++) {
+	                		if(largeLoad[i].totalLiftCount!=null){
+	                			totalCount=totalCount+largeLoad[i].totalLiftCount;
+	                		}
+	                	}
+	                	$scope.liftStatus.totalInstalled.text=totalCount;
 	                }
 	              });
 	          }, 100);
@@ -1552,37 +1612,77 @@ angular.module('theme.demos.dashboard.indi', [
     	                $scope.complaints = largeLoad;
     	                $scope.showTable = true;
     	                var userDetails = [];
+    	                var data=[];
     	                if (activeFlag=="Active") {
-    	                	largeLoad = largeLoad.filter(function (item) {
+    	                	/*largeLoad = largeLoad.filter(function (item) {
       	                    return item.activeFlag === 1;
-      	                  });
+      	                  });*/
+    	                	for (var i = 0; i < largeLoad.length; i++) {
+    	                		
+    	                		if(largeLoad[i].activeFlagCount!=null){
+    	                			var dataCount={};
+    	                			dataCount.branchName=largeLoad[i].branchName
+    	                			dataCount.customerName=largeLoad[i].customerName
+    	                			dataCount.city=largeLoad[i].city
+    	                			dataCount.totalFigure=largeLoad[i].activeFlagCount
+
+    	                			data.push(dataCount);
+    	                		}    	                		
+    	                	}
       	                }
     	                if (activeFlag=="InActive") {
-    	                	largeLoad = largeLoad.filter(function (item) {
+    	                	/*largeLoad = largeLoad.filter(function (item) {
       	                    return item.activeFlag === 0;
-      	                  });
+      	                  });*/
+    	                	for (var i = 0; i < largeLoad.length; i++) {
+    	                		
+    	                		if(largeLoad[i].inactiveFlagCount!="0"){
+    	                			var dataCount={};
+    	                			dataCount.branchName=largeLoad[i].branchName
+    	                			dataCount.customerName=largeLoad[i].customerName
+    	                			dataCount.city=largeLoad[i].city
+    	                			dataCount.totalFigure=largeLoad[i].inactiveFlagCount
+
+    	                			data.push(dataCount);
+    	                		}    	                		
+    	                	}      
       	                }
-    	                for (var i = 0; i < largeLoad.length; i++) {
+    	                if (activeFlag=="Total") {
+    	                	/*largeLoad = largeLoad.filter(function (item) {
+      	                    return item.activeFlag === 0;
+      	                  });*/
+    	                	for (var i = 0; i < largeLoad.length; i++) {
+    	                		
+    	                		if(largeLoad[i].customerCount!=null){
+    	                			var dataCount={};
+    	                			dataCount.branchName=largeLoad[i].branchName
+    	                			dataCount.customerName=largeLoad[i].customerName
+    	                			dataCount.city=largeLoad[i].city
+    	                			dataCount.totalFigure=largeLoad[i].customerCount
+
+    	                			data.push(dataCount);
+    	                		}    	                		
+    	                	}      
+      	                }
+    	                for (var i = 0; i < data.length; i++) {
     	                	var userDetailsObj = {};
-    	                	if (!!largeLoad[i].customerId) {
-          	                    userDetailsObj["No"] =i+1;
-          	                  } else {
-          	                    userDetailsObj["No"] = " - ";
-          	                  }
-          	                  if (!!largeLoad[i].branchName) {
-          	                    userDetailsObj["Branch"] = largeLoad[i].branchName;
+    	                	
+          	                    userDetailsObj["No"] =i+1 +".";
+          	                  
+          	                  if (!!data[i].branchName) {
+          	                    userDetailsObj["Branch"] = data[i].branchName;
           	                  } else {
           	                    userDetailsObj["Branch"] = " - ";
           	                  }
-          	                  if (!!largeLoad[i].city) {
-              	                userDetailsObj["City"] = largeLoad[i].city;
+          	                  if (!!data[i].city) {
+              	                userDetailsObj["City"] = data[i].city;
               	              } else {
               	                userDetailsObj["City"] = " - ";
               	              }
-          	                  if (!!largeLoad[i].totalFigure) {
-                	            userDetailsObj["TotalCustomer"] = largeLoad[i].totalFigure;
+          	                  if (!!data[i].totalFigure) {
+                	            userDetailsObj["Total_Customers"] = data[i].totalFigure;
                 	            } else {
-                	            userDetailsObj["TotalCustomer"] = " - ";
+                	            userDetailsObj["Total_Customers"] = " - ";
                 	          }
           	                  
       	                  userDetails
@@ -1607,25 +1707,47 @@ angular.module('theme.demos.dashboard.indi', [
 	              .constructDataToSendForAllLiftStatus();
 	            serviceApi
 	              .doPostWithData(
-	              '/RLMS/dashboard/getListOfCustomerForDashboard',
+	              '/RLMS/dashboard/getCustomerCountForDashboard',
 	              dataToSend)
 	              .then(
 	              function (
 	                largeLoad) {
 	                if (liftStatus=="Active") {
-	                  $scope.activeCustomers = largeLoad.filter(function (item) {
+	                 /* $scope.activeCustomers = largeLoad.filter(function (item) {
 	                    return item.activeFlag === 1;
-	                  });
-	                  $scope.customersDetails.activeCustomers.text=$scope.activeCustomers.length;
+	                  });*/
+	                	var totalCount=0;
+	                	
+	                	for (var i = 0; i < largeLoad.length; i++) {
+	                		if(largeLoad[i].activeFlagCount!=null){
+	                			totalCount=totalCount+largeLoad[i].activeFlagCount;
+	                		}
+	                	}
+	                  $scope.customersDetails.activeCustomers.text=totalCount;
 	                }
 	                if(liftStatus=="InActive"){
-	                	$scope.inactiveCustomers = largeLoad.filter(function (item) {
+	                	/*$scope.inactiveCustomers = largeLoad.filter(function (item) {
 	                    return item.activeFlag === 0;
-	                  });
-	                  $scope.customersDetails.inactiveCustomers.text=$scope.inactiveCustomers.length;
+	                  });*/
+	                	var totalCount=0;
+	                	
+	                	for (var i = 0; i < largeLoad.length; i++) {
+	                		if(largeLoad[i].inactiveFlagCount!=null){
+	                			totalCount=totalCount+largeLoad[i].inactiveFlagCount;
+	                		}
+	                	}
+	                	
+	                  $scope.customersDetails.inactiveCustomers.text=totalCount;
 	                }
 	                if(liftStatus=="Total"){
-	                  $scope.customersDetails.totalCustomers.text=largeLoad.length;
+	                	var totalCount=0;
+	                	
+	                	for (var i = 0; i < largeLoad.length; i++) {
+	                		if(largeLoad[i].customerCount!=null){
+	                			totalCount=totalCount+largeLoad[i].customerCount;
+	                		}
+	                	}
+	                  $scope.customersDetails.totalCustomers.text=totalCount;
 	                }
 	              });
 	          }, 100);
@@ -1655,7 +1777,7 @@ angular.module('theme.demos.dashboard.indi', [
       $scope.getPagedDataAsyncForAllBranches = function (pageSize,
     	      page, searchText, activeFlag) {
     	      var url;
-    	      url = '/RLMS/dashboard/getListOfBranchDtlsForDashboard';
+    	      url = '/RLMS/dashboard/getListOfBranchCountDtlsForDashboard';
     	      setTimeout(
     	        function () {
     	          var data;
@@ -1730,32 +1852,65 @@ angular.module('theme.demos.dashboard.indi', [
     	                $scope.complaints = largeLoad;
     	                $scope.showTable = true;
     	                var userDetails = [];
+    	                var data = [];
     	                if (activeFlag=="Active") {
-    	                	largeLoad = largeLoad.filter(function (item) {
+    	                	/*largeLoad = largeLoad.filter(function (item) {
       	                    return item.activeFlag === 1;
-      	                  });
+      	                  });*/
+    	                	for (var i = 0; i < largeLoad.length; i++) {
+    	                		
+    	                		if(largeLoad[i].branchActiveFlagCount!=null){
+    	                			var dataCount={};
+    	                			dataCount.branchCity=largeLoad[i].branchCity
+    	                			dataCount.branchCount=largeLoad[i].branchActiveFlagCount
+
+    	                			data.push(dataCount);
+    	                		}    	                		
+    	                	}
       	                }
     	                if (activeFlag=="InActive") {
-    	                	largeLoad = largeLoad.filter(function (item) {
+    	                	/*largeLoad = largeLoad.filter(function (item) {
       	                    return item.activeFlag === 0;
-      	                  });
+      	                  });*/
+    	                	for (var i = 0; i < largeLoad.length; i++) {
+    	                		
+    	                		if(largeLoad[i].branchInActiveFlagCount!=null){
+    	                			var dataCount={};
+    	                			dataCount.branchCity=largeLoad[i].branchCity
+    	                			dataCount.branchCount=largeLoad[i].branchInActiveFlagCount
+
+    	                			data.push(dataCount);
+    	                		}    	                		
+    	                	}
       	                }
-    	                for (var i = 0; i < largeLoad.length; i++) {
+    	                if (activeFlag=="Total") {
+    	                	/*largeLoad = largeLoad.filter(function (item) {
+      	                    return item.activeFlag === 0;
+      	                  });*/
+    	                	for (var i = 0; i < largeLoad.length; i++) {
+    	                		
+    	                		if(largeLoad[i].branchActiveFlagCount!=null ||largeLoad[i].branchInActiveFlagCount!=null){
+    	                			var dataCount={};
+    	                			dataCount.branchCity=largeLoad[i].branchCity
+    	                			dataCount.branchCount=largeLoad[i].branchInActiveFlagCount +largeLoad[i].branchActiveFlagCount 
+
+    	                			data.push(dataCount);
+    	                		}    	                		
+    	                	}
+      	                }
+    	                for (var i = 0; i < data.length; i++) {
     	                	var userDetailsObj = {};
-    	                	if (!!largeLoad[i].id) {
-          	                     userDetailsObj["No"] = i+1;
-          	                  } else {
-          	                    userDetailsObj["No"] = " - ";
-          	                  }
-          	                  if (!!largeLoad[i].city) {
-              	                userDetailsObj["City"] = largeLoad[i].city;
+          	                     userDetailsObj["No"] = i+1 +".";
+
+          	                  if (!!data[i].branchCity) {
+              	                userDetailsObj["City"] = data[i].branchCity;
               	              } else {
               	                userDetailsObj["City"] = " - ";
               	              }
-          	                  if (!!largeLoad[i].totalBranches) {
-            	                userDetailsObj["TotalFigure"] = largeLoad[i].totalBranches;
+          	                  if (!!data[i].branchCount) {
+            	                userDetailsObj["TotalBranches"] = data[i].branchCount;
             	              } else {
-            	                userDetailsObj["TotalFigure"] = " - ";
+            	                userDetailsObj["TotalBranches"] = " - ";
             	              }
       	                  userDetails
       	                    .push(userDetailsObj);
@@ -1784,19 +1939,40 @@ angular.module('theme.demos.dashboard.indi', [
 	              function (
 	                largeLoad) {
 	                if (liftStatus=="Active") {
-	                  $scope.activeBranches = largeLoad.filter(function (item) {
+	                  /*$scope.activeBranches = largeLoad.filter(function (item) {
 	                    return item.activeFlag === 1;
-	                  });
-	                  $scope.branchDetails.activeBranches.text=$scope.activeBranches.length;
+	                  });*/
+	                	var totalCount=0;
+	                	
+	                	for (var i = 0; i < largeLoad.length; i++) {
+	                		if(largeLoad[i].branchActiveFlagCount!=null){
+	                			totalCount=totalCount+largeLoad[i].branchActiveFlagCount;
+	                		}
+	                	}
+	                  $scope.branchDetails.activeBranches.text=totalCount;
 	                }
 	                if(liftStatus=="InActive"){
-	                	$scope.inactiveBranches = largeLoad.filter(function (item) {
+	                	/*$scope.inactiveBranches = largeLoad.filter(function (item) {
 	                    return item.activeFlag === 0;
-	                  });
-	                  $scope.branchDetails.inactiveBranches.text=$scope.inactiveBranches.length;
+	                  });*/
+	                	var totalCount=0;
+	                	
+	                	for (var i = 0; i < largeLoad.length; i++) {
+	                		if(largeLoad[i].branchInActiveFlagCount!=null){
+	                			totalCount=totalCount+largeLoad[i].branchInActiveFlagCount;
+	                		}
+	                	}
+	                  $scope.branchDetails.inactiveBranches.text=totalCount;
 	                }
 	                if(liftStatus=="Total"){
-	                  $scope.branchDetails.totalBranches.text=largeLoad.length;
+	                	var totalCount=0;
+	                	
+	                	for (var i = 0; i < largeLoad.length; i++) {
+	                		if(largeLoad[i].branchInActiveFlagCount!=null ||largeLoad[i].branchActiveFlagCount!=null){
+	                			totalCount=totalCount+(largeLoad[i].branchInActiveFlagCount +largeLoad[i].branchActiveFlagCount) ;
+	                		}
+	                	}
+	                	$scope.branchDetails.totalBranches.text=totalCount;
 	                }
 	              });
 	          }, 100);
@@ -1826,7 +2002,7 @@ angular.module('theme.demos.dashboard.indi', [
       $scope.getPagedDataAsyncForAllCompanies = function (pageSize,
     	      page, searchText, activeFlag) {
     	      var url;
-    	      url = '/RLMS/dashboard/getAllCompanyDetailsForDashboard';
+    	      url = '/RLMS/dashboard/getListOfBranchCountDtlsForDashboard';
     	      setTimeout(
     	        function () {
     	          var data;
@@ -1987,7 +2163,7 @@ angular.module('theme.demos.dashboard.indi', [
 	              .constructDataToSendForAllLiftStatus();
 	            serviceApi
 	              .doPostWithData(
-	              '/RLMS/report/getListOfEvents',
+	              '/RLMS/dashboard/getEventCountForLift',
 	              dataToSend)
 	              .then(
 	              function (
@@ -2012,7 +2188,6 @@ angular.module('theme.demos.dashboard.indi', [
 		                  });*/
 	            		  var totalCount= 0;
 	  	                	for (var i = 0; i < largeLoad.length; i++) {
-	  	                		
 	  	                		if(largeLoad[i].totalErrorCount!=null){
 	  	                			totalCount=totalCount+largeLoad[i].totalErrorCount;
 	  	                		}
@@ -2023,26 +2198,21 @@ angular.module('theme.demos.dashboard.indi', [
 	            	  if (eventType=="Response") {
 	            		  var totalCount= 0;
   	                	for (var i = 0; i < largeLoad.length; i++) {
-  	                		
   	                		if(largeLoad[i].totalRespCount!=null){
   	                			totalCount=totalCount+largeLoad[i].totalRespCount;
   	                		}
   	                	}
 		                  $scope.event.response.text=totalCount;
-
 	            	  }
-	            	  
 	                //  $scope.event.inout.text=largeLoad.length;
 	              });
 	          }, 100);
 	      };
       //add event api call
-    
-  /*   $scope.getCountForEvent = function (eventName) {
-	      	   $http({method: 'GET',
+     $scope.getCountForEvent = function (eventName) {
+	       	   $http({method: 'GET',
     	        url: '/RLMS/API/addEvents',
-    	        params: {from: "9423720625",message:"GMS RLMS,*862462035277835,LMS EVENT,FA,DS OPEN FOR LONG,FLOOR No.03,16:17,30/05/18;"}
-
+    	        params: {from: "9423720625",message:"RLMS,*862462035277838,TEST,E010,XYZ SHORT,FLOOR No.10,12:12 26/05/18;"}
     	    })   .success(function(data) {
 	           // $scope.names = eval(data);
 	            console.log(data)
@@ -2051,24 +2221,16 @@ angular.module('theme.demos.dashboard.indi', [
 	            alert(data);
 	            console.log('Error: ' + data);
 	        });
-    
-    	
-     }*/
-	    
-
-	     
+    	   };
 	      $scope.getCountForEvent("Event");
 	      $scope.getCountForEvent("Error");
 	      $scope.getCountForEvent("Response");
-
-
-      $scope.getPagedDataAsyncForEvents = function (pageSize,
+          $scope.getPagedDataAsyncForEvents = function (pageSize,
     	      page, searchText, eventType) {
-    	      var url;
-    	     // url = '/RLMS/dashboard/getAllInOutEventsData';
-    	      var dataToSend = $scope
-                .constructDataToSendForAllLiftStatus();
-    	      url = '/RLMS/dashboard/getEventCountForLift',
+    	  var url;
+    	  var dataToSend = $scope.constructDataToSendForAllLiftStatus();
+    	     url = '/RLMS/dashboard/getEventCountForLift',
+     	      //  url = '/RLMS/report/getListOfEvents',
     	      setTimeout(
     	        function () {
     	          var data;
@@ -2098,12 +2260,9 @@ angular.module('theme.demos.dashboard.indi', [
     		                    return item.eventType === "RESPONSE";
     		                  });
     	            	  	}
-          
     	                for (var i = 0; i < largeLoad.length; i++) {
         	                  var userDetailsObj = {};
-        	                  
-          	                    userDetailsObj["No"] = i+1 +".";
-          	                  
+          	                   userDetailsObj["No"] = i+1 +".";
      	                       if (!!largeLoad[i].branchName) {
       	                    	   userDetailsObj["Branch"] = largeLoad[i].branchName;
       	                       } else {
@@ -2171,25 +2330,27 @@ angular.module('theme.demos.dashboard.indi', [
     	                $scope.complaints = largeLoad;
     	                $scope.showTable = true;
     	                var userDetails = [];
+    	                var data = [];
     	                if (eventType=="Event") {    	                	
 	  	                	for (var i = 0; i < largeLoad.length; i++) {
 	  	                		
 	  	                		if(largeLoad[i].totolEventCount!=null){
+	  	                			var dataCount={};
 	  	                			largeLoad[i].branchName=largeLoad[i].branchName
 		                			largeLoad[i].city=largeLoad[i].city
 		                			largeLoad[i].totalFigure=largeLoad[i].totolEventCount
-	  	                			
+		                			data.push(dataCount);
 	  	                		}
 	  	                	}
   		                }
   	            	  	if (eventType=="Error") {
   	            	  		for (var i = 0; i < largeLoad.length; i++) {
-  	                		
   	            	  			if(largeLoad[i].totalErrorCount!=null){
-  	                			
+  	            	  				var dataCount={};
 	  	                			largeLoad[i].branchName=largeLoad[i].branchName
 		                			largeLoad[i].city=largeLoad[i].city
-		                			largeLoad[i].totalFigure=largeLoad[i].totalErrorCount  	                			
+		                			largeLoad[i].totalFigure=largeLoad[i].totalErrorCount  
+		                			data.push(dataCount);
   	            	  			}
   	            	  		}
   	            	  	}
@@ -2198,48 +2359,47 @@ angular.module('theme.demos.dashboard.indi', [
 		                    return item.eventType === "ERROR";
 		                  });*/
   	            		  for (var i = 0; i < largeLoad.length; i++) {
-	                		
   	            			  if(largeLoad[i].totalRespCount!=null){
+  	            				var dataCount={};
 	                			largeLoad[i].branchName=largeLoad[i].branchName
 	                			largeLoad[i].city=largeLoad[i].city
 	                			largeLoad[i].totalFigure=largeLoad[i].totalRespCount
-	                			
+	                			data.push(dataCount);
   	            			  }
   	            		  }
 	            	  }
-  	            	  
     	                for (var i = 0; i < largeLoad.length; i++) {
       	                  var userDetailsObj = {};
       	                  
         	                    userDetailsObj["No"] = i+1;
         	                  
-      	                       if (!!largeLoad[i].branchName) {
-      	                    	   userDetailsObj["Branch"] = largeLoad[i].branchName;
+      	                       if (!!data.branchName) {
+      	                    	   userDetailsObj["Branch"] = data.branchName;
       	                       } else {
       	                    	   userDetailsObj["Branch"] = " - ";
       	                       }
-      	                       if (!!largeLoad[i].customerName) {
-      	                    	   userDetailsObj["Customer"] = largeLoad[i].customerName;
+      	                       if (!!data.customerName) {
+      	                    	   userDetailsObj["Customer"] = data.customerName;
 							   } else {
 								   userDetailsObj["Customer"] = " - ";
 							   }
-        	                  if (!!largeLoad[i].eventDescription) {
-        	                	  userDetailsObj["EventDescription"] = largeLoad[i].eventDescription;
+        	                  if (!!data.eventDescription) {
+        	                	  userDetailsObj["EventDescription"] = data.eventDescription;
         	                  } else {
         	                	  userDetailsObj["EventDescription"] = " - ";
         	                  }       	                  
-        	                  if (!!largeLoad[i].date) {
-        	                	  userDetailsObj["EventDate"] = largeLoad[i].date;
+        	                  if (!!data.date) {
+        	                	  userDetailsObj["EventDate"] = data.date;
             	              } else {
             	            	  userDetailsObj["EventDate"] = " - ";
             	              }
-        	                  if (!!largeLoad[i].imeiNo) {
-        	                	  userDetailsObj["IMEI_No"] = largeLoad[i].imeiNo;
+        	                  if (!!data.imeiNo) {
+        	                	  userDetailsObj["IMEI_No"] = data.imeiNo;
             	              } else {
             	            	  userDetailsObj["IMEI_No"] = " - ";
             	              }
-        	                 if (!!largeLoad[i].totalFigure) {
-        	                	 userDetailsObj["TotalEvents"] = largeLoad[i].totalFigure;
+        	                 if (!!data.totalFigure) {
+        	                	 userDetailsObj["TotalEvents"] = data.totalFigure;
             	              } else {
             	            	 userDetailsObj["TotalEvents"] = " - ";
             	              }

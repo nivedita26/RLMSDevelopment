@@ -8,6 +8,19 @@
 		$scope.goToAddMember = function(){
 			window.location.hash = "#/add-member";
 		}
+		
+		$rootScope.editMember={};
+		$scope.editMemberDetails=function(row){
+			$rootScope.editMember.memberId=row.MemberId;
+			$rootScope.editMember.address=row.Address;
+			$rootScope.editMember.firstName=row.Name;
+			$rootScope.editMember.area=row.Area;
+			$rootScope.editMember.city=row.City;
+			$rootScope.editMember.pinCode=row.PinCode;
+			$rootScope.editMember.emailId=row.Email_Id.replace(/-/g, '');
+			$rootScope.editMember.contactnumber=row.Contact_Number.replace(/-/g, '');
+			window.location.hash = "#/edit-member";
+		};
 		function initMemberList(){
 			 $scope.selectedCompany={};
 			 $scope.selectedBranch = {};
@@ -97,6 +110,11 @@
 	  	        	  var details=[];
 	  	        	  for(var i=0;i<largeLoad.length;i++){
 	  	        		var detailsObj={};
+	  	        		if(!!largeLoad[i].memberId){
+	  	        			detailsObj["MemberId"] =largeLoad[i].firstName + " " +largeLoad[i].memberId;
+	  	        		}else{
+	  	        			detailsObj["MemberId"] =" - ";
+	  	        		}
 	  	        		if(!!largeLoad[i].firstName){
 	  	        			detailsObj["Name"] =largeLoad[i].firstName + " " +largeLoad[i].lastName;
 	  	        		}else{
@@ -129,6 +147,7 @@
 	  	        			detailsObj["Email_Id"] =" - ";
 	  	        		}
 	  	        		
+	  	        		
 	  	        		details.push(detailsObj);
 	  	        	  }
 	  	            data = details.filter(function(item) {
@@ -147,6 +166,11 @@
 	  	        	  var details=[];
 	  	        	  for(var i=0;i<largeLoad.length;i++){
 		  	        	var detailsObj={};
+		  	        	if(!!largeLoad[i].memberId){
+	  	        			detailsObj["MemberId"] =largeLoad[i].firstName + " " +largeLoad[i].memberId;
+	  	        		}else{
+	  	        			detailsObj["MemberId"] =" - ";
+	  	        		}
 	  	        		if(!!largeLoad[i].firstName){
 	  	        			detailsObj["Name"] =largeLoad[i].firstName + " " + largeLoad[i].lastName;
 	  	        		}else{
@@ -176,7 +200,17 @@
 	  	        			detailsObj["Email_Id"] =largeLoad[i].emailId;
 	  	        		}else{
 	  	        			detailsObj["Email_Id"] =" - ";
-	  	        		}	
+	  	        		}
+	  	        		if(!!largeLoad[i].pinCode){
+	  	        			detailsObj["PinCode"] =largeLoad[i].pinCode;
+	  	        		}else{
+	  	        			detailsObj["PinCode"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].area){
+	  	        			detailsObj["Area"] =largeLoad[i].area;
+	  	        		}else{
+	  	        			detailsObj["Area"] =" - ";
+	  	        		}
 	  	        		details.push(detailsObj);
 	  	        	  }
 	  	            $scope.setPagingData(details, page, pageSize);
@@ -249,7 +283,7 @@
 	  	    	  width: "200"
 	  	      },{
 	  	    	  cellTemplate :  
-	  	    		  '<button ng-click="$event.stopPropagation(); editThisMember(row.entity);" title="Edit" style="margin-top: 2px;height: 38px;width: 38px;" class="btn-sky"><span class="glyphicon glyphicon-pencil"></span></button>',
+	  	    		  '<button ng-click="$event.stopPropagation(); editMemberDetails(row.entity);" title="Edit" style="margin-top: 2px;height: 38px;width: 38px;" class="btn-sky"><span class="glyphicon glyphicon-pencil"></span></button>',
 	    		  width : 35
 	  	      },{
 	  	    	  cellTemplate :  

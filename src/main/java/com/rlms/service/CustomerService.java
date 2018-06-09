@@ -7,6 +7,7 @@ import com.rlms.contract.CustomerDtlsDto;
 import com.rlms.contract.LiftDtlsDto;
 import com.rlms.contract.MemberDtlsDto;
 import com.rlms.contract.UserAppDtls;
+import com.rlms.contract.UserDtlsDto;
 import com.rlms.contract.UserMetaInfo;
 import com.rlms.exception.ValidationException;
 import com.rlms.model.RlmsBranchCustomerMap;
@@ -20,7 +21,12 @@ public interface CustomerService {
 	public List<CustomerDtlsDto> getAllApplicableCustomers(CustomerDtlsDto dto, UserMetaInfo metaInfo);
 	public List<CustomerDtlsDto> getAllCustomersForBranch(CustomerDtlsDto dto, UserMetaInfo metaInfo);
 	public MemberDtlsDto registerMemeberDeviceByMblNo(MemberDtlsDto dto, UserMetaInfo metaInfo) throws ValidationException;
+	
 	public String validateAndRegisterNewMember(MemberDtlsDto memberDtlsDto, UserMetaInfo metaInfo) throws ValidationException;
+	public String validateAndUpdateNewMember(MemberDtlsDto memberDtlsDto, UserMetaInfo metaInfo) throws ValidationException;
+
+	
+	
 	public List<MemberDtlsDto> getListOfAllMemberDtls(MemberDtlsDto memberDtlsDto);
 	public UserAppDtls getUserAppDtls(Integer userId, Integer userType);
 	public List<RlmsCustomerMemberMap> getAllMembersForCustomer(
@@ -34,4 +40,5 @@ public interface CustomerService {
 	public  List<RlmsBranchCustomerMap> getAllApplicableCustomersCountForDashboard(
 			List<Integer> companyBranchIds, UserMetaInfo metaInfo);
 	public List<LiftDtlsDto> getAllLiftParameters(Integer liftCustomerMapId);
+	public String validateAndEditCustomer(CustomerDtlsDto customerDtlsDto,UserMetaInfo metaInfo);
 }

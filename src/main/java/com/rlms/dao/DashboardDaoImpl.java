@@ -1,13 +1,14 @@
 package com.rlms.dao;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.transaction.Transactional;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -15,8 +16,11 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.rlms.constants.RLMSConstants;
+import com.rlms.contract.ComplaintsDtlsDto;
 import com.rlms.model.RlmsCompanyBranchMapDtls;
 import com.rlms.model.RlmsComplaintMaster;
 import com.rlms.model.RlmsComplaintTechMapDtls;
@@ -45,7 +49,6 @@ public class DashboardDaoImpl implements DashboardDao {
 		return listOFAMCdtlsForAllLifts;
 
 	}
-
 	@SuppressWarnings("unchecked")
 	public List<RlmsComplaintMaster> getAllComplaintsForGivenCriteria(
 			Integer branchCompanyMapId, Integer branchCustomerMapId,
@@ -214,17 +217,29 @@ public class DashboardDaoImpl implements DashboardDao {
 	}
 
 	@Override
+	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public List<RlmsEventDtls> getAllEventDtlsForDashboard(
 			List<Integer> liftCustMapIds,String eventType) {
-		Session session = this.sessionFactory.getCurrentSession();
-		Criteria criteria = session.createCriteria(RlmsEventDtls.class).add(
-				Restrictions.in("rlmsLiftCustomerMap.liftCustomerMapId", liftCustMapIds));
 		// .add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId())
-		List<RlmsEventDtls> eventDtls = criteria.list();
+		List<RlmsEventDtls> eventDtls = new ArrayList<>();
+		try {
+			Session session = this.sessionFactory.getCurrentSession();
+			Criteria criteria = session.createCriteria(RlmsEventDtls.class).add(
+					Restrictions.in("rlmsLiftCustomerMap.liftCustomerMapId", liftCustMapIds));
+			if(eventType!=null&&eventType=="-1") {
+				eventDtls = criteria.list();
+			}
+			else if(eventType!=null&&eventType!="-1") {
+				criteria.add(Restrictions.eq("eventType", eventType));
+			}
+			
+			eventDtls = criteria.list();
+		} catch (HibernateException e) {
+			e.printStackTrace();
+		}
 		return eventDtls;
 	}
 
-	
 	@Override
 	public void saveEventDtls(RlmsEventDtls eventDtls){
 		this.sessionFactory.getCurrentSession().save(eventDtls);
@@ -272,9 +287,89 @@ public List<Object[]> getBranchCountDtlsForDashboard(List<Integer> branchIds) {
 		}
 	}
 	Session session = this.sessionFactory.getCurrentSession();
-   String sql ="SELECT city,count(*) FROM rlms_branch_master  where branch_id in("+str+") group by city";
+	
+	String sql ="SELECT city,active_flag,count(*) FROM rlms_branch_master  where branch_id in ("+str+") group by active_flag,city order by city" ;
+
+	
+	
+  // String sql ="SELECT city,count(*) FROM rlms_branch_master  where branch_id in("+str+") group by city";
     	SQLQuery query = session.createSQLQuery(sql);
 	 	List<Object[]>EventCount = query.list();
 		return EventCount;
 }
+
+@Override
+public List<Object[]> getTotalComplaintsCallTypeCount(List<Integer> liftCustomerMapIds) {
+	String str = "";
+	for (Integer mapId : liftCustomerMapIds) {
+		if (StringUtils.isEmpty(str)) {
+			str = str.concat(String.valueOf(mapId));
+		} else {
+			str = str.concat("," + mapId);
+		}
+	}
+	Session session = this.sessionFactory.getCurrentSession();
+	//String sql = "SELECT call_type,count(*) FROM rlms_complaint_master where lift_customer_map_id in("+str+") group by call_type";
+	String sql ="SELECT call_type,count(*) FROM rlms_complaint_master where (created_date or updated_date < DATE_ADD(NOW(), INTERVAL +6 MONTH)) and lift_customer_map_id in ("+str+") group by call_type";
+	SQLQuery query = session.createSQLQuery(sql);
+	 	@SuppressWarnings("unchecked")
+		List<Object[]>complaintCount = query.list();
+		return complaintCount;
+	}
+
+@Override
+public List<Object[]> getTodaysComplaintsCallTypeCount(List<Integer> liftCustomerMapIds) {
+	String str = "";
+	for (Integer mapId : liftCustomerMapIds) {
+		if (StringUtils.isEmpty(str)) {
+			str = str.concat(String.valueOf(mapId));
+		} else {
+			str = str.concat("," + mapId);
+		}
+	}
+	Session session = this.sessionFactory.getCurrentSession();
+	//String sql = "SELECT call_type,count(*) FROM rlms_complaint_master where lift_customer_map_id in("+str+") group by call_type";
+	String sql ="SELECT call_type,count(*) FROM rlms_complaint_master where (DATE(created_date)=CURDATE() or DATE(updated_date)=CURDATE()) and lift_customer_map_id in ("+str+") group by call_type";
+	SQLQuery query = session.createSQLQuery(sql);
+	 	@SuppressWarnings("unchecked")
+		List<Object[]>complaintCount = query.list();
+		return complaintCount;
+	}
+@Override
+public List<Object[]> getTotalComplaintsStatusCount(List<Integer> liftCustomerMapIds) {
+	String str = "";
+	for (Integer mapId : liftCustomerMapIds) {
+		if (StringUtils.isEmpty(str)) {
+			str = str.concat(String.valueOf(mapId));
+		} else {
+			str = str.concat("," + mapId);
+		}
+	}
+	Session session = this.sessionFactory.getCurrentSession();
+	//String sql = "SELECT status,count(*) FROM rlms_complaint_master where lift_customer_map_id in("+str+") group by status";	
+	String sql ="SELECT call_type,status,count(*) FROM rlms_complaint_master where (created_date or updated_date < DATE_ADD(NOW(), INTERVAL +6 MONTH)) and lift_customer_map_id in ("+str+") group by status,call_type";
+   SQLQuery query = session.createSQLQuery(sql);
+	 	@SuppressWarnings("unchecked")
+		List<Object[]>complaintCount = query.list();
+		return complaintCount;
+	}
+
+@Override
+public List<Object[]> getTodaysComplaintsStatusCount(List<Integer> liftCustomerMapIds) {
+	String str = "";
+	for (Integer mapId : liftCustomerMapIds) {
+		if (StringUtils.isEmpty(str)) {
+			str = str.concat(String.valueOf(mapId));
+		} else {
+			str = str.concat("," + mapId);
+		}
+	}
+	Session session = this.sessionFactory.getCurrentSession();
+	//String sql = "SELECT status,count(*) FROM rlms_complaint_master where lift_customer_map_id in("+str+") group by status";	
+	String sql ="SELECT call_type,status,count(*) FROM rlms_complaint_master where (DATE(created_date)=CURDATE() or DATE(updated_date)=CURDATE()) and lift_customer_map_id in ("+str+") group by status,call_type";
+   SQLQuery query = session.createSQLQuery(sql);
+	 	@SuppressWarnings("unchecked")
+		List<Object[]>complaintCount = query.list();
+		return complaintCount;
+	}
 }
