@@ -18,7 +18,7 @@ public class ScheduleTesting {
 
 	@Autowired
   AMCMonitorService  aMCMonitorService;
-	@Scheduled(cron="0 0 12 * * ?")
+	@Scheduled(cron="0 03 10 * * ?")
 	//@Scheduled(cron="0 28 13 * * ?")
 	//@Scheduled(fixedRate =6000)
 	 public void schedule() {
@@ -32,7 +32,6 @@ public class ScheduleTesting {
 		}
 	}
 	private void executeAMCBatch() throws UnsupportedEncodingException{
-		
 		this.reportService.changeStatusToAMCExpiryAndNotifyUser();
 		this.reportService.changeStatusToAMCRenewalAndNotifyUser();
 	}

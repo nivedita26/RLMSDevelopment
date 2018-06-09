@@ -2,7 +2,6 @@ package com.rlms.service;
 
 import java.text.ParseException;
 import java.util.List;
-
 import com.rlms.contract.CustomerDtlsDto;
 import com.rlms.contract.LiftDtlsDto;
 import com.rlms.contract.ResponseDto;

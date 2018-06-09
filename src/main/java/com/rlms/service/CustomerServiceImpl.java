@@ -206,7 +206,6 @@ public class CustomerServiceImpl implements CustomerService{
 			dto.setActiveFlag(branchCustomerMap.getActiveFlag());
 			dto.setCustomerTypeStr(CustomerType.getStringFromID(branchCustomerMap.getCustomerMaster().getCustomerType()));
 			
-			
 			if(null != listOfLifts && !listOfLifts.isEmpty()){
 				dto.setTotalNumberOfLifts(listOfLifts.size());
 			}
@@ -257,29 +256,24 @@ public class CustomerServiceImpl implements CustomerService{
 		       		RlmsMemberMaster  memberMastr= this.constructMemberMaster(memberDtlsDto,memberMaster, metaInfo);
 		       		Integer memberID = this.customerDao.saveMemberM(memberMastr);
 		       		memberMaster.setMemberId(memberID);
-			
 		       		RlmsCustomerMemberMap customerMemberMap = this.constructCustoMemberMap(memberMaster, memberDtlsDto, metaInfo);
 		       		this.customerDao.saveCustomerMemberMap(customerMemberMap);
-			
 		       		statusMessage = PropertyUtils.getPrpertyFromContext(RlmsErrorType.MEMBER_REG_SUCCESSFUL.getMessage());
 		       	}
-			
 		}
 		return statusMessage;
-		
 	}
 	@Transactional(propagation = Propagation.REQUIRED)
 	public String validateAndUpdateNewMember(MemberDtlsDto memberDtlsDto, UserMetaInfo metaInfo) throws ValidationException{
 		String statusMessage = "";
-		if(this.validateMemberDtls(memberDtlsDto)){
-			RlmsMemberMaster  memberMaster = this.constructMemberMaster(memberDtlsDto, metaInfo);
+		RlmsMemberMaster memberMaster = this.customerDao.getMemberById(memberDtlsDto.getMemberId()) ;
+		if(memberMaster!=null){
+	       memberMaster = this.constructMemberMaster(memberDtlsDto, memberMaster,metaInfo);
 			this.customerDao.updateMember(memberMaster);
 			statusMessage = PropertyUtils.getPrpertyFromContext(RlmsErrorType.MEMBER_EDIT_SUCCESSFUL.getMessage());
 		}
 		return statusMessage;
-		
 	}
-	
 	private boolean validateMemberDtls(MemberDtlsDto memberDtlsDto) throws ValidationException{
 		boolean isValidMember = true;
 		RlmsMemberMaster memberMaster = this.customerDao.getMemberByCntNo(memberDtlsDto.getContactNumber());
@@ -287,7 +281,6 @@ public class CustomerServiceImpl implements CustomerService{
 			isValidMember = false;
 			throw new ValidationException(ExceptionCode.VALIDATION_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.MEMBER_WITH_SAME_CONTACT_NO.getMessage()));
 		}
-		
 		return isValidMember;
 	}
 	
@@ -346,10 +339,7 @@ public class CustomerServiceImpl implements CustomerService{
 		}
 		this.registerUserDevice(dto, memberMaster, metaInfo);
 		return this.constructMemberDltsSto(memberMaster);
-		
 	}
-	
-	
 	private void registerUserDevice(MemberDtlsDto dto, RlmsMemberMaster memberMaster, UserMetaInfo metaInfo){
 		
 		RlmsUserApplicationMapDtls esistAppDtls = this.customerDao.getUserAppDtls(memberMaster.getMemberId(), RLMSConstants.MEMBER_TYPE.getId());

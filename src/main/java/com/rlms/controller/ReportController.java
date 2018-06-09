@@ -21,7 +21,6 @@ import com.rlms.contract.TechnicianWiseReportDTO;
 import com.rlms.exception.ExceptionCode;
 import com.rlms.exception.RunTimeException;
 import com.rlms.exception.ValidationException;
-import com.rlms.model.RlmsCompanyBranchMapDtls;
 import com.rlms.service.CompanyService;
 import com.rlms.service.ReportService;
 import com.rlms.utils.PropertyUtils;
