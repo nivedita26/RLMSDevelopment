@@ -12,7 +12,12 @@ public class ComplaintsDto {
 	private Date actualServiceEndDate;
 	private String actualServiceEndDateStr;
 	private String liftNumber;
+	private String branchName;
 	private String customerName;
+	private String customerAddress;
+	private String customerCity;
+	private Date fromDate;
+	private Date toDate;
 	private String liftAddress;
 	private String latitude;
 	private String longitude;
@@ -32,7 +37,78 @@ public class ComplaintsDto {
 	private String companyName;
 	private String city;
 	private Integer serviceCallType;
+	private String registeredBy ;
+	private String serviceCallTypeStr;
+	private Date CallAssignedDate;
+	private int  totalDaysRequiredToResolveComplaint;
+	private Date lastVisitedDate;
+
+	public Date getFromDate() {
+		return fromDate;
+	}
+	public void setFromDate(Date fromDate) {
+		this.fromDate = fromDate;
+	}
+	public Date getToDate() {
+		return toDate;
+	}
+	public void setToDate(Date toDate) {
+		this.toDate = toDate;
+	}
+	public String getBranchName() {
+		return branchName;
+	}
+	public void setBranchName(String branchName) {
+		this.branchName = branchName;
+	}
+	public String getCustomerAddress() {
+		return customerAddress;
+	}
+	public void setCustomerAddress(String customerAddress) {
+		this.customerAddress = customerAddress;
+	}
+	public String getCustomerCity() {
+		return customerCity;
+	}
+	public void setCustomerCity(String customerCity) {
+		this.customerCity = customerCity;
+	}
 	
+	public Date getLastVisitedDate() {
+		return lastVisitedDate;
+	}
+	public void setLastVisitedDate(Date lastVisitedDate) {
+		this.lastVisitedDate = lastVisitedDate;
+	}
+	public int getTotalDaysRequiredToResolveComplaint() {
+		return totalDaysRequiredToResolveComplaint;
+	}
+	public void setTotalDaysRequiredToResolveComplaint(int totalDaysRequiredToResolveComplaint) {
+		this.totalDaysRequiredToResolveComplaint = totalDaysRequiredToResolveComplaint;
+	}
+	public Date getCallAssignedDate() {
+		return CallAssignedDate;
+	}
+	public void setCallAssignedDate(Date callAssignedDate) {
+		CallAssignedDate = callAssignedDate;
+	}
+	
+	public String getServiceCallTypeStr() {
+		return serviceCallTypeStr;
+	}
+
+	public void setServiceCallTypeStr(String serviceCallTypeStr) {
+		this.serviceCallTypeStr = serviceCallTypeStr;
+	}
+
+	public String getRegisteredBy() {
+		return registeredBy;
+	}
+
+	public void setRegisteredBy(String registeredBy) {
+		this.registeredBy = registeredBy;
+	}
+
 	public String getComplaintNumber() {
 		return complaintNumber;
 	}

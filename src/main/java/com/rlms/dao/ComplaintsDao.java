@@ -3,6 +3,7 @@ package com.rlms.dao;
 import java.util.Date;
 import java.util.List;
 
+import com.rlms.contract.ComplaintsDtlsDto;
 import com.rlms.contract.SiteVisitReportDto;
 import com.rlms.contract.TechnicianWiseReportDTO;
 import com.rlms.model.RlmsComplaintMaster;
@@ -28,4 +29,7 @@ public interface ComplaintsDao {
 	public void updateComplaints(RlmsComplaintTechMapDtls complaintTechMapDtls);
 	public void updateComplaintsMatser(RlmsComplaintMaster complaintMaster);
 	public void deleteComplaintsTechMap(Integer complaintsTechMapId);
+	public List<RlmsComplaintMaster>complaintMastersList (List<Integer> liftCustomerMapId,ComplaintsDtlsDto complaintsDtlsDto);
+	public RlmsComplaintMaster getComplaintMasterByComplaintId(int complaintId);
+ 
 }

@@ -535,9 +535,7 @@ public class UserServiceImpl implements UserService {
 		userDtlsDto.setUserId(userRole.getRlmsUserMaster().getUserId());
 		userDtlsDto.setUserRoleId(userRole.getUserRoleId());
 		return userDtlsDto;
-
 	}
-
 	@Transactional(propagation = Propagation.REQUIRED)
 	public RlmsUserRoles getUserRoleObjhById(Integer userRoleId) {
 		return this.userRoleDao.getUserRole(userRoleId);
@@ -594,5 +592,4 @@ public class UserServiceImpl implements UserService {
 		}
 		return null;
 	}
-
 }

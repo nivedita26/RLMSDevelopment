@@ -201,11 +201,9 @@ public class AdminController extends BaseController{
 	 @RequestMapping(value = "/validateAndRegisterNewUser", method = RequestMethod.POST)
 	    public @ResponseBody ResponseDto validateAndRegisterNewUser(@RequestBody AddNewUserDto dto) throws RunTimeException, ValidationException {
 		 ResponseDto reponseDto = new ResponseDto();
-	        
 	        try{
 	        	logger.info("Method :: validateAndRegisterNewUser");
 	        	reponseDto.setResponse(this.userService.validateAndRegisterNewUser(dto, this.getMetaInfo()));
-	        	
 	        }catch(ValidationException vex){
 	        	logger.error(ExceptionUtils.getFullStackTrace(vex));
 	        	throw vex;
@@ -533,6 +531,5 @@ public class AdminController extends BaseController{
 	        }
 	       return reponseDto;
 	  }
-
 
 }

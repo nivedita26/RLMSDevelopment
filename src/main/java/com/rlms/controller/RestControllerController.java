@@ -169,9 +169,7 @@ public class RestControllerController  extends BaseController {
     		 log.error("some Unknown exception occurs.");
     		 dto.setResponse(PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
     	 }
-    	 
     	 return dto;
-        
     }
     	
     @RequestMapping(value = "/complaint/validateAndRegisterNewComplaint", method = RequestMethod.POST)
@@ -337,12 +335,9 @@ public class RestControllerController  extends BaseController {
         	log.error(ExceptionUtils.getFullStackTrace(e));
         	reponseDto.setStatus(false);
         	reponseDto.setResponse(PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
-        
         }
- 
         return reponseDto;
     }
-    
     @RequestMapping(value = "/complaint/getAllVisitsForComplaint", method = RequestMethod.POST)
     public @ResponseBody ResponseDto getAllVisitsForComplaint(@RequestBody SiteVisitDtlsDto siteVisitDtlsDto){
     	ObjectMapper mapper = new ObjectMapper();

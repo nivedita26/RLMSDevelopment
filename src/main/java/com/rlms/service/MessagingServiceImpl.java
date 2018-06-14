@@ -64,8 +64,6 @@ public class MessagingServiceImpl implements MessagingService{
 	public EmailTemplate getEmailTemplate(Integer templateId){
 		return this.emailDao.getEmailTemplate(templateId);
 	}
-	
-	
 	/*public String replaceDyanamicValue(List<String> listOfDyanamicValues, String template){
 		int paramCount = 1;
 		String dynamictemplate = template;
@@ -259,9 +257,7 @@ public class MessagingServiceImpl implements MessagingService{
 			log.error(ExceptionUtils.getFullStackTrace(e));
 			throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.PUSH_NOTIFICATION_FAILED.getMessage()));
 		}
-		
 	}
-	
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void sendUserNotification(String appRegId, JSONObject dataPayload) throws SmackException, IOException{
 	//	String fcmProjectSenderId = PropertyUtils.getPrpertyFromContext(XMPPServerDetails.FCM_PROJECT_SENDER_ID.getMessage());
@@ -300,10 +296,8 @@ public class MessagingServiceImpl implements MessagingService{
 				e.printStackTrace();
 			}
 			pushFCMNotification(json,fcmApiUrl,authKey);
-	
 	//	this.androidNotificationService.sendNotification(appRegId, dataPayload, fcmProjectSenderId, fcmServerKey);
 	}
-	
 	public static void pushFCMNotification(JSONObject json,String fcmApiUrl,String authKey) {
 		log.trace("::start::FirebaseUtil:::::pushFCMNotification:::");
 		try {

@@ -376,4 +376,25 @@ public class LiftDaoImpl implements LiftDao{
 			 return liftM;
 		
 	}
+
+	@Override
+	public List<RlmsLiftCustomerMap> getLiftCustomerMapDtlsListByBranchCustomerMapId(List<Integer> branchCustomerIds) {
+		 Session session = this.sessionFactory.getCurrentSession();
+		 Criteria criteria = session.createCriteria(RlmsLiftCustomerMap.class)					 
+				 .add(Restrictions.in("branchCustomerMap.branchCustoMapId",branchCustomerIds));
+				 
+		List<RlmsLiftCustomerMap>rlmsLiftCustomerMapsList = (List<RlmsLiftCustomerMap>)criteria.list();
+		 return rlmsLiftCustomerMapsList;
+	}
+
+	@Override
+	public List<RlmsLiftCustomerMap> getliftCustomerMapDtlsByBranchCutomerId(int branchCustomerId) {
+		 Session session = this.sessionFactory.getCurrentSession();
+		 Criteria criteria = session.createCriteria(RlmsLiftCustomerMap.class)					 
+				 .add(Restrictions.eq("branchCustomerMap.branchCustoMapId",branchCustomerId));
+				 
+		List<RlmsLiftCustomerMap>rlmsLiftCustomerMapsList = (List<RlmsLiftCustomerMap>)criteria.list();
+		 return rlmsLiftCustomerMapsList;
+	}
+	
 }
