@@ -376,7 +376,6 @@ public class UserServiceImpl implements UserService {
 		return statusMessage;
 
 	}
-
 	private boolean validateUserDtls(AddNewUserDto userDto,
 			UserMetaInfo metaInfo) throws ValidationException {
 		boolean isValidUser = true;
@@ -404,7 +403,6 @@ public class UserServiceImpl implements UserService {
 										.getMessage()));
 			}
 		}
-
 		return isValidUser;
 	}
 

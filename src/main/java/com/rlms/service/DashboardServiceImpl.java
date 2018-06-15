@@ -669,6 +669,8 @@ public class DashboardServiceImpl implements DashboardService {
 				  else {
 					  branchCountDtls.setBranchInactiveFlagCount((BigInteger)objects[2]);
 				  }
+			  	//	branchCountDtlsList.add(branchCountDtls);
+
 			  		uniqueCityList.add(objects[0].toString());
 			  }
 			  else {

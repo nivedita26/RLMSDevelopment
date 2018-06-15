@@ -117,7 +117,7 @@
 			if (searchText) {
 	  	          var ft = searchText.toLowerCase();
 	  	        var dataToSend = constructDataToSend();
-	 	         serviceApi.doPostWithData('/RLMS/report/getListOfEvents',dataToSend)
+	 	         serviceApi.doPostWithData('/RLMS/report/getSiteVisitReport',dataToSend)
 	 	         .then(function(data) {
 	 	        	$scope.siteViseReport = data.filter(function(item) {
 		  	              return JSON.stringify(item).toLowerCase().indexOf(ft) !== -1;
@@ -125,7 +125,7 @@
 	 	         })
  	         }else{
  	        	var dataToSend = constructDataToSend();
- 	 	         serviceApi.doPostWithData('/RLMS/report/getListOfEvents',dataToSend)
+ 	 	         serviceApi.doPostWithData('/RLMS/report/getSiteVisitReport',dataToSend)
  	 	         .then(function(data) {
  	 	        	 $scope.siteViseReport = data;
  	 	         })

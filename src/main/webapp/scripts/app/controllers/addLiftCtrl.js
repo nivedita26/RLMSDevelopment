@@ -478,7 +478,6 @@
 					$scope.showAlert = true;
 					$scope.alert.msg =  response[key[1]];
 					$scope.alert.type="danger";
-					
 				}
 				$scope.alert.type=' ';
 			},function(error){

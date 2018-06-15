@@ -48,7 +48,6 @@ import com.rlms.model.RlmsLiftAmcDtls;
 import com.rlms.model.RlmsLiftCustomerMap;
 import com.rlms.model.RlmsSiteVisitDtls;
 import com.rlms.model.RlmsUserRoles;
-import com.rlms.model.RlmsUsersMaster;
 import com.rlms.model.ServiceCall;
 import com.rlms.predicates.LiftPredicate;
 import com.rlms.utils.DateUtils;
@@ -75,7 +74,6 @@ public class ReportServiceImpl implements ReportService {
 	@Autowired
 	private CompanyService companyService;
 	
-
 	@Autowired
 	private MessagingService messagingService;
 	
@@ -466,10 +464,8 @@ public class ReportServiceImpl implements ReportService {
 			}else{
 				technician.setAvgTimeTaken(RLMSConstants.NA.getName());
 			}
-			
 			technicianList.add(technician);
 		}
-		
 		return technicianList;
 	}
 	

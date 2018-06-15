@@ -4,7 +4,6 @@ import java.math.BigInteger;
 import java.util.Date;
 
 public class LiftDtlsDto {
-
 	private String liftNumber;
 	private String address;
 	private String customerName;
@@ -16,7 +15,6 @@ public class LiftDtlsDto {
 	private Integer companyId;
 	private Integer branchCompanyMapId;
 	private Integer branchCustomerMapId;
-	
 	private Integer liftId;
 	private String latitude;
 	private String longitude;

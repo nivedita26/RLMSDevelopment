@@ -501,23 +501,27 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 		this.complaintsDao.mergeComplaintM(complaintMaster);
 		String resultMessage = PropertyUtils.getPrpertyFromContext(RlmsErrorType.STATUS_UPDATED.getMessage()) + " " + dto.getStatus() + " " + PropertyUtils.getPrpertyFromContext(RlmsErrorType.SUCCESSFULLY.getMessage());
 		return resultMessage;
-		
 	}
-	
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void saveComplaintSiteVisitDtls(RlmsSiteVisitDtls siteVisitDtls){
 		this.complaintsDao.saveComplaintSiteVisitDtls(siteVisitDtls);
 	}
-	
-	
 	@Transactional(propagation = Propagation.REQUIRED)
 	public String validateAndSaveSiteVisitDtls(SiteVisitDtlsDto dto) throws ValidationException, ParseException{
 		//this.validateVisitDtls(dto);
 		RlmsSiteVisitDtls visitDtls = this.constructVisitDtls(dto);
 		this.saveComplaintSiteVisitDtls(visitDtls);
+		if(visitDtls.getComplaintTechMapDtls().getStatus()==Status.ASSIGNED.getStatusId()) {
+		     RlmsComplaintTechMapDtls complaintTechMapDtls = visitDtls.getComplaintTechMapDtls();
+			complaintTechMapDtls.setStatus(Status.INPROGESS.getStatusId());
+			complaintsDao.saveComplaintTechMapDtls(complaintTechMapDtls);
+			RlmsComplaintMaster complaintMaster = visitDtls.getComplaintTechMapDtls().getComplaintMaster();
+			if(complaintMaster.getStatus()==Status.ASSIGNED.getStatusId()) {
+				complaintsDao.saveComplaintM(complaintMaster);
+			}
+		}
 		return PropertyUtils.getPrpertyFromContext(RlmsErrorType.VISIT_UPDATED_SUCCESS.getMessage());
 	}
-	
 	private RlmsSiteVisitDtls constructVisitDtls(SiteVisitDtlsDto dto) throws ParseException{
 		RlmsComplaintTechMapDtls complaintTechMapDtls = this.complaintsDao.getComplTechMapByComplaintTechMapId(dto.getComplaintTechMapId());
 		RlmsUserRoles userRoles = this.userService.getUserRoleObjhById(dto.getUserRoleId());

@@ -382,7 +382,7 @@ public class AdminController extends BaseController{
 	        }
 	        return reponseDto;
 	 }
-	 @RequestMapping(value = "/getListOfAllMemberDtls", method = RequestMethod.POST)
+	 @RequestMapping(value = "/	", method = RequestMethod.POST)
 	 public @ResponseBody List<MemberDtlsDto> getListOfAllMemberDtls(@RequestBody MemberDtlsDto memberDtlsDto) throws RunTimeException{
 		 List<MemberDtlsDto> listOFMembers = new ArrayList<MemberDtlsDto>();
 	        try{

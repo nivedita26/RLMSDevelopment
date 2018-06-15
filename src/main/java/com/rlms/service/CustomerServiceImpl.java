@@ -1,7 +1,5 @@
 package com.rlms.service;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -11,20 +9,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mysql.fabric.xmlrpc.base.Array;
 import com.rlms.constants.AMCType;
 import com.rlms.constants.CustomerType;
 import com.rlms.constants.RLMSConstants;
 import com.rlms.constants.RlmsErrorType;
 import com.rlms.constants.SpocRoleConstants;
-import com.rlms.contract.AddNewUserDto;
-import com.rlms.contract.CompanyDtlsDTO;
 import com.rlms.contract.CustomerCountDtls;
 import com.rlms.contract.CustomerDtlsDto;
 import com.rlms.contract.LiftDtlsDto;
 import com.rlms.contract.MemberDtlsDto;
 import com.rlms.contract.UserAppDtls;
-import com.rlms.contract.UserDtlsDto;
 import com.rlms.contract.UserMetaInfo;
 import com.rlms.dao.BranchDao;
 import com.rlms.dao.CustomerDao;
@@ -34,15 +28,12 @@ import com.rlms.exception.ExceptionCode;
 import com.rlms.exception.ValidationException;
 import com.rlms.model.RlmsBranchCustomerMap;
 import com.rlms.model.RlmsCompanyBranchMapDtls;
-import com.rlms.model.RlmsCompanyMaster;
 import com.rlms.model.RlmsCustomerMaster;
 import com.rlms.model.RlmsCustomerMemberMap;
 import com.rlms.model.RlmsLiftCustomerMap;
 import com.rlms.model.RlmsLiftMaster;
 import com.rlms.model.RlmsMemberMaster;
 import com.rlms.model.RlmsUserApplicationMapDtls;
-import com.rlms.model.RlmsUserRoles;
-import com.rlms.model.RlmsUsersMaster;
 import com.rlms.utils.DateUtils;
 import com.rlms.utils.PropertyUtils;
 
