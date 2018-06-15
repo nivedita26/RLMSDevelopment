@@ -11,7 +11,7 @@
 		$scope.companies = [];
 		function initAddBranch(){
 			$scope.selectedCompany = {};
-			$scope.selectedStatus={};
+			//$scope.selectedStatus={};
 			$scope.addBranch={
 					companyId:'',
 					branchName:'',
@@ -19,7 +19,7 @@
 					city:'',
 					area:'',
 					pinCode:'',
-					status:''
+					//status:''
 			};	
 		    $scope.branchList={};
 		    		    

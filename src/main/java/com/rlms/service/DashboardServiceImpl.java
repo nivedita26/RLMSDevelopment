@@ -662,6 +662,7 @@ public class DashboardServiceImpl implements DashboardService {
 			  String cityName = objects[0].toString();
 			  if(!uniqueCityList.contains(cityName)) {
 				  branchCountDtls = new BranchCountDtls();
+
 				  branchCountDtls.setBranchCity(objects[0].toString());
 				  if((Integer)objects[1]==1) {
 					  branchCountDtls.setBranchActiveFlagCount((BigInteger)objects[2]);
@@ -669,9 +670,11 @@ public class DashboardServiceImpl implements DashboardService {
 				  else {
 					  branchCountDtls.setBranchInactiveFlagCount((BigInteger)objects[2]);
 				  }
+			  		branchCountDtlsList.add(branchCountDtls);
 			  		uniqueCityList.add(objects[0].toString());
-			  }
-			  else {
+			    }
+
+			  	else {
 				  		if((Integer)objects[1]==1) {
 				  			branchCountDtls.setBranchActiveFlagCount((BigInteger)objects[2]);
 				  		}
@@ -679,7 +682,9 @@ public class DashboardServiceImpl implements DashboardService {
 				  			branchCountDtls.setBranchInactiveFlagCount((BigInteger)objects[2]);
 				  		}
 				  		branchCountDtlsList.add(branchCountDtls);
-			  }
+			  	}
+
+  
 		}
 			List<BranchDtlsDto> listOFBranchDtls = new ArrayList<BranchDtlsDto>();
 		    return branchCountDtlsList;

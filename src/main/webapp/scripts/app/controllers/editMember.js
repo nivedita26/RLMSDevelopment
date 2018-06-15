@@ -15,12 +15,13 @@
 					memberId:'',
 					//branchName:'',
 					//branchAddress:'',
+					firstName:'',
 					city:'',
 					area:'',
 					address:'',
 					pinCode:'',
 					contactNumber:'',
-					emailId:'',
+					emailId:''
 			};	
 		    $scope.branchList={};
 		   

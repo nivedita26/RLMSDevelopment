@@ -330,13 +330,48 @@ angular.module('theme.demos.dashboard.indi', [
        		'/RLMS/dashboard/getListOfTotalComplaintsCountByCallType',dataToSend)
             .then(
             function (
-              largeLoad) {
-              if (complaintStatusArray.includes('2') && complaintStatusArray.length == 1 && largeLoad.length > 0) {
+              largeLoad) {             
+              if (complaintStatusArray.includes('2') && complaintStatusArray.length == 3 && largeLoad.length > 0) {
+                
             	  var totalCount=0;
             	  for (var i = 0; i < largeLoad.length; i++)
             	  {
             		  if(largeLoad[i].totalCallTypeCount!=null){
             			  totalCount=totalCount+largeLoad[i].totalCallTypeCount;
+            		  }
+            	  }
+            	  $scope.complaintsData.totalComplaints.text = totalCount;                
+            	  $scope.todaysTotalComplaints = largeLoad.filter(function (item) {
+                  return (new Date(item.updatedDate)).getTime() === $scope.todaysDate.getTime();
+                });
+                if ($scope.todaysTotalComplaints.length > 0) {
+                  $scope.complaintsData.todaysTotalComplaints.text = $scope.todaysTotalComplaints.length;
+                }
+              }
+            });
+        }, 100);
+      
+      $scope.testComplaintValue="After";
+      setTimeout(
+        function () {
+          var dataToSend = $scope
+            .construnctObjeToSend(complaintStatusArray);
+          serviceApi
+            .doPostWithData(
+           // '/RLMS/dashboard/getListOfComplaintsForDashboard',
+
+       		'/RLMS/dashboard/getListOfTotalComplaintsCountByStatus',dataToSend)
+            .then(
+            function (
+              largeLoad) {
+              if (complaintStatusArray.includes('2') && complaintStatusArray.length == 1 && largeLoad.length > 0) {
+            	  var totalCount=0;
+            	  for (var i = 0; i < largeLoad.length; i++)
+            	  {
+            		  if(largeLoad[i].callStatus== "Pending"){
+            		  if(largeLoad[i].totalCallStatusCount!=null){
+            			  totalCount=totalCount+largeLoad[i].totalCallStatusCount;
+            		  }
             		  }
             	  }
                 $scope.complaintsData.totalPendingComplaints.text = totalCount;
@@ -355,6 +390,18 @@ angular.module('theme.demos.dashboard.indi', [
                 }
               }
               if (complaintStatusArray.includes('3') && complaintStatusArray.length == 1 && largeLoad.length > 0) {
+              	 var totalCount=0;
+               	  for (var i = 0; i < largeLoad.length; i++)
+               	  {
+               		
+               		  if(largeLoad[i].totalCallStatusCount!=null){
+               			 if(largeLoad[i].callStatus== "Assigned"){
+               			  totalCount=totalCount+largeLoad[i].totalCallStatusCount;
+               		  }
+               		 }else{
+               			$scope.complaintsData.totalAssignedComplaints.text = largeLoad.length;
+               		 }
+               	  }
                 $scope.complaintsData.totalAssignedComplaints.text = largeLoad.length;
                 $scope.todaysAssignedComplaints = largeLoad.filter(function (item) {
                   return (new Date(item.updatedDate)).getTime() === $scope.todaysDate.getTime();
@@ -364,6 +411,15 @@ angular.module('theme.demos.dashboard.indi', [
                 }
               }
               if (complaintStatusArray.includes('5') && complaintStatusArray.length == 1 && largeLoad.length > 0) {
+              	 var totalCount=0;
+              	  for (var i = 0; i < largeLoad.length; i++)
+              	  {
+              		  if(largeLoad[i].callStatus== "Resolved"){
+              		  if(largeLoad[i].totalCallStatusCount!=null){
+              			  totalCount=totalCount+largeLoad[i].totalCallStatusCount;
+              		  }
+              		  }
+              	  }
                 $scope.complaintsData.totalResolvedComplaints.text = largeLoad.length;
                 $scope.todaysResolvedComplaints = largeLoad.filter(function (item) {
                   return (new Date(item.updatedDate)).getTime() === $scope.todaysDate.getTime();
@@ -372,26 +428,11 @@ angular.module('theme.demos.dashboard.indi', [
                   $scope.complaintsData.todaysResolvedComplaints.text = $scope.todaysResolvedComplaints.length;
                 }
               }
-              if (complaintStatusArray.includes('2') && complaintStatusArray.length == 3 && largeLoad.length > 0) {
-                
-            	  var totalCount=0;
-            	  for (var i = 0; i < largeLoad.length; i++)
-            	  {
-            		  if(largeLoad[i].totalCallTypeCount!=null){
-            			  totalCount=totalCount+largeLoad[i].totalCallTypeCount;
-            		  }
-            	  }
-            	  $scope.complaintsData.totalComplaints.text = totalCount;                
-                $scope.todaysTotalComplaints = largeLoad.filter(function (item) {
-                  return (new Date(item.updatedDate)).getTime() === $scope.todaysDate.getTime();
-                });
-                if ($scope.todaysTotalComplaints.length > 0) {
-                  $scope.complaintsData.todaysTotalComplaints.text = $scope.todaysTotalComplaints.length;
-                }
-              }
             });
         }, 100);
     };
+       
+    
 
     $scope.getComplaintsCountForSiteVisited = function (complaintStatus) {
       var complaintStatusArray = [];
@@ -618,9 +659,9 @@ angular.module('theme.demos.dashboard.indi', [
                   }*/
                   
                   if (!!largeLoad[i].callType) {
-                      userDetailsObj["Call-Type"] = largeLoad[i].callType;
+                      userDetailsObj["CallType"] = largeLoad[i].callType;
                     } else {
-                      userDetailsObj["Call-Type"] = " - ";
+                      userDetailsObj["CallType"] = " - ";
                     }
                   if (!!largeLoad[i].totalCallTypeCount) {
                       userDetailsObj["TotalCount"] = largeLoad[i].totalCallTypeCount;
@@ -659,11 +700,47 @@ angular.module('theme.demos.dashboard.indi', [
                 $scope.complaints = largeLoad;
                 $scope.showTable = true;
                 var userDetails = [];
+                /*if (callStatus=="Pending") {
+                	serviceApi
+                    .doPostWithData('/RLMS/dashboard/getListOfTotalComplaintsCountByCallType',
+                    dataToSend)
+                    .then(
+                    function (
+                      largeLoad) {
+                      $scope.complaints = largeLoad;
+                      $scope.showTable = true;
+                      var userDetails = [];
+                	for (var i = 0; i < largeLoad.length; i++) {
+                        var userDetailsObj = {};
+                        
+                          userDetailsObj["No"] = i+1 +".";
+                        
+                        if (!!largeLoad[i].callType) {
+                          userDetailsObj["CallType"] = largeLoad[i].callType;
+                        } else {
+                          userDetailsObj["CallType"] = " - ";
+                        }
+                        if (!!largeLoad[i].totalCallTypeCount) {
+                          userDetailsObj["TotalCount"] = largeLoad[i].totalCallTypeCount;
+                        } else {
+                          userDetailsObj["TotalCount"] = " - ";
+                        }
+                        userDetails
+                          .push(userDetailsObj);
+                      }
+                      $scope
+                        .setPagingDataForComplaints(
+                        userDetails,
+                        page,
+                        pageSize);
+                    });
+                	
+                }*/
                 if(isTodaysData){
                 	largeLoad=largeLoad.filter(function (item) {
                         return (new Date(item.updatedDate)).getTime() === $scope.todaysDate.getTime();
                       });
-                }
+                }                
                 for (var i = 0; i < largeLoad.length; i++) {
                   var userDetailsObj = {};
                   
@@ -679,23 +756,6 @@ angular.module('theme.demos.dashboard.indi', [
                   } else {
                     userDetailsObj["TotalCount"] = " - ";
                   }
-                  /*if (!!largeLoad[i].city) {
-                    userDetailsObj["City"] = largeLoad[i].city;
-                  } else {
-                    userDetailsObj["City"] = " - ";
-                  }
-                  if (complaintStatus.includes("2") && complaintStatus.includes("3") && complaintStatus.includes("5")) {
-                    if (!!largeLoad[i].title) {
-                      userDetailsObj["Title"] = largeLoad[i].title;
-                    } else {
-                      userDetailsObj["Title"] = " - ";
-                    }
-                  } 
-                  if (!!largeLoad[i].totalComplaints) {
-                    userDetailsObj["Total_Complaints"] = largeLoad[i].totalComplaints;
-                  } else {
-                    userDetailsObj["Total_Complaints"] = " - ";
-                  }*/
                   userDetails
                     .push(userDetailsObj);
                 }
@@ -1889,13 +1949,27 @@ angular.module('theme.demos.dashboard.indi', [
       	                  });*/
     	                	for (var i = 0; i < largeLoad.length; i++) {
     	                		
-    	                		if(largeLoad[i].branchActiveFlagCount!=null ||largeLoad[i].branchInActiveFlagCount!=null){
+    	                		if(largeLoad[i].branchActiveFlagCount!=null &&largeLoad[i].branchInActiveFlagCount!=null){
     	                			var dataCount={};
     	                			dataCount.branchCity=largeLoad[i].branchCity
     	                			dataCount.branchCount=largeLoad[i].branchInActiveFlagCount +largeLoad[i].branchActiveFlagCount 
 
     	                			data.push(dataCount);
-    	                		}    	                		
+    	                		}
+    	                		else if(largeLoad[i].branchActiveFlagCount!=null ){
+    	                			var dataCount={};
+    	                			dataCount.branchCity=largeLoad[i].branchCity
+    	                			dataCount.branchCount=largeLoad[i].branchActiveFlagCount
+
+    	                			data.push(dataCount);
+    	                		}
+    	                		else if(largeLoad[i].branchInActiveFlagCount!=null ){
+    	                			var dataCount={};
+    	                			dataCount.branchCity=largeLoad[i].branchCity
+    	                			dataCount.branchCount=largeLoad[i].branchInActiveFlagCount
+
+    	                			data.push(dataCount);
+    	                		}
     	                	}
       	                }
     	                for (var i = 0; i < data.length; i++) {
@@ -1968,9 +2042,16 @@ angular.module('theme.demos.dashboard.indi', [
 	                	var totalCount=0;
 	                	
 	                	for (var i = 0; i < largeLoad.length; i++) {
-	                		if(largeLoad[i].branchInActiveFlagCount!=null ||largeLoad[i].branchActiveFlagCount!=null){
+	                		if(largeLoad[i].branchInActiveFlagCount!=null && largeLoad[i].branchActiveFlagCount!=null){
 	                			totalCount=totalCount+(largeLoad[i].branchInActiveFlagCount +largeLoad[i].branchActiveFlagCount) ;
 	                		}
+	                		else if(largeLoad[i].branchInActiveFlagCount!=null){
+	                			totalCount=totalCount+(largeLoad[i].branchInActiveFlagCount) ;
+	                		}
+	                		else if(largeLoad[i].branchActiveFlagCount!=null){
+	                			totalCount=totalCount+(largeLoad[i].branchActiveFlagCount) ;
+	                		}
+
 	                	}
 	                	$scope.branchDetails.totalBranches.text=totalCount;
 	                }
@@ -2198,21 +2279,21 @@ angular.module('theme.demos.dashboard.indi', [
 	            	  if (eventType=="Response") {
 	            		  var totalCount= 0;
   	                	for (var i = 0; i < largeLoad.length; i++) {
-  	                		if(largeLoad[i].totalRespCount!=null){
-  	                			totalCount=totalCount+largeLoad[i].totalRespCount;
+  	                		if(largeLoad[i].totalResCount!=null){
+  	                			totalCount=totalCount+largeLoad[i].totalResCount;
   	                		}
   	                	}
-		                  $scope.event.response.text=totalCount;
+		                  $scope.event.responses.text=totalCount;
 	            	  }
 	                //  $scope.event.inout.text=largeLoad.length;
 	              });
 	          }, 100);
 	      };
       //add event api call
-     $scope.getCountForEvent = function (eventName) {
+     /*$scope.getCountForEvent = function (eventName) {
 	       	   $http({method: 'GET',
     	        url: '/RLMS/API/addEvents',
-    	        params: {from: "9423720625",message:"RLMS,*862462035277838,TEST,E010,XYZ SHORT,FLOOR No.10,12:12 26/05/18;"}
+    	        params: {from: "9423720625",message:"RLMS,*862462035277838,LMS EVENT,E2,OUT PRESSED,FLOOR No.00,10:52,28/05/18;"}
     	    })   .success(function(data) {
 	           // $scope.names = eval(data);
 	            console.log(data)
@@ -2221,7 +2302,7 @@ angular.module('theme.demos.dashboard.indi', [
 	            alert(data);
 	            console.log('Error: ' + data);
 	        });
-    	   };
+    	   };*/
 	      $scope.getCountForEvent("Event");
 	      $scope.getCountForEvent("Error");
 	      $scope.getCountForEvent("Response");
@@ -2336,9 +2417,10 @@ angular.module('theme.demos.dashboard.indi', [
 	  	                		
 	  	                		if(largeLoad[i].totolEventCount!=null){
 	  	                			var dataCount={};
-	  	                			largeLoad[i].branchName=largeLoad[i].branchName
-		                			largeLoad[i].city=largeLoad[i].city
-		                			largeLoad[i].totalFigure=largeLoad[i].totolEventCount
+	  	                			dataCount.branchName=largeLoad[i].branchName
+	  	                			dataCount.customerName=largeLoad[i].customerName
+	  	                			dataCount.city=largeLoad[i].city
+	  	                			dataCount.totalFigure=largeLoad[i].totolEventCount
 		                			data.push(dataCount);
 	  	                		}
 	  	                	}
@@ -2347,9 +2429,10 @@ angular.module('theme.demos.dashboard.indi', [
   	            	  		for (var i = 0; i < largeLoad.length; i++) {
   	            	  			if(largeLoad[i].totalErrorCount!=null){
   	            	  				var dataCount={};
-	  	                			largeLoad[i].branchName=largeLoad[i].branchName
-		                			largeLoad[i].city=largeLoad[i].city
-		                			largeLoad[i].totalFigure=largeLoad[i].totalErrorCount  
+  	            	  				dataCount.branchName=largeLoad[i].branchName
+  	            	  				dataCount.customerName=largeLoad[i].customerName
+  	            	  				dataCount.city=largeLoad[i].city
+  	            	  				dataCount.totalFigure=largeLoad[i].totalErrorCount  
 		                			data.push(dataCount);
   	            	  			}
   	            	  		}
@@ -2359,49 +2442,40 @@ angular.module('theme.demos.dashboard.indi', [
 		                    return item.eventType === "ERROR";
 		                  });*/
   	            		  for (var i = 0; i < largeLoad.length; i++) {
-  	            			  if(largeLoad[i].totalRespCount!=null){
+  	            			  if(largeLoad[i].totalResCount!=null){
   	            				var dataCount={};
-	                			largeLoad[i].branchName=largeLoad[i].branchName
-	                			largeLoad[i].city=largeLoad[i].city
-	                			largeLoad[i].totalFigure=largeLoad[i].totalRespCount
+  	            				dataCount.branchName=largeLoad[i].branchName
+  	            				dataCount.customerName=largeLoad[i].customerName
+  	            				dataCount.city=largeLoad[i].city
+  	            				dataCount.totalFigure=largeLoad[i].totalResCount
 	                			data.push(dataCount);
   	            			  }
   	            		  }
 	            	  }
-    	                for (var i = 0; i < largeLoad.length; i++) {
+    	                for (var i = 0; i < data.length; i++) {
       	                  var userDetailsObj = {};
       	                  
         	                    userDetailsObj["No"] = i+1;
         	                  
-      	                       if (!!data.branchName) {
-      	                    	   userDetailsObj["Branch"] = data.branchName;
+      	                       if (!!data[i].branchName) {
+      	                    	   userDetailsObj["Branch"] = data[i].branchName;
       	                       } else {
       	                    	   userDetailsObj["Branch"] = " - ";
       	                       }
-      	                       if (!!data.customerName) {
-      	                    	   userDetailsObj["Customer"] = data.customerName;
+      	                       if (!!data[i].customerName) {
+      	                    	   userDetailsObj["Customer"] = data[i].customerName;
 							   } else {
 								   userDetailsObj["Customer"] = " - ";
 							   }
-        	                  if (!!data.eventDescription) {
-        	                	  userDetailsObj["EventDescription"] = data.eventDescription;
-        	                  } else {
-        	                	  userDetailsObj["EventDescription"] = " - ";
-        	                  }       	                  
-        	                  if (!!data.date) {
-        	                	  userDetailsObj["EventDate"] = data.date;
+        	                  if (!!data[i].city) {
+        	                	  userDetailsObj["City"] = data[i].city;
             	              } else {
-            	            	  userDetailsObj["EventDate"] = " - ";
+            	            	  userDetailsObj["City"] = " - ";
             	              }
-        	                  if (!!data.imeiNo) {
-        	                	  userDetailsObj["IMEI_No"] = data.imeiNo;
+        	                 if (!!data[i].totalFigure) {
+        	                	 userDetailsObj["TotalCount"] = data[i].totalFigure;
             	              } else {
-            	            	  userDetailsObj["IMEI_No"] = " - ";
-            	              }
-        	                 if (!!data.totalFigure) {
-        	                	 userDetailsObj["TotalEvents"] = data.totalFigure;
-            	              } else {
-            	            	 userDetailsObj["TotalEvents"] = " - ";
+            	            	 userDetailsObj["TotalCount"] = " - ";
             	              }
       	                  userDetails
       	                    .push(userDetailsObj);
