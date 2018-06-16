@@ -192,6 +192,7 @@ public class ComplaintsServiceImpl implements ComplaintsService{
     	 dto.setRegisteredBy(rlmsUsersMaster.getFirstName() +" "+rlmsUsersMaster.getLastName()+"("+rlmsUsersMaster.getContactNumber()+")");
 		dto.setComplaintId(complaintMaster.getComplaintId());
 		dto.setComplaintNumber(complaintMaster.getComplaintNumber());
+		dto.setBranchName(complaintMaster.getLiftCustomerMap().getBranchCustomerMap().getCompanyBranchMapDtls().getRlmsBranchMaster().getBranchName());
 		dto.setCustomerName(complaintMaster.getLiftCustomerMap().getBranchCustomerMap().getCustomerMaster().getCustomerName());
 		dto.setLiftNumber(complaintMaster.getLiftCustomerMap().getLiftMaster().getLiftNumber());
 		dto.setLiftAddress(complaintMaster.getLiftCustomerMap().getLiftMaster().getAddress());

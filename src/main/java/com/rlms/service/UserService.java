@@ -69,4 +69,8 @@ public interface UserService {
 	
 	public String changePassword(UserDtlsDto userDto);
 	
+	public UserDtlsDto getTechnicianRoleObjByUserNameAndPassword(UserDtlsDto dtlsDto, UserMetaInfo metaInfo) throws ValidationException;
+	
+	public String logout(UserDtlsDto userDto);
+	
 }

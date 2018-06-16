@@ -2,6 +2,7 @@ package com.rlms.dao;
 
 import java.util.List;
 
+import com.rlms.contract.UserDtlsDto;
 import com.rlms.contract.UserMetaInfo;
 import com.rlms.model.RlmsBranchCustomerMap;
 import com.rlms.model.RlmsCompanyRoleMap;
@@ -27,6 +28,9 @@ public interface UserRoleDao{
 	public RlmsUserRoles getUserRoleForCompany(Integer cmpanyId, Integer spocRoleId);
 	public RlmsUserRoles getTechnicianRoleObjByMblNo(String mblNumber,
 			Integer spocRoleId);
+	
+	public RlmsUserRoles getTechnicianRoleObjByUserNameAndPassword(UserDtlsDto dtlsDto,int roleId);
+			
 	public void saveUserAppDlts(RlmsUserApplicationMapDtls userApplicationMapDtls);
 	public void mergeUserAppDlts(RlmsUserApplicationMapDtls userApplicationMapDtls);
 	public List<RlmsUserRoles> getAllUserWithRoleForBranch(Integer commpBranchMapId, Integer companyId, Integer spocRoleId);

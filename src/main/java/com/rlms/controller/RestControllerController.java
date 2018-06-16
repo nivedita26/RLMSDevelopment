@@ -241,6 +241,34 @@ public class RestControllerController  extends BaseController {
  
         return reponseDto;
     }
+    @RequestMapping(value = "/register/registerTechnicianDeviceByUserNamePassword", method = RequestMethod.POST)
+    public @ResponseBody ResponseDto registerTechnicianDeviceByUserNamePassword(@RequestBody UserDtlsDto userDtlsDto) throws ValidationException, RunTimeException{
+    	ResponseDto reponseDto = new ResponseDto();
+    	ObjectMapper mapper = new ObjectMapper();
+        try{
+        	log.info("Method :: registerTechnicianDeviceByMblNo");
+        	RlmsUserRoles userRoles = this.userService.getUserRoleObjhById(1);
+        	UserMetaInfo metaInfo = new UserMetaInfo();
+        	metaInfo.setUserId(userRoles.getRlmsUserMaster().getUserId());
+        	metaInfo.setUserName(userRoles.getRlmsUserMaster().getFirstName());
+        	metaInfo.setUserRole(userRoles);
+        	reponseDto.setResponse(mapper.writeValueAsString(this.userService.getTechnicianRoleObjByUserNameAndPassword(userDtlsDto, metaInfo)));
+        	reponseDto.setStatus(true);
+        	
+        }catch(ValidationException vex){
+        	log.error(ExceptionUtils.getFullStackTrace(vex));
+        	reponseDto.setStatus(false);
+        	reponseDto.setResponse(vex.getExceptionMessage());
+        }
+        catch(Exception e){
+        	reponseDto.setStatus(false);
+        	reponseDto.setResponse(PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
+        	log.error(ExceptionUtils.getFullStackTrace(e));
+        	//throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
+        }
+ 
+        return reponseDto;
+    }
     
     @RequestMapping(value = "/lift/getAllLiftsForMember", method = RequestMethod.POST)
     public @ResponseBody ResponseDto getAllLiftsForMember(@RequestBody MemberDtlsDto memberDtlsDto){
@@ -442,5 +470,11 @@ public class RestControllerController  extends BaseController {
     	 }catch(Exception e){
        		 log.error("some Unknown exception occurs.");
     	 }
+    }
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public String logout(@RequestBody UserDtlsDto userDtlsDto) {
+	
+		return  userService.logout(userDtlsDto);
+    	
     }
 }

@@ -2,7 +2,6 @@ package com.rlms.dao;
 
 import java.util.List;
 
-
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -12,14 +11,11 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.rlms.constants.RLMSConstants;
-import com.rlms.constants.SpocRoleConstants;
+import com.rlms.contract.UserDtlsDto;
 import com.rlms.contract.UserMetaInfo;
-import com.rlms.model.RlmsBranchCustomerMap;
-import com.rlms.model.RlmsCompanyRoleMap;
 import com.rlms.model.RlmsSpocRoleMaster;
 import com.rlms.model.RlmsUserApplicationMapDtls;
 import com.rlms.model.RlmsUserRoles;
-import com.rlms.model.RlmsUsersMaster;
 
 
 @Repository
@@ -215,6 +211,21 @@ UserRoleDao{
 	@Override
 	public void mergeUserAppDlts(RlmsUserApplicationMapDtls userApplicationMapDtls){
 		 this.sessionFactory.getCurrentSession().merge(userApplicationMapDtls);
+	}
+
+	@Override
+	public RlmsUserRoles getTechnicianRoleObjByUserNameAndPassword(UserDtlsDto dtlsDto, int roleId) {
+		 Session session = this.sessionFactory.getCurrentSession();
+		 Criteria criteria = session.createCriteria(RlmsUserRoles.class)
+				 .createAlias("rlmsUserMaster", "um")
+		 		 .createAlias("rlmsSpocRoleMaster", "sm")
+				 .add(Restrictions.eq("um.userName", dtlsDto.getUserName()))
+				 .add(Restrictions.eq("um.password", dtlsDto.getPassword()))
+		 	     .add(Restrictions.eq("sm.spocRoleId", roleId))
+		 	     .add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
+		 
+		 RlmsUserRoles userRole = (RlmsUserRoles) criteria.uniqueResult();
+		 return userRole;
 	}
 	
 }

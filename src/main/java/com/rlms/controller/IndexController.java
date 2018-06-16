@@ -4,7 +4,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.rlms.contract.UserMetaInfo;
 import com.rlms.model.RlmsUserRoles;
 
@@ -38,7 +37,6 @@ public class IndexController extends BaseController{
 	  
 	  @RequestMapping(value="changePassword",method = RequestMethod.POST)
 	  public @ResponseBody String changePassword(){
-		  
 		  
 		  return null;
 	  }
