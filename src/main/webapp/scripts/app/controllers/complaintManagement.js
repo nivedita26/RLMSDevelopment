@@ -38,7 +38,34 @@
 									$scope.selectedCalltype = {};
 									$scope.selectedLifts = {};
 									$scope.branches = [];
-									$scope.callType = [{type:"Complaints"},{type:"Service Calls"}];
+									$scope.callType = [{
+										id: 1,
+										name:'Lift Installation call'
+									},{
+										id: 2,
+										name:'Configuration/Settings call'
+									},{
+										id: 3,
+										name:'AMC call'
+									},{
+										id: 4,
+										name:'Under Warranty Support call'
+									},{
+										id: 5,
+										name:'LMS alert call'
+									},{
+										id: 6,
+										name:'Operator assigned/Generic call'
+									},{
+										id: 7,
+										name:'User raised call through App'
+									},{
+										id: 8,
+										name:'User raised call through Telephone'
+									},{
+										id: 9,
+										name:'Reassign call'
+									}];
 									$scope.selectedlifts = {};
 									$scope.selectedStatus = {};
 									$scope.selectedTechnician = {};
@@ -150,6 +177,31 @@
 																userDetailsObj["complaintId"] = largeLoad[i].complaintId;
 															} else {
 																userDetailsObj["complaintId"] = " - ";
+															}
+															if (!!largeLoad[i].customerName) {
+																userDetailsObj["CustomerName"] = largeLoad[i].customerName;
+															} else {
+																userDetailsObj["CustomerName"] = " - ";
+															}
+															if (!!largeLoad[i].liftNumber) {
+																userDetailsObj["LiftNumber"] = largeLoad[i].liftNumber;
+															} else {
+																userDetailsObj["LiftNumber"] = " - ";
+															}
+															if (!!largeLoad[i].branchName) {
+																userDetailsObj["Branch"] = largeLoad[i].branchName;
+															} else {
+																userDetailsObj["Branch"] = " - ";
+															}
+															if (!!largeLoad[i].serviceCallTypeStr) {
+																userDetailsObj["Call_Type"] = largeLoad[i].serviceCallTypeStr;
+															} else {
+																userDetailsObj["Call_Type"] = " - ";
+															}
+															if (!!largeLoad[i].registeredBy) {
+																userDetailsObj["ComplaintRegBy"] = largeLoad[i].registeredBy;
+															} else {
+																userDetailsObj["ComplaintRegBy"] = " - ";
 															}
 															userDetails.push(userDetailsObj);
 															}
@@ -337,6 +389,11 @@
 																			} else {
 																				userDetailsObj["complaintId"] = " - ";
 																			}
+																			if (!!largeLoad[i].customerName) {
+																				userDetailsObj["CustomerName"] = largeLoad[i].customerName;
+																			} else {
+																				userDetailsObj["CustomerName"] = " - ";
+																			}
 																			
 																			userDetails
 																					.push(userDetailsObj);
@@ -387,7 +444,6 @@
 																			} else {
 																				userDetailsObj["Remark"] = " - ";
 																			}
-																			
 																			if (!!largeLoad[i].registrationDateStr) {
 																				userDetailsObj["Registration_Date"] = largeLoad[i].registrationDateStr;
 																			} else {
@@ -432,6 +488,29 @@
 																				userDetailsObj["complaintId"] = largeLoad[i].complaintId;
 																			} else {
 																				userDetailsObj["complaintId"] = " - ";
+																			}if (!!largeLoad[i].customerName) {
+																				userDetailsObj["CustomerName"] = largeLoad[i].customerName;
+																			} else {
+																				userDetailsObj["CustomerName"] = " - ";
+																			}
+																			if (!!largeLoad[i].liftNumber) {
+																				userDetailsObj["LiftNumber"] = largeLoad[i].liftNumber;
+																			} else {
+																				userDetailsObj["LiftNumber"] = " - ";
+																			}if (!!largeLoad[i].branchName) {
+																				userDetailsObj["Branch"] = largeLoad[i].branchName;
+																			} else {
+																				userDetailsObj["Branch"] = " - ";
+																			}
+																			if (!!largeLoad[i].serviceCallTypeStr) {
+																				userDetailsObj["Call_Type"] = largeLoad[i].serviceCallTypeStr;
+																			} else {
+																				userDetailsObj["Call_Type"] = " - ";
+																			}
+																			if (!!largeLoad[i].registeredBy) {
+																				userDetailsObj["ComplaintRegBy"] = largeLoad[i].registeredBy;
+																			} else {
+																				userDetailsObj["ComplaintRegBy"] = " - ";
 																			}
 																			userDetails
 																					.push(userDetailsObj);
@@ -455,13 +534,36 @@
 											serviceCallType:0
 											
 									};
-									if($scope.selectedCalltype.selected.type=="Complaints"){
-										$rootScope.serviceCallTypeSelect=0;
-										dataToSend["serviceCallType"]=0;
-									}else{
+									if($scope.selectedCalltype.selected.name=="Lift Installation call"){
 										$rootScope.serviceCallTypeSelect=1;
 										dataToSend["serviceCallType"]=1;
-									}
+									}else if($scope.selectedCalltype.selected.name=="Configuration/Settings call"){
+										$rootScope.serviceCallTypeSelect=2;
+										dataToSend["serviceCallType"]=2;
+									}else if($scope.selectedCalltype.selected.name=="AMC call"){
+										$rootScope.serviceCallTypeSelect=3;
+										dataToSend["serviceCallType"]=3;
+									}else if($scope.selectedCalltype.selected.name=="Under Warranty Support call"){
+										$rootScope.serviceCallTypeSelect=4;
+										dataToSend["serviceCallType"]=4;
+									}else if($scope.selectedCalltype.selected.name=="LMS alert call"){
+										$rootScope.serviceCallTypeSelect=5;
+										dataToSend["serviceCallType"]=5;
+									}else if($scope.selectedCalltype.selected.name=="Operator assigned/Generic call"){
+										$rootScope.serviceCallTypeSelect=6;
+										dataToSend["serviceCallType"]=6;
+									}else if($scope.selectedCalltype.selected.name=="User raised call through App"){
+										$rootScope.serviceCallTypeSelect=7;
+										dataToSend["serviceCallType"]=7;
+									}else if($scope.selectedCalltype.selected.name=="User raised call through Telephone"){
+										$rootScope.serviceCallTypeSelect=8;
+										dataToSend["serviceCallType"]=8;
+									}else if($scope.selectedCalltype.selected.name=="Reassign call"){
+										$rootScope.serviceCallTypeSelect=9;
+										dataToSend["serviceCallType"]=9;
+									}								
+									
+									
 									if ($scope.showBranch == true) {
 										dataToSend["branchCompanyMapId"] = $scope.selectedBranch.selected.companyBranchMapId
 									} else {
@@ -566,37 +668,56 @@
 //											$scope.isAssigned = false;
 //										}
 									},
-									columnDefs : [ {
-										field : "Number",
-										displayName:"Number",
+									columnDefs : [{
+										field : "complaintId",
+										displayName:"Call Id",
+										width : 120
+									},{
+										field : "Call_Type",
+										displayName:"Call Type",
+										width : 120
+									}, {
+										field : "LiftNumber",
+										displayName:"Lift Number",
 										width : 120
 									}, {
 										field : "Title",
 										displayName:"Title",
-										width : 120
+										width : 140
 									}, {
 										field : "Remark",
 										displayName:"Details",
-										width : 120,
+										width : 140,
 										cellTemplate: templateWithTooltip,
 										cellClass: 'cellToolTip'
+									},{
+										field : "ComplaintRegBy",
+										displayName:"Call Registered By",
+										width : 160
+									},{
+										field : "CustomerName",
+										displayName:"Customer",
+										width : 120
+									},{
+										field : "Branch",
+										displayName:"Branch",
+										width : 120
 									}, {
 										field : "Registration_Date",
 										displayName:"Registration Date",
-										width : 120
-									}
-									, {
+										width : 140
+									}, {
 										field : "Service_StartDate",
-										displayName:"Service Start Date",
+										displayName:"Call Start Date",
 										width : 160
 									}, {
 										field : "Service_End_Date",
-										displayName:"Service End Date",
-										width : 120
+										displayName:"Call End Date",
+										width : 140
 									}
 									, {
 										field : "Address",
-										displayName:"Address",
+										displayName:"Customer Address",
 										width : 120
 									}
 									, {
@@ -648,8 +769,8 @@
 												complaintId:row.Number
 										}
 									//	if($scope.selectedCalltype.selected.type=="Complaints"){
-											$rootScope.serviceCallTypeSelect=0;
-											dataToSend["serviceCallType"]=0;
+											//$rootScope.serviceCallTypeSelect=1;
+											//dataToSend["serviceCallType"]=1;
 //										}else{
 //											$rootScope.serviceCallTypeSelect=1;
 //											dataToSend["serviceCallType"]=1;

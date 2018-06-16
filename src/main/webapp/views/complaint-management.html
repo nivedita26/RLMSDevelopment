@@ -211,9 +211,9 @@
 						<label class="control-label">Select Call Type</label>
 						<div class="select-container">
 							<ui-select ng-model="selectedCalltype.selected" title="Choose a Call Type"  on-select="showWizardFun()">
-								<ui-select-match placeholder="Select Call Type">{{$select.selected.type}}</ui-select-match>
+								<ui-select-match placeholder="Select Call Type">{{$select.selected.name}}</ui-select-match>
 								<ui-select-choices repeat="callTypeIterator in callType| filter: $select.search">
-									<span ng-bind-html="callTypeIterator.type | highlight: $select.search"></span>
+									<span ng-bind-html="callTypeIterator.name | highlight: $select.search"></span>
 								</ui-select-choices>
 							</ui-select>
 						</div>
@@ -225,12 +225,12 @@
 				<div class="filter-section" ng-show="showAdvanceFilter">
 					<div class="form-group">
 						<label class="control-label" ng-show="showBranch">Select Date Range</label>
-						<div class="select-container">
-							<div class="input-group">
+						<div class="select-container" >
+							<div class="input-group" >
 								<span class="input-group-addon">
 									<i class="glyphicon glyphicon-calendar"></i>
 								</span>
-								<input type="daterange" class="form-control" daterangepicker="" ng-model="date">
+								<input type="daterange" placeholder="Select Date" class="form-control" daterangepicker="" ng-model="date">
 								</div>
 							</div>
 							<label class="control-label" >Select Lifts </label>

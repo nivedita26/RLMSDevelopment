@@ -326,6 +326,7 @@
 			];
 			$scope.addLift={
 					liftType:'',
+					liftTypeName:'',
 					branchCustomerMapId :'',
 					liftNumber : '',
 					address : '',
@@ -336,7 +337,7 @@
 					longitude : '',
 					serviceStartDate : '',
 					serviceEndDate : '',
-					warrantyPeriod:'',
+					//warrantyPeriod:'',
 					dateOfInstallation : '',
 					amcStartDate : '',
 					amcEndDate:'',
@@ -459,7 +460,7 @@
 			}else{
 				$scope.addLift.fireMode = 0;
 			}
-			$scope.addLift.liftTypeName=$scope.addLift.liftTypeName;
+			//$scope.addLift.liftTypeName=$scope.addLift.liftTypeName;
 			$scope.addLift.branchCustomerMapId = $scope.selectedCustomer.selected.branchCustomerMapId
 			serviceApi.doPostWithData("/RLMS/admin/validateAndRegisterNewLift",$scope.addLift)
 			.then(function(response){

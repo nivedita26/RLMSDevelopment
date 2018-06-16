@@ -700,42 +700,7 @@ angular.module('theme.demos.dashboard.indi', [
                 $scope.complaints = largeLoad;
                 $scope.showTable = true;
                 var userDetails = [];
-                /*if (callStatus=="Pending") {
-                	serviceApi
-                    .doPostWithData('/RLMS/dashboard/getListOfTotalComplaintsCountByCallType',
-                    dataToSend)
-                    .then(
-                    function (
-                      largeLoad) {
-                      $scope.complaints = largeLoad;
-                      $scope.showTable = true;
-                      var userDetails = [];
-                	for (var i = 0; i < largeLoad.length; i++) {
-                        var userDetailsObj = {};
-                        
-                          userDetailsObj["No"] = i+1 +".";
-                        
-                        if (!!largeLoad[i].callType) {
-                          userDetailsObj["CallType"] = largeLoad[i].callType;
-                        } else {
-                          userDetailsObj["CallType"] = " - ";
-                        }
-                        if (!!largeLoad[i].totalCallTypeCount) {
-                          userDetailsObj["TotalCount"] = largeLoad[i].totalCallTypeCount;
-                        } else {
-                          userDetailsObj["TotalCount"] = " - ";
-                        }
-                        userDetails
-                          .push(userDetailsObj);
-                      }
-                      $scope
-                        .setPagingDataForComplaints(
-                        userDetails,
-                        page,
-                        pageSize);
-                    });
-                	
-                }*/
+               
                 if(isTodaysData){
                 	largeLoad=largeLoad.filter(function (item) {
                         return (new Date(item.updatedDate)).getTime() === $scope.todaysDate.getTime();
