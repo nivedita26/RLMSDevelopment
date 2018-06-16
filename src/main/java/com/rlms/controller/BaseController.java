@@ -5,8 +5,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-
 import com.rlms.contract.UserMetaInfo;
 import com.rlms.model.RlmsUserRoles;
 import com.rlms.model.RlmsUsersMaster;
@@ -26,7 +24,12 @@ public class BaseController {
     	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     	String userName = authentication.getName();
     	authentication.getCredentials();
-    	return this.userService.getUserByUserName(userName);
+   // 	RlmsUserRoles  rlmsUserRoles = this.userService.getUserByUserName(userName);
+    //	if(rlmsUserRoles!=null) {
+    //	return rlmsUserRoles;
+    //	}
+    //	return null;
+      return this.userService.getUserByUserName(userName);
     }
     public void setMetaInfo(RlmsUserRoles userRoles){
     	this.userMetaInfo = new UserMetaInfo();
@@ -38,6 +41,4 @@ public class BaseController {
     	this.setMetaInfo(this.getLoggedInUser());
     	return this.userMetaInfo;
     }
-	
-    
 }
