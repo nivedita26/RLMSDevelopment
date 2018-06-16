@@ -337,7 +337,7 @@
 					longitude : '',
 					serviceStartDate : '',
 					serviceEndDate : '',
-					warrantyPeriod:'',
+					//warrantyPeriod:'',
 					dateOfInstallation : '',
 					amcStartDate : '',
 					amcEndDate:'',
