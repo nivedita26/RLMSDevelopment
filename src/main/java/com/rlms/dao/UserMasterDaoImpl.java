@@ -101,7 +101,15 @@ UserMasterDao{
 	}
 	@Override
 	public void changeUserPassword(RlmsUsersMaster rlmsUsersMaster) {
-		
 		this.sessionFactory.getCurrentSession().update(rlmsUsersMaster);
+	}
+
+	@Override
+	public RlmsUsersMaster getUserByUserIdAndPassword(UserDtlsDto dtlsDto) {
+		 Session session = this.sessionFactory.getCurrentSession();
+		 Criteria criteria = session.createCriteria(RlmsUsersMaster.class)
+				 .add(Restrictions.eq("userId", dtlsDto.getUserId()))
+		         .add(Restrictions.eq("password", dtlsDto.getPassword()));
+		 return (RlmsUsersMaster)criteria.uniqueResult();
 	}
 }

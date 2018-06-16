@@ -14,7 +14,6 @@
 		$scope.displayWiringPhoto=false;
 		$scope.displayLobbyPhoto=false;
 		
-		
 		//show popup for selecting lift
 		$scope.setMachinePhoto=function(element,photoType){
 			$scope.currentFile=element.files[0];
@@ -460,7 +459,7 @@
 			}else{
 				$scope.addLift.fireMode = 0;
 			}
-			$scope.addLift.liftTypeName=liftTypeName;
+			$scope.addLift.liftTypeName=$scope.addLift.liftTypeName;
 			$scope.addLift.branchCustomerMapId = $scope.selectedCustomer.selected.branchCustomerMapId
 			serviceApi.doPostWithData("/RLMS/admin/validateAndRegisterNewLift",$scope.addLift)
 			.then(function(response){
@@ -479,7 +478,6 @@
 					$scope.showAlert = true;
 					$scope.alert.msg =  response[key[1]];
 					$scope.alert.type="danger";
-					
 				}
 				$scope.alert.type=' ';
 			},function(error){

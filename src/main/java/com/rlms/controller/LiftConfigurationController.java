@@ -1,7 +1,5 @@
 package com.rlms.controller;
 
-import java.util.List;
-
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +9,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.rlms.constants.RlmsErrorType;
-import com.rlms.contract.ComplaintsDtlsDto;
-import com.rlms.contract.ComplaintsDto;
 import com.rlms.contract.LiftConfigurationDTO;
 import com.rlms.contract.ResponseDto;
 import com.rlms.exception.ExceptionCode;

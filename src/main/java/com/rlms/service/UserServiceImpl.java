@@ -126,6 +126,10 @@ public class UserServiceImpl implements UserService {
 
 	@Transactional(propagation = Propagation.REQUIRED)
 	public RlmsUserRoles getUserByUserName(String userName) {
+	//	RlmsUserRoles rlmsUserRoles = this.userRoleDao.getUserByUserName(userName);
+//		if(rlmsUserRoles.getRlmsUserMaster().getIsLoggedIn()) {
+//			return null;
+//		}
 		return this.userRoleDao.getUserByUserName(userName);
 	}
 
@@ -376,7 +380,6 @@ public class UserServiceImpl implements UserService {
 		return statusMessage;
 
 	}
-
 	private boolean validateUserDtls(AddNewUserDto userDto,
 			UserMetaInfo metaInfo) throws ValidationException {
 		boolean isValidUser = true;
@@ -404,7 +407,6 @@ public class UserServiceImpl implements UserService {
 										.getMessage()));
 			}
 		}
-
 		return isValidUser;
 	}
 
@@ -480,9 +482,7 @@ public class UserServiceImpl implements UserService {
 		}
 		this.registerUserDevice(dto, userRole, metaInfo);
 		return this.constructMemberDltsSto(userRole);
-
 	}
-
 	private void registerUserDevice(UserDtlsDto dto, RlmsUserRoles userRole,
 			UserMetaInfo metaInfo) {
 		RlmsUserApplicationMapDtls existingAppDtl = this.customerDao
@@ -499,6 +499,8 @@ public class UserServiceImpl implements UserService {
 					.constructUserAppMapDtls(dto, userRole, metaInfo);
 			this.userRoleDao.saveUserAppDlts(userApplicationMapDtls);
 		}
+		RlmsUsersMaster rlmsUsersMaster = userRole.getRlmsUserMaster();
+		rlmsUsersMaster.setIsLoggedIn(true);
 	}
 
 	private RlmsUserApplicationMapDtls constructUserAppMapDtls(UserDtlsDto dto,
@@ -535,9 +537,7 @@ public class UserServiceImpl implements UserService {
 		userDtlsDto.setUserId(userRole.getRlmsUserMaster().getUserId());
 		userDtlsDto.setUserRoleId(userRole.getUserRoleId());
 		return userDtlsDto;
-
 	}
-
 	@Transactional(propagation = Propagation.REQUIRED)
 	public RlmsUserRoles getUserRoleObjhById(Integer userRoleId) {
 		return this.userRoleDao.getUserRole(userRoleId);
@@ -595,4 +595,36 @@ public class UserServiceImpl implements UserService {
 		return null;
 	}
 
+	@Override
+	public UserDtlsDto getTechnicianRoleObjByUserNameAndPassword(UserDtlsDto dtlsDto, UserMetaInfo metaInfo) throws ValidationException {
+		RlmsUserRoles userRole = this.userRoleDao.getTechnicianRoleObjByUserNameAndPassword(dtlsDto,	SpocRoleConstants.TECHNICIAN.getSpocRoleId());
+		if (null == userRole) {
+			throw new ValidationException(
+					ExceptionCode.VALIDATION_EXCEPTION.getExceptionCode(),
+					PropertyUtils
+							.getPrpertyFromContext(RlmsErrorType.INVALID_USER_LOGIN_CREDENTIALS
+									.getMessage()));
+		}
+		else {
+			if(userRole.getRlmsUserMaster().getIsLoggedIn()) {
+				throw new ValidationException(
+				ExceptionCode.VALIDATION_EXCEPTION.getExceptionCode(),
+				PropertyUtils
+						.getPrpertyFromContext(RlmsErrorType.USER_ALREADY_LOGGED_IN
+								.getMessage()));
+			}
+		}
+		this.registerUserDevice(dtlsDto, userRole, metaInfo);
+		return this.constructMemberDltsSto(userRole);
+	}
+	@Override
+	public String logout(UserDtlsDto userDto) {
+		RlmsUsersMaster rlmsUsersMaster = userMasterDao.getUserByUserIdAndPassword(userDto);
+		if(rlmsUsersMaster!=null) {
+		rlmsUsersMaster.setIsLoggedIn(false);
+		userMasterDao.updateUser(rlmsUsersMaster);
+		}
+		return PropertyUtils.getPrpertyFromContext(RlmsErrorType.USER_LOGOUT
+				.getMessage());
+	}
 }

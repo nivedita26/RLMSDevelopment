@@ -1,7 +1,5 @@
 package com.rlms.service;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -11,19 +9,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mysql.fabric.xmlrpc.base.Array;
 import com.rlms.constants.AMCType;
+import com.rlms.constants.CustomerType;
 import com.rlms.constants.RLMSConstants;
 import com.rlms.constants.RlmsErrorType;
 import com.rlms.constants.SpocRoleConstants;
-import com.rlms.contract.AddNewUserDto;
-import com.rlms.contract.CompanyDtlsDTO;
 import com.rlms.contract.CustomerCountDtls;
 import com.rlms.contract.CustomerDtlsDto;
 import com.rlms.contract.LiftDtlsDto;
 import com.rlms.contract.MemberDtlsDto;
 import com.rlms.contract.UserAppDtls;
-import com.rlms.contract.UserDtlsDto;
 import com.rlms.contract.UserMetaInfo;
 import com.rlms.dao.BranchDao;
 import com.rlms.dao.CustomerDao;
@@ -33,15 +28,12 @@ import com.rlms.exception.ExceptionCode;
 import com.rlms.exception.ValidationException;
 import com.rlms.model.RlmsBranchCustomerMap;
 import com.rlms.model.RlmsCompanyBranchMapDtls;
-import com.rlms.model.RlmsCompanyMaster;
 import com.rlms.model.RlmsCustomerMaster;
 import com.rlms.model.RlmsCustomerMemberMap;
 import com.rlms.model.RlmsLiftCustomerMap;
 import com.rlms.model.RlmsLiftMaster;
 import com.rlms.model.RlmsMemberMaster;
 import com.rlms.model.RlmsUserApplicationMapDtls;
-import com.rlms.model.RlmsUserRoles;
-import com.rlms.model.RlmsUsersMaster;
 import com.rlms.utils.DateUtils;
 import com.rlms.utils.PropertyUtils;
 
@@ -203,6 +195,8 @@ public class CustomerServiceImpl implements CustomerService{
 			dto.setWatchmenEmail(branchCustomerMap.getCustomerMaster().getWatchmenEmail());
 			dto.setCustomerId(branchCustomerMap.getCustomerMaster().getCustomerId());
 			dto.setActiveFlag(branchCustomerMap.getActiveFlag());
+			dto.setCustomerTypeStr(CustomerType.getStringFromID(branchCustomerMap.getCustomerMaster().getCustomerType()));
+			
 			if(null != listOfLifts && !listOfLifts.isEmpty()){
 				dto.setTotalNumberOfLifts(listOfLifts.size());
 			}
@@ -248,30 +242,30 @@ public class CustomerServiceImpl implements CustomerService{
 	public String validateAndRegisterNewMember(MemberDtlsDto memberDtlsDto, UserMetaInfo metaInfo) throws ValidationException{
 		String statusMessage = "";
 		if(this.validateMemberDtls(memberDtlsDto)){
-			RlmsMemberMaster  memberMaster = this.constructMemberMaster(memberDtlsDto, metaInfo);
-			Integer memberID = this.customerDao.saveMemberM(memberMaster);
-			memberMaster.setMemberId(memberID);
-			
-			RlmsCustomerMemberMap customerMemberMap = this.constructCustoMemberMap(memberMaster, memberDtlsDto, metaInfo);
-			this.customerDao.saveCustomerMemberMap(customerMemberMap);
-			
-			statusMessage = PropertyUtils.getPrpertyFromContext(RlmsErrorType.MEMBER_REG_SUCCESSFUL.getMessage());
+		       	RlmsMemberMaster memberMaster =this.customerDao.getMemberById(memberDtlsDto.getMemberId());
+		       	if(memberMaster!=null) {
+		       		RlmsMemberMaster  memberMastr= this.constructMemberMaster(memberDtlsDto,memberMaster, metaInfo);
+		       		Integer memberID = this.customerDao.saveMemberM(memberMastr);
+		       		memberMaster.setMemberId(memberID);
+		       		RlmsCustomerMemberMap customerMemberMap = this.constructCustoMemberMap(memberMaster, memberDtlsDto, metaInfo);
+		       		this.customerDao.saveCustomerMemberMap(customerMemberMap);
+		       		statusMessage = PropertyUtils.getPrpertyFromContext(RlmsErrorType.MEMBER_REG_SUCCESSFUL.getMessage());
+		       	}
 		}
 		return statusMessage;
-		
 	}
 	@Transactional(propagation = Propagation.REQUIRED)
 	public String validateAndUpdateNewMember(MemberDtlsDto memberDtlsDto, UserMetaInfo metaInfo) throws ValidationException{
 		String statusMessage = "";
-		//if(this.validateMemberDtls(memberDtlsDto)){
-			RlmsMemberMaster  memberMaster = this.constructMemberMaster(memberDtlsDto, metaInfo);
+		RlmsMemberMaster memberMaster = this.customerDao.getMemberById(memberDtlsDto.getMemberId()) ;
+		if(memberMaster!=null){
+	       memberMaster = this.constructMemberMaster(memberDtlsDto, memberMaster,metaInfo);
+
 			this.customerDao.updateMember(memberMaster);
 			statusMessage = PropertyUtils.getPrpertyFromContext(RlmsErrorType.MEMBER_EDIT_SUCCESSFUL.getMessage());
-		//}
-		return statusMessage;
-		
+		}
+			return statusMessage;
 	}
-	
 	private boolean validateMemberDtls(MemberDtlsDto memberDtlsDto) throws ValidationException{
 		boolean isValidMember = true;
 		RlmsMemberMaster memberMaster = this.customerDao.getMemberByCntNo(memberDtlsDto.getContactNumber());
@@ -279,15 +273,12 @@ public class CustomerServiceImpl implements CustomerService{
 			isValidMember = false;
 			throw new ValidationException(ExceptionCode.VALIDATION_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.MEMBER_WITH_SAME_CONTACT_NO.getMessage()));
 		}
-		
 		return isValidMember;
 	}
 	
-	private RlmsMemberMaster constructMemberMaster(MemberDtlsDto memberDtlsDto, UserMetaInfo metaInfo){
+	private RlmsMemberMaster constructMemberMaster(MemberDtlsDto memberDtlsDto,RlmsMemberMaster memberMaster, UserMetaInfo metaInfo){
 	
-		RlmsMemberMaster memberMaster = new RlmsMemberMaster();
-
-		memberMaster.setAddress(memberDtlsDto.getAddress());
+    	memberMaster.setAddress(memberDtlsDto.getAddress());
 		memberMaster.setContactNumber(memberDtlsDto.getContactNumber());
 		memberMaster.setEmailId(memberDtlsDto.getEmailId());
 		memberMaster.setFirstName(memberDtlsDto.getFirstName());
@@ -338,10 +329,7 @@ public class CustomerServiceImpl implements CustomerService{
 		}
 		this.registerUserDevice(dto, memberMaster, metaInfo);
 		return this.constructMemberDltsSto(memberMaster);
-		
 	}
-	
-	
 	private void registerUserDevice(MemberDtlsDto dto, RlmsMemberMaster memberMaster, UserMetaInfo metaInfo){
 		
 		RlmsUserApplicationMapDtls esistAppDtls = this.customerDao.getUserAppDtls(memberMaster.getMemberId(), RLMSConstants.MEMBER_TYPE.getId());
@@ -603,7 +591,6 @@ public class CustomerServiceImpl implements CustomerService{
  {
 		String statusMessage = "User updated successfully";
 		RlmsCustomerMaster  customerMaster = this.customerDao.getCustomerById(customerDtlsDto.getCustomerId());
-		
 		customerMaster.setAddress(customerDtlsDto.getAddress());
 		customerMaster.setCntNumber(customerDtlsDto.getCntNumber());
 		customerMaster.setCustomerName(customerDtlsDto.getFirstName());

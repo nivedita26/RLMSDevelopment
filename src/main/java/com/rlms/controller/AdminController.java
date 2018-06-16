@@ -54,7 +54,7 @@ public class AdminController extends BaseController{
 	private LiftService liftService;
 	
 	@Autowired
-	private ComplaintsService sService;
+	private ComplaintsService Service;
 	
 	private static final Logger logger = Logger.getLogger(AdminController.class);
 	
@@ -167,7 +167,6 @@ public class AdminController extends BaseController{
 	        	logger.error(ExceptionUtils.getFullStackTrace(e));
 	        	throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
 	        }
-	 
 	        return reponseDto;
 	    }
 	 
@@ -183,10 +182,8 @@ public class AdminController extends BaseController{
 	        	logger.error(ExceptionUtils.getFullStackTrace(e));
 	        	throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
 	        }
-	 
 	        return listOfAllBranches;
 	    }
-	 
 	 @RequestMapping(value = "/registerUser", method = RequestMethod.POST)
 	    public @ResponseBody ResponseDto registerUser(@RequestBody RegisterDto registerDto) throws RunTimeException {
 		 	ResponseDto reponseDto = new ResponseDto();
@@ -199,18 +196,14 @@ public class AdminController extends BaseController{
 	        	logger.error(ExceptionUtils.getFullStackTrace(e));
 	        	throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
 	        }
-	 
 	        return reponseDto;
 	  }
-	 
 	 @RequestMapping(value = "/validateAndRegisterNewUser", method = RequestMethod.POST)
 	    public @ResponseBody ResponseDto validateAndRegisterNewUser(@RequestBody AddNewUserDto dto) throws RunTimeException, ValidationException {
 		 ResponseDto reponseDto = new ResponseDto();
-	        
 	        try{
 	        	logger.info("Method :: validateAndRegisterNewUser");
 	        	reponseDto.setResponse(this.userService.validateAndRegisterNewUser(dto, this.getMetaInfo()));
-	        	
 	        }catch(ValidationException vex){
 	        	logger.error(ExceptionUtils.getFullStackTrace(vex));
 	        	throw vex;
@@ -219,11 +212,8 @@ public class AdminController extends BaseController{
 	        	logger.error(ExceptionUtils.getFullStackTrace(e));
 	        	throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
 	        }
-	 
 	        return reponseDto;
 	  }
-	 
-	 
 	 @RequestMapping(value = "/validateAndRegisterNewCustomer", method = RequestMethod.POST)
 	    public @ResponseBody ResponseDto validateAndRegisterNewCustomer(@RequestBody CustomerDtlsDto dto) throws RunTimeException, ValidationException {
 		 ResponseDto reponseDto = new ResponseDto();
@@ -240,11 +230,8 @@ public class AdminController extends BaseController{
 	        	logger.error(ExceptionUtils.getFullStackTrace(e));
 	        	throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
 	        }
-	 
 	        return reponseDto;
 	  }
-	 
-	 
 	 @RequestMapping(value = "/addNewBranchInCompany", method = RequestMethod.POST)
 	 public @ResponseBody ResponseDto addNewBranchInCompany(@RequestBody BranchDtlsDto dto) throws RunTimeException{
 		 ResponseDto reponseDto = new ResponseDto();
@@ -257,10 +244,8 @@ public class AdminController extends BaseController{
 	        	logger.error(ExceptionUtils.getFullStackTrace(e));
 	        	throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
 	        }
-	 
 	        return reponseDto;
 	 }
-	 
 	 @RequestMapping(value = "/getListOfBranchDtls", method = RequestMethod.POST)
 	 public @ResponseBody List<BranchDtlsDto> getListOfBranchDtls(@RequestBody BranchDtlsDto dto) throws RunTimeException{
 		 List<BranchDtlsDto> listOfBranches = null;
@@ -272,12 +257,9 @@ public class AdminController extends BaseController{
 	        }catch(Exception e){
 	        	logger.error(ExceptionUtils.getFullStackTrace(e));
 	        	throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
-	        	
 	        }
-	 
 	        return listOfBranches;
 	 }
-	 
 	 @RequestMapping(value = "/getListOfCustomerDtls", method = RequestMethod.POST)
 	 public @ResponseBody List<CustomerDtlsDto> getListOfCustomerDtls(@RequestBody CustomerDtlsDto customerDtlsDto) throws RunTimeException {
 		 List<CustomerDtlsDto> listOfCustomers = null;
@@ -289,9 +271,7 @@ public class AdminController extends BaseController{
 	        }catch(Exception e){
 	        	logger.error(ExceptionUtils.getFullStackTrace(e));
 	        	throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
-	        	
 	        }
-	 
 	        return listOfCustomers;
 	 }
 	 
@@ -306,9 +286,7 @@ public class AdminController extends BaseController{
 	        }catch(Exception e){
 	        	logger.error(ExceptionUtils.getFullStackTrace(e));
 	        	throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
-	        	
 	        }
-	 
 	        return listOfCustomers;
 	 }
 	 
@@ -328,8 +306,7 @@ public class AdminController extends BaseController{
 	 
 	        return reponseDto;
 	  }
-	 
-	 
+
 	 @RequestMapping(value = "/getLiftsToBeApproved", method = RequestMethod.POST)
 	    public @ResponseBody List<LiftDtlsDto> getLiftsToBeApproved() throws RunTimeException{
 		 List<LiftDtlsDto> listOfInActiveLifts = new ArrayList<LiftDtlsDto>();
@@ -369,13 +346,11 @@ public class AdminController extends BaseController{
 	        try{
 	        	logger.info("Method :: getLiftDetailsForBranch");
 	        	listOfLifts = this.liftService.getLiftDetailsForBranch(liftDtlsDto, this.getMetaInfo());
-	        	
 	        }
 	        catch(Exception e){
 	        	logger.error(ExceptionUtils.getFullStackTrace(e));
 	        	throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
 	        }
-	 
 	        return listOfLifts;
 	 }
 	 
@@ -407,7 +382,7 @@ public class AdminController extends BaseController{
 	        }
 	        return reponseDto;
 	 }
-	 @RequestMapping(value = "/getListOfAllMemberDtls", method = RequestMethod.POST)
+	 @RequestMapping(value = "/	", method = RequestMethod.POST)
 	 public @ResponseBody List<MemberDtlsDto> getListOfAllMemberDtls(@RequestBody MemberDtlsDto memberDtlsDto) throws RunTimeException{
 		 List<MemberDtlsDto> listOFMembers = new ArrayList<MemberDtlsDto>();
 	        try{
@@ -556,6 +531,5 @@ public class AdminController extends BaseController{
 	        }
 	       return reponseDto;
 	  }
-
 
 }

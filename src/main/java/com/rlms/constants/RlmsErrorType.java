@@ -44,8 +44,10 @@ public enum RlmsErrorType {
 	COMPANY_UPDATE_SUCCESFUL(43,"company_update_succesful"),
 	COMPANY_DELETE_SUCCESFUL(44,"company_delete_succesful"),
 	COMPLAINT_DELETE_SUCCESFUL(45,"complaint_delete_succesful"),
-	TECHNICIAN_LOCATION_UPDATED(46,"location_updated");
-	
+	TECHNICIAN_LOCATION_UPDATED(46,"location_updated"),
+	INVALID_USER_LOGIN_CREDENTIALS(47,"invalid_user_login_credentials"),
+	USER_ALREADY_LOGGED_IN(48,"user_already_loggedin "),
+	USER_LOGOUT(49,"user_logout_successfully");
 	private Integer code;
 	private String message;
 	
@@ -66,6 +68,4 @@ public enum RlmsErrorType {
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	
-	
 }

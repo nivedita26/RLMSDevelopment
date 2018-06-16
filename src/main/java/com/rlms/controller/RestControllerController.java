@@ -17,12 +17,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import com.rlms.constants.RlmsErrorType;
 import com.rlms.constants.Status;
 import com.rlms.contract.ComplaintsDtlsDto;
 import com.rlms.contract.ComplaintsDto;
-import com.rlms.contract.EventDtlsDto;
 import com.rlms.contract.LiftDtlsDto;
 import com.rlms.contract.LoginDtlsDto;
 import com.rlms.contract.MemberDtlsDto;
@@ -33,7 +31,6 @@ import com.rlms.contract.UserMetaInfo;
 import com.rlms.exception.ExceptionCode;
 import com.rlms.exception.RunTimeException;
 import com.rlms.exception.ValidationException;
-import com.rlms.model.RlmsEventDtls;
 import com.rlms.model.RlmsUserRoles;
 import com.rlms.service.ComplaintsService;
 import com.rlms.service.CustomerService;
@@ -43,8 +40,6 @@ import com.rlms.service.RlmsLiftEventService;
 import com.rlms.service.UserService;
 import com.rlms.utils.DateUtils;
 import com.rlms.utils.PropertyUtils;
-
-
 
 @RestController
 @RequestMapping(value="/API")
@@ -72,7 +67,7 @@ public class RestControllerController  extends BaseController {
 	private static final Logger log = Logger.getLogger(RestControllerController.class);
 	   
     
-   /* @RequestMapping("/loginIntoApp")
+   /*@RequestMapping("/loginIntoApp")
     public @ResponseBody LoginDtlsDto loginIntoApp(@RequestBody LoginDtlsDto loginDtlsDto, HttpServletRequest request, HttpServletResponse response) {
     
     	 UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(loginDtlsDto.getUserName(), loginDtlsDto.getPassword());
@@ -133,7 +128,6 @@ public class RestControllerController  extends BaseController {
     	 statusList.add(Status.ASSIGNED.getStatusId());
     	 statusList.add(Status.INPROGESS.getStatusId());
     	 statusList.add(Status.COMPLETED.getStatusId());
-    	 
     	 try {
     		 listOfAllAssignedComplaints =  this.ComplaintsService.getAllComplaintsAssigned(Integer.valueOf(loginDtlsDto.getUserRoleId()), statusList);
     		 if(null != listOfAllAssignedComplaints && !listOfAllAssignedComplaints.isEmpty()){
@@ -149,19 +143,14 @@ public class RestControllerController  extends BaseController {
     		 dto.setResponse(PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
     		 log.error("some Unknown exception occurs.");
     	 }
-    	 
     	 return dto;
-        
     }
-    
     @RequestMapping(value = "/updateComplaintStatus", method = RequestMethod.POST)
     public @ResponseBody ResponseDto updateComplaintStatus(@RequestBody ComplaintsDto complaintsDto) {
     
     	ObjectMapper mapper = new ObjectMapper();
     	ResponseDto dto = new ResponseDto();
-    	
     	 try {
-    		 
     		 dto.setResponse(mapper.writeValueAsString(this.ComplaintsService.updateComplaintStatus(complaintsDto)));
     		 dto.setStatus(true);
     	 }catch(Exception e){
@@ -169,9 +158,7 @@ public class RestControllerController  extends BaseController {
     		 log.error("some Unknown exception occurs.");
     		 dto.setResponse(PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
     	 }
-    	 
     	 return dto;
-        
     }
     	
     @RequestMapping(value = "/complaint/validateAndRegisterNewComplaint", method = RequestMethod.POST)
@@ -185,15 +172,12 @@ public class RestControllerController  extends BaseController {
         	log.error(ExceptionUtils.getFullStackTrace(vex));
         	reponseDto.setStatus(false);
         	reponseDto.setResponse(vex.getExceptionMessage());
-        	
         }
         catch(Exception e){
         	log.error(ExceptionUtils.getFullStackTrace(e));
         	reponseDto.setStatus(false);
         	reponseDto.setResponse(PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
-        	
         }
- 
         return reponseDto;
     }
     
@@ -257,6 +241,34 @@ public class RestControllerController  extends BaseController {
  
         return reponseDto;
     }
+    @RequestMapping(value = "/register/registerTechnicianDeviceByUserNamePassword", method = RequestMethod.POST)
+    public @ResponseBody ResponseDto registerTechnicianDeviceByUserNamePassword(@RequestBody UserDtlsDto userDtlsDto) throws ValidationException, RunTimeException{
+    	ResponseDto reponseDto = new ResponseDto();
+    	ObjectMapper mapper = new ObjectMapper();
+        try{
+        	log.info("Method :: registerTechnicianDeviceByMblNo");
+        	RlmsUserRoles userRoles = this.userService.getUserRoleObjhById(1);
+        	UserMetaInfo metaInfo = new UserMetaInfo();
+        	metaInfo.setUserId(userRoles.getRlmsUserMaster().getUserId());
+        	metaInfo.setUserName(userRoles.getRlmsUserMaster().getFirstName());
+        	metaInfo.setUserRole(userRoles);
+        	reponseDto.setResponse(mapper.writeValueAsString(this.userService.getTechnicianRoleObjByUserNameAndPassword(userDtlsDto, metaInfo)));
+        	reponseDto.setStatus(true);
+        	
+        }catch(ValidationException vex){
+        	log.error(ExceptionUtils.getFullStackTrace(vex));
+        	reponseDto.setStatus(false);
+        	reponseDto.setResponse(vex.getExceptionMessage());
+        }
+        catch(Exception e){
+        	reponseDto.setStatus(false);
+        	reponseDto.setResponse(PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
+        	log.error(ExceptionUtils.getFullStackTrace(e));
+        	//throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
+        }
+ 
+        return reponseDto;
+    }
     
     @RequestMapping(value = "/lift/getAllLiftsForMember", method = RequestMethod.POST)
     public @ResponseBody ResponseDto getAllLiftsForMember(@RequestBody MemberDtlsDto memberDtlsDto){
@@ -275,10 +287,8 @@ public class RestControllerController  extends BaseController {
          	reponseDto.setResponse(PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
          	//throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
          }
-         
          return reponseDto;
     }
-    
     @RequestMapping(value = "/complaints/getAllComplaintsByMember", method = RequestMethod.POST)
     public @ResponseBody ResponseDto getAllComplaintsByMember(@RequestBody MemberDtlsDto memberDtlsDto){
     	List<ComplaintsDto> listOfAllComplaints = null;
@@ -337,12 +347,9 @@ public class RestControllerController  extends BaseController {
         	log.error(ExceptionUtils.getFullStackTrace(e));
         	reponseDto.setStatus(false);
         	reponseDto.setResponse(PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
-        
         }
- 
         return reponseDto;
     }
-    
     @RequestMapping(value = "/complaint/getAllVisitsForComplaint", method = RequestMethod.POST)
     public @ResponseBody ResponseDto getAllVisitsForComplaint(@RequestBody SiteVisitDtlsDto siteVisitDtlsDto){
     	ObjectMapper mapper = new ObjectMapper();
@@ -463,5 +470,11 @@ public class RestControllerController  extends BaseController {
     	 }catch(Exception e){
        		 log.error("some Unknown exception occurs.");
     	 }
+    }
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public String logout(@RequestBody UserDtlsDto userDtlsDto) {
+	
+		return  userService.logout(userDtlsDto);
+    	
     }
 }

@@ -1,3 +1,5 @@
+
+
 <!--Spring-security.xml-->
 
 <beans:beans xmlns="http://www.springframework.org/schema/security"
@@ -18,7 +20,7 @@
 		<intercept-url pattern="/user**" access="ROLE_USER" />
 		<intercept-url pattern="/admin**" access="ROLE_ADMIN" />-->
 		
-			<!-- <intercept-url pattern="/customer/**" access="isAuthenticated()" /> -->
+		<!-- <intercept-url pattern="/customer/**" access="isAuthenticated()" /> -->
 		<intercept-url pattern="/RLMS/admin/**" access="isAuthenticated()" />
 		<intercept-url pattern="/RLMS/complaint/**" access="isAuthenticated()" />
 		<intercept-url pattern="/RLMS/report/**" access="isAuthenticated()" />

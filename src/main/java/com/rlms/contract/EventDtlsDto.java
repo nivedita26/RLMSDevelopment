@@ -10,6 +10,24 @@ public class EventDtlsDto {
 	//private Integer userRoleId;
 	private Integer companyId;
 	
+	private String customerName;
+	private String branchName;
+	public String getCustomerName() {
+		return customerName;
+	}
+
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
+	}
+
+	public String getBranchName() {
+		return branchName;
+	}
+
+	public void setBranchName(String branchName) {
+		this.branchName = branchName;
+	}
+
 	private Integer eventId;
 	private String eventService;
 	private String imei;
