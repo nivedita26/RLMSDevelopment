@@ -188,6 +188,21 @@
 															} else {
 																userDetailsObj["LiftNumber"] = " - ";
 															}
+															if (!!largeLoad[i].branchName) {
+																userDetailsObj["Branch"] = largeLoad[i].branchName;
+															} else {
+																userDetailsObj["Branch"] = " - ";
+															}
+															if (!!largeLoad[i].serviceCallTypeStr) {
+																userDetailsObj["Call_Type"] = largeLoad[i].serviceCallTypeStr;
+															} else {
+																userDetailsObj["Call_Type"] = " - ";
+															}
+															if (!!largeLoad[i].registeredBy) {
+																userDetailsObj["ComplaintRegBy"] = largeLoad[i].registeredBy;
+															} else {
+																userDetailsObj["ComplaintRegBy"] = " - ";
+															}
 															userDetails.push(userDetailsObj);
 															}
 														$scope.totalServerItems = 0;
@@ -429,7 +444,6 @@
 																			} else {
 																				userDetailsObj["Remark"] = " - ";
 																			}
-																			
 																			if (!!largeLoad[i].registrationDateStr) {
 																				userDetailsObj["Registration_Date"] = largeLoad[i].registrationDateStr;
 																			} else {
@@ -471,9 +485,9 @@
 																				userDetailsObj["Technician"] = " - ";
 																			}
 																			if (!!largeLoad[i].complaintId) {
-																				userDetailsObj["ComplaintId"] = largeLoad[i].complaintId;
+																				userDetailsObj["complaintId"] = largeLoad[i].complaintId;
 																			} else {
-																				userDetailsObj["ComplaintId"] = " - ";
+																				userDetailsObj["complaintId"] = " - ";
 																			}if (!!largeLoad[i].customerName) {
 																				userDetailsObj["CustomerName"] = largeLoad[i].customerName;
 																			} else {
@@ -483,6 +497,20 @@
 																				userDetailsObj["LiftNumber"] = largeLoad[i].liftNumber;
 																			} else {
 																				userDetailsObj["LiftNumber"] = " - ";
+																			}if (!!largeLoad[i].branchName) {
+																				userDetailsObj["Branch"] = largeLoad[i].branchName;
+																			} else {
+																				userDetailsObj["Branch"] = " - ";
+																			}
+																			if (!!largeLoad[i].serviceCallTypeStr) {
+																				userDetailsObj["Call_Type"] = largeLoad[i].serviceCallTypeStr;
+																			} else {
+																				userDetailsObj["Call_Type"] = " - ";
+																			}
+																			if (!!largeLoad[i].registeredBy) {
+																				userDetailsObj["ComplaintRegBy"] = largeLoad[i].registeredBy;
+																			} else {
+																				userDetailsObj["ComplaintRegBy"] = " - ";
 																			}
 																			userDetails
 																					.push(userDetailsObj);
@@ -556,8 +584,8 @@
 										}
 										dataToSend["listOfLiftCustoMapId"] = tempLiftIds;
 										dataToSend["statusList"] = tempStatus;
-										dataToSend["fromDate"]=$scope.dateRange.date.startDate;
-										dataToSend["toDate"]=$scope.dateRange.date.endDate;
+										//dataToSend["fromDate"]=$scope.dateRange.date.startDate;
+										//dataToSend["toDate"]=$scope.dateRange.date.endDate;
 									}
 									return dataToSend;
 								}
@@ -663,7 +691,7 @@
 										cellTemplate: templateWithTooltip,
 										cellClass: 'cellToolTip'
 									},{
-										field : "callRegBy",
+										field : "ComplaintRegBy",
 										displayName:"Call Registered By",
 										width : 160
 									},{
@@ -671,7 +699,7 @@
 										displayName:"Customer",
 										width : 120
 									},{
-										field : "BranchName",
+										field : "Branch",
 										displayName:"Branch",
 										width : 120
 									}, {
