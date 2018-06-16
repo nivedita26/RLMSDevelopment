@@ -66,6 +66,4 @@ public enum RlmsErrorType {
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	
-	
 }

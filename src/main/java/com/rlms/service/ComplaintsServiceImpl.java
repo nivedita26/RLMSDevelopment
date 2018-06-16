@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mysql.fabric.xmlrpc.base.Array;
 import com.mysql.jdbc.Messages;
+import com.rlms.constants.RLMSCallType;
 import com.rlms.constants.RLMSConstants;
 import com.rlms.constants.RLMSMessages;
 //import com.rlms.constants.RLMSMessages;
@@ -43,16 +44,19 @@ import com.rlms.controller.RestControllerController;
 import com.rlms.dao.ComplaintsDao;
 import com.rlms.dao.CustomerDao;
 import com.rlms.dao.LiftDao;
+import com.rlms.dao.UserMasterDao;
 import com.rlms.exception.ExceptionCode;
 import com.rlms.exception.ValidationException;
 import com.rlms.model.RlmsComplaintMaster;
 import com.rlms.model.RlmsComplaintTechMapDtls;
 import com.rlms.model.RlmsCustomerMemberMap;
 import com.rlms.model.RlmsLiftCustomerMap;
+import com.rlms.model.RlmsLiftMaster;
 import com.rlms.model.RlmsMemberMaster;
 import com.rlms.model.RlmsSiteVisitDtls;
 import com.rlms.model.RlmsUserApplicationMapDtls;
 import com.rlms.model.RlmsUserRoles;
+import com.rlms.model.RlmsUsersMaster;
 import com.rlms.utils.DateUtils;
 import com.rlms.utils.PropertyUtils;
 //import com.telesist.xmpp.AndroidNotificationService;
@@ -67,6 +71,9 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 	
 	@Autowired
 	private LiftDao liftDao;
+	
+	@Autowired
+	private  UserMasterDao userMasterDao;
 	
 	@Autowired
 	private UserService userService;
@@ -173,6 +180,7 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 		return complaintMaster;
 	}
 	private ComplaintsDto constructComplaintDto(RlmsComplaintMaster complaintMaster){
+		RlmsUsersMaster  rlmsUsersMaster  = userMasterDao.getUserByUserId(complaintMaster.getCreatedBy());
 		ComplaintsDto dto = new ComplaintsDto();
 		if(RLMSConstants.COMPLAINT_REG_TYPE_ADMIN.getId().equals(complaintMaster.getRegistrationType())){
 			dto.setRegistrationTypeStr(RLMSConstants.COMPLAINT_REG_TYPE_ADMIN.getName());
@@ -181,9 +189,11 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 		}else if(RLMSConstants.COMPLAINT_REG_TYPE_LIFT_EVENT.getId().equals(complaintMaster.getRegistrationType())){
 			dto.setRegistrationTypeStr(RLMSConstants.COMPLAINT_REG_TYPE_LIFT_EVENT.getName());
 		}
+    	 dto.setRegisteredBy(rlmsUsersMaster.getFirstName() +" "+rlmsUsersMaster.getLastName()+"("+rlmsUsersMaster.getContactNumber()+")");
 		dto.setComplaintId(complaintMaster.getComplaintId());
 		dto.setComplaintNumber(complaintMaster.getComplaintNumber());
 		dto.setCustomerName(complaintMaster.getLiftCustomerMap().getBranchCustomerMap().getCustomerMaster().getCustomerName());
+		dto.setLiftNumber(complaintMaster.getLiftCustomerMap().getLiftMaster().getLiftNumber());
 		dto.setLiftAddress(complaintMaster.getLiftCustomerMap().getLiftMaster().getAddress());
 		dto.setRegistrationDate(complaintMaster.getRegistrationDate());
 		dto.setRemark(complaintMaster.getRemark());
@@ -196,6 +206,7 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 			dto.setActualServiceEndDateStr(DateUtils.convertDateToStringWithoutTime(complaintMaster.getActualServiceEndDate()));
 		}
 		dto.setRemark(complaintMaster.getRemark());
+		dto.setServiceCallTypeStr(RLMSCallType.getStringFromID(complaintMaster.getCallType()));
 		dto.setTitle(complaintMaster.getTitle());
 		dto.setServiceStartDate(complaintMaster.getServiceStartDate());
 		if(null != complaintMaster.getServiceStartDate()){
@@ -237,11 +248,8 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 			complaintent = RLMSConstants.COMPLAINT_REG_TYPE_LIFT_EVENT.getName();
 		}
 		dto.setComplaintent(complaintent);
-		
-		
 		return dto;
 	}
-	
 	@Transactional(propagation = Propagation.REQUIRED)
 	public List<ComplaintsDto> getListOfComplaintsBy(ComplaintsDtlsDto dto){
 		List<ComplaintsDto> listOfAllComplaints = new ArrayList<ComplaintsDto>();
@@ -445,17 +453,16 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 		RlmsComplaintMaster complaintMaster = this.complaintsDao.getComplaintMasterObj(complaintsDtlsDto.getComplaintId(),complaintsDtlsDto.getServiceCallType());
 		List<UserRoleDtlsDTO> listOFUserAdtls = new ArrayList<UserRoleDtlsDTO>();
 		List<RlmsUserRoles> listOfAllTechnicians = this.userService.getListOfTechniciansForBranch(complaintMaster.getLiftCustomerMap().getBranchCustomerMap().getCompanyBranchMapDtls().getCompanyBranchMapId());
+		if(listOfAllTechnicians !=null && !listOfAllTechnicians.isEmpty()) {
 		for (RlmsUserRoles rlmsUserRoles : listOfAllTechnicians) {
 			UserRoleDtlsDTO dto = new UserRoleDtlsDTO();
 			dto.setUserId(rlmsUserRoles.getRlmsUserMaster().getUserId());
-			
 			dto.setCompanyBranchMapId(rlmsUserRoles.getRlmsCompanyBranchMapDtls().getCompanyBranchMapId());
 			dto.setName(rlmsUserRoles.getRlmsUserMaster().getFirstName() + " " + rlmsUserRoles.getRlmsUserMaster().getLastName());
 			dto.setContactNumber(rlmsUserRoles.getRlmsUserMaster().getContactNumber());
 			dto.setUserRoleId(rlmsUserRoles.getUserRoleId());
 			dto.setLongitude(rlmsUserRoles.getRlmsUserApplicationMapDetails().getLongitude());
 			dto.setLatitude(rlmsUserRoles.getRlmsUserApplicationMapDetails().getLatitude());
-			
 			 List<Integer> statusList = new ArrayList<Integer>();
 		   	 statusList.add(Status.ASSIGNED.getStatusId());
 		   	 statusList.add(Status.INPROGESS.getStatusId());
@@ -470,6 +477,7 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 				 dto.setCurrentAddress(userAppDtls.getAddress());
 			 }
 			 listOFUserAdtls.add(dto);
+		}
 		}
 		return listOFUserAdtls;
 	}
@@ -493,23 +501,27 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 		this.complaintsDao.mergeComplaintM(complaintMaster);
 		String resultMessage = PropertyUtils.getPrpertyFromContext(RlmsErrorType.STATUS_UPDATED.getMessage()) + " " + dto.getStatus() + " " + PropertyUtils.getPrpertyFromContext(RlmsErrorType.SUCCESSFULLY.getMessage());
 		return resultMessage;
-		
 	}
-	
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void saveComplaintSiteVisitDtls(RlmsSiteVisitDtls siteVisitDtls){
 		this.complaintsDao.saveComplaintSiteVisitDtls(siteVisitDtls);
 	}
-	
-	
 	@Transactional(propagation = Propagation.REQUIRED)
 	public String validateAndSaveSiteVisitDtls(SiteVisitDtlsDto dto) throws ValidationException, ParseException{
 		//this.validateVisitDtls(dto);
 		RlmsSiteVisitDtls visitDtls = this.constructVisitDtls(dto);
 		this.saveComplaintSiteVisitDtls(visitDtls);
+		if(visitDtls.getComplaintTechMapDtls().getStatus()==Status.ASSIGNED.getStatusId()) {
+		     RlmsComplaintTechMapDtls complaintTechMapDtls = visitDtls.getComplaintTechMapDtls();
+			complaintTechMapDtls.setStatus(Status.INPROGESS.getStatusId());
+			complaintsDao.saveComplaintTechMapDtls(complaintTechMapDtls);
+			RlmsComplaintMaster complaintMaster = visitDtls.getComplaintTechMapDtls().getComplaintMaster();
+			if(complaintMaster.getStatus()==Status.ASSIGNED.getStatusId()) {
+				complaintsDao.saveComplaintM(complaintMaster);
+			}
+		}
 		return PropertyUtils.getPrpertyFromContext(RlmsErrorType.VISIT_UPDATED_SUCCESS.getMessage());
 	}
-	
 	private RlmsSiteVisitDtls constructVisitDtls(SiteVisitDtlsDto dto) throws ParseException{
 		RlmsComplaintTechMapDtls complaintTechMapDtls = this.complaintsDao.getComplTechMapByComplaintTechMapId(dto.getComplaintTechMapId());
 		RlmsUserRoles userRoles = this.userService.getUserRoleObjhById(dto.getUserRoleId());
@@ -613,21 +625,17 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 				complaintTechMapDtls.setUserRoles(userRoles);
 				complaintTechMapDtls.setComplaintMaster(complaintMaster);
 				this.complaintsDao.updateComplaints(complaintTechMapDtls);
-				
 			}else{
 				this.complaintsDao.updateComplaintsMatser(complaintMaster);
 			}
 		}
-		
 		String statusMessage = PropertyUtils.getPrpertyFromContext("Complaint Updated Successfully");
 		return statusMessage;
-		
 	}
 	@Transactional(propagation = Propagation.REQUIRED)
 	private void deleteComplaintsTechMapDetails(Integer complaintTechMapId) {
 		this.complaintsDao.deleteComplaintsTechMap(complaintTechMapId);
 	}	
-	
 	@Transactional(propagation = Propagation.REQUIRED)
 	public String deleteComplaint(ComplaintsDto dto){
 		RlmsComplaintMaster complaintMaster = this.complaintsDao.getComplaintMasterObj(dto.getComplaintId(),0);
@@ -635,5 +643,20 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 		this.complaintsDao.mergeComplaintM(complaintMaster);
 		String resultMessage = PropertyUtils.getPrpertyFromContext(RlmsErrorType.COMPLAINT_DELETE_SUCCESFUL.getMessage());
 		return resultMessage;
+	}
+	@Override
+	public String validateAndUpdateComplaints(ComplaintsDto dto, UserMetaInfo metaInfo)
+			throws ValidationException, ParseException {
+        RlmsComplaintMaster complaintMaster = complaintsDao.getComplaintMasterByComplaintId(dto.getComplaintId());
+        	if(complaintMaster!=null) {
+        		complaintMaster.setCallType(dto.getServiceCallType());
+        		complaintMaster.setTitle(dto.getTitle());
+        		complaintMaster.setRemark(dto.getRemark());
+        		complaintMaster.setUpdatedDate(new Date());
+        		complaintMaster.setUpdatedBy(metaInfo.getUserId());
+        		complaintsDao.updateComplaintsMatser(complaintMaster);
+        		return PropertyUtils.getPrpertyFromContext("Complaint Updated Successfully");
+        	}
+		return null;
 	}
 }

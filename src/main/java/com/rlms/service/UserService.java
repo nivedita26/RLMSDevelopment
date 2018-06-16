@@ -68,4 +68,5 @@ public interface UserService {
 			UserMetaInfo metaInfo);
 	
 	public String changePassword(UserDtlsDto userDto);
+	
 }

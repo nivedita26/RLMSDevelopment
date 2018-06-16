@@ -670,7 +670,6 @@ public class DashboardServiceImpl implements DashboardService {
 				  else {
 					  branchCountDtls.setBranchInactiveFlagCount((BigInteger)objects[2]);
 				  }
-			  		branchCountDtlsList.add(branchCountDtls);
 			  		uniqueCityList.add(objects[0].toString());
 			    }
 
@@ -683,8 +682,6 @@ public class DashboardServiceImpl implements DashboardService {
 				  		}
 				  		branchCountDtlsList.add(branchCountDtls);
 			  	}
-
-  
 		}
 			List<BranchDtlsDto> listOFBranchDtls = new ArrayList<BranchDtlsDto>();
 		    return branchCountDtlsList;

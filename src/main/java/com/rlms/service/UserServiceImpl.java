@@ -376,7 +376,6 @@ public class UserServiceImpl implements UserService {
 		return statusMessage;
 
 	}
-
 	private boolean validateUserDtls(AddNewUserDto userDto,
 			UserMetaInfo metaInfo) throws ValidationException {
 		boolean isValidUser = true;
@@ -404,7 +403,6 @@ public class UserServiceImpl implements UserService {
 										.getMessage()));
 			}
 		}
-
 		return isValidUser;
 	}
 
@@ -535,9 +533,7 @@ public class UserServiceImpl implements UserService {
 		userDtlsDto.setUserId(userRole.getRlmsUserMaster().getUserId());
 		userDtlsDto.setUserRoleId(userRole.getUserRoleId());
 		return userDtlsDto;
-
 	}
-
 	@Transactional(propagation = Propagation.REQUIRED)
 	public RlmsUserRoles getUserRoleObjhById(Integer userRoleId) {
 		return this.userRoleDao.getUserRole(userRoleId);
@@ -594,5 +590,4 @@ public class UserServiceImpl implements UserService {
 		}
 		return null;
 	}
-
 }

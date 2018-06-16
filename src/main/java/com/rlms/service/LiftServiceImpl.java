@@ -82,7 +82,8 @@ public class LiftServiceImpl implements LiftService{
 	@Transactional(propagation = Propagation.REQUIRED)
 	public ResponseDto validateAndAddNewLiftDtls(LiftDtlsDto dto, UserMetaInfo metaInfo) throws ParseException{
 		ResponseDto ResponseDto = new ResponseDto();
-	    RlmsLiftMaster liftMaster = liftDao.getLiftByLiftNumber(dto.getLiftNumber());
+		
+	   RlmsLiftMaster liftMaster = liftDao.getLiftByLiftNumber(dto.getLiftNumber());
 	   if(liftMaster==null) {
 		RlmsLiftMaster liftM = this.constructLiftMaster(dto, metaInfo);
 		Integer liftId = this.liftDao.saveLiftM(liftM);
@@ -99,11 +100,16 @@ public class LiftServiceImpl implements LiftService{
 		this.fyaDao.saveFyaTranDtls(fyaTranDtls);
 		ResponseDto.setStatus(true);
 		ResponseDto.setResponse(RlmsErrorType.LIFT_ADDED_SUCCESSFULLY.getMessage());
+	    }
+	   else {
+		   RlmsLiftCustomerMap liftCustomerMap = liftDao.getLiftCustomerMapByLiftId(liftMaster.getLiftId());
+		   if(liftCustomerMap.getBranchCustomerMap().getBranchCustoMapId()==dto.getBranchCustomerMapId()) {
+				ResponseDto.setResponse("Customer have already registered same lift number ");
+		   }
+		   
+	   }
+	//	ResponseDto.setResponse("Duplicate lift number");
 		return ResponseDto;
-	     }
-		ResponseDto.setStatus(true);
-		ResponseDto.setResponse("Duplicate lift number");
-    	return ResponseDto;
 	}
 	/*@SuppressWarnings("unused")
 	@Override
@@ -295,6 +301,7 @@ public class LiftServiceImpl implements LiftService{
 		for (RlmsLiftCustomerMap liftCustomerMap : listOFAllLifts) {
 			RlmsLiftMaster liftM = liftCustomerMap.getLiftMaster();
 			LiftDtlsDto dto = new LiftDtlsDto();
+			dto.setLiftId(liftM.getLiftId());
 			dto.setAccessControl(liftM.getAccessControl());
 			dto.setAddress(liftM.getAddress());
 			dto.setArea(liftM.getArea());
@@ -322,7 +329,6 @@ public class LiftServiceImpl implements LiftService{
 					dto.setAmcTypeStr(AMCType.OTHER.getType());
 				}
 			}
-			
 			dto.setArd(liftM.getARD());
 			dto.setArdPhoto(liftM.getARDPhoto());
 			dto.setAutoDoorHeaderPhoto(liftM.getAutoDoorHeaderPhoto());
@@ -345,11 +351,8 @@ public class LiftServiceImpl implements LiftService{
 			}
 			listOfAllDtos.add(dto);
 		}
-		
 		return listOfAllDtos;
-		
 	}
-	
 	@Transactional(propagation = Propagation.REQUIRED)
 	public String uploadPhoto(LiftDtlsDto dto){
 		
@@ -377,16 +380,11 @@ public class LiftServiceImpl implements LiftService{
 			
 			liftMaster.setPanelPhoto(dto.getPanelPhoto());
 		}else if(PhotoType.WIRING_PHOTO.getId() == dto.getPhotoType()){
-			
 			liftMaster.setWiringPhoto(dto.getWiringPhoto());
-			
 		}
-		
 		this.liftDao.mergeLiftM(liftMaster);
 		return PropertyUtils.getPrpertyFromContext(RlmsErrorType.PHOTO_UPDATED.getMessage());	
-		
 	}
-	
 	@Transactional(propagation = Propagation.REQUIRED)
 	public LiftDtlsDto getLiftMasterForType(LiftDtlsDto loftDtlsDto){
 		LiftDtlsDto dto = new LiftDtlsDto();
@@ -401,7 +399,6 @@ public class LiftServiceImpl implements LiftService{
 		if(null != luftCustomerMap){
 			dto.setBlank(false);
 			dto.setAccessControl(luftCustomerMap.getLiftMaster().getAccessControl());
-			
 			dto.setAlarm(luftCustomerMap.getLiftMaster().getAlarm());
 			dto.setAlarmBattery(luftCustomerMap.getLiftMaster().getAlarmBattery());
 			dto.setAmcAmount(luftCustomerMap.getLiftMaster().getAmcAmount());

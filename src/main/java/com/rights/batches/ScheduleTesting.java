@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+
 import com.rlms.service.AMCMonitorService;
 import com.rlms.service.ReportService;
 
@@ -18,9 +19,9 @@ public class ScheduleTesting {
 
 	@Autowired
   AMCMonitorService  aMCMonitorService;
-	@Scheduled(cron="0 0 12 * * ?")
+	//@Scheduled(cron="0 1 00 * * ?")
 	//@Scheduled(cron="0 28 13 * * ?")
-	//@Scheduled(fixedRate =6000)
+    //@Scheduled(fixedRate =10000)
 	 public void schedule() {
 		System.out.println("Batch start");
 		 try {
@@ -32,7 +33,6 @@ public class ScheduleTesting {
 		}
 	}
 	private void executeAMCBatch() throws UnsupportedEncodingException{
-		
 		this.reportService.changeStatusToAMCExpiryAndNotifyUser();
 		this.reportService.changeStatusToAMCRenewalAndNotifyUser();
 	}

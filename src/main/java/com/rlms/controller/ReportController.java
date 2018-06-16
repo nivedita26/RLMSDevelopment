@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.rlms.constants.RlmsErrorType;
 import com.rlms.contract.AMCDetailsDto;
+import com.rlms.contract.ComplaintsDtlsDto;
+import com.rlms.contract.ComplaintsDto;
 import com.rlms.contract.EventDtlsDto;
 import com.rlms.contract.ResponseDto;
 import com.rlms.contract.SiteVisitReportDto;
@@ -21,7 +23,6 @@ import com.rlms.contract.TechnicianWiseReportDTO;
 import com.rlms.exception.ExceptionCode;
 import com.rlms.exception.RunTimeException;
 import com.rlms.exception.ValidationException;
-import com.rlms.model.RlmsCompanyBranchMapDtls;
 import com.rlms.service.CompanyService;
 import com.rlms.service.ReportService;
 import com.rlms.utils.PropertyUtils;
@@ -50,26 +51,21 @@ public class ReportController extends BaseController{
 	        	logger.error(ExceptionUtils.getFullStackTrace(e));	       	
 	        	throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
 	        }
-	 
 	        return listOFAmcDtls;
 	    }
 	 
 	 @RequestMapping(value = "/addAMCDetailsForLift", method = RequestMethod.POST)
 	    public @ResponseBody ResponseDto addAMCDetailsForLift(@RequestBody AMCDetailsDto dto) throws RunTimeException, ValidationException {
-	        
 		 ResponseDto responseDto = new ResponseDto();
 	        try{
 	        	logger.info("In addAMCDetailsForLift method");
 	        	responseDto.setResponse(this.reportService.addAMCDetailsForLift(dto, this.getMetaInfo()));
-	        	
 	        }catch(Exception e){
 	        	logger.error(ExceptionUtils.getFullStackTrace(e));	       	
 	        	throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
 	        }
-	 
 	        return responseDto;
 	    }
-	 
 	 @RequestMapping(value = "/getSiteVisitReport", method = RequestMethod.POST)
 	    public @ResponseBody List<SiteVisitReportDto>  getSiteVisitReport(@RequestBody SiteVisitReportDto dto) throws RunTimeException, ValidationException {
 	        
@@ -82,10 +78,21 @@ public class ReportController extends BaseController{
 	        	logger.error(ExceptionUtils.getFullStackTrace(e));	       	
 	        	throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
 	        }
-	 
 	        return listOfVisitDtls;
 	    }
-	 
+	 @RequestMapping(value = "/callDetailedReport", method = RequestMethod.POST)
+	    public @ResponseBody List<ComplaintsDto>  callDetailedReport(@RequestBody ComplaintsDtlsDto dto) throws RunTimeException, ValidationException {
+	        
+		 List<ComplaintsDto>  complaintsDtoList = new ArrayList<ComplaintsDto>();
+	        try{
+	        	logger.info("In getSiteVisitReport method");
+	        	complaintsDtoList = this.reportService.getCallDetailedReport(dto);
+	        }catch(Exception e){
+	        	logger.error(ExceptionUtils.getFullStackTrace(e));	       	
+	        	throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
+	        }
+	        return complaintsDtoList;
+	    }
 	 @RequestMapping(value = "/getTechnicianWiseReport", method = RequestMethod.POST)
 	    public @ResponseBody List<TechnicianWiseReportDTO>  getTechnicianWiseReport(@RequestBody TechnicianWiseReportDTO dto) throws RunTimeException, ValidationException {
 	        
@@ -93,12 +100,10 @@ public class ReportController extends BaseController{
 	        try{
 	        	logger.info("In getTechnicianWiseReport method");
 	        	listOfTEchis = this.reportService.getTechnicianWiseReport(dto);
-	        	
 	        }catch(Exception e){
 	        	logger.error(ExceptionUtils.getFullStackTrace(e));	       	
 	        	throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
 	        }
-	 
 	        return listOfTEchis;
 	    }
 	 @RequestMapping(value = "/getListOfEvents", method = RequestMethod.POST)
