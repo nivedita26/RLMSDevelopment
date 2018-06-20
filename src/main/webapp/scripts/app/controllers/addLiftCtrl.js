@@ -87,7 +87,7 @@
 				
 				var liftTypeName ="Hydraulic"
 			}
-			$scope.addLift.liftTypeName=liftTypeName;
+			$scope.liftTypeName=liftTypeName;
 			$scope.modalInstance.dismiss('cancel');
 			serviceApi.doPostWithData('/RLMS/admin/getLiftMasterForType',dataToSend)
 	         .then(function(liftdata) {
@@ -332,7 +332,6 @@
 			];
 			$scope.addLift={
 					liftType:'',
-					//liftTypeName:'',
 					branchCustomerMapId :'',
 					liftNumber : '',
 					address : '',
