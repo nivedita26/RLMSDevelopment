@@ -146,8 +146,8 @@ public class ComplaintsDaoImpl implements ComplaintsDao{
 				 .add(Restrictions.eq("complaintId", complaintId))
 				 .add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
 		 if(null != callType){
-			// criteria.add(Restrictions.eq("callType", callType));
-			 criteria.add(Restrictions.eq("callType", 1));
+			criteria.add(Restrictions.eq("callType", callType));
+			// criteria.add(Restrictions.eq("callType", 1));
 		 }
 		 RlmsComplaintMaster complaintMaster = (RlmsComplaintMaster) criteria.uniqueResult();
 		 return complaintMaster;
