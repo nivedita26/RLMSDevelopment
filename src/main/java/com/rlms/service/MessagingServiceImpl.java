@@ -263,7 +263,7 @@ public class MessagingServiceImpl implements MessagingService{
 	//	String fcmProjectSenderId = PropertyUtils.getPrpertyFromContext(XMPPServerDetails.FCM_PROJECT_SENDER_ID.getMessage());
 	//	String fcmServerKey = PropertyUtils.getPrpertyFromContext(XMPPServerDetails.FCM_SERVER_KEY.getMessage());
 		String fcmApiUrl =PropertyUtils.getPrpertyFromContext(XMPPServerDetails.FCM_API_URL.getMessage());
-		String authKey =PropertyUtils.getPrpertyFromContext(XMPPServerDetails.FCM_USER_APP_AUTH_KEY.getMessage());
+		String authKey =PropertyUtils.getPrpertyFromContext(XMPPServerDetails.FCM_TECH_APP_AUTH_KEY.getMessage());
 		JSONObject json = new JSONObject();
     	try {
 				json.put("to",appRegId);

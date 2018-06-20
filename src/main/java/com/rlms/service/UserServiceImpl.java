@@ -8,20 +8,27 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.exception.ExceptionUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.rlms.constants.RLMSConstants;
+import com.rlms.constants.RLMSMessages;
 import com.rlms.constants.RlmsErrorType;
 import com.rlms.constants.SpocRoleConstants;
+import com.rlms.constants.Status;
 import com.rlms.contract.AddNewUserDto;
 import com.rlms.contract.CompanyDtlsDTO;
 import com.rlms.contract.RegisterDto;
+import com.rlms.contract.UserAppDtls;
 import com.rlms.contract.UserDtlsDto;
 import com.rlms.contract.UserMetaInfo;
 import com.rlms.contract.UserRoleDtlsDTO;
+import com.rlms.dao.ComplaintsDao;
 import com.rlms.dao.CustomerDao;
 import com.rlms.dao.UserMasterDao;
 import com.rlms.dao.UserRoleDao;
@@ -29,6 +36,7 @@ import com.rlms.exception.ExceptionCode;
 import com.rlms.exception.ValidationException;
 import com.rlms.model.RlmsCompanyBranchMapDtls;
 import com.rlms.model.RlmsCompanyMaster;
+import com.rlms.model.RlmsComplaintMaster;
 import com.rlms.model.RlmsSpocRoleMaster;
 import com.rlms.model.RlmsUserApplicationMapDtls;
 import com.rlms.model.RlmsUserRoles;
@@ -58,6 +66,11 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private CustomerDao customerDao;
+	
+	@Autowired
+	private ComplaintsDao  complaintDao;
+	
+	
 
 	static {
 		users = populateDummyUsers();
@@ -565,8 +578,26 @@ public class UserServiceImpl implements UserService {
 	@Transactional(propagation = Propagation.REQUIRED)
 	public String deleteUserObj(UserDtlsDto dto, UserMetaInfo metaInfo){
 		String statusMesage = null;
-		this.userMasterDao.deleteUser(dto,metaInfo);
-		statusMesage = PropertyUtils.getPrpertyFromContext(RlmsErrorType.COMPANY_DELETE_SUCCESFUL.getMessage());
+		RlmsUsersMaster usersMaster = userMasterDao.getUserByUserId(dto.getUserId());
+		if(usersMaster!=null) {
+			usersMaster.setActiveFlag(RLMSConstants.INACTIVE.getId());
+			usersMaster.setUpdatedBy(metaInfo.getUserId());
+			usersMaster.setUpdatedDate(new Date());
+		}
+		this.userMasterDao.updateUser(usersMaster);
+		statusMesage = PropertyUtils.getPrpertyFromContext(RlmsErrorType.USER_DELETED.getMessage());
+		
+		RlmsUserRoles rlmsUserRoles = userRoleDao.getUserIFRoleisAssigned(usersMaster.getUserId());
+		if(rlmsUserRoles!=null) {
+			if(rlmsUserRoles.getRlmsSpocRoleMaster().getSpocRoleId() == SpocRoleConstants.TECHNICIAN.getSpocRoleId()) {
+				this.sendNotificationsAboutUserDeactivation(rlmsUserRoles);
+			}
+		}
+		
+		
+		
+		
+		
 		return statusMesage;
 	}
 	
@@ -592,7 +623,9 @@ public class UserServiceImpl implements UserService {
 			rlmsUsersMaster.setPassword(userDto.getPassword());
 			userMasterDao.changeUserPassword(rlmsUsersMaster);
 		}
-		return null;
+		return 	PropertyUtils
+				.getPrpertyFromContext(RlmsErrorType.USER_PASSWORD_CHANGED
+						.getMessage());
 	}
 
 	@Override
@@ -627,4 +660,31 @@ public class UserServiceImpl implements UserService {
 		return PropertyUtils.getPrpertyFromContext(RlmsErrorType.USER_LOGOUT
 				.getMessage());
 	}
+	
+
+	@Transactional(propagation = Propagation.REQUIRED)
+	public void sendNotificationsAboutUserDeactivation(RlmsUserRoles  rlmsUserRoles){
+		 JSONObject  dataPayload = new JSONObject();
+		try {
+			dataPayload.put("title", PropertyUtils.getPrpertyFromContext(RLMSMessages.USER_DEACTIVATED.getMessage()) + " - " + "This RLMS technecian deactivated from service");
+			dataPayload.put("body", "Your RLMS account is deacivated"
+					+ ""
+					+ "");
+		} catch (JSONException e1) {
+			e1.printStackTrace();
+		}
+		//List<UserAppDtls> listOfUsers = this.getRegIdsOfAllApplicableUsers(rlmsUserRoles.getLiftCustomerMap().getLiftCustomerMapId());
+		//if(listOfUsers !=null && !listOfUsers.isEmpty()) {
+		//	for (UserAppDtls userAppDtls : listOfUsers) {
+		RlmsUserApplicationMapDtls rlmsUserApplicationMapDtls =  customerDao.getUserAppDtls(rlmsUserRoles.getUserRoleId(), RLMSConstants.USER_ROLE_TYPE.getId());
+		if(rlmsUserApplicationMapDtls!=null) {
+				try{
+						if(rlmsUserApplicationMapDtls.getAppRegId()!=null) {
+							this.messagingService.sendUserNotification(rlmsUserApplicationMapDtls.getAppRegId(), dataPayload);
+				    }				
+				}catch(Exception e){
+				}
+			}
+	}
+
 }

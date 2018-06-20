@@ -32,6 +32,7 @@ import com.rlms.exception.ExceptionCode;
 import com.rlms.exception.RunTimeException;
 import com.rlms.exception.ValidationException;
 import com.rlms.model.RlmsUserRoles;
+import com.rlms.model.RlmsUsersMaster;
 import com.rlms.service.ComplaintsService;
 import com.rlms.service.CustomerService;
 import com.rlms.service.DashboardService;
@@ -306,7 +307,6 @@ public class RestControllerController  extends BaseController {
         	reponseDto.setResponse(PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
         	//throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
         }
-        
         return reponseDto;
     }
     
@@ -439,7 +439,6 @@ public class RestControllerController  extends BaseController {
 		}
 		return reponseDto;
   }
-    
     @RequestMapping(value = "/technician/updateTechnicianLocation", method = RequestMethod.POST)
     public @ResponseBody ResponseDto updateTechnicianLocation(@RequestBody UserDtlsDto userDtlsDto) throws ValidationException, RunTimeException{
     	ResponseDto reponseDto = new ResponseDto();
@@ -462,19 +461,19 @@ public class RestControllerController  extends BaseController {
         return reponseDto;
     }
   
-    @RequestMapping(value = "/addEvents", method = RequestMethod.GET)
-    public void addEvents(@RequestParam("from") String msgFrom,@RequestParam("message") String msg   ) {
-	 try {
-		 log.debug("inside add events");
-		 rlmsLiftEventService.addEvent(msgFrom,msg);     // dto.setStatus(true);
-    	 }catch(Exception e){
-       		 log.error("some Unknown exception occurs.");
-    	 }
+    @RequestMapping(value = "/addEvents ", method = RequestMethod.GET)
+    public String addEvents(@RequestParam("from") String msgFrom,@RequestParam("message") String msg   ) {
+	 
+    	return  rlmsLiftEventService.addEvent(msgFrom,msg);     
     }
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public String logout(@RequestBody UserDtlsDto userDtlsDto) {
 	
 		return  userService.logout(userDtlsDto);
+    }
+    @RequestMapping(value="/getCustomerListForTechnician", method = RequestMethod.POST)
+    public List<LiftDtlsDto> getCustomerListForTechnician(@RequestBody UserDtlsDto dtlsDto){
     	
+    	return   liftService.getLiftDetailsList(dtlsDto);
     }
 }

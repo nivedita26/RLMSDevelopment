@@ -24,18 +24,21 @@ import com.rlms.contract.AMCDetailsDto;
 import com.rlms.contract.CustomerDtlsDto;
 import com.rlms.contract.LiftDtlsDto;
 import com.rlms.contract.ResponseDto;
+import com.rlms.contract.UserDtlsDto;
 import com.rlms.contract.UserMetaInfo;
 import com.rlms.dao.BranchDao;
 import com.rlms.dao.CustomerDao;
 import com.rlms.dao.DashboardDao;
 import com.rlms.dao.FyaDao;
 import com.rlms.dao.LiftDao;
+import com.rlms.dao.UserMasterDao;
 import com.rlms.dao.UserRoleDao;
 import com.rlms.model.RlmsBranchCustomerMap;
 import com.rlms.model.RlmsFyaTranDtls;
 import com.rlms.model.RlmsLiftCustomerMap;
 import com.rlms.model.RlmsLiftMaster;
 import com.rlms.model.RlmsUserRoles;
+import com.rlms.model.RlmsUsersMaster;
 import com.rlms.utils.DateUtils;
 import com.rlms.utils.PropertyUtils;
 
@@ -53,6 +56,9 @@ public class LiftServiceImpl implements LiftService{
 	
 	@Autowired
 	private UserRoleDao userRoleDao;
+	
+	@Autowired
+	private UserMasterDao userMasterDao;
 	
 	@Autowired
 	private FyaDao fyaDao;
@@ -788,4 +794,30 @@ public class LiftServiceImpl implements LiftService{
 				this.liftDao.mergeLiftM(liftM);
 				}
 		}
+	@Override
+	public List<LiftDtlsDto> getLiftDetailsList(UserDtlsDto dtlsDto) {
+      List<Integer> branchCompanyMapId= new ArrayList<>();
+      List<Integer> branchCustomerMapIDs = new ArrayList<>();
+      List<LiftDtlsDto> liftDtlsDtoList = new ArrayList<>();
+		RlmsUserRoles  rlmsUserRoles = userRoleDao.getUserRoleByUserId(dtlsDto.getUserId());
+		if(rlmsUserRoles!=null) {
+			branchCompanyMapId.add(rlmsUserRoles.getRlmsCompanyBranchMapDtls().getCompanyBranchMapId());
+			List<RlmsBranchCustomerMap> rlmsBranchCustomerMaps = customerDao.getAllCustomersForDashboard(branchCompanyMapId);
+			if(rlmsBranchCustomerMaps!=null && !rlmsBranchCustomerMaps.isEmpty()) {
+				for (RlmsBranchCustomerMap rlmsBranchCustomerMap : rlmsBranchCustomerMaps) {
+					branchCustomerMapIDs.add(rlmsBranchCustomerMap.getBranchCustoMapId());
+				}
+				List<RlmsLiftCustomerMap> rlmsLiftCustomerMapsList =  liftDao.getAllLiftsForCustomres(branchCustomerMapIDs);
+				if(rlmsLiftCustomerMapsList !=null && !rlmsLiftCustomerMapsList.isEmpty()) {
+					for (RlmsLiftCustomerMap rlmsLiftCustomerMap : rlmsLiftCustomerMapsList) {
+						LiftDtlsDto liftDtlsDto = new LiftDtlsDto();
+						liftDtlsDto.setLiftNumber(rlmsLiftCustomerMap.getLiftMaster().getLiftNumber());
+						liftDtlsDto.setLiftCustomerMapId(rlmsLiftCustomerMap.getLiftCustomerMapId());
+						liftDtlsDtoList.add(liftDtlsDto);
+					}
+				}
+			}
+		}
+	return liftDtlsDtoList;
+}
 }

@@ -19,4 +19,6 @@ import com.rlms.model.RlmsUsersMaster;
    public RlmsUsersMaster getUserByEmailID(String emailId);
    public void deleteUser(UserDtlsDto dto, UserMetaInfo metaInfo);
    public void changeUserPassword(RlmsUsersMaster usersMaster);
+   
+   
 }
