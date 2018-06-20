@@ -37,7 +37,7 @@
 					<div class="col-sm-7">
 						  <ui-select ng-model="selectedCustomer.selected" title="Choose a Customer" on-select="loadLifts();">
 						    <ui-select-match placeholder="Select Customer">{{$select.selected.firstName}}</ui-select-match>
-						    <ui-select-choices  repeat="customerIterator in cutomers| filter: $select.search">
+						    <ui-select-choices refresh="customerIterator in cutomers" refresh-delay="10"  repeat="customerIterator in cutomers| filter: $select.search">
 						      <span ng-bind-html="customerIterator.firstName | highlight: $select.search"></span>
 						    </ui-select-choices>
 						  </ui-select>
@@ -69,7 +69,7 @@
   			</div>
   			
 			<div class="form-group">
-  			<label class="col-sm-3 control-label">Complaint Title </label>  			
+  			<label class="col-sm-3 control-label">Call Title </label>  			
 				<div class="col-sm-6">
 			   	<ui-select ng-model="selectedComplaintTitle.selected" title="Choose a complaint title">
 			    <ui-select-match placeholder="Select Complaint Title">{{$select.selected.name}}</ui-select-match>
@@ -86,7 +86,7 @@
 				</div>
 			</div> -->
 			<div class="form-group">
-				<label class="col-sm-3 control-label">Complaint Details</label>
+				<label class="col-sm-3 control-label">Call Details</label>
 				<div class="col-sm-6">
 					<input name="complaintsRemark" type="text" placeholder="Complaint Remark" required ng-model="addComplaint.complaintsRemark" class="form-control">
 					<span class="help-block"

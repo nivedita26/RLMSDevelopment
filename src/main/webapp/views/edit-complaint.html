@@ -75,14 +75,17 @@
 			<div class="form-group ">
 			<label class="col-sm-3 control-label">Status</label>
 				<div class="col-sm-6">
-					<select ng-model="selectedComplaintStatus" ng-options="x for x in complaintStatusArray" class="form-control"></select>
+					<!-- <select ng-model="selectedComplaintStatus" ng-options="x for x in complaintStatusArray" class="form-control"></select> -->
+					<input disabled name="status" type="text" placeholder="Status" ng-model="editComplaint.status" class="form-control">
+					
 				</div>
 			</div>
 			<div class="form-group ">
 				<label class="col-sm-3 control-label">Technician</label>
 				<div class="col-sm-6">
 					<div class="select-container">
-						<select ng-model="selectedTechnician" ng-options="x.name for x in techniciansForEditComplaints" class="form-control">
+						<!-- <select ng-model="selectedTechnician" ng-options="x.name for x in techniciansForEditComplaints" class="form-control"> -->
+						<input disabled name="userName" type="text" placeholder="Technician" ng-model="editComplaint.userName" class="form-control">
 						</select>
 				</div>
 					<!-- <input name="complaintsTechnician" type="text" placeholder="Technician" ng-model="editComplaint.complaintsTechnician" class="form-control"> -->

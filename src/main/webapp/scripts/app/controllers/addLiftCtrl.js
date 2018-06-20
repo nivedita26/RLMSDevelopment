@@ -121,7 +121,7 @@
 	         })
 		}
 		// Date Picker
-		$scope.today = function() {
+		/*$scope.today = function() {
 		      $scope.dt = new Date();
 		    };
 		    $scope.today();
@@ -129,7 +129,7 @@
 		    $scope.clear = function() {
 		      $scope.dt = null;
 		    };
-
+*/
 		    // Disable weekend selection
 		    $scope.disabled = function(date, mode) {
 		      return (mode === 'day' && (date.getDay() === 0 || date.getDay() === 6));
@@ -147,10 +147,16 @@
 		    $scope.initDate = new Date('2016-15-20');
 		    $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
 		    $scope.format = $scope.formats[0];
+		    
+		    
+		    
 	    //Date Picker End
+		    
+		    
 		$scope.alert = { type: 'success', msg: 'You successfully Added Lift.',close:true };
 		$scope.alert = { type: 'error', msg: '',close:false };
 
+		
 		$scope.showAlert = false;
 		$scope.showCompany = false;
 		$scope.showBranch = false;
@@ -326,7 +332,7 @@
 			];
 			$scope.addLift={
 					liftType:'',
-					liftTypeName:'',
+					//liftTypeName:'',
 					branchCustomerMapId :'',
 					liftNumber : '',
 					address : '',
@@ -381,10 +387,10 @@
 					lobbyPhoto	 : '',
 			};
 			$scope.showWizard = false;
-			//$scope.addLift.serviceStartDate = new Date();
+			
 		}
 		$scope.openFlag={
-				serviceStartDate:false,
+				//serviceStartDate:false,
 				serviceEndDate:false,
 				dateOfInstallation :false,
 				amcStartDate :false,

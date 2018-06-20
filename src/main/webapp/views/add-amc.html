@@ -116,7 +116,9 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <td><input type="text" class="form-control datepicker" ng-model="newCallTypes.title" title="Enter service title" placeholder="Enter service title"/></td>
+                    <td><input type="text" class="form-control datepicker" ng-model="newCallTypes.title" title="Enter service title" placeholder="Enter service title" required/><span class="help-block"
+						ng-show="addBranchForm.branchName.$error.required && addBranchForm.branchName.$dirty">This
+						field is required</span></td>
 					<td><input type="text" class="form-control datepicker" datepicker-popup="{{format}}" placeholder="Enter service date" title="Enter service date" ng-click="open($event,'serviceDate')" is-open="openFlag.serviceDate" ng-model="newCallTypes.serviceDate"/></td>
                     <td><input type="button" ng-click="Add()" value="Add" /></td>
                 </tr>

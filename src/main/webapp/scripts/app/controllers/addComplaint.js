@@ -26,7 +26,7 @@
 						liftCustomerMapId:0,
 						branchCustomerMapId:0,
 						companyId:0,
-						callType:0,
+						//callType:0,
 						callType:'',
 						complaintsTitle:'',
 						complaintsRemark:'',
@@ -107,7 +107,10 @@
 						name : 'LMS alert Call'
 					},{
 						id : 23,
-						name : 'Lift update Parameter'
+						name : 'Lift configuration Call'
+					},{
+						id : 24,
+						name : 'Under Warranty Support Call'
 					}
 					];
 				
@@ -249,7 +252,7 @@
 			$scope.backPage =function(){
 				 $window.history.back();
 			}
-			/*
+			
 			$scope.searchCustomer = function(query){
 				//console.log(query);
 				if(query && query.length > 1){
@@ -265,8 +268,8 @@
 					});
 				} 
 				
-			}*/
-			$scope.loadBranchData = function(){
+			}
+			/*$scope.loadBranchData = function(){
 				var companyData={};
 				if($scope.showCompany == true){
 	  	    		companyData = {
@@ -306,7 +309,7 @@
 	 	        	var emptyArray=[];
 			    	$scope.myData = emptyArray;
 	 	         })
-			}
+			}*/
 			
 		  	if($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 1){
 				$scope.showBranch= true;
@@ -314,7 +317,7 @@
 
 			}else{
 				$scope.showBranch=false;
-				$scope.loadCustomerData();
+				$scope.searchCustomer();
 
 			}
 	}]);

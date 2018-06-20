@@ -78,7 +78,10 @@
 					name : 'LMS alert Call'
 				},{
 					id : 23,
-					name : 'Lift update Parameter'
+					name : 'Lift configuration Call'
+				},{
+					id : 24,
+					name : 'Under Warranty Support Call'
 				}
 				];
 			
@@ -139,14 +142,13 @@
 				complaintsData = {
 						 complaintNumber:$scope.editComplaint.complaintsNumber,
 						 complaintId:$scope.editComplaint.complaintsNumber,
-						 //registrationDateStr:$filter('date')($scope.editComplaint.regDate, "dd-MMM-yyyy"),
-						 //serviceStartDateStr:$filter('date')($scope.editComplaint.serviceStartDate, "dd-MMM-yyyy"),
-						 //actualServiceEndDateStr:$filter('date')($scope.editComplaint.serviceEndDate, "dd-MMM-yyyy"),
+						 Title:$scope.editComplaint.complaintsTitle,
+						 //title:$scope.selectedComplaintTitle,
 						 liftAddress:$scope.editComplaint.complaintsAddress + $scope.editComplaint.complaintsCity,
-						 status:$scope.selectedComplaintStatus,
-						 title:$scope.editComplaint.complaintsTitle.name,
-						 callType:$scope.editComplaint.callType.id,
+						 status:$scope.selectedComplaintStatus,						 						 
+						 //serviceCallTypeStr:$scope.editComplaint.callType,
 						 remark:$scope.editComplaint.complaintsRemark,
+						 status:$scope.editComplaint.status,
 						 technicianDtls:userName,
 						 userRoleId:userRole,
 						 serviceCallType:$rootScope.serviceCallTypeSelect

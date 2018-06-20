@@ -182,7 +182,7 @@ angular.module('theme.demos.dashboard.indi', [
     	      },
     	      activeBranches: {
     	        title: 'Active',
-    	        text: '4',
+    	        text: '0',
     	        color: 'amber'
     	      },
     	      inactiveBranches: {
