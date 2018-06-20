@@ -2267,12 +2267,11 @@ angular.module('theme.demos.dashboard.indi', [
 	            alert(data);
 	            console.log('Error: ' + data);
 	        });
-    	   };*/
+    	   };
 	      $scope.getCountForEvent("Event");
 	      $scope.getCountForEvent("Error");
-	      $scope.getCountForEvent("Response");
-          $scope.getPagedDataAsyncForEvents = function (pageSize,
-    	      page, searchText, eventType) {
+	      $scope.getCountForEvent("Response");*/
+          $scope.getPagedDataAsyncForEvents = function (pageSize,page, searchText, eventType) {
     	  var url;
     	  var dataToSend = $scope.constructDataToSendForAllLiftStatus();
     	     url = '/RLMS/dashboard/getEventCountForLift',

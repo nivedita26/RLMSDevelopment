@@ -55,7 +55,6 @@ public class CustomerServiceImpl implements CustomerService{
 	@Autowired
 	private UserRoleDao userRoleDao;
 	
-	
 	public RlmsCustomerMaster getCustomerByEmailId(String emailId){
 		return this.customerDao.getCustomerByEmailId(emailId);
 	}
@@ -95,9 +94,7 @@ public class CustomerServiceImpl implements CustomerService{
 			statusMessage = PropertyUtils.getPrpertyFromContext(RlmsErrorType.USER_REG_SUCCESFUL.getMessage());
 		}
 		return statusMessage;
-		
-	}
-	
+}
 	private RlmsBranchCustomerMap constructBranchCustMap(RlmsCustomerMaster customerMaster, CustomerDtlsDto customerDtlsDto, UserMetaInfo metaInfo){
 		RlmsBranchCustomerMap branchCustomerMap =  new RlmsBranchCustomerMap();
 		RlmsCompanyBranchMapDtls companyBranchMapDtls = this.companyService.getCompanyBranchMapById(customerDtlsDto.getBranchCompanyMapId());

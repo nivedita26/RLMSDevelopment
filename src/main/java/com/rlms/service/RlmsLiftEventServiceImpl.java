@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.rlms.constants.RlmsErrorType;
 import com.rlms.contract.UserAppDtls;
 import com.rlms.dao.LiftDao;
 import com.rlms.model.RlmsEventDtls;
@@ -23,6 +24,7 @@ import com.rlms.model.RlmsLiftCustomerMap;
 import com.rlms.model.RlmsLiftMaster;
 import com.rlms.propertyconfiguration.ParameterIndexPropertyConfig;
 import com.rlms.propertyconfiguration.PropertyConfiguration;
+import com.rlms.utils.PropertyUtils;
 
 @Service
 public class RlmsLiftEventServiceImpl implements RlmsLiftEventService{
@@ -43,7 +45,7 @@ public class RlmsLiftEventServiceImpl implements RlmsLiftEventService{
 	
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
-	public void addEvent(String msgFromContact, String msg) {
+	public String addEvent(String msgFromContact, String msg) {
 		log.debug("inside add Event serviceImpl");
 		String lmsMsg = msg;
 		String dateStr = null;
@@ -82,19 +84,24 @@ public class RlmsLiftEventServiceImpl implements RlmsLiftEventService{
 						 eventDtls.setLmsResponseUserContactNo(lmsResContactNo.split(" ")[1]);
 					 }
 					 this.saveEventDtls(eventDtls,rlmsLiftCustomerMap);
+					 return "success";
 			     }
-				     else {
-				    	 log.error("lift customer mapping is not found");
-				     }
-				}
+				 }
 				else {
-					log.error("lift id is not found for imei id message="+lmsParamArray);
+					log.error("lift is not found for this imei id :"+lmsParamArray[paramIndex.getImei()]);
+					return "lift is not found for this imei id:".concat(lmsParamArray[paramIndex.getImei()]);
 				}
 			}
+			else {
+				return"invalid message format :".concat(msg);
+			}
 		}
+		else {
+				return"invalid message format :".concat(msg);
+		}
+		return 	 PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage());
+
 	}
-			
-	
 	@Transactional(propagation = Propagation.REQUIRED)
 	public RlmsEventDtls constructLmsEventDtls(String[] eventParam,RlmsLiftCustomerMap liftCustomerMap){
 			

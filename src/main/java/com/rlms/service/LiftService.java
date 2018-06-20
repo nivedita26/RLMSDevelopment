@@ -5,6 +5,7 @@ import java.util.List;
 import com.rlms.contract.CustomerDtlsDto;
 import com.rlms.contract.LiftDtlsDto;
 import com.rlms.contract.ResponseDto;
+import com.rlms.contract.UserDtlsDto;
 import com.rlms.contract.UserMetaInfo;
 import com.rlms.model.RlmsLiftCustomerMap;
 import com.rlms.model.RlmsLiftMaster;
@@ -36,5 +37,7 @@ public interface LiftService {
 	public List<LiftDtlsDto> getLiftCountForBranch(List<Integer> companyBranchIds, UserMetaInfo metaInfo);
 
 	public void updateLiftParams(RlmsLiftMaster liftMaster);
+	
+	public List<LiftDtlsDto> getLiftDetailsList(UserDtlsDto dtlsDto);
 
 }

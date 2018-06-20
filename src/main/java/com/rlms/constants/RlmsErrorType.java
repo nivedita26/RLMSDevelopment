@@ -12,6 +12,8 @@ public enum RlmsErrorType {
 	ROLE_SUCCESSFULLY_ASSIGNED(7,"role_successfully_assigned"),
 	ROLE_ALREADY_GIVEN(8,"role_already_given"),
 	USER_REG_SUCCESFUL(9,"user_reg_succesful"),
+	
+
 	CUSTOMER_REG_SUCCESFUL(9,"customer_reg_succesful"),
 	REGISTRATION_ID_INCORRECT(10,"registration_id_incorrect"),
 	PUSH_NOTIFICATION_FAILED(11,"push_notification_failed"),
@@ -47,7 +49,9 @@ public enum RlmsErrorType {
 	TECHNICIAN_LOCATION_UPDATED(46,"location_updated"),
 	INVALID_USER_LOGIN_CREDENTIALS(47,"invalid_user_login_credentials"),
 	USER_ALREADY_LOGGED_IN(48,"user_already_loggedin "),
-	USER_LOGOUT(49,"user_logout_successfully");
+	USER_LOGOUT(49,"user_logout_successfully"),
+	USER_DELETED(50,"user_deleted_successfully"),
+	USER_PASSWORD_CHANGED(51,"user_password_changed_successfully");
 	private Integer code;
 	private String message;
 	

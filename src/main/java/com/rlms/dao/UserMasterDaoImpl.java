@@ -80,7 +80,7 @@ UserMasterDao{
 	}
 	
 	public void updateUser(RlmsUsersMaster usermMaster){
-		this.sessionFactory.getCurrentSession().update(usermMaster);
+		this.sessionFactory.getCurrentSession().saveOrUpdate(usermMaster);
 	}
 	
 	public void mergerUser(RlmsUsersMaster usermMaster){

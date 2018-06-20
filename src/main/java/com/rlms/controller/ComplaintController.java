@@ -171,17 +171,14 @@ public class ComplaintController extends BaseController{
 	@RequestMapping(value = "/validateAndUpdateComplaints", method = RequestMethod.POST)
 	 public @ResponseBody ResponseDto validateAndUpdateComplaints(@RequestBody ComplaintsDto dto) throws RunTimeException{
 		 ResponseDto reponseDto = new ResponseDto();
-		 
 		 try{
 	        	logger.info("Method :: validateAndRegisterNewComplaint");
 	        	reponseDto.setResponse(this.complaintsService.validateAndUpdateComplaints(dto, this.getMetaInfo()));
-	        	
 	        }
 	        catch(Exception e){
 	        	logger.error(ExceptionUtils.getFullStackTrace(e));
 	        	throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
 	        }
-	 
 	        return reponseDto;
 	 }
 }

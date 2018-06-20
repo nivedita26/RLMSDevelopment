@@ -19,7 +19,7 @@ public class ScheduleTesting {
 
 	@Autowired
   AMCMonitorService  aMCMonitorService;
-	//@Scheduled(cron="0 1 00 * * ?")
+	@Scheduled(cron="0 1 00 * * ?")
 	//@Scheduled(cron="0 28 13 * * ?")
     //@Scheduled(fixedRate =10000)
 	 public void schedule() {

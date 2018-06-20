@@ -33,21 +33,26 @@ import com.rlms.contract.LiftDtlsDto;
 import com.rlms.contract.SiteVisitDtlsDto;
 import com.rlms.contract.SiteVisitReportDto;
 import com.rlms.contract.TechnicianWiseReportDTO;
+import com.rlms.contract.UserDtlsDto;
 import com.rlms.contract.UserMetaInfo;
 import com.rlms.contract.UserRolePredicate;
 import com.rlms.dao.BranchDao;
 import com.rlms.dao.ComplaintsDao;
+import com.rlms.dao.CustomerDao;
 import com.rlms.dao.DashboardDao;
 import com.rlms.dao.LiftDao;
+import com.rlms.dao.UserMasterDao;
 import com.rlms.dao.UserRoleDao;
 import com.rlms.model.RlmsBranchCustomerMap;
 import com.rlms.model.RlmsComplaintMaster;
 import com.rlms.model.RlmsComplaintTechMapDtls;
+import com.rlms.model.RlmsCustomerMemberMap;
 import com.rlms.model.RlmsEventDtls;
 import com.rlms.model.RlmsLiftAmcDtls;
 import com.rlms.model.RlmsLiftCustomerMap;
 import com.rlms.model.RlmsSiteVisitDtls;
 import com.rlms.model.RlmsUserRoles;
+import com.rlms.model.RlmsUsersMaster;
 import com.rlms.model.ServiceCall;
 import com.rlms.predicates.LiftPredicate;
 import com.rlms.utils.DateUtils;
@@ -82,6 +87,12 @@ public class ReportServiceImpl implements ReportService {
 	
 	@Autowired
 	private DashboardDao dashBoardDao;
+	
+	@Autowired
+	private  UserMasterDao userMasterDao;
+	
+	@Autowired
+	private  CustomerDao customerDao;
 	
 	@Transactional(propagation = Propagation.REQUIRED)
 	public List<AMCDetailsDto> getAMCDetailsForLifts(AMCDetailsDto dto){
@@ -609,4 +620,6 @@ public class ReportServiceImpl implements ReportService {
 		}
 		return complaintsDtoList;
 	}
+
+	
 }
