@@ -43,8 +43,8 @@
 						watchmenName :'',
 						watchmenNumber :'',
 						watchmenEmail :'',
-						activeFlag:'1',
-						customerId:''
+						//activeFlag:'1',
+						//customerId:''
 						
 				};	
 				$scope.customerTypes = [
@@ -73,7 +73,7 @@
 						id:20
 					}
 				]
-				$scope.activeFlag=[
+				/*$scope.activeFlag=[
 					{
 						name:"InActive",
 						id:0
@@ -82,7 +82,7 @@
 						name:"Active",
 						id:1
 					}
-				];
+				];*/
 			}
 			
 			//load compay dropdown data
@@ -126,7 +126,7 @@
 			$scope.submitEditCustomer = function(){		
 				var customerData={};
 				customerData={
-						customerId: $rootScope.editCustomer.customerId,
+						//customerId: $rootScope.editCustomer.customerId,
 						firstName:$scope.editCustomer.firstName,
 						address:$scope.editCustomer.address,
 						area:$scope.editCustomer.area,
@@ -134,7 +134,7 @@
 						emailID:$scope.editCustomer.emailID,
 						city:$scope.editCustomer.city,
 						pinCode:$scope.editCustomer.pinCode,
-						activeFlag:$scope.editCustomer.activeFlag,
+						//activeFlag:$scope.editCustomer.activeFlag,
 						chairmanName :$scope.editCustomer.chairmanName,
 						chairmanNumber :$scope.editCustomer.chairmanNumber,
 						chairmanEmail :$scope.editCustomer.chairmanEmail,
@@ -149,7 +149,7 @@
 						watchmenEmail :$scope.editCustomer.watchmenEmail,
 						customerType:$scope.editCustomer.customerType
 				}				
-				serviceApi.doPostWithData("/RLMS/admin/validateAndUpdateCustomer",$scope.customerData)
+				serviceApi.doPostWithData("/RLMS/admin/validateAndUpdateCustomer",customerData)
 				.then(function(response){
 					$scope.showAlert = true;
 					var key = Object.keys(response);
@@ -171,7 +171,7 @@
 				$scope.addCustomer.branchName = $scope.selectedBranch.selected.rlmsBranchMaster.branchName;
 				$scope.addCustomer.branchCompanyMapId = $scope.selectedBranch.selected.companyBranchMapId;
 				$scope.addCustomer.customerType =$scope.selectedCustomerTypes.selected.id;
-				serviceApi.doPostWithData("/RLMS/admin/validateAndRegisterNewCustomer",$scope.addCustomer)
+				serviceApi.doPostWithData("/RLMS/admin/validateAndRegisterNewCustomer",addCustomer)
 				.then(function(response){
 					$scope.showAlert = true;
 					var key = Object.keys(response);

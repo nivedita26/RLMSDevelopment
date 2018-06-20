@@ -253,7 +253,7 @@
 				 $window.history.back();
 			}
 			
-			$scope.searchCustomer = function(query){
+			/*$scope.searchCustomer = function(query){
 				//console.log(query);
 				if(query && query.length > 1){
 				 var dataToSend = {
@@ -268,8 +268,8 @@
 					});
 				} 
 				
-			}
-			/*$scope.loadBranchData = function(){
+			}*/
+			$scope.loadBranchData = function(){
 				var companyData={};
 				if($scope.showCompany == true){
 	  	    		companyData = {
@@ -309,7 +309,7 @@
 	 	        	var emptyArray=[];
 			    	$scope.myData = emptyArray;
 	 	         })
-			}*/
+			}
 			
 		  	if($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 1){
 				$scope.showBranch= true;
@@ -317,7 +317,7 @@
 
 			}else{
 				$scope.showBranch=false;
-				$scope.searchCustomer();
+				$scope.loadCustomerData();
 
 			}
 	}]);

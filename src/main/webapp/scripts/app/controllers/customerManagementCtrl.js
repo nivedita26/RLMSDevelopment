@@ -14,14 +14,14 @@
 		function initCustomerList(){
 			 $scope.selectedCompany={};
 			 $scope.selectedBranch = {};
-			 $scope.selectedActiveFlag = {};
+			 //$scope.selectedActiveFlag = {};
 			 $scope.branches=[];
 			 $scope.showTable = false;
 		} 
 		
 		$rootScope.editCustomer={};
 		$scope.editCustomerDetails=function(row){
-			$rootScope.editCustomer.customerId=row.customerId;
+			//$rootScope.editCustomer.customerId=row.customerId;
 			$rootScope.editCustomer.firstName=row.Name;
 			//$rootScope.editCustomer.lastName=row.lastName;
 			$rootScope.editCustomer.cntNumber=row.Contact_Number.replace(/-/g, '');
@@ -44,7 +44,7 @@
 			$rootScope.editCustomer.watchmenName=row.WatchmenName.replace(/-/g, '');
 			$rootScope.editCustomer.watchmenNumber=row.WatchmenNumber.replace(/-/g, '');
 			$rootScope.editCustomer.watchmenEmail=row.WatchmenEmail.replace(/-/g, '');
-			$rootScope.editCustomer.activeFlag=row.Active_Flag;
+			//$rootScope.editCustomer.activeFlag=row.Active_Flag;
 			window.location.hash = "#/edit-customer";
 		};
 		

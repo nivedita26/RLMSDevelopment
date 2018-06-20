@@ -37,7 +37,7 @@
 					<div class="col-sm-7">
 						  <ui-select ng-model="selectedCustomer.selected" title="Choose a Customer" on-select="loadLifts();">
 						    <ui-select-match placeholder="Select Customer">{{$select.selected.firstName}}</ui-select-match>
-						    <ui-select-choices refresh="customerIterator in cutomers" refresh-delay="10"  repeat="customerIterator in cutomers| filter: $select.search">
+						    <ui-select-choices repeat="customerIterator in cutomers| filter: $select.search">
 						      <span ng-bind-html="customerIterator.firstName | highlight: $select.search"></span>
 						    </ui-select-choices>
 						  </ui-select>

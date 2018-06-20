@@ -5,7 +5,8 @@
 			//loadCompayInfo();
 			$scope.alert = { type: 'success', msg: 'You successfully Edited Complaint.',close:true };
 			$scope.showAlert = false;
-			
+			$scope.selectedComplaintTitle={};
+			$scope.selectedCallType={};
 			$scope.complaintTitle=[
 				{
 					id : 0,
@@ -141,12 +142,13 @@
 				}
 				complaintsData = {
 						 complaintNumber:$scope.editComplaint.complaintsNumber,
-						 complaintId:$scope.editComplaint.complaintsNumber,
-						 Title:$scope.editComplaint.complaintsTitle,
-						 //title:$scope.selectedComplaintTitle,
+						 complaintId:$scope.editComplaint.complaintsNumber,						 
+						 title:$scope.selectedComplaintTitle.selected.name,
+						 //title:$scope.editComplaint.complaintsTitle.name,
 						 liftAddress:$scope.editComplaint.complaintsAddress + $scope.editComplaint.complaintsCity,
 						 status:$scope.selectedComplaintStatus,						 						 
-						 //serviceCallTypeStr:$scope.editComplaint.callType,
+						 serviceCallTypeStr:$scope.selectedCallType.selected.name,
+						// serviceCallTypeStr:$scope.editComplaint.callType,
 						 remark:$scope.editComplaint.complaintsRemark,
 						 status:$scope.editComplaint.status,
 						 technicianDtls:userName,

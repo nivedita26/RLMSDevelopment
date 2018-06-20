@@ -37,7 +37,7 @@
 									$scope.selectedCustomer = {};
 									$scope.selectedCalltype = {};
 									$scope.selectedLifts = {};
-									$scope.selectedComplaintTitle={};
+									$scope.selectedComplaintsTitle={};
 									$scope.branches = [];
 									$scope.callType = [{
 										id: 1,
@@ -105,10 +105,10 @@
 									var dataToSend = {
 										branchCompanyMapId :branchCompanyMapId,
 										companyId : $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyMaster.companyId,
-										branchCustomerMapId : -1,
+										//branchCustomerMapId : -1,
 										listOfLiftCustoMapId : [],
 										statusList : [],
-										//serviceCallType : 1
+										//serviceCallType : 0
 									};
 									serviceApi
 											.doPostWithData('/RLMS/complaint/getListOfComplaints', dataToSend)
@@ -715,13 +715,11 @@
 										field : "Service_End_Date",
 										displayName:"Call End Date",
 										width : 140
-									}
-									, {
+									}, {
 										field : "Address",
 										displayName:"Customer Address",
 										width : 120
-									}
-									, {
+									}, {
 										field : "City",
 										displayName:"City",
 										width : 120
@@ -756,7 +754,7 @@
 										$window.confirm('Complaint already completed or resolved');
 									}else{
 										$rootScope.editComplaint.complaintsNumber=row.Number.replace(/-/g, '');										
-										$rootScope.editComplaint.callType=row.Call_Type.replace(/-/g, '');
+										$rootScope.editComplaint.serviceCallTypeStr=row.Call_Type.replace(/-/g, '');
 										$rootScope.editComplaint.complaintsRemark=row.Remark.replace(/-/g, '');
 										$rootScope.editComplaint.complaintsAddress=row.Address.replace(/-/g, '');
 										$rootScope.editComplaint.complaintsCity=row.City.replace(/-/g, '');
@@ -766,11 +764,11 @@
 										$rootScope.editComplaint.complaintsTitle=row.Title.replace(/-/g, '');
 										$rootScope.editComplaint.status=row.Status;
 										$rootScope.selectedComplaintStatus=row.Status;
-										$scope.selectedComplaintTitle=row.Title;
 										$rootScope.editComplaint.complaintsStatus=row.Status.replace(/-/g, '');
 										var dataToSend ={
 												complaintId:row.Number
 										}
+										
 									//	if($scope.selectedCalltype.selected.type=="Complaints"){
 											//$rootScope.serviceCallTypeSelect=1;
 											//dataToSend["serviceCallType"]=1;
@@ -807,42 +805,42 @@
 											var dataToSend ={
 													complaintId:$scope.selectedComplaintId
 											}
-											if($scope.selectedCalltype.selected.name=="Lift Installation call"){
+											if($scope.selectedCalltype.name=="Lift Installation call"){
 												$rootScope.serviceCallTypeSelect=1;
 												dataToSend["serviceCallType"]=1;
-											}else if($scope.selectedCalltype.selected.name=="Configuration/Settings call"){
+											}else if($scope.serviceCallTypeStr=="Configuration/Settings call"){
 												$rootScope.serviceCallTypeSelect=2;
 												dataToSend["serviceCallType"]=2;
-											}else if($scope.selectedCalltype.selected.name=="AMC call"){
+											}else if($scope.selectedCalltype.name=="AMC call"){
 												$rootScope.serviceCallTypeSelect=3;
 												dataToSend["serviceCallType"]=3;
-											}else if($scope.selectedCalltype.selected.name=="Under Warranty Support call"){
+											}else if($scope.selectedCalltype.name=="Under Warranty Support call"){
 												$rootScope.serviceCallTypeSelect=4;
 												dataToSend["serviceCallType"]=4;
-											}else if($scope.selectedCalltype.selected.name=="LMS alert call"){
+											}else if($scope.selectedCalltype.name=="LMS alert call"){
 												$rootScope.serviceCallTypeSelect=5;
 												dataToSend["serviceCallType"]=5;
-											}else if($scope.selectedCalltype.selected.name=="Operator assigned/Generic call"){
+											}else if($scope.selectedCalltype.name=="Operator assigned/Generic call"){
 												$rootScope.serviceCallTypeSelect=6;
 												dataToSend["serviceCallType"]=6;
-											}else if($scope.selectedCalltype.selected.name=="User raised call through App"){
+											}else if($scope.selectedCalltype.name=="User raised call through App"){
 												$rootScope.serviceCallTypeSelect=7;
 												dataToSend["serviceCallType"]=7;
-											}else if($scope.selectedCalltype.selected.name=="User raised call through Telephone"){
+											}else if($scope.selectedCalltype.name=="User raised call through Telephone"){
 												$rootScope.serviceCallTypeSelect=8;
 												dataToSend["serviceCallType"]=8;
-											}else if($scope.selectedCalltype.selected.name=="Reassign call"){
+											}else if($scope.selectedCalltype.name=="Reassign call"){
 												$rootScope.serviceCallTypeSelect=9;
 												dataToSend["serviceCallType"]=9;
-											}				
-/*//											if($scope.selectedCalltype.selected.type=="Complaints"){
-												$rootScope.serviceCallTypeSelect=0;
-												dataToSend["serviceCallType"]=0;
+											}			
+//											if($scope.selectedCalltype.selected.type=="Complaints"){
+//												$rootScope.serviceCallTypeSelect=0;
+//												dataToSend["serviceCallType"]=0;
 //											}else{
-//												$rootScope.serviceCallTypeSelect=1;
-//												dataToSend["serviceCallType"]=1;
+//												$rootScope.serviceCallTypeSelect=5;
+//												dataToSend["serviceCallType"]=5;
 //											}
-*/											serviceApi.doPostWithData('/RLMS/complaint/getAllTechniciansToAssignComplaint',dataToSend)
+											serviceApi.doPostWithData('/RLMS/complaint/getAllTechniciansToAssignComplaint',dataToSend)
 											.then(function(data) {
 											console.log("DATA /RLMS/complaint/getAllTechniciansToAssignComplaint :",JSON.stringify(data));
 
