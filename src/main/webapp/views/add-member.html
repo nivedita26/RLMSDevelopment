@@ -44,8 +44,7 @@
 				<label class="col-sm-3 control-label">First Name<sup class="red font-12">*</sup></label>
 				<div class="col-sm-6">
 					<input name="firstName" type="text" placeholder="Required Field" onkeypress="return ((event.charCode > 64 && event.charCode < 91) ||(event.charCode > 96 && event.charCode < 123) || event.charCode == 8 || event.charCode == 32);" ng-model="addMember.firstName" class="form-control">
-					<span class="help-block"
-						ng-show="addMemberForm.firstName.$error.required && addMemberForm.firstName.$dirty">This
+					<span class="help-block" ng-show="addMemberForm.firstName.$error.required && addMemberForm.firstName.$dirty">This
 						field is required</span>
 				</div>
 			</div>

@@ -91,12 +91,12 @@
 			<label for="serviceStartDate" class="col-md-3 control-label">Warranty Start Date <sup class="red font-12">*</sup></label>
 			<div class="col-md-6"><input  type="text" class="form-control datepicker" datepicker-popup="{{format}}" ng-click="open($event,'serviceStartDate')" is-open="openFlag.serviceStartDate" ng-model="addLift.serviceStartDate" required/></div>
 		</div>
-		<!-- <div class="form-group">
+		<div class="form-group">
 			<label for="warrantyPeriod" class="col-md-3 control-label">Warranty Period(in Months)<sup class="red font-12">*</sup></label>
 			<div class="col-md-6">
-				<input ng-model="addLift.warrantyPeriod" required class="form-control" name="liftNumber" type="number"/>
+				<input ng-model="warrantyPeriod" required class="form-control" name="liftNumber" type="number"/>
 			</div>
-		</div> -->
+		</div> 
 		<div class="form-group">
 			<label for="serviceEndDate" class="col-md-3 control-label">Warranty End Date <sup class="red font-12">*</sup></label>
 			<div class="col-md-6"><input  type="text" class="form-control datepicker" datepicker-popup="{{format}}" ng-click="open($event,'serviceEndDate')" is-open="openFlag.serviceEndDate" ng-model="addLift.serviceEndDate" required/></div>
