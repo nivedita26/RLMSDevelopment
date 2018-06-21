@@ -32,7 +32,10 @@
 			                        $scope.callTypesArray.splice(index, 1);
 			                    }
 			                }
-			
+			                $(document).ready(function () {
+			                    $('#stDate').datepicker();
+			                    $('#eddate').datepicker();
+			                });
 			function initAddAMC() {
 				$scope.customerSelected = false;
 				$scope.selectedCompany={};
@@ -89,13 +92,31 @@
 					toDate:false,
 					serviceDate:false
 			}
-			$scope.open = function($event,which) {
+			/*$scope.open = function($event,which) {
 			      $event.preventDefault();
 			      $event.stopPropagation();
 			      if($scope.openFlag[which] != true)
 			    	  $scope.openFlag[which] = true;
 			      else
 			    	  $scope.openFlag[which] = false;
+			}*/
+			
+			$scope.getdate=function(){
+				
+				var tt = document.getElementById('stDate').value;
+				//var tt =$scope.fromDate;
+			    var date = new Date(tt);
+			    var newdate = new Date(date);
+
+			    newdate.setDate(newdate.getDate() - 1);
+			    
+			    var dd = newdate.getDate();
+			    var mm = newdate.getMonth() + 1;
+			    var y = newdate.getFullYear() + 1;
+
+			    var someFormattedDate = mm + '/' + dd + '/' + y;
+			    document.getElementById('edDate').value = someFormattedDate;
+			    //$scope.toDate=someFormattedDate;
 			}
 			
 			$scope.loadBranchData = function(){

@@ -87,7 +87,7 @@
 				
 				var liftTypeName ="Hydraulic"
 			}
-			$scope.addLift.liftTypeName=liftTypeName;
+			$scope.liftTypeName=liftTypeName;
 			$scope.modalInstance.dismiss('cancel');
 			serviceApi.doPostWithData('/RLMS/admin/getLiftMasterForType',dataToSend)
 	         .then(function(liftdata) {
@@ -121,7 +121,7 @@
 	         })
 		}
 		// Date Picker
-		/*$scope.today = function() {
+		$scope.today = function() {
 		      $scope.dt = new Date();
 		    };
 		    $scope.today();
@@ -129,12 +129,14 @@
 		    $scope.clear = function() {
 		      $scope.dt = null;
 		    };
-*/
+
 		    // Disable weekend selection
 		    $scope.disabled = function(date, mode) {
 		      return (mode === 'day' && (date.getDay() === 0 || date.getDay() === 6));
 		    };
-
+		    
+		    var warrantyPeriod= $scope.warrantyPeriod;
+		    //var serviceEndDate =$scope.serviceStartDate
 		    $scope.toggleMin = function() {
 		      $scope.minDate = $scope.minDate ? null : new Date();
 		    };
@@ -332,7 +334,6 @@
 			];
 			$scope.addLift={
 					liftType:'',
-					//liftTypeName:'',
 					branchCustomerMapId :'',
 					liftNumber : '',
 					address : '',
@@ -390,7 +391,7 @@
 			
 		}
 		$scope.openFlag={
-				//serviceStartDate:false,
+				serviceStartDate:false,
 				serviceEndDate:false,
 				dateOfInstallation :false,
 				amcStartDate :false,
@@ -404,7 +405,8 @@
 		      else
 		    	  $scope.openFlag[which] = false;
 		    };
-		//load compay dropdown data
+
+		    //load compay dropdown data
 		//Post call add branch
 		function parseBase64(){
 			if($scope.addLift.machinePhoto != ''){

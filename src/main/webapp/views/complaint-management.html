@@ -298,7 +298,7 @@
 								<label class="control-label">Select Technician</label>
 								<div class="select-container">
 									<ui-select ng-model="selectedTechnician.selected" title="Choose a Technician" on-select="loadMap()">
-										<ui-select-match placeholder="Select Branch">{{$select.selected.name}}</ui-select-match>
+										<ui-select-match placeholder="Select Technician">{{$select.selected.name}}</ui-select-match>
 										<ui-select-choices repeat="iterator in technicians| filter: $select.search">
 											<span ng-bind-html="iterator.name| highlight: $select.search"></span>
 										</ui-select-choices>

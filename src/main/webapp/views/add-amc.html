@@ -62,11 +62,11 @@
 			
 			<div class="form-group">
 				<label class="col-sm-3 control-label">AMC Start Date</label>
-					<div class="col-md-6"><input type="text" class="form-control datepicker" datepicker-popup="{{format}}" ng-click="open($event,'fromDate')" is-open="openFlag.fromDate" ng-model="addAMC.amcStDate"/></div>
+					<div class="col-md-6"><input id="stDate" type="text" class="form-control datepicker" datepicker-popup="{{format}}"  ng-model="addAMC.amcStDate"/></div>
 			</div>
 			<div class="form-group">
 				<label class="col-sm-3 control-label">AMC End Date</label>
-					<div class="col-md-6"><input type="text" class="form-control datepicker" datepicker-popup="{{format}}" ng-click="open($event,'toDate')" is-open="openFlag.toDate" ng-model="addAMC.amcEdDate"/></div>
+					<div class="col-md-6"><input id="edDate" name="toDate " type="text" class="form-control datepicker" datepicker-popup="{{format}}" ng-click="getdate()" is-open="openFlag.toDate" ng-model="addAMC.amcEdDate"/></div>
 			</div>
 			<div class="form-group ">
 				<label class="col-sm-3 control-label margin-left-10">Add Service Calls</label>
@@ -116,10 +116,8 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <td><input type="text" class="form-control datepicker" ng-model="newCallTypes.title" title="Enter service title" placeholder="Enter service title" required/><span class="help-block"
-						ng-show="addBranchForm.branchName.$error.required && addBranchForm.branchName.$dirty">This
-						field is required</span></td>
-					<td><input type="text" class="form-control datepicker" datepicker-popup="{{format}}" placeholder="Enter service date" title="Enter service date" ng-click="open($event,'serviceDate')" is-open="openFlag.serviceDate" ng-model="newCallTypes.serviceDate"/></td>
+                    <td><input type="text" class="form-control required" ng-model="newCallTypes.title" title="Enter service title" placeholder="Enter service title" required /></td>
+					<td><input type="text" class="form-control required datepicker" datepicker-popup="{{format}}" placeholder="Enter service date" title="Enter service date" ng-click="open($event,'serviceDate')" is-open="openFlag.serviceDate" ng-model="newCallTypes.serviceDate" required/></td>
                     <td><input type="button" ng-click="Add()" value="Add" /></td>
                 </tr>
             </tfoot>

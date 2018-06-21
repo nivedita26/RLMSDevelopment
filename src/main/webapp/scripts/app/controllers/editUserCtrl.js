@@ -86,7 +86,7 @@
 				$scope.alert.type = "danger";
 			});
 		}
-		//rese add branch
+		//reset add branch
 		$scope.resetAddUser = function(){
 			$scope.showAlert = false;
 			initAddUser();
