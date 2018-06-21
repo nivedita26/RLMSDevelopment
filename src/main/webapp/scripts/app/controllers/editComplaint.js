@@ -142,9 +142,11 @@
 				}
 				complaintsData = {
 						 complaintNumber:$scope.editComplaint.complaintsNumber,
+
 						 complaintId:$scope.editComplaint.complaintsNumber,						 
 						 title:$scope.selectedComplaintTitle.selected.name,
 						 //title:$scope.editComplaint.complaintsTitle.name,
+
 						 liftAddress:$scope.editComplaint.complaintsAddress + $scope.editComplaint.complaintsCity,
 						 status:$scope.selectedComplaintStatus,						 						 
 						 serviceCallTypeStr:$scope.selectedCallType.selected.name,
