@@ -464,6 +464,17 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 			dto.setName(rlmsUserRoles.getRlmsUserMaster().getFirstName() + " " + rlmsUserRoles.getRlmsUserMaster().getLastName());
 			dto.setContactNumber(rlmsUserRoles.getRlmsUserMaster().getContactNumber());
 			dto.setUserRoleId(rlmsUserRoles.getUserRoleId());
+					
+			if(null != complaintMaster.getLiftCustomerMap().getLiftMaster().getAddress() && !complaintMaster.getLiftCustomerMap().getLiftMaster().getAddress().isEmpty()){
+				dto.setLiftAdd(complaintMaster.getLiftCustomerMap().getLiftMaster().getAddress());
+			}
+			if(null != complaintMaster.getLiftCustomerMap().getLiftMaster().getLatitude() && !complaintMaster.getLiftCustomerMap().getLiftMaster().getLatitude().isEmpty()){
+				dto.setLiftLatitude(Double.valueOf(complaintMaster.getLiftCustomerMap().getLiftMaster().getLatitude()));
+			}
+			
+			if(null != complaintMaster.getLiftCustomerMap().getLiftMaster().getLongitude() && !complaintMaster.getLiftCustomerMap().getLiftMaster().getLatitude().isEmpty()){
+				dto.setLiftLongitude(Double.valueOf(complaintMaster.getLiftCustomerMap().getLiftMaster().getLongitude()));
+			}
 			
 			 List<Integer> statusList = new ArrayList<Integer>();
 		   	 statusList.add(Status.ASSIGNED.getStatusId());
@@ -477,11 +488,11 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 			 UserAppDtls userAppDtls = this.customerService.getUserAppDtls(rlmsUserRoles.getUserRoleId(), RLMSConstants.USER_ROLE_TYPE.getId());
 			 if(null != userAppDtls){
 				 dto.setCurrentAddress(userAppDtls.getAddress());
-				 dto.setLongitude(rlmsUserRoles.getRlmsUserApplicationMapDetails().getLongitude());
-				dto.setLatitude(rlmsUserRoles.getRlmsUserApplicationMapDetails().getLatitude());
+				 dto.setLongitude(userAppDtls.getLongitude());
+				dto.setLatitude(userAppDtls.getLatitude());
 			 }
 			 listOFUserAdtls.add(dto);
-		}
+		    }
 		}
 		return listOFUserAdtls;
 	}

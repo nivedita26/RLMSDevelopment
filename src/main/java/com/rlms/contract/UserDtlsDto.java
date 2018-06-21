@@ -17,6 +17,8 @@ public class UserDtlsDto {
 	private String appRegId;
 	private Double latitude;
 	private Double longitude;
+	
+	
 	private String city;
 	private String area;
 	private Integer pinCode;

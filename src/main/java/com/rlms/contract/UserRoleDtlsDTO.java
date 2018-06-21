@@ -1,7 +1,5 @@
 package com.rlms.contract;
 
-import javax.persistence.Column;
-
 public class UserRoleDtlsDTO {
 
 	private Integer userId;
@@ -18,7 +16,29 @@ public class UserRoleDtlsDTO {
 	private Integer activeFlag;
 	private Double latitude;
 	private Double longitude;
+	private Double liftLatitude;
+	private Double liftLongitude;
+	private String liftAdd;
 	
+	public String getLiftAdd() {
+		return liftAdd;
+	}
+	public void setLiftAdd(String liftAdd) {
+		this.liftAdd = liftAdd;
+	}
+	public Double getLiftLatitude() {
+		return liftLatitude;
+	}
+	public void setLiftLatitude(Double liftLatitude) {
+		this.liftLatitude = liftLatitude;
+	}
+	public Double getLiftLongitude() {
+		return liftLongitude;
+	}
+	public void setLiftLongitude(Double liftLongitude) {
+		this.liftLongitude = liftLongitude;
+	}
+
 	public Integer getUserId() {
 		return userId;
 	}
@@ -91,22 +111,16 @@ public class UserRoleDtlsDTO {
 	public void setActiveFlag(Integer activeFlag) {
 		this.activeFlag = activeFlag;
 	}
-
-	
 	public Double getLatitude() {
 		return latitude;
 	}
 	public void setLatitude(Double latitude) {
 		this.latitude = latitude;
 	}
-	
-	
 	public Double getLongitude() {
 		return longitude;
 	}
 	public void setLongitude(Double longitude) {
 		this.longitude = longitude;
 	}
-	
-	
 }

@@ -32,6 +32,9 @@
 								    };
 									$scope.alert = { type: 'success', msg: 'You successfully Added Complaint.',close:true };
 									$scope.showAlert = false;
+									$scope.address="";
+									 $scope.liftAddress="";
+									 $scope.technicianAddress="";
 									$scope.selectedCompany = {};
 									$scope.selectedBranch = {};
 									$scope.selectedCustomer = {};
@@ -847,6 +850,8 @@
 											console.log("DATA /RLMS/complaint/getAllTechniciansToAssignComplaint :",JSON.stringify(data));
 
 												$scope.technicians = data;
+												$scope.loadMap();
+												console.log("load map calling done");
 											})
 											$scope.modalInstance = $modal.open({
 										        templateUrl: 'assignComplaintTemplate',
@@ -856,29 +861,145 @@
 									}else{
 										alert("Already Assigned Complaint");
 									}
-										
 							}
-								
-								$scope.loadMap =function(){
+						/*		$scope.loadMap =function(){
 									var dataINPOPUP = "<p><b>Technician Location</b><br>Name: "+$scope.selectedTechnician.selected.name+"<br>Contact Number: "+$scope.selectedTechnician.selected.contactNumber+"<br>Assigned Complaint: "+$scope.selectedTechnician.selected.countOfComplaintsAssigned+"<br>Latitude: "+$scope.selectedTechnician.selected.latitude+"<br>Longitude: "+$scope.selectedTechnician.selected.longitude+"</p>";
 									$scope.map = new GMaps({
-						    div: '#map',
-						    lat: $scope.selectedTechnician.selected.latitude,
-						    lng: $scope.selectedTechnician.selected.longitude
-						    });
-									$scope.map.addMarker({
-									 lat: $scope.selectedTechnician.selected.latitude,
-						    lng: $scope.selectedTechnician.selected.longitude,
-						    title: 'Technician Location',
-					     click: function(e) {
-					     	content: dataINPOPUP
-					     },
-					    	infoWindow: {
-					    	 content: dataINPOPUP
-									}
-					   });		
+										div: '#map',
+										lat: $scope.selectedTechnician.selected.latitude,
+										lng: $scope.selectedTechnician.selected.longitude
+									});
+										$scope.map.addMarker({
+											lat: $scope.selectedTechnician.selected.latitude,
+											lng: $scope.selectedTechnician.selected.longitude,
+											title: 'Technician Location',
+											click: function(e) {
+												content: dataINPOPUP
+											},
+											infoWindow: {
+												content: dataINPOPUP
+											}
+										});		
 								}
+								*/
 							
+								
+								$scope.loadMap =function(){
+									alert("loadmap");
+									var bounds = new google.maps.LatLngBounds();
+									//var lift = {lat: $scope.technicians[0].liftLatitude, lng: $scope.technicians[0].liftLongitude};
+									var lift = {lat:18.562622,lng:73.808723};
+									$scope.map = new google.maps.Map(document.getElementById('map'), {
+								          center: lift,
+								          zoom: 11
+								        });
+								//	$scope.liftAddress =findAddress(lift);
+								
+							  	  var  geocoder = new google.maps.Geocoder();
+
+									  geocoder.geocode({
+								            'latLng': lift
+								        }, function (results, status) {
+								            if (status ==
+								                google.maps.GeocoderStatus.OK) {
+								                if (results[1]) {
+								                    alert(results[1].formatted_address);
+								                    $scope.liftAddress=results[1].formatted_address;
+								                } else {
+								                	 $scope.liftAddress="not found"
+								                }
+								            } else {
+								            	 $scope.liftAddress="not found"
+								            }
+								        });
+										
+									 var image = {
+									          url: 'assets/img/lift_Icon.png',
+									          // This marker is 20 pixels wide by 32 pixels high.
+									          size: new google.maps.Size(20, 32),
+									          // The origin for this image is (0, 0).
+									          origin: new google.maps.Point(0, 0),
+									          // The anchor for this image is the base of the flagpole at (0, 32).
+									          anchor: new google.maps.Point(0, 32)
+									        };
+									 var liftInfowindow = new google.maps.InfoWindow({
+								          content: "<p><b>Lift Address</b>: "+ $scope.liftAddress
+								        });
+									 
+									var liftMarker = new google.maps.Marker({
+								          position: lift,
+								          map: $scope.map,
+								          icon: {
+								              path: google.maps.SymbolPath.CIRCLE,
+								              scale: 10
+								            },
+								          scaledSize: new google.maps.Size(10, 10)
+								        });
+									
+									liftMarker.addListener('click', function() {
+										liftInfowindow.open(map, liftMarker);
+								        });
+									
+									bounds.extend(liftMarker.getPosition());
+									 
+									for(var i = 0; i < $scope.technicians.length; i++){
+										
+										var uluru = {lat: $scope.technicians[i].latitude, lng: $scope.technicians[i].longitude};
+									//	$scope.technicianAddress =findAddress(uluru);
+										
+										  geocoder.geocode({
+									            'latLng': uluru
+									        }, function (results, status) {
+									            if (status ==
+									                google.maps.GeocoderStatus.OK) {
+									                if (results[1]) {
+									                    alert(results[1].formatted_address);
+									                	$scope.technicianAddress=results[1].formatted_address;
+									                } else {
+									                	$scope.technicianAddress="not found"
+									                }
+									            } else {
+									            	$scope.technicianAddress="not found"
+									            }
+									        });
+										  var infowindow = new google.maps.InfoWindow({
+									          content: "<p><b>Technician Location</b><br>Name: "+$scope.technicians[i].name+"<br>Contact Number: "+$scope.technicians[i].contactNumber+"<br>Assigned Complaint: "+$scope.technicians[i].countOfComplaintsAssigned+"<br>Latitude: "+$scope.technicians[i].latitude+"<br>Longitude: "+$scope.technicians[i].longitude+"<br>Technician Address:"+$scope.technicianAddress+"<br>Distance from Lift: "+$scope.technicians[i].distance+" Kilometers </p>"
+									        });
+										var marker = new google.maps.Marker({
+									          position: uluru,
+									          map: $scope.map
+									        });
+										marker.addListener('click', function() {
+									          infowindow.open(map, marker);
+									        });
+										
+										bounds.extend(marker.getPosition());
+									}
+									
+									$scope.map.fitBounds(bounds);
+								}
+								function findAddress( latLong){
+									  var  geocoder = new google.maps.Geocoder();
+									  geocoder.geocode({
+								            'latLng': latLong
+								        }, function (results, status) {
+								            if (status ==
+								                google.maps.GeocoderStatus.OK) {
+								                if (results[1]) {
+								                    alert(results[1].formatted_address);
+								                   $scope.address=results[1].formatted_address;
+								                  //return  $scope.address=results[1].formatted_address;
+								                } else {
+								               // return   $scope.address="not found"
+								                	 $scope.address="not found"
+								                }
+								            } else {
+								           // return	$scope.address="not found"
+								            	 $scope.address="not found"
+								            }
+								        });
+									  return  $scope.address;
+								};
 								
 								$scope.submitAssign = function() {
 									var dataToSend ={
