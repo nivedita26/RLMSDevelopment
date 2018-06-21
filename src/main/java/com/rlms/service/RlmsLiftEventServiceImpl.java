@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.rlms.constants.RLMSConstants;
 import com.rlms.constants.RlmsErrorType;
 import com.rlms.contract.UserAppDtls;
 import com.rlms.dao.LiftDao;
@@ -52,6 +53,7 @@ public class RlmsLiftEventServiceImpl implements RlmsLiftEventService{
 		String  timeStr= null;
 	    String dateTime =null;
 	    RlmsEventDtls eventDtls = null;
+	    RlmsLiftCustomerMap rlmsLiftCustomerMap=null;
 	    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm dd/MM/yy");
 		Date date = new Date();
         if(msg.contains("%20")) {
@@ -61,18 +63,17 @@ public class RlmsLiftEventServiceImpl implements RlmsLiftEventService{
 		if(lmsMsg.contains("*") && lmsMsg.contains(";")) {	
 			String [] lmsParamArray= lmsMsg.split("[\\,*;]+");
 			if(lmsParamArray.length==8 || lmsParamArray.length==9) {
-				
 				timeStr =lmsParamArray[paramIndex.getMsgTime()];
 		        dateStr=lmsParamArray[paramIndex.getMessageDate()];
 		        dateTime  =  timeStr.concat(" ").concat(dateStr);
-			    RlmsLiftMaster rlmsLiftMaster = liftDao.getLiftIdByImei(lmsParamArray[paramIndex.getImei()]);
-				rlmsLiftMaster = liftDao.getLiftIdByImei(lmsParamArray[paramIndex.getImei()]);
+		        RlmsLiftMaster rlmsLiftMaster = liftDao.getLiftIdByImei(lmsParamArray[paramIndex.getImei()]);
+			//	rlmsLiftMaster = liftDao.getLiftIdByImei(lmsParamArray[paramIndex.getImei()]);
 				if(rlmsLiftMaster!=null ) {
 			 //get rlms lift_customer_map
-				 RlmsLiftCustomerMap rlmsLiftCustomerMap = liftDao.getLiftCustomerMapByLiftId(rlmsLiftMaster.getLiftId());
+				 rlmsLiftCustomerMap = liftDao.getLiftCustomerMapByLiftId(rlmsLiftMaster.getLiftId());
 			     if(rlmsLiftCustomerMap!=null) {
 			    	 eventDtls = this.constructLmsEventDtls(lmsParamArray,rlmsLiftCustomerMap);
-					 try {
+					/* try {
 						 date = simpleDateFormat.parse(dateTime);
 					 } catch (ParseException e) {
 						 e.printStackTrace();
@@ -84,47 +85,63 @@ public class RlmsLiftEventServiceImpl implements RlmsLiftEventService{
 						 eventDtls.setLmsResponseUserContactNo(lmsResContactNo.split(" ")[1]);
 					 }
 					 this.saveEventDtls(eventDtls,rlmsLiftCustomerMap);
-					 return "success";
+					 return "success";*/
 			     }
 				 }
 				else {
+					eventDtls = this.constructLmsEventDtls(lmsParamArray,rlmsLiftCustomerMap);
 					log.error("lift is not found for this imei id :"+lmsParamArray[paramIndex.getImei()]);
-					return "lift is not found for this imei id:".concat(lmsParamArray[paramIndex.getImei()]);
+				//	return "lift is not found for this imei id:".concat(lmsParamArray[paramIndex.getImei()]);
 				}
+				 try {
+						date = simpleDateFormat.parse(dateTime);
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
+				 eventDtls.setEventDate(date);
+				 eventDtls.setFromContact(msgFromContact);
+				 if(lmsParamArray.length==9) {
+					 String lmsResContactNo = lmsParamArray[paramIndex.getLmsResponseUserContactNo()];
+					 eventDtls.setLmsResponseUserContactNo(lmsResContactNo.split(" ")[1]);
+				 }
+				 this.saveEventDtls(eventDtls,rlmsLiftCustomerMap);
+				 return "success";
 			}
 			else {
 				return"invalid message format :".concat(msg);
 			}
 		}
-		else {
-				return"invalid message format :".concat(msg);
-		}
-		return 	 PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage());
-
+	//	else {
+	//			return"invalid message format :".concat(msg);
+	//	}
+		return PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage());
 	}
 	@Transactional(propagation = Propagation.REQUIRED)
 	public RlmsEventDtls constructLmsEventDtls(String[] eventParam,RlmsLiftCustomerMap liftCustomerMap){
 			
 		RlmsEventDtls rlmsEventDtls = new RlmsEventDtls();
-		
 		rlmsEventDtls.setEventDescription(eventParam[paramIndex.getErrorMsg()]);
         rlmsEventDtls.setEventCode(eventParam[paramIndex.getErrorCode()]);
         String[] floorNo= eventParam[paramIndex.getFloorNo()].split("\\.");
         rlmsEventDtls.setFloorNo(Integer.parseInt(floorNo[1]));
-		
         rlmsEventDtls.setEventService(eventParam[paramIndex.getService()]);
         rlmsEventDtls.setImeiId(eventParam[paramIndex.getImei()]); 
-		
 		String lmsEventType = eventParam[paramIndex.getEventType()];
-		
 		rlmsEventDtls.setEventType(lmsEventType.split(" ")[1]);
-		
+		if(liftCustomerMap!=null) {
 		rlmsEventDtls.setRlmsLiftCustomerMap(liftCustomerMap);
 		rlmsEventDtls.setGeneratedBy(liftCustomerMap.getBranchCustomerMap().getCustomerMaster().getCustomerId());
 		rlmsEventDtls.setUpdatedBy(liftCustomerMap.getBranchCustomerMap().getCustomerMaster().getCustomerId());
 		rlmsEventDtls.setActiveFlag(1);
+		}
+		else {
+		//rlmsEventDtls.setRlmsLiftCustomerMap();
+		rlmsEventDtls.setGeneratedBy(0);
+		rlmsEventDtls.setUpdatedBy(0);
+		rlmsEventDtls.setActiveFlag(0);
 		rlmsEventDtls.setGeneratedDate(new Date());
 		rlmsEventDtls.setUpdatedDate(new Date());
+		}
 		
    return rlmsEventDtls;
 	}

@@ -2255,10 +2255,10 @@ angular.module('theme.demos.dashboard.indi', [
 	          }, 100);
 	      };
       //add event api call
-     /*$scope.getCountForEvent = function (eventName) {
+     $scope.getCountForEvent = function (eventName) {
 	       	   $http({method: 'GET',
     	        url: '/RLMS/API/addEvents',
-    	        params: {from: "9423720625",message:"RLMS,*862462035277838,LMS EVENT,E2,OUT PRESSED,FLOOR No.00,10:52,28/05/18;"}
+    	        params: {from: "9423720625",message:"RLMS,*11,LMS EVENT,E2,OUT PRESSED,FLOOR No.00,10:52,28/05/18;"}
     	    })   .success(function(data) {
 	           // $scope.names = eval(data);
 	            console.log(data)
@@ -2270,7 +2270,7 @@ angular.module('theme.demos.dashboard.indi', [
     	   };
 	      $scope.getCountForEvent("Event");
 	      $scope.getCountForEvent("Error");
-	      $scope.getCountForEvent("Response");*/
+	      $scope.getCountForEvent("Response");
           $scope.getPagedDataAsyncForEvents = function (pageSize,page, searchText, eventType) {
     	  var url;
     	  var dataToSend = $scope.constructDataToSendForAllLiftStatus();

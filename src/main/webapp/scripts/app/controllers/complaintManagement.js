@@ -110,7 +110,7 @@
 										companyId : $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyMaster.companyId,
 										//branchCustomerMapId : -1,
 										listOfLiftCustoMapId : [],
-										statusList : [],
+										///statusList : [],
 										//serviceCallType : 0
 									};
 									serviceApi
@@ -891,9 +891,8 @@
 								          center: lift,
 								          zoom: 11
 								        });
-								//	$scope.liftAddress =findAddress(lift);
 								
-							  	  var  geocoder = new google.maps.Geocoder();
+							  	 /* var  geocoder = new google.maps.Geocoder();
 
 									  geocoder.geocode({
 								            'latLng': lift
@@ -909,10 +908,10 @@
 								            } else {
 								            	 $scope.liftAddress="not found"
 								            }
-								        });
+								        });*/
 										
 									 var image = {
-									          url: 'assets/img/lift_Icon.png',
+									          url: 'assets/img/liftIcon.png',
 									          // This marker is 20 pixels wide by 32 pixels high.
 									          size: new google.maps.Size(20, 32),
 									          // The origin for this image is (0, 0).
@@ -921,16 +920,19 @@
 									          anchor: new google.maps.Point(0, 32)
 									        };
 									 var liftInfowindow = new google.maps.InfoWindow({
-								          content: "<p><b>Lift Address</b>: "+ $scope.liftAddress
+								          content: "<p><b>Lift Address</b>: "+ $scope.technicians[0].liftAdd
 								        });
 									 
 									var liftMarker = new google.maps.Marker({
 								          position: lift,
 								          map: $scope.map,
-								          icon: {
-								              path: google.maps.SymbolPath.CIRCLE,
+								         //   label:{text: "L", color: "blue"},
+								       /*   icon: {
+								        	 // path:'assets/img/lift_Icon.png',
+								             path: google.maps.SymbolPath.CIRCLE,
 								              scale: 10
-								            },
+								            },*/
+								         icon:'assets/img/liftIcon.png',
 								          scaledSize: new google.maps.Size(10, 10)
 								        });
 									
@@ -943,9 +945,8 @@
 									for(var i = 0; i < $scope.technicians.length; i++){
 										
 										var uluru = {lat: $scope.technicians[i].latitude, lng: $scope.technicians[i].longitude};
-									//	$scope.technicianAddress =findAddress(uluru);
-										
-										  geocoder.geocode({
+						
+										/*  geocoder.geocode({
 									            'latLng': uluru
 									        }, function (results, status) {
 									            if (status ==
@@ -959,9 +960,9 @@
 									            } else {
 									            	$scope.technicianAddress="not found"
 									            }
-									        });
+									        });*/
 										  var infowindow = new google.maps.InfoWindow({
-									          content: "<p><b>Technician Location</b><br>Name: "+$scope.technicians[i].name+"<br>Contact Number: "+$scope.technicians[i].contactNumber+"<br>Assigned Complaint: "+$scope.technicians[i].countOfComplaintsAssigned+"<br>Latitude: "+$scope.technicians[i].latitude+"<br>Longitude: "+$scope.technicians[i].longitude+"<br>Technician Address:"+$scope.technicianAddress+"<br>Distance from Lift: "+$scope.technicians[i].distance+" Kilometers </p>"
+									          content: "<p><b>Technician Location</b><br>Name: "+$scope.technicians[i].name+"<br>Assigned Complaint: "+$scope.technicians[i].countOfComplaintsAssigned+" </p>"
 									        });
 										var marker = new google.maps.Marker({
 									          position: uluru,
@@ -976,7 +977,7 @@
 									
 									$scope.map.fitBounds(bounds);
 								}
-								function findAddress( latLong){
+							/*	function findAddress( latLong){
 									  var  geocoder = new google.maps.Geocoder();
 									  geocoder.geocode({
 								            'latLng': latLong
@@ -998,7 +999,7 @@
 								        });
 									  return  $scope.address;
 								};
-								
+								*/
 								$scope.submitAssign = function() {
 									var dataToSend ={
 											complaintId:$scope.selectedComplaintId,
