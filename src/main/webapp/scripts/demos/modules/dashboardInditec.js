@@ -2258,7 +2258,7 @@ angular.module('theme.demos.dashboard.indi', [
      /*$scope.getCountForEvent = function (eventName) {
 	       	   $http({method: 'GET',
     	        url: '/RLMS/API/addEvents',
-    	        params: {from: "9423720625",message:"RLMS,*862462035277838,LMS EVENT,E2,OUT PRESSED,FLOOR No.00,10:52,28/05/18;"}
+    	        params: {from: "9423720625",message:"RLMS,*12,LMS EVENT,E2,OUT PRESSED,FLOOR No.00,10:52,28/05/18;"}
     	    })   .success(function(data) {
 	           // $scope.names = eval(data);
 	            console.log(data)
