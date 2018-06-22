@@ -105,10 +105,10 @@
 									var dataToSend = {
 										branchCompanyMapId :branchCompanyMapId,
 										companyId : $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyMaster.companyId,
-										//branchCustomerMapId : -1,
+									//	branchCustomerMapId : -1,
 										listOfLiftCustoMapId : [],
 										statusList : [],
-										//serviceCallType : 0
+										//serviceCallType : 3
 									};
 									serviceApi
 											.doPostWithData('/RLMS/complaint/getListOfComplaints', dataToSend)
@@ -198,6 +198,11 @@
 																userDetailsObj["Call_Type"] = largeLoad[i].serviceCallTypeStr;
 															} else {
 																userDetailsObj["Call_Type"] = " - ";
+															}
+															if (!!largeLoad[i].serviceCallType) {
+																userDetailsObj["Call_Typeid"] = largeLoad[i].serviceCallType;
+															} else {
+																userDetailsObj["Call_Typeid"] = " - ";
 															}
 															if (!!largeLoad[i].registeredBy) {
 																userDetailsObj["ComplaintRegBy"] = largeLoad[i].registeredBy;
@@ -390,6 +395,11 @@
 																			} else {
 																				userDetailsObj["complaintId"] = " - ";
 																			}
+																			if (!!largeLoad[i].serviceCallType) {
+																				userDetailsObj["Call_Typeid"] = largeLoad[i].serviceCallType;
+																			} else {
+																				userDetailsObj["Call_Typeid"] = " - ";
+																			}
 																			if (!!largeLoad[i].customerName) {
 																				userDetailsObj["CustomerName"] = largeLoad[i].customerName;
 																			} else {
@@ -484,6 +494,11 @@
 																				userDetailsObj["Technician"] = largeLoad[i].technicianDtls;
 																			} else {
 																				userDetailsObj["Technician"] = " - ";
+																			}
+																			if (!!largeLoad[i].serviceCallType) {
+																				userDetailsObj["Call_Typeid"] = largeLoad[i].serviceCallType;
+																			} else {
+																				userDetailsObj["Call_Typeid"] = " - ";
 																			}
 																			if (!!largeLoad[i].complaintId) {
 																				userDetailsObj["complaintId"] = largeLoad[i].complaintId;
@@ -602,16 +617,16 @@
 								if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 1) {
 									$scope.showCompany = true;
 									loadCompanyData();
-									loadDefaultComplaintData();
+									
 								} else {
 									$scope.showCompany = false;
 									$scope.loadBranchData();
 								}
-
+								loadDefaultComplaintData();
 								// showBranch Flag
 								if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel < 3) {
 									$scope.showBranch = true;
-									loadDefaultComplaintData();
+									//loadDefaultComplaintData();
 								} else {
 									$scope.showBranch = false;
 								}
@@ -748,7 +763,7 @@
 								}*/								
 								$rootScope.editComplaint={};
 								$rootScope.technicianDetails=[];
-								$rootScope.complaintStatusArray=['Pending','Assigned','Completed','In Progress'];
+								$rootScope.complaintStatusArray=['Pending','Resolved','In Progress'];
 								$scope.editThisRow=function(row){
 									if(row.Status==='Resolved' || row.Status==='Completed'){
 										$window.confirm('Complaint already completed or resolved');
@@ -759,6 +774,7 @@
 										$rootScope.editComplaint.complaintsAddress=row.Address.replace(/-/g, '');
 										$rootScope.editComplaint.complaintsCity=row.City.replace(/-/g, '');
 										$rootScope.editComplaint.regDate=row.Registration_Date;
+										$rootScope.editComplaint.serviceCallType=row.Call_Typeid;
 										$rootScope.editComplaint.serviceEndDate=row.Service_End_Date;
 										$rootScope.editComplaint.serviceStartDate=row.Service_StartDate;
 										$rootScope.editComplaint.complaintsTitle=row.Title.replace(/-/g, '');
@@ -770,8 +786,8 @@
 										}
 										
 									//	if($scope.selectedCalltype.selected.type=="Complaints"){
-											//$rootScope.serviceCallTypeSelect=1;
-											//dataToSend["serviceCallType"]=1;
+											//$rootScope.serviceCallTypeSelect=0;
+											//dataToSend["serviceCallType"]=0;
 //										}else{
 //											$rootScope.serviceCallTypeSelect=1;
 //											dataToSend["serviceCallType"]=1;

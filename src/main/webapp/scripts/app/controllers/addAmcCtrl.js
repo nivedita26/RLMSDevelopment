@@ -32,10 +32,10 @@
 			                        $scope.callTypesArray.splice(index, 1);
 			                    }
 			                }
-			                $(document).ready(function () {
+			               /* $(document).ready(function () {
 			                    $('#stDate').datepicker();
 			                    $('#eddate').datepicker();
-			                });
+			                });*/
 			function initAddAMC() {
 				$scope.customerSelected = false;
 				$scope.selectedCompany={};
