@@ -885,6 +885,7 @@
 								$scope.loadMap =function(){
 									alert("loadmap");
 									var bounds = new google.maps.LatLngBounds();
+									//if($scope.technicians[0].liftLatitude!=null &&$scope.technicians[0].liftLongitude!=null){
 									//var lift = {lat: $scope.technicians[0].liftLatitude, lng: $scope.technicians[0].liftLongitude};
 									var lift = {lat:18.562622,lng:73.808723};
 									$scope.map = new google.maps.Map(document.getElementById('map'), {
@@ -892,24 +893,7 @@
 								          zoom: 11
 								        });
 								
-							  	 /* var  geocoder = new google.maps.Geocoder();
-
-									  geocoder.geocode({
-								            'latLng': lift
-								        }, function (results, status) {
-								            if (status ==
-								                google.maps.GeocoderStatus.OK) {
-								                if (results[1]) {
-								                    alert(results[1].formatted_address);
-								                    $scope.liftAddress=results[1].formatted_address;
-								                } else {
-								                	 $scope.liftAddress="not found"
-								                }
-								            } else {
-								            	 $scope.liftAddress="not found"
-								            }
-								        });*/
-										
+							  				
 									 var image = {
 									          url: 'assets/img/liftIcon.png',
 									          // This marker is 20 pixels wide by 32 pixels high.
@@ -928,7 +912,6 @@
 								          map: $scope.map,
 								           label:{text: "L", color: "blue"},
 								          icon: {
-								        	 // path:'assets/img/lift_Icon.png',
 								             path: google.maps.SymbolPath.CIRCLE,
 								              scale: 10
 								            },
@@ -941,49 +924,55 @@
 								        });
 									
 									bounds.extend(liftMarker.getPosition());
+								//	}
 									 
-									for(var i = 0; i < $scope.technicians.length; i++){
+									/*for(var i = 0; i < $scope.technicians.length; i++){
+										if($scope.technicians[i].latitude!=null && $scope.technicians[i].longitude!=null ){
 										
-										var uluru = {lat: $scope.technicians[i].latitude, lng: $scope.technicians[i].longitude};
+										var techLatLong = {lat: $scope.technicians[i].latitude, lng: $scope.technicians[i].longitude};
 						    		    var infowindow = new google.maps.InfoWindow({
 									          content: "<p><b>Technician Location</b><br>Name: "+$scope.technicians[i].name+"<br>Assigned Complaint: "+$scope.technicians[i].countOfComplaintsAssigned+" </p>"
 									        });
 										var marker = new google.maps.Marker({
-									          position: uluru,
+									          position: techLatLong,
 									          map: $scope.map
 									        });
-										marker.addListener('click', function() {
+											marker.addListener('click', function() {
 									          infowindow.open(map, marker);
 									        });
 										
 										bounds.extend(marker.getPosition());
 									}
-									
+									}*/
+									/////
+									for(var i = 0; i < $scope.technicians.length; i++){
+										var marker = new google.maps.Marker({
+											position: new google.maps.LatLng($scope.technicians[i].latitude, $scope.technicians[i].longitude),
+											map: $scope.map,
+								          content: "<p><b>Technician Location</b><br>Name: "+$scope.technicians[i].name+"<br>Assigned Complaint: "+$scope.technicians[i].countOfComplaintsAssigned+" </p>"
+
+										});
+										bounds.extend(marker.position);	
+										
+										var openedInfoWindow = null;
+										
+										var infowindow = new google.maps.InfoWindow();     
+																		
+										marker.addListener('click', (function() {
+										console.log('Klick! Marker='+this.content);
+										    if(openedInfoWindow != null){	                    		
+											    openedInfoWindow.close(); 
+												openedInfoWindow = null;
+											}else{				  
+											   infowindow.setContent(this.content);	
+											   infowindow.open(map, this); 
+											   openedInfoWindow = infowindow;
+											}	
+										}));
+									}
+									//////
 									$scope.map.fitBounds(bounds);
 								}
-							/*	function findAddress( latLong){
-									  var  geocoder = new google.maps.Geocoder();
-									  geocoder.geocode({
-								            'latLng': latLong
-								        }, function (results, status) {
-								            if (status ==
-								                google.maps.GeocoderStatus.OK) {
-								                if (results[1]) {
-								                    alert(results[1].formatted_address);
-								                   $scope.address=results[1].formatted_address;
-								                  //return  $scope.address=results[1].formatted_address;
-								                } else {
-								               // return   $scope.address="not found"
-								                	 $scope.address="not found"
-								                }
-								            } else {
-								           // return	$scope.address="not found"
-								            	 $scope.address="not found"
-								            }
-								        });
-									  return  $scope.address;
-								};
-								*/
 								$scope.submitAssign = function() {
 									var dataToSend ={
 											complaintId:$scope.selectedComplaintId,
