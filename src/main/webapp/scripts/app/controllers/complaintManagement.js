@@ -926,13 +926,13 @@
 									var liftMarker = new google.maps.Marker({
 								          position: lift,
 								          map: $scope.map,
-								         //   label:{text: "L", color: "blue"},
-								       /*   icon: {
+								           label:{text: "L", color: "blue"},
+								          icon: {
 								        	 // path:'assets/img/lift_Icon.png',
 								             path: google.maps.SymbolPath.CIRCLE,
 								              scale: 10
-								            },*/
-								         icon:'assets/img/liftIcon.png',
+								            },
+								      //   icon:'assets/img/liftIcon.png',
 								          scaledSize: new google.maps.Size(10, 10)
 								        });
 									
@@ -945,23 +945,7 @@
 									for(var i = 0; i < $scope.technicians.length; i++){
 										
 										var uluru = {lat: $scope.technicians[i].latitude, lng: $scope.technicians[i].longitude};
-						
-										/*  geocoder.geocode({
-									            'latLng': uluru
-									        }, function (results, status) {
-									            if (status ==
-									                google.maps.GeocoderStatus.OK) {
-									                if (results[1]) {
-									                    alert(results[1].formatted_address);
-									                	$scope.technicianAddress=results[1].formatted_address;
-									                } else {
-									                	$scope.technicianAddress="not found"
-									                }
-									            } else {
-									            	$scope.technicianAddress="not found"
-									            }
-									        });*/
-										  var infowindow = new google.maps.InfoWindow({
+						    		    var infowindow = new google.maps.InfoWindow({
 									          content: "<p><b>Technician Location</b><br>Name: "+$scope.technicians[i].name+"<br>Assigned Complaint: "+$scope.technicians[i].countOfComplaintsAssigned+" </p>"
 									        });
 										var marker = new google.maps.Marker({
