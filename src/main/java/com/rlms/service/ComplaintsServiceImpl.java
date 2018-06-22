@@ -1,17 +1,13 @@
 package com.rlms.service;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
-import org.jivesoftware.smack.SmackException;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mysql.fabric.xmlrpc.base.Array;
-import com.mysql.jdbc.Messages;
 import com.rlms.constants.RLMSCallType;
 import com.rlms.constants.RLMSConstants;
 import com.rlms.constants.RLMSMessages;
@@ -30,19 +24,14 @@ import com.rlms.constants.Status;
 //import com.rlms.constants.XMPPServerDetails;
 import com.rlms.contract.ComplaintsDtlsDto;
 import com.rlms.contract.ComplaintsDto;
-import com.rlms.contract.CustomerDtlsDto;
 import com.rlms.contract.LiftDtlsDto;
-import com.rlms.contract.MemberDtlsDto;
 import com.rlms.contract.SiteVisitDtlsDto;
-import com.rlms.contract.SiteVisitReportDto;
 import com.rlms.contract.UserAppDtls;
 import com.rlms.contract.UserDtlsDto;
 //import com.rlms.contract.UserAppDtls;
 import com.rlms.contract.UserMetaInfo;
 import com.rlms.contract.UserRoleDtlsDTO;
-import com.rlms.controller.RestControllerController;
 import com.rlms.dao.ComplaintsDao;
-import com.rlms.dao.CustomerDao;
 import com.rlms.dao.LiftDao;
 import com.rlms.dao.UserMasterDao;
 import com.rlms.exception.ExceptionCode;
@@ -51,10 +40,8 @@ import com.rlms.model.RlmsComplaintMaster;
 import com.rlms.model.RlmsComplaintTechMapDtls;
 import com.rlms.model.RlmsCustomerMemberMap;
 import com.rlms.model.RlmsLiftCustomerMap;
-import com.rlms.model.RlmsLiftMaster;
 import com.rlms.model.RlmsMemberMaster;
 import com.rlms.model.RlmsSiteVisitDtls;
-import com.rlms.model.RlmsUserApplicationMapDtls;
 import com.rlms.model.RlmsUserRoles;
 import com.rlms.model.RlmsUsersMaster;
 import com.rlms.utils.DateUtils;
@@ -316,6 +303,13 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 			LiftDtlsDto lift = new LiftDtlsDto();
 			lift.setLiftId(rlmsLiftCustomerMap.getLiftCustomerMapId());
 			lift.setLiftNumber(rlmsLiftCustomerMap.getLiftMaster().getLiftNumber());
+			lift.setServiceStartDate(rlmsLiftCustomerMap.getLiftMaster().getServiceStartDate());
+			lift.setServiceEndDate(rlmsLiftCustomerMap.getLiftMaster().getServiceEndDate());
+			if((rlmsLiftCustomerMap.getLiftMaster().getAmcStartDate()!=null)&&(rlmsLiftCustomerMap.getLiftMaster().getAmcEndDate()!=null)) {
+				lift.setAmcStartDate(rlmsLiftCustomerMap.getLiftMaster().getAmcStartDate());
+				lift.setAmcEndDate(rlmsLiftCustomerMap.getLiftMaster().getAmcEndDate());
+			}
+			
 			listOfLiftDtls.add(lift);
 		}
 		return listOfLiftDtls;
@@ -464,6 +458,17 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 			dto.setName(rlmsUserRoles.getRlmsUserMaster().getFirstName() + " " + rlmsUserRoles.getRlmsUserMaster().getLastName());
 			dto.setContactNumber(rlmsUserRoles.getRlmsUserMaster().getContactNumber());
 			dto.setUserRoleId(rlmsUserRoles.getUserRoleId());
+					
+			if(null != complaintMaster.getLiftCustomerMap().getLiftMaster().getAddress() && !complaintMaster.getLiftCustomerMap().getLiftMaster().getAddress().isEmpty()){
+				dto.setLiftAdd(complaintMaster.getLiftCustomerMap().getLiftMaster().getAddress());
+			}
+			if(null != complaintMaster.getLiftCustomerMap().getLiftMaster().getLatitude() && !complaintMaster.getLiftCustomerMap().getLiftMaster().getLatitude().isEmpty()){
+				dto.setLiftLatitude(Double.valueOf(complaintMaster.getLiftCustomerMap().getLiftMaster().getLatitude()));
+			}
+			
+			if(null != complaintMaster.getLiftCustomerMap().getLiftMaster().getLongitude() && !complaintMaster.getLiftCustomerMap().getLiftMaster().getLatitude().isEmpty()){
+				dto.setLiftLongitude(Double.valueOf(complaintMaster.getLiftCustomerMap().getLiftMaster().getLongitude()));
+			}
 			
 			 List<Integer> statusList = new ArrayList<Integer>();
 		   	 statusList.add(Status.ASSIGNED.getStatusId());
@@ -477,11 +482,11 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 			 UserAppDtls userAppDtls = this.customerService.getUserAppDtls(rlmsUserRoles.getUserRoleId(), RLMSConstants.USER_ROLE_TYPE.getId());
 			 if(null != userAppDtls){
 				 dto.setCurrentAddress(userAppDtls.getAddress());
-				 dto.setLongitude(rlmsUserRoles.getRlmsUserApplicationMapDetails().getLongitude());
-				dto.setLatitude(rlmsUserRoles.getRlmsUserApplicationMapDetails().getLatitude());
+				 dto.setLongitude(userAppDtls.getLongitude());
+				dto.setLatitude(userAppDtls.getLatitude());
 			 }
 			 listOFUserAdtls.add(dto);
-		}
+		    }
 		}
 		return listOFUserAdtls;
 	}
