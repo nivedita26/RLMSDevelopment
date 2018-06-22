@@ -42,6 +42,7 @@ import com.rlms.model.RlmsCustomerMemberMap;
 import com.rlms.model.RlmsLiftCustomerMap;
 import com.rlms.model.RlmsMemberMaster;
 import com.rlms.model.RlmsSiteVisitDtls;
+import com.rlms.model.RlmsUserApplicationMapDtls;
 import com.rlms.model.RlmsUserRoles;
 import com.rlms.model.RlmsUsersMaster;
 import com.rlms.utils.DateUtils;
@@ -508,6 +509,11 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 		}
 		complaintMaster.setStatus(statusId);
 		this.complaintsDao.mergeComplaintM(complaintMaster);
+		RlmsComplaintTechMapDtls complaintTechMapDtls = complaintsDao.getComplTechMapObjByComplaintId(dto.getComplaintId());
+		if(complaintTechMapDtls!=null) {
+			complaintTechMapDtls.setStatus(statusId);
+			complaintsDao.updateComplaints(complaintTechMapDtls);
+		}
 		String resultMessage = PropertyUtils.getPrpertyFromContext(RlmsErrorType.STATUS_UPDATED.getMessage()) + " " + dto.getStatus() + " " + PropertyUtils.getPrpertyFromContext(RlmsErrorType.SUCCESSFULLY.getMessage());
 		return resultMessage;
 	}
@@ -520,13 +526,17 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 		//this.validateVisitDtls(dto);
 		RlmsSiteVisitDtls visitDtls = this.constructVisitDtls(dto);
 		this.saveComplaintSiteVisitDtls(visitDtls);
+		
 		if(visitDtls.getComplaintTechMapDtls().getStatus()==Status.ASSIGNED.getStatusId()) {
 		     RlmsComplaintTechMapDtls complaintTechMapDtls = visitDtls.getComplaintTechMapDtls();
 			complaintTechMapDtls.setStatus(Status.INPROGESS.getStatusId());
-			complaintsDao.saveComplaintTechMapDtls(complaintTechMapDtls);
+			complaintsDao.updateComplaints(complaintTechMapDtls);
+			
+			
 			RlmsComplaintMaster complaintMaster = visitDtls.getComplaintTechMapDtls().getComplaintMaster();
 			if(complaintMaster.getStatus()==Status.ASSIGNED.getStatusId()) {
-				complaintsDao.saveComplaintM(complaintMaster);
+				complaintMaster.setStatus(Status.INPROGESS.getStatusId());
+				complaintsDao.updateComplaintsMatser(complaintMaster);
 			}
 		}
 		return PropertyUtils.getPrpertyFromContext(RlmsErrorType.VISIT_UPDATED_SUCCESS.getMessage());

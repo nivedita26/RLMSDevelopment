@@ -16,8 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.rlms.constants.RLMSConstants;
-import com.rlms.constants.RlmsErrorType;
+import com.rlms.constants.LMSEventError;
 import com.rlms.contract.UserAppDtls;
 import com.rlms.dao.LiftDao;
 import com.rlms.model.RlmsEventDtls;
@@ -25,7 +24,6 @@ import com.rlms.model.RlmsLiftCustomerMap;
 import com.rlms.model.RlmsLiftMaster;
 import com.rlms.propertyconfiguration.ParameterIndexPropertyConfig;
 import com.rlms.propertyconfiguration.PropertyConfiguration;
-import com.rlms.utils.PropertyUtils;
 
 @Service
 public class RlmsLiftEventServiceImpl implements RlmsLiftEventService{
@@ -46,7 +44,7 @@ public class RlmsLiftEventServiceImpl implements RlmsLiftEventService{
 	
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
-	public String addEvent(String msgFromContact, String msg) {
+	public int  addEvent(String msgFromContact, String msg) {
 		log.debug("inside add Event serviceImpl");
 		String lmsMsg = msg;
 		String dateStr = null;
@@ -67,31 +65,20 @@ public class RlmsLiftEventServiceImpl implements RlmsLiftEventService{
 		        dateStr=lmsParamArray[paramIndex.getMessageDate()];
 		        dateTime  =  timeStr.concat(" ").concat(dateStr);
 		        RlmsLiftMaster rlmsLiftMaster = liftDao.getLiftIdByImei(lmsParamArray[paramIndex.getImei()]);
-			//	rlmsLiftMaster = liftDao.getLiftIdByImei(lmsParamArray[paramIndex.getImei()]);
 				if(rlmsLiftMaster!=null ) {
 			 //get rlms lift_customer_map
 				 rlmsLiftCustomerMap = liftDao.getLiftCustomerMapByLiftId(rlmsLiftMaster.getLiftId());
 			     if(rlmsLiftCustomerMap!=null) {
 			    	 eventDtls = this.constructLmsEventDtls(lmsParamArray,rlmsLiftCustomerMap);
-					/* try {
-						 date = simpleDateFormat.parse(dateTime);
-					 } catch (ParseException e) {
-						 e.printStackTrace();
-					 }
-					 eventDtls.setEventDate(date);
-					 eventDtls.setFromContact(msgFromContact);
-					 if(lmsParamArray.length==9) {
+			    /*	 if(lmsParamArray.length==9) {
 						 String lmsResContactNo = lmsParamArray[paramIndex.getLmsResponseUserContactNo()];
 						 eventDtls.setLmsResponseUserContactNo(lmsResContactNo.split(" ")[1]);
-					 }
-					 this.saveEventDtls(eventDtls,rlmsLiftCustomerMap);
-					 return "success";*/
+					 }*/
 			     }
 				 }
 				else {
 					eventDtls = this.constructLmsEventDtls(lmsParamArray,rlmsLiftCustomerMap);
 					log.error("lift is not found for this imei id :"+lmsParamArray[paramIndex.getImei()]);
-				//	return "lift is not found for this imei id:".concat(lmsParamArray[paramIndex.getImei()]);
 				}
 				 try {
 						date = simpleDateFormat.parse(dateTime);
@@ -105,16 +92,15 @@ public class RlmsLiftEventServiceImpl implements RlmsLiftEventService{
 					 eventDtls.setLmsResponseUserContactNo(lmsResContactNo.split(" ")[1]);
 				 }
 				 this.saveEventDtls(eventDtls,rlmsLiftCustomerMap);
-				 return "success";
+				 return LMSEventError.SUCCESS.getId();
 			}
 			else {
-				return"invalid message format :".concat(msg);
+				return LMSEventError.FAIL.getId();
 			}
 		}
-	//	else {
-	//			return"invalid message format :".concat(msg);
-	//	}
-		return PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage());
+		return LMSEventError.FAIL.getId();
+	
+		//return PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage());
 	}
 	@Transactional(propagation = Propagation.REQUIRED)
 	public RlmsEventDtls constructLmsEventDtls(String[] eventParam,RlmsLiftCustomerMap liftCustomerMap){
@@ -133,6 +119,8 @@ public class RlmsLiftEventServiceImpl implements RlmsLiftEventService{
 		rlmsEventDtls.setGeneratedBy(liftCustomerMap.getBranchCustomerMap().getCustomerMaster().getCustomerId());
 		rlmsEventDtls.setUpdatedBy(liftCustomerMap.getBranchCustomerMap().getCustomerMaster().getCustomerId());
 		rlmsEventDtls.setActiveFlag(1);
+		rlmsEventDtls.setGeneratedDate(new Date());
+		rlmsEventDtls.setUpdatedDate(new Date());
 		}
 		else {
 		//rlmsEventDtls.setRlmsLiftCustomerMap();

@@ -462,7 +462,7 @@ public class RestControllerController  extends BaseController {
     }
   
     @RequestMapping(value = "/addEvents ", method = RequestMethod.GET)
-    public String addEvents(@RequestParam("from") String msgFrom,@RequestParam("message") String msg   ) {
+    public int addEvents(@RequestParam("from") String msgFrom,@RequestParam("message") String msg   ) {
 	 
     	return  rlmsLiftEventService.addEvent(msgFrom,msg);     
     }
