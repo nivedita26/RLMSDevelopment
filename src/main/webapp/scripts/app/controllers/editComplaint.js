@@ -149,10 +149,12 @@
 
 						 liftAddress:$scope.editComplaint.complaintsAddress + $scope.editComplaint.complaintsCity,
 						 status:$scope.selectedComplaintStatus,						 						 
+						 serviceCallType:$scope.selectedCallType.selected.id,
 						 serviceCallTypeStr:$scope.selectedCallType.selected.name,
 						// serviceCallTypeStr:$scope.editComplaint.callType,
 						 remark:$scope.editComplaint.complaintsRemark,
-						 status:$scope.editComplaint.status,
+						 //status:$scope.editComplaint.status,
+						 status:$scope.selectedComplaintStatus,
 						 technicianDtls:userName,
 						 userRoleId:userRole,
 						 serviceCallType:$rootScope.serviceCallTypeSelect

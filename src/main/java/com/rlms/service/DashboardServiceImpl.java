@@ -649,7 +649,7 @@ public class DashboardServiceImpl implements DashboardService {
 		List<Integer> listOFApplicableBranches = new ArrayList<Integer>();
 		List<Integer> listOfBranchIds = new ArrayList<Integer>();
 		List<String> uniqueCityList = new ArrayList<>();
-		List<BranchCountDtls> branchCountDtlsList = new ArrayList<>();
+		List<BranchCountDtls> branchCountDtlsList = new ArrayList<BranchCountDtls>();
 		listOfAllApplicableCompanies.add(companyId);
 		 List<RlmsCompanyBranchMapDtls> listOfAllBranches = this.dashboardDao.getAllBranchDtlsForDashboard(listOfAllApplicableCompanies);
 		
@@ -670,18 +670,21 @@ public class DashboardServiceImpl implements DashboardService {
 				  else {
 					  branchCountDtls.setBranchInactiveFlagCount((BigInteger)objects[2]);
 				  }
-			  		uniqueCityList.add(objects[0].toString());
+				  uniqueCityList.add(objects[0].toString());
+				  branchCountDtlsList.add(branchCountDtls);
 			    }
-
-			  	else {
+			  if(uniqueCityList.contains(cityName)) {
+			  
 				  		if((Integer)objects[1]==1) {
 				  			branchCountDtls.setBranchActiveFlagCount((BigInteger)objects[2]);
 				  		}
 				  		else {
 				  			branchCountDtls.setBranchInactiveFlagCount((BigInteger)objects[2]);
 				  		}
-				  		branchCountDtlsList.add(branchCountDtls);
+				  		 branchCountDtlsList.add(branchCountDtls);
 			  	}
+			 
+
 		}
 			List<BranchDtlsDto> listOFBranchDtls = new ArrayList<BranchDtlsDto>();
 		    return branchCountDtlsList;
