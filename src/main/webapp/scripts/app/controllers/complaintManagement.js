@@ -901,7 +901,7 @@
 							
 								
 								$scope.loadMap =function(){
-									alert("loadmap");
+									//alert("loadmap");
 									var bounds = new google.maps.LatLngBounds();
 									//if($scope.technicians[0].liftLatitude!=null &&$scope.technicians[0].liftLongitude!=null){
 									//var lift = {lat: $scope.technicians[0].liftLatitude, lng: $scope.technicians[0].liftLongitude};
@@ -964,11 +964,17 @@
 									}*/
 									/////
 									for(var i = 0; i < $scope.technicians.length; i++){
+										if($scope.technicians[i].countOfComplaintsAssigned==null){
+											$scope.technicians[i].countOfComplaintsAssigned=0;
+										}
+										if($scope.technicians[i].todaysAssignedCalls==null){
+											$scope.technicians[i].todaysAssignedCalls=0;
+										}
 										var marker = new google.maps.Marker({
 											position: new google.maps.LatLng($scope.technicians[i].latitude, $scope.technicians[i].longitude),
 											map: $scope.map,
-								          content: "<p><b>Technician Location</b><br>Name: "+$scope.technicians[i].name+"<br>Assigned Complaint: "+$scope.technicians[i].countOfComplaintsAssigned+" </p>"
-
+											label:{text:"T"+(i+1),color:"black"},
+								            content: "<p><b>Technician Location</b><br>Name: "+$scope.technicians[i].name+"<br>Assigned Complaint: "+$scope.technicians[i].countOfComplaintsAssigned+" <br>Todays Assigned Complaint: "+$scope.technicians[i].todaysAssignedCalls+" </p>"
 										});
 										bounds.extend(marker.position);	
 										

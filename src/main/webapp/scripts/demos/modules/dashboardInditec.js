@@ -388,7 +388,7 @@ angular.module('theme.demos.dashboard.indi', [
                 if ($scope.todaysPendingComplaints.length > 0) {
                   $scope.complaintsData.todaysPandingComplaints.text = $scope.todaysPendingComplaints.length;
                 }
-              }
+            }
               //Total Assigned
               if (complaintStatusArray.includes('3') && complaintStatusArray.length == 1 && largeLoad.length > 0) {
               	 var totalCount=0;

@@ -19,7 +19,14 @@ public class UserRoleDtlsDTO {
 	private Double liftLatitude;
 	private Double liftLongitude;
 	private String liftAdd;
+	private int todaysAssignedCalls;
 	
+	public int getTodaysAssignedCalls() {
+		return todaysAssignedCalls;
+	}
+	public void setTodaysAssignedCalls(int todaysAssignedCalls) {
+		this.todaysAssignedCalls = todaysAssignedCalls;
+	}
 	public String getLiftAdd() {
 		return liftAdd;
 	}

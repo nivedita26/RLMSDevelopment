@@ -1,6 +1,7 @@
 package com.rlms.service;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -447,7 +448,14 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 	
 	@Transactional(propagation = Propagation.REQUIRED)
 	public List<UserRoleDtlsDTO> getAllTechniciansToAssignComplaint(ComplaintsDtlsDto complaintsDtlsDto){
-   	 
+   	    int todaysAssignedComplaintsCount=0;
+   		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+   		Date today =null;
+		try {
+  		 today = sdf.parse(sdf.format(new Date()));
+		} catch (ParseException e) {
+	}
+
 		RlmsComplaintMaster complaintMaster = this.complaintsDao.getComplaintMasterObj(complaintsDtlsDto.getComplaintId(),complaintsDtlsDto.getServiceCallType());
 		List<UserRoleDtlsDTO> listOFUserAdtls = new ArrayList<UserRoleDtlsDTO>();
 		List<RlmsUserRoles> listOfAllTechnicians = this.userService.getListOfTechniciansForBranch(complaintMaster.getLiftCustomerMap().getBranchCustomerMap().getCompanyBranchMapDtls().getCompanyBranchMapId());
@@ -479,7 +487,19 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 			 if(null != listOfAssignedComplaints && !listOfAssignedComplaints.isEmpty()){
 				 dto.setCountOfComplaintsAssigned(listOfAssignedComplaints.size());
 			 }
-			 
+			for (RlmsComplaintTechMapDtls rlmsComplaintTechMapDtls : listOfAssignedComplaints) {
+				int diff = DateUtils.daysBetween(rlmsComplaintTechMapDtls.getAssignedDate(), today);
+				if(diff==0) {
+					todaysAssignedComplaintsCount=todaysAssignedComplaintsCount+1;
+				}
+			}
+			/*	if(DateUtils.isBeforeOrEqualToDate
+				if(rlmsComplaintTechMapDtls.getAssignedDate().equals(today)) {
+					
+					todaysAssignedComplaintsCount=todaysAssignedComplaintsCount+1;
+				}
+			}*/
+			 dto.setTodaysAssignedCalls(todaysAssignedComplaintsCount);
 			 UserAppDtls userAppDtls = this.customerService.getUserAppDtls(rlmsUserRoles.getUserRoleId(), RLMSConstants.USER_ROLE_TYPE.getId());
 			 if(null != userAppDtls){
 				 dto.setCurrentAddress(userAppDtls.getAddress());
