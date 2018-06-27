@@ -658,16 +658,16 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 			}
 			complaintMaster.setUpdatedBy(metaInfo.getUserId());
 			complaintMaster.setUpdatedDate(new Date());
-			if(null!=complaintTechMapDtls && !"Pending".equalsIgnoreCase(complaintsDto.getStatus())){
+		if(null!=complaintTechMapDtls && !"Pending".equalsIgnoreCase(complaintsDto.getStatus())){
 				complaintTechMapDtls.setUpdatedBy(metaInfo.getUserId());
 				complaintTechMapDtls.setUpdatedDate(new Date());
 				RlmsUserRoles userRoles = this.userService.getUserRoleObjhById(complaintsDto.getUserRoleId());
-				complaintTechMapDtls.setUserRoles(userRoles);
-				complaintTechMapDtls.setComplaintMaster(complaintMaster);
-				this.complaintsDao.updateComplaints(complaintTechMapDtls);
+			complaintTechMapDtls.setUserRoles(userRoles);
+			complaintTechMapDtls.setComplaintMaster(complaintMaster);
+			this.complaintsDao.updateComplaints(complaintTechMapDtls);
 			}else{
 				this.complaintsDao.updateComplaintsMatser(complaintMaster);
-			}
+		}
 		}
 		String statusMessage = PropertyUtils.getPrpertyFromContext("Complaint Updated Successfully");
 		return statusMessage;

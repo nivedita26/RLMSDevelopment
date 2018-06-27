@@ -160,7 +160,7 @@
 			if (searchText) {
 	  	          var ft = searchText.toLowerCase();
 	  	        var dataToSend = constructDataToSend();
-	 	         serviceApi.doPostWithData('/RLMS/report/callDetailedReport',dataToSend)
+	 	         serviceApi.doPostWithData('/RLMS/report/callDetailsReport',dataToSend)
 	 	         .then(function(data) {
 	 	        	$scope.siteViseReport = data.filter(function(item) {
 		  	              return JSON.stringify(item).toLowerCase().indexOf(ft) !== -1;
@@ -168,7 +168,7 @@
 	 	         })
  	         }else{
  	        	var dataToSend = constructDataToSend();
- 	 	         serviceApi.doPostWithData('/RLMS/report/callDetailedReport',dataToSend)
+ 	 	         serviceApi.doPostWithData('/RLMS/report/callDetailsReport',dataToSend)
  	 	         .then(function(data) {
  	 	        	 $scope.siteViseReport = data;
  	 	         })
@@ -224,14 +224,14 @@
 				$scope.companyBranchMapIdForCustomer=$scope.selectedBranch.selected.companyBranchMapId;
 			}
 	  		var data = {
-	  				companyBranchMapId:$scope.companyBranchMapIdForCustomer,
+	  				//companyBranchMapId:$scope.companyBranchMapIdForCustomer,
 	  				//companyId:9,
 	  				//listOfUserRoleIds:tempListOfUserRoleIds,
 	  				//listOfStatusIds:tempStatus,
 //	  				fromDate:"",
 //	  				toDate:"",
-	  				listOfBranchCustoMapIds:tempbranchCustomerMapIds,
-	  				serviceCallType:$scope.selectedCallType.selected.id
+	  				branchCustomerMapId:tempbranchCustomerMapIds,
+	  				//serviceCallType:$scope.selectedCallType.selected.id
 	  		};
 	  		return data;
 	  	  }
