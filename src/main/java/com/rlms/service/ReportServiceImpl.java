@@ -540,17 +540,22 @@ public class ReportServiceImpl implements ReportService {
 		List<EventDtlsDto>dtlsDtoList = new ArrayList<EventDtlsDto>();
 		try {
 			List<Integer> liftCustomerMapIds = new ArrayList<>();
-			for (Integer integer : dto.getBranchCustomerMapId()) {
+		//	List<Integer>listLiftCustMapId=new ArrayList<>();
+			if(dto.getBranchCustomerMapId()!=null) {
+			List<Integer>branchCustoMapIds=dto.getBranchCustomerMapId();
+			for (Integer integer : branchCustoMapIds) {
 				LiftDtlsDto dtoTemp = new LiftDtlsDto();
-			  //dtoTemp.setBranchCustomerMapId(6);
-				//dtoTemp.setBranchCustomerMapId(6);
-			 //dtoTemp.setBranchCustomerMapId(integer);
+				dtoTemp.setBranchCustomerMapId(integer);
 				List<RlmsLiftCustomerMap> list = dashboardService
 						.getAllLiftsForBranchsOrCustomer(dtoTemp);
 				for (RlmsLiftCustomerMap rlmsLiftCustomerMap : list) {
 					liftCustomerMapIds.add(rlmsLiftCustomerMap
 							.getLiftCustomerMapId());
-				}		
+					}		
+				}
+			}
+			else {
+				liftCustomerMapIds=dto.getLiftCustomerMapId();
 			}
 		//	logger.info("Method :: getAllBranchesForCompany");
 			listOfEvents = dashBoardDao.getAllEventDtlsForDashboard(liftCustomerMapIds,dto.getEventType());
@@ -558,17 +563,18 @@ public class ReportServiceImpl implements ReportService {
 				EventDtlsDto dtlsDto =new EventDtlsDto();
 				dtlsDto.setBranchName(rlmsEventDtls.getRlmsLiftCustomerMap().getBranchCustomerMap().getCompanyBranchMapDtls().getRlmsBranchMaster().getBranchName());
 				dtlsDto.setCustomerName(rlmsEventDtls.getRlmsLiftCustomerMap().getBranchCustomerMap().getCustomerMaster().getCustomerName());
-				dtlsDto.setImei(rlmsEventDtls.getEventType());
+				dtlsDto.setImei(rlmsEventDtls.getImeiId());
 				dtlsDto.setEventDescription(rlmsEventDtls.getEventDescription());
 				DateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		        format.setTimeZone(TimeZone.getTimeZone("IST"));
 		        String eventDate = format.format(rlmsEventDtls.getEventDate());
 				dtlsDto.setDate(eventDate);
-				dtlsDto.setEventType(rlmsEventDtls.getRlmsLiftCustomerMap().getLiftMaster().getImei());
+				dtlsDto.setEventType(rlmsEventDtls.getEventType());
 				dtlsDto.setLiftNumber(rlmsEventDtls.getRlmsLiftCustomerMap().getLiftMaster().getLiftNumber());
 				dtlsDto.setLiftAddress(rlmsEventDtls.getRlmsLiftCustomerMap().getLiftMaster().getAddress());
 				dtlsDto.setCity(rlmsEventDtls.getRlmsLiftCustomerMap().getLiftMaster().getCity());
 				dtlsDto.setEventFromContactNo(rlmsEventDtls.getFromContact());
+				dtlsDto.setLmsResponseContactNo(rlmsEventDtls.getLmsResponseUserContactNo());
 				dtlsDtoList.add(dtlsDto);
 			}
 		} catch (Exception e) {
@@ -580,7 +586,7 @@ public class ReportServiceImpl implements ReportService {
 	@Transactional(propagation = Propagation.REQUIRED)
 	public List<ComplaintsDto> getCallDetailedReport(ComplaintsDtlsDto dto) {
 		List<ComplaintsDto> complaintsDtoList = new ArrayList<>();
-		List<RlmsLiftCustomerMap> liftCustomerMapList = liftDao.getliftCustomerMapDtlsByBranchCutomerId(dto.getBranchCustomerMapId());
+		List<RlmsLiftCustomerMap> liftCustomerMapList = liftDao.getliftCustomerMapDtlsByBranchCutomerId(dto);
 		List<Integer> listCustMapIds = new ArrayList<>();
 		for (RlmsLiftCustomerMap  liftCustomerMap : liftCustomerMapList) {
 			listCustMapIds.add(liftCustomerMap.getLiftCustomerMapId());
@@ -596,14 +602,13 @@ public class ReportServiceImpl implements ReportService {
 			complaintsDto.setCustomerAddress(rlmsComplaintMaster.getLiftCustomerMap().getBranchCustomerMap().getCustomerMaster().getAddress());
 			complaintsDto.setRegistrationDate(rlmsComplaintMaster.getRegistrationDate());
             complaintsDto.setStatus(Status.getStringFromID(rlmsComplaintMaster.getStatus()));
+            complaintsDto.setServiceCallType(rlmsComplaintMaster.getCallType());
             RlmsComplaintTechMapDtls complaintTechMapDtls = complaintsDao.getComplTechMapObjByComplaintId(rlmsComplaintMaster.getComplaintId());		
 			complaintsDto.setCallAssignedDate(complaintTechMapDtls.getAssignedDate());
         	RlmsUserRoles  rlmsUserRoles = userRoleDao.getUserRoleByUserId(complaintTechMapDtls.getUpdatedBy());
-			
 			if ((rlmsUserRoles.getRlmsSpocRoleMaster().getSpocRoleId())==SpocRoleConstants.TECHNICIAN.getSpocRoleId()) {
 				 complaintsDto.setLastVisitedDate(complaintTechMapDtls.getUpdatedDate());
 			}
-            
             if(complaintTechMapDtls.getStatus()==Status.COMPLETED.getStatusId()) {
             	complaintsDto.setToDate(complaintTechMapDtls.getUpdatedDate());
             int totalDays =  DateUtils.daysBetween(rlmsComplaintMaster.getRegistrationDate(),complaintTechMapDtls.getUpdatedDate());
@@ -620,6 +625,4 @@ public class ReportServiceImpl implements ReportService {
 		}
 		return complaintsDtoList;
 	}
-
-	
 }

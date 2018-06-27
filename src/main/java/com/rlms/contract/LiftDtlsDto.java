@@ -70,6 +70,8 @@ public class LiftDtlsDto {
 	private boolean isBlank;
 	private Integer activeFlag;
 	private String imei;
+	
+
 	private BigInteger totalLiftCountForCustomer;
 	
 	public BigInteger getTotalLiftCountForCustomer() {

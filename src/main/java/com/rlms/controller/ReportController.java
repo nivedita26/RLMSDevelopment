@@ -80,7 +80,7 @@ public class ReportController extends BaseController{
 	        }
 	        return listOfVisitDtls;
 	    }
-	 @RequestMapping(value = "/callDetailedReport", method = RequestMethod.POST)
+	 @RequestMapping(value = "/callDetailsReport", method = RequestMethod.POST)
 	    public @ResponseBody List<ComplaintsDto>  callDetailedReport(@RequestBody ComplaintsDtlsDto dto) throws RunTimeException, ValidationException {
 	        
 		 List<ComplaintsDto>  complaintsDtoList = new ArrayList<ComplaintsDto>();

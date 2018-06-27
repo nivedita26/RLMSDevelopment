@@ -681,7 +681,6 @@ public class DashboardServiceImpl implements DashboardService {
 			   branchCountDtlsList.add(branchCountDtls);
 			   i++;
 			  }
-	
 			List<BranchDtlsDto> listOFBranchDtls = new ArrayList<BranchDtlsDto>();
 		    return branchCountDtlsList;
 	}
