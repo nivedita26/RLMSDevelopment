@@ -9,9 +9,9 @@
 		  	      filterText: '',
 		  	      useExternalFilter: true
 		  	    };
-		$scope.goToAddAMC = function(){
+		/*$scope.goToAddAMC = function(){
 			window.location.hash = "#/add-amc";
-		}
+		}*/
 		
 		$scope.loadBranchData = function() {
 			var companyData = {};
@@ -30,7 +30,7 @@
 						$scope.branches = response;
 						$scope.selectedBranch.selected=undefined;
 						$scope.selectedCustomer.selected=undefined;
-//						$scope.selectedStatus.selected=undefined;
+						//$scope.selectedStatus.selected=undefined;
 						//$scope.selectedEventType.selected=undefined;
 						var emptyReports=[];
 						$scope.siteViseReport=emptyReports;
@@ -47,15 +47,13 @@
 			 $scope.selectedLift = {};
 			 $scope.selectedAmc = {};
 			 $scope.showMembers = false;
-			 $scope.eventType = [ {
-					id : 21,
-					name : 'Event'
+			 $scope.eventType = [ 
+				{
+					id : 1,
+					name : 'EVENT'
 				}, {
-					id : 31,
-					name : 'Error'
-				}, {
-					id : 41,
-					name : 'Response'
+					id : 2,
+					name : 'ERROR'
 				} ];
 			 
 		} 
@@ -74,6 +72,7 @@
 		} else {
 			$scope.showBranch = false;
 		}
+		
 		function loadCompanyData() {
 			serviceApi
 					.doPostWithoutData(
@@ -104,90 +103,253 @@
  	         })
  	         
 		}
+		
+		/*$scope.loadEventData = function() {
+			var eventData = {};
+			serviceApi
+					.doPostWithData(
+							'/RLMS/admin/getListofEvents',
+							eventData)
+					.then(
+							function(customerData) {
+								var tempAll = {
+									listOfEventTypeIds : -1,
+									firstName : "All"
+								}
+								$scope.eventId = eventData;
+								$scope.eventId
+								.unshift(tempAll);
+								$scope.selectedEventType.selected=undefined;
+								//$scope.selectedLifts.selected=undefined;
+							})
+		}*/
 		if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 3) {
 			$scope.loadCustomerData();
 		}
-		//Show Member List
-		$scope.filterOptions.filterText='';
-		$scope.$watch('filterOptions', function(newVal, oldVal) {
-	  	      if (newVal !== oldVal) {
-	  	        $scope.loadReportList($scope.filterOptions.filterText);
-	  	      }
-	  	    }, true);
-		$scope.loadReportList = function(searchText){
-			if (searchText) {
-	  	          var ft = searchText.toLowerCase();
-	  	        var dataToSend = constructDataToSend();
-	 	         serviceApi.doPostWithData('/RLMS/report/getListOfEvents',dataToSend)
-	 	         .then(function(data) {
-	 	        	$scope.siteViseReport = data.filter(function(item) {
-		  	              return JSON.stringify(item).toLowerCase().indexOf(ft) !== -1;
-		  	            });
-	 	         })
- 	         }else{
- 	        	var dataToSend = constructDataToSend();
- 	 	         serviceApi.doPostWithData('/RLMS/report/getListOfEvents',dataToSend)
- 	 	         .then(function(data) {
- 	 	        	 $scope.siteViseReport = data;
- 	 	         })
- 	         }
+		
+		$scope.loadEventList = function(){
+			$scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
 			$scope.showMembers = true;
 		}
-	   
-	  	 /* $scope.searchCustomer = function(query){
-				//console.log(query);
-				if(query && query.length > 1){
-				 var dataToSend = {
-				 	'customerName':query
-				 }
-					serviceApi.doPostWithData("/RLMS/complaint/getCustomerByName",dataToSend)
-					.then(function(customerData){
-						//console.log(customerData);
-						 $scope.cutomers = customerData;
-					},function(error){
-						
-					});
-				} 
-				
-			}*/
-		/*serviceApi
-		.doPostWithData(
-				'/RLMS/admin/getAllCustomersForBranch',
-				branchData)
-		.then(
-				function(eventData) {
-					var tempAll = {
-						listOfEventTypeIds : -1,
-						eventType : "All"
-					}
-					$scope.eventId = eventData;
-					$scope.eventId
-					.unshift(tempAll);
-					$scope.selectedEventType.selected=undefined;
-					//$scope.selectedLifts.selected=undefined;
-				})*/
 		
+		//Show Member List
+		$scope.filterOptions = {
+		  	      filterText: '',
+		  	      useExternalFilter: true
+		  	    };
+		  	    $scope.totalServerItems = 0;
+		  	    $scope.pagingOptions = {
+		  	      pageSizes: [10, 20, 50],
+		  	      pageSize: 10,
+		  	      currentPage: 1
+		  	    };
+		  	    $scope.setPagingData = function(data, page, pageSize) {
+		  	      var pagedData = data.slice((page - 1) * pageSize, page * pageSize);
+		  	      $scope.myData = pagedData;
+		  	      $scope.totalServerItems = data.length;
+		  	      if (!$scope.$$phase) {
+		  	        $scope.$apply();
+		  	      }
+		  	    };
+		  	    $scope.getPagedDataAsync = function(pageSize, page, searchText) {
+		  	    	
+		  	      setTimeout(function() {
+		  	        var data;
+		  	        if (searchText) {
+		  	          var ft = searchText.toLowerCase();
+		  	        var dataToSend = constructDataToSend();
+		  	        serviceApi.doPostWithData('/RLMS/report/getListOfEvents',dataToSend)
+		  	         .then(function(largeLoad) {
+		  	        	  var details=[];
+		  	        	  for(var i=0;i<largeLoad.length;i++){
+		  	        		var detailsObj={};
+		  	        		if(!!largeLoad[i].customerName){
+		  	        			detailsObj["CustomerName"] =largeLoad[i].customerName;
+		  	        		}else{
+		  	        			detailsObj["CustomerName"] =" - ";
+		  	        		}
+		  	        		if(!!largeLoad[i].branchName){
+		  	        			detailsObj["BranchName"] =largeLoad[i].branchName;
+		  	        		}else{
+		  	        			detailsObj["BranchName"] =" - ";
+		  	        		}
+		  	        		if(!!largeLoad[i].liftNumber){
+		  	        			detailsObj["liftNumber"] =largeLoad[i].liftNumber;
+		  	        		}else{
+		  	        			detailsObj["liftNumber"] =" - ";
+		  	        		}
+		  	        		if(!!largeLoad[i].liftAddress){
+		  	        			detailsObj["liftAddress"] =largeLoad[i].liftAddress;
+		  	        		}else{
+		  	        			detailsObj["liftAddress"] =" - ";
+		  	        		}
+		  	        		if(!!largeLoad[i].city){
+		  	        			detailsObj["city"] =largeLoad[i].city;
+		  	        		}else{
+		  	        			detailsObj["city"] =" - ";
+		  	        		}
+		  	        		if(!!largeLoad[i].amcStartDate){
+		  	        			detailsObj["LMSContactNo"] =largeLoad[i].amcStartDate;
+		  	        		}else{
+		  	        			detailsObj["LMSContactNo"] =" - ";
+		  	        		}
+		  	        		if(!!largeLoad[i].eventType){
+		  	        			detailsObj["EventType"] =largeLoad[i].eventType;
+		  	        		}else{
+		  	        			detailsObj["EventType"] =" - ";
+		  	        		}
+		  	        		if(!!largeLoad[i].date){
+		  	        			detailsObj["EventDateTime"] =largeLoad[i].date;
+		  	        		}else{
+		  	        			detailsObj["EventDateTime"] =" - ";
+		  	        		}
+		  	        		if(!!largeLoad[i].eventDescription){
+		  	        			detailsObj["Description"] =largeLoad[i].eventDescription;
+		  	        		}else{
+		  	        			detailsObj["Description"] =" - ";
+		  	        		}
+		  	        		details.push(detailsObj);
+		  	        	  }
+		  	            data = details.filter(function(item) {
+		  	              return JSON.stringify(item).toLowerCase().indexOf(ft) !== -1;
+		  	            });
+		  	            $scope.setPagingData(data, page, pageSize);
+		  	          });
+		  	        } else {
+		  	        	
+		  	        	var dataToSend = constructDataToSend();
+			  	    	
+		  	        	serviceApi.doPostWithData('/RLMS/report/getListOfEvents',dataToSend).then(function(largeLoad) {
+		  	        	  var details=[];
+		  	        	  for(var i=0;i<largeLoad.length;i++){
+			  	        	var detailsObj={};
+	  	        			
+			  	        	detailsObj["No"] = i+1 +".";
+	  	        			
+	  	        			if(!!largeLoad[i].customerName){
+		  	        			detailsObj["CustomerName"] =largeLoad[i].customerName;
+		  	        		}else{
+		  	        			detailsObj["CustomerName"] =" - ";
+		  	        		}
+		  	        		if(!!largeLoad[i].branchName){
+		  	        			detailsObj["BranchName"] =largeLoad[i].branchName;
+		  	        		}else{
+		  	        			detailsObj["BranchName"] =" - ";
+		  	        		}
+		  	        		if(!!largeLoad[i].liftNumber){
+		  	        			detailsObj["liftNumber"] =largeLoad[i].liftNumber;
+		  	        		}else{
+		  	        			detailsObj["liftNumber"] =" - ";
+		  	        		}
+		  	        		if(!!largeLoad[i].liftAddress){
+		  	        			detailsObj["liftAddress"] =largeLoad[i].liftAddress;
+		  	        		}else{
+		  	        			detailsObj["liftAddress"] =" - ";
+		  	        		}
+		  	        		if(!!largeLoad[i].city){
+		  	        			detailsObj["city"] =largeLoad[i].city;
+		  	        		}else{
+		  	        			detailsObj["city"] =" - ";
+		  	        		}
+		  	        		if(!!largeLoad[i].eventFromContactNo){
+		  	        			detailsObj["LMSContactNo"] =largeLoad[i].eventFromContactNo;
+		  	        		}else{
+		  	        			detailsObj["LMSContactNo"] =" - ";
+		  	        		}
+		  	        		if(!!largeLoad[i].eventType){
+		  	        			detailsObj["EventType"] =largeLoad[i].eventType;
+		  	        		}else{
+		  	        			detailsObj["EventType"] =" - ";
+		  	        		}
+		  	        		if(!!largeLoad[i].date){
+		  	        			detailsObj["EventDateTime"] =largeLoad[i].date;
+		  	        		}else{
+		  	        			detailsObj["EventDateTime"] =" - ";
+		  	        		}
+		  	        		if(!!largeLoad[i].eventDescription){
+		  	        			detailsObj["Description"] =largeLoad[i].eventDescription;
+		  	        		}else{
+		  	        			detailsObj["Description"] =" - ";
+		  	        		}
+		  	        		details.push(detailsObj);
+		  	        	  }
+		  	            $scope.setPagingData(details, page, pageSize);
+		  	          });
+		  	          
+		  	        }
+		  	      }, 100);
+		  	    };
+		  	    
+		  	    $scope.$watch('pagingOptions', function(newVal, oldVal) {
+		  	      if (newVal !== oldVal) {
+		  	        $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, $scope.filterOptions.filterText);
+		  	      }
+		  	    }, true);
+		  	    $scope.$watch('filterOptions', function(newVal, oldVal) {
+		  	      if (newVal !== oldVal) {
+		  	        $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, $scope.filterOptions.filterText);
+		  	      }
+		  	    }, true);
+
+		  	    $scope.gridOptions = {
+		  	      data: 'myData',
+		  	      rowHeight: 40,
+		  	      enablePaging: true,
+		  	      showFooter: true,
+		  	      totalServerItems: 'totalServerItems',
+		  	      pagingOptions: $scope.pagingOptions,
+		  	      filterOptions: $scope.filterOptions,
+		  	      multiSelect: false,
+		  	      gridFooterHeight:35,
+		  	      groupBy:'customerName',
+		  	      columnDefs : [{
+						field : "No",
+						displayName:"Sr No.",
+						width : 140
+			  	  },{
+						field : "CustomerName",
+						displayName:"Customer",
+						width : 140
+			  	  },{
+						field : "BranchName",
+						displayName:"Branch",
+						width : 140
+			  	  },{
+						field : "liftNumber",
+						displayName:"Lift No.",
+						width : 140
+			  	  },{
+						field : "liftAddress",
+						displayName:"Lift Address",
+						width : 140
+			  	  },{
+						field : "city",
+						displayName:"City",
+						width : 140
+			  	  },{
+						field : "LMSContactNo",
+						displayName:"LMS Contact no.",
+						width : 160
+			  	  },{
+						field : "EventType",
+						displayName:"Event Type",
+						width : 160
+			  	  },{
+						field : "EventDateTime",
+						displayName:"Event DateTime",
+						width : 160
+			  	  },{
+						field : "Description",
+						displayName:"Description",
+						width : 160
+			  	  }
+		  	      ]
+		  	    };
+	   
 	  	  $scope.resetReportList = function(){
 	  		initReport();
 	  	  }
 	  	  function constructDataToSend(){
-	  		var tempStatus = [];
-	  		if($scope.selectedEventType.selected){
-	  			if($scope.selectedEventType.selected.length===0){
-	  				alert("Please select Event Type");
-	  			}else{	  				
-	  				//if($scope.selectedEventType.selected.length){
-	  				//var tempStatus = [];
-	  				for (var j = 0; j < $scope.selectedEventType.selected.length; j++) {
-	  					tempStatus.push($scope.selectedEventType.selected[j].id);
-	  					//}
-	  				}
-	  			}
-	  		}else{
-	  			alert("Please select Event Type");
-	  		}
-	  		
-			
 	  		var tempbranchCustomerMapIds = [];
 			if($scope.selectedCustomer.selected.length > 0){
 				for (var j = 0; j < $scope.selectedCustomer.selected.length; j++) {
@@ -201,14 +363,13 @@
 				$scope.companyBranchMapIdForCustomer=$scope.selectedBranch.selected.companyBranchMapId;
 			}
 	  		var data = {
-	  				companyBranchMapId:$scope.companyBranchMapIdForCustomer,
+	  				//companyBranchMapId:$scope.companyBranchMapIdForCustomer,
 	  				//companyId:9,
 	  				//listOfUserRoleIds:tempListOfUserRoleIds,
-	  				listOfEventTypeIds:tempStatus,
-//	  				fromDate:"",
-//	  				toDate:"",
-	  				listOfBranchCustoMapIds:tempbranchCustomerMapIds,
-	  				serviceCallType:1
+	  				//listOfEventTypeIds:$scope.selectedEventType.selected.id,
+	  				eventType:$scope.selectedEventType.selected.name,
+	  				branchCustomerMapId:tempbranchCustomerMapIds,
+	  				//serviceCallType:1
 	  		};
 	  		return data;
 	  	  }

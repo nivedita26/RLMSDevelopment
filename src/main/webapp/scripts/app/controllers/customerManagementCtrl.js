@@ -20,14 +20,17 @@
 		} 
 		
 		$rootScope.editCustomer={};
+		$rootScope.customerTypeArray=[{id:15,name:'RESIDENTIAL'},{id:16,name:'COMMERCIAL'},{id:17,name:'BUNGLOW'},{id:18,name:'HOSPITAL'},{id:19,name:'GOODS'},{id:20,name:'DUMB_WAITER'}];
+		$rootScope.customerStatus=[{id:1,name:'Active'},{id:0,name:'Inactive'}];
 		$scope.editCustomerDetails=function(row){
-			//$rootScope.editCustomer.customerId=row.customerId;
+			$rootScope.editCustomer.customerId=row.CustomerId;
 			$rootScope.editCustomer.firstName=row.Name;
 			//$rootScope.editCustomer.lastName=row.lastName;
 			$rootScope.editCustomer.cntNumber=row.Contact_Number.replace(/-/g, '');
 			$rootScope.editCustomer.address=row.Address.replace(/-/g, '');
 			$rootScope.editCustomer.area=row.Area;
-			$rootScope.editCustomer.customerType=row.CustomerType;
+			$rootScope.editCustomer.customerTypeStr=row.CustomerType;
+			$rootScope.selectedCustomerTypes=row.CustomerType;
 			$rootScope.editCustomer.city=row.City.replace(/-/g, '');
 			$rootScope.editCustomer.pinCode=row.PinCode;
 			$rootScope.editCustomer.emailID=row.Email_Id.replace(/-/g, '');
@@ -44,7 +47,7 @@
 			$rootScope.editCustomer.watchmenName=row.WatchmenName.replace(/-/g, '');
 			$rootScope.editCustomer.watchmenNumber=row.WatchmenNumber.replace(/-/g, '');
 			$rootScope.editCustomer.watchmenEmail=row.WatchmenEmail.replace(/-/g, '');
-			//$rootScope.editCustomer.activeFlag=row.Active_Flag;
+			$rootScope.editCustomer.activeFlag=row.Active_Flag;
 			window.location.hash = "#/edit-customer";
 		};
 		
@@ -177,6 +180,11 @@
 	  	        	  var userDetails=[];
 	  	        	  for(var i=0;i<largeLoad.length;i++){
 		  	        	var userDetailsObj={};
+		  	        	if(!!largeLoad[i].customerId){
+	  	        			userDetailsObj["CustomerId"] =largeLoad[i].customerId;
+	  	        		}else{
+	  	        			userDetailsObj["CustomerId"] =" - ";
+	  	        		}
 	  	        		if(!!largeLoad[i].firstName){
 	  	        			userDetailsObj["Name"] =largeLoad[i].firstName;
 	  	        		}else{
@@ -294,6 +302,11 @@
 	  	        			userDetailsObj["WatchmenName"] =largeLoad[i].watchmenName;
 	  	        		}else{
 	  	        			userDetailsObj["WatchmenName"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].customerTypeStr){
+	  	        			userDetailsObj["CustomerType"] =largeLoad[i].customerTypeStr;
+	  	        		}else{
+	  	        			userDetailsObj["CustomerType"] =" - ";
 	  	        		}
 	  	        		userDetails.push(userDetailsObj);
 	  	        	  }

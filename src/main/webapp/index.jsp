@@ -392,11 +392,13 @@
 	<script src="scripts/app/controllers/addComplaint.js"></script>
 	<script src="scripts/app/controllers/editComplaint.js"></script>
 	<script src="scripts/app/controllers/editMember.js"></script>
+	<script src="scripts/app/controllers/callDetailReport.js"></script>
 	<script src="scripts/app/controllers/editCustomer.js"></script>	
 	<script src="scripts/app/controllers/amcManagement.js"></script>
 	<script src="scripts/app/controllers/reportsController.js"></script>
 	<script src="scripts/app/controllers/lmsAlertsController.js"></script>
 	<script src="scripts/app/controllers/addAmcCtrl.js"></script>
+	<script src="scripts/app/controllers/callSpecificReport.js"></script>
 	<script src="scripts/app/controllers/technicianReportCtrl.js"></script>
 	<script src="scripts/app/controllers/configureLiftController.js"></script>
 	<script src="scripts/demos/modules/dashboardInditec.js"></script>

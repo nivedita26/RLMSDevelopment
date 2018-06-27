@@ -153,7 +153,8 @@
 	  	        	
 	  	        	var dataToSend = constructDataToSend();
 		  	    	
-	  	        	serviceApi.doPostWithData('/RLMS/report/getAMCDetailsForLifts',dataToSend).then(function(largeLoad) {
+	  	        	serviceApi.doPostWithData('/RLMS/report/getAMCDetailsForLifts',dataToSend)
+	  	        	.then(function(largeLoad) {
 	  	        	  var details=[];
 	  	        	  for(var i=0;i<largeLoad.length;i++){
 		  	        	var detailsObj={};
@@ -256,7 +257,7 @@
 					displayName:"Area",
 					width : 140
 		  	  },{
-					field : "branchName",
+					field : "BranchName",
 					displayName:"Branch",
 					width : 140
 		  	  },{
@@ -333,15 +334,7 @@
 	 	         })
 			}
 	  	  $scope.loadLifts = function() {
-				/*
-				var dataToSend = {
-					//branchCompanyMapId : $scope.selectedBranch.selected.companyBranchMapId,
-					branchCustomerMapId : $scope.selectedCustomer.selected.branchCustomerMapId
-				}
-				serviceApi.doPostWithData('/RLMS/complaint/getAllApplicableLifts',dataToSend)
-						.then(function(liftData) {
-							$scope.lifts = liftData;
-						})*/
+				
 	  		var dataToSend = {
 	  				branchCompanyMapId : $scope.selectedBranch.selected.companyBranchMapId,
 					branchCustomerMapId : $scope.selectedCustomer.selected.branchCustomerMapId

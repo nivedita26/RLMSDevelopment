@@ -30,7 +30,8 @@
 		
 		$scope.alert = { type: 'success', msg: 'You successfully edited user.',close:true };
 		$scope.showAlert = false;
-		//load compay dropdown data
+		
+		//load company dropdown data
 		function loadCompayInfo(){
 			serviceApi.doPostWithoutData('/RLMS/admin/getAllApplicableCompanies')
 		    .then(function(response){

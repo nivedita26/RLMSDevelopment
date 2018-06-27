@@ -319,20 +319,18 @@ angular.module('theme.demos.dashboard.indi', [
         complaintStatusArray.push(str_array[i]);
       }
       $scope.testComplaintValue="After";
+      
+    //Total Calls
       setTimeout(
         function () {
           var dataToSend = $scope
             .construnctObjeToSend(complaintStatusArray);
           serviceApi
             .doPostWithData(
-           // '/RLMS/dashboard/getListOfComplaintsForDashboard',
-
        		'/RLMS/dashboard/getListOfTotalComplaintsCountByCallType',dataToSend)
             .then(
             function (
               largeLoad) {             
-              if (complaintStatusArray.includes('2') && complaintStatusArray.length == 3 && largeLoad.length > 0) {
-                
             	  var totalCount=0;
             	  for (var i = 0; i < largeLoad.length; i++)
             	  {
@@ -341,97 +339,145 @@ angular.module('theme.demos.dashboard.indi', [
             		  }
             	  }
             	  $scope.complaintsData.totalComplaints.text = totalCount;                
-            	  $scope.todaysTotalComplaints = largeLoad.filter(function (item) {
-                  return (new Date(item.updatedDate)).getTime() === $scope.todaysDate.getTime();
-                });
-                if ($scope.todaysTotalComplaints.length > 0) {
-                  $scope.complaintsData.todaysTotalComplaints.text = $scope.todaysTotalComplaints.length;
-                }
-              }
             });
         }, 100);
       
-      $scope.testComplaintValue="After";
+    //Todays Total Calls 
+     setTimeout(
+    	        function () {
+    	          var dataToSend = $scope
+    	            .construnctObjeToSend(complaintStatusArray);
+    	          serviceApi
+    	            .doPostWithData(
+    	       		'/RLMS/dashboard/getListOfTodaysComplaintsCountByCallType',dataToSend)
+    	            .then(
+    	            function (
+    	              largeLoad) {
+    	            	  var totalCount=0;
+    	            	  for (var i = 0; i < largeLoad.length; i++)
+    	            	  {
+    	            		  if(largeLoad[i].todaysCallTypeCount!=null){
+    	            			  totalCount=totalCount+largeLoad[i].todaysCallTypeCount;
+    	            			  $scope.complaintsData.todaysTotalComplaints.text = totalCount;
+    	            		  }else{
+    	            			  $scope.complaintsData.todaysTotalComplaints.text = "0";
+    	            		  }
+    	            	  }
+    	            	                  
+
+    	            });
+    	        }, 100);
+     // Total Calls by Status
       setTimeout(
         function () {
           var dataToSend = $scope
             .construnctObjeToSend(complaintStatusArray);
           serviceApi
             .doPostWithData(
-           // '/RLMS/dashboard/getListOfComplaintsForDashboard',
-
        		'/RLMS/dashboard/getListOfTotalComplaintsCountByStatus',dataToSend)
             .then(
             function (
               largeLoad) {
-              if (complaintStatusArray.includes('2') && complaintStatusArray.length == 1 && largeLoad.length > 0) {
             	  var totalCount=0;
             	  for (var i = 0; i < largeLoad.length; i++)
             	  {
             		  if(largeLoad[i].callStatus== "Pending"){
             		  if(largeLoad[i].totalCallStatusCount!=null){
             			  totalCount=totalCount+largeLoad[i].totalCallStatusCount;
-            		  }
+            			  $scope.complaintsData.totalUnassignedComplaints.text = totalCount;
+            		  }else{
+               			$scope.complaintsData.totalUnassignedComplaints.text == "0";
+               		  }
             		  }
             	  }
-                $scope.complaintsData.totalPendingComplaints.text = totalCount;
-                $scope.complaintsData.totalUnassignedComplaints.text = totalCount;
-                $scope.todaysUnassignedComplaints = largeLoad.filter(function (item) {
-                  return (new Date(item.updatedDate)).getTime() === $scope.todaysDate.getTime();
-                });
-                if ($scope.todaysUnassignedComplaints.length > 0) {
-                  $scope.complaintsData.todaysUnassignedComplaints.text = $scope.todaysUnassignedComplaints.length;
-                }
-                $scope.todaysPendingComplaints = largeLoad.filter(function (item) {
-                  return (new Date(item.updatedDate)).getTime() === $scope.todaysDate.getTime();
-                });
-                if ($scope.todaysPendingComplaints.length > 0) {
-                  $scope.complaintsData.todaysPandingComplaints.text = $scope.todaysPendingComplaints.length;
-                }
-            }
+
+            
               //Total Assigned
-              if (complaintStatusArray.includes('3') && complaintStatusArray.length == 1 && largeLoad.length > 0) {
               	 var totalCount=0;
                	  for (var i = 0; i < largeLoad.length; i++)
                	  {
-               		
-               		  if(largeLoad[i].totalCallStatusCount!=null){
-               			 if(largeLoad[i].callStatus== "Assigned"){
-               			  totalCount=totalCount+largeLoad[i].totalCallStatusCount;
+               		 if(largeLoad[i].callStatus== "Assigned"){
+               			 if(largeLoad[i].totalCallStatusCount!=null){
+               				 totalCount=totalCount+largeLoad[i].totalCallStatusCount;
+               				$scope.complaintsData.totalAssignedComplaints.text = totalCount;
+               		  }else{
+               			$scope.complaintsData.totalAssignedComplaints.text == "0";
                		  }
-               		 }else{
-               			$scope.complaintsData.totalAssignedComplaints.text = totalCount;
                		 }
                	  }
-                $scope.complaintsData.totalAssignedComplaints.text = totalCount;
-                $scope.todaysAssignedComplaints = largeLoad.filter(function (item) {
-                  return (new Date(item.updatedDate)).getTime() === $scope.todaysDate.getTime();
-                });
-                if ($scope.todaysAssignedComplaints.length > 0) {
-                  $scope.complaintsData.todaysAssignedComplaints.text = $scope.todaysAssignedComplaints.length;
-                }
-              }
+               	  
               //total Resolved
-              if (complaintStatusArray.includes('5') && complaintStatusArray.length == 1 && largeLoad.length > 0) {
               	 var totalCount=0;
               	  for (var i = 0; i < largeLoad.length; i++)
               	  {
               		  if(largeLoad[i].callStatus== "Resolved"){
               		  if(largeLoad[i].totalCallStatusCount!=null){
               			  totalCount=totalCount+largeLoad[i].totalCallStatusCount;
+              			 $scope.complaintsData.totalResolvedComplaints.text = totalCount;
+              		  }else{
+               			$scope.complaintsData.totalResolvedComplaints.text == "0";
+               		  }
               		  }
-              		  }
+              		
               	  }
-                $scope.complaintsData.totalResolvedComplaints.text = largeLoad.length;
-                $scope.todaysResolvedComplaints = largeLoad.filter(function (item) {
-                  return (new Date(item.updatedDate)).getTime() === $scope.todaysDate.getTime();
-                });
-                if ($scope.todaysResolvedComplaints.length > 0) {
-                  $scope.complaintsData.todaysResolvedComplaints.text = $scope.todaysResolvedComplaints.length;
-                }
-              }
             });
         }, 100);
+      
+      //Todays Total Calls by Status
+      setTimeout(
+    	        function () {
+    	          var dataToSend = $scope
+    	            .construnctObjeToSend(complaintStatusArray);
+    	          serviceApi
+    	            .doPostWithData(
+    	       		'/RLMS/dashboard/getListOfTodaysComplaintsCountByStatus',dataToSend)
+    	            .then(
+    	            function (
+    	              largeLoad) {
+    	            	  var totalCount=0;
+    	            	  for (var i = 0; i < largeLoad.length; i++)
+    	            	  {
+    	            		  if(largeLoad[i].callStatus== "Pending"){
+    	            		  if(largeLoad[i].todaysCallStatusCount!=null){
+    	            			  totalCount=totalCount+largeLoad[i].todaysCallStatusCount;
+    	            			  $scope.complaintsData.todaysUnassignedComplaints.text = totalCount;
+    	            		  }else{
+    	               			$scope.complaintsData.todaysUnassignedComplaints.text == "0";
+    	               		  }
+    	            		  }
+    	            	  }
+    	                
+    	                              
+    	              //Total Assigned
+    	              	 var totalCount=0;
+    	               	  for (var i = 0; i < largeLoad.length; i++)
+    	               	  {
+    	               		 if(largeLoad[i].callStatus== "Assigned"){
+    	               			 if(largeLoad[i].todaysCallStatusCount!=null){
+    	               				 totalCount=totalCount+largeLoad[i].todaysCallStatusCount;
+    	               				$scope.complaintsData.todaysAssignedComplaints.text = totalCount;
+    	               		  }else{
+    	               			$scope.complaintsData.todaysAssignedComplaints.text == "0";
+    	               		  }
+    	               		 }
+    	               	  }
+    	               	  
+    	              //total Resolved
+    	              	 var totalCount=0;
+    	              	  for (var i = 0; i < largeLoad.length; i++)
+    	              	  {
+    	              		  if(largeLoad[i].callStatus== "Resolved"){
+    	              		  if(largeLoad[i].todaysCallStatusCount!=null){
+    	              			  totalCount=totalCount+largeLoad[i].todaysCallStatusCount;
+    	              			 $scope.complaintsData.todaysResolvedComplaints.text = totalCount;
+    	              		  }else{
+    	               			$scope.complaintsData.todaysResolvedComplaints.text == "0";
+    	               		  }
+    	              		  }
+    	              		
+    	              	  }
+    	            });
+    	        }, 100);
     };
        
     
@@ -690,7 +736,7 @@ angular.module('theme.demos.dashboard.indi', [
                   page,
                   pageSize);
               });
-          } else   if (headerValue=="Total Calls" || headerValue=="Todays Total") {
+          } else   if (headerValue=="Total Calls" ) {
             var dataToSend = $scope
               .construnctObjeToSend(complaintStatus);
             serviceApi
@@ -702,49 +748,6 @@ angular.module('theme.demos.dashboard.indi', [
                 $scope.complaints = largeLoad;
                 $scope.showTable = true;
                 var userDetails = [];
-               
-                if(isTodaysData){
-                	/*largeLoad=largeLoad.filter(function (item) {
-                        return (new Date(item.updatedDate)).getTime() === $scope.todaysDate.getTime();
-                      });*/
-                	var dataToSend = $scope
-                    .construnctObjeToSend(complaintStatus);
-                	serviceApi
-                    .doPostWithData('/RLMS/dashboard/getListOfTodaysComplaintsCountByCallType',
-                    dataToSend)
-                    .then(
-                    function (
-                      largeLoad) {
-                      $scope.complaints = largeLoad;
-                      $scope.showTable = true;
-                      var userDetails = [];
-                      
-                      for (var i = 0; i < largeLoad.length; i++) {
-                          var userDetailsObj = {};
-                          
-                            userDetailsObj["No"] = i+1 +".";
-                          
-                          if (!!largeLoad[i].callType) {
-                            userDetailsObj["CallType"] = largeLoad[i].callType;
-                          } else {
-                            userDetailsObj["CallType"] = " - ";
-                          }
-                          if (!!largeLoad[i].todaysCallTypeCount) {
-                            userDetailsObj["TotalCount"] = largeLoad[i].todaysCallTypeCount;
-                          } else {
-                            userDetailsObj["TotalCount"] = " - ";
-                          }
-                          userDetails
-                            .push(userDetailsObj);
-                        }
-                        $scope
-                          .setPagingDataForComplaints(
-                          userDetails,
-                          page,
-                          pageSize);
-                      });
-                      
-                }
                 for (var i = 0; i < largeLoad.length; i++) {
                   var userDetailsObj = {};
                   
@@ -770,6 +773,117 @@ angular.module('theme.demos.dashboard.indi', [
                   pageSize);
               });
 
+          }else if(isTodaysData){
+        	  if(headerValue =="Todays Total"){
+        		var dataToSend = $scope
+                .construnctObjeToSend(complaintStatus);
+            	serviceApi
+                .doPostWithData('/RLMS/dashboard/getListOfTodaysComplaintsCountByCallType',
+                dataToSend)
+                .then(
+                function (
+                  largeLoad) {
+                  $scope.complaints = largeLoad;
+                  $scope.showTable = true;
+                  var userDetails = [];
+                  
+                  for (var i = 0; i < largeLoad.length; i++) {
+                      var userDetailsObj = {};
+                      
+                        userDetailsObj["No"] = i+1 +".";
+                      
+                      if (!!largeLoad[i].callType) {
+                        userDetailsObj["CallType"] = largeLoad[i].callType;
+                      } else {
+                        userDetailsObj["CallType"] = " - ";
+                      }
+                      if (!!largeLoad[i].todaysCallTypeCount) {
+                        userDetailsObj["TotalCount"] = largeLoad[i].todaysCallTypeCount;
+                      } else {
+                        userDetailsObj["TotalCount"] = " - ";
+                      }
+                      userDetails
+                        .push(userDetailsObj);
+                    }
+                    $scope
+                      .setPagingDataForComplaints(
+                      userDetails,
+                      page,
+                      pageSize);
+                  });
+        	  }else{
+        		  var dataToSend = $scope
+                  .construnctObjeToSend(complaintStatus);
+              	serviceApi
+                  .doPostWithData('/RLMS/dashboard/getListOfTodaysComplaintsCountByStatus',
+                  dataToSend)
+                  .then(
+                  function (
+                    largeLoad) {
+                    $scope.complaints = largeLoad;
+                    $scope.showTable = true;
+                    var userDetails = [];
+                    var data=[];
+                    if(headerValue==="Todays Unassigned"){     	                	
+	                	for (var i = 0; i < largeLoad.length; i++) {
+	                		
+	                		if(largeLoad[i].callStatus== "Pending"){
+	                			var dataCount={};
+	                			dataCount.callType=largeLoad[i].callType
+	                			dataCount.todaysCallStatusCount=largeLoad[i].todaysCallStatusCount
+	                			
+	                			data.push(dataCount);
+	                		}
+	                	}
+	                }
+                  if(headerValue==="Todays Assigned"){
+	                	for (var i = 0; i < largeLoad.length; i++) {
+	                		
+	                		if(largeLoad[i].callStatus=="Assigned"){
+	                			var dataCount={};
+	                			dataCount.callType=largeLoad[i].callType
+	                			dataCount.todaysCallStatusCount=largeLoad[i].todaysCallStatusCount	                			
+	                			data.push(dataCount);
+	                		}
+	                	}
+	                }
+                  if(headerValue==="Todays Resolved"){     	                	
+	                	for (var i = 0; i < largeLoad.length; i++) {
+	                		
+	                		if(largeLoad[i].callStatus=="Resolved"){
+	                			var dataCount={};
+	                			dataCount.callType=largeLoad[i].callType
+	                			dataCount.todaysCallStatusCount=largeLoad[i].todaysCallStatusCount
+	                			
+	                			data.push(dataCount);
+	                		}
+	                	}
+	                }         
+                    for (var i = 0; i < data.length; i++) {
+                        var userDetailsObj = {};
+                        
+                          userDetailsObj["No"] = i+1 +".";
+                        
+                        if (!!data[i].callType) {
+                          userDetailsObj["CallType"] = data[i].callType;
+                        } else {
+                          userDetailsObj["CallType"] = " - ";
+                        }
+                        if (!!data[i].todaysCallStatusCount) {
+                          userDetailsObj["TotalCount"] = data[i].todaysCallStatusCount;
+                        } else {
+                          userDetailsObj["TotalCount"] = " - ";
+                        }
+                        userDetails
+                          .push(userDetailsObj);
+                      }
+                      $scope
+                        .setPagingDataForComplaints(
+                        userDetails,
+                        page,
+                        pageSize);
+                    });
+        	  } 
           }else{
         	  var dataToSend = $scope
               .construnctObjeToSend(complaintStatus);
@@ -1059,10 +1173,13 @@ angular.module('theme.demos.dashboard.indi', [
     	                		
     	                		if(largeLoad[i].totolActiveTechnician!=null){
     	                			totalCount=totalCount+largeLoad[i].totolActiveTechnician;
+    	                			$scope.technicianData.activeTechnicians.text=totalCount;
+    	                		}else{
+    	                			$scope.technicianData.activeTechnicians.text="0";
     	                		}
     	                	}
     	                	  	                 
-    	                  $scope.technicianData.activeTechnicians.text=totalCount;
+    	                  
     	                }
     	                if (technicianStatus=="InActive") {
     	                	var totalCount= 0;
@@ -1070,10 +1187,13 @@ angular.module('theme.demos.dashboard.indi', [
     	                		
     	                		if(largeLoad[i].totalInactiveTechnician!=null){
     	                			totalCount=totalCount+largeLoad[i].totalInactiveTechnician;
+    	                			$scope.technicianData.inactiveTechnicians.text=totalCount;
+    	                		}else{
+    	                			$scope.technicianData.inactiveTechnicians.text="0";
     	                		}
     	                	}
     	                	  	                 
-    	                  $scope.technicianData.inactiveTechnicians.text=totalCount;
+    	                  
     	                }
     	                
     	                if(technicianStatus=="TotalTechnician"){
@@ -1083,6 +1203,7 @@ angular.module('theme.demos.dashboard.indi', [
     	                		if(largeLoad[i].count!=null){
     	                			totalCount=totalCount+largeLoad[i].count;
     	                		}
+    	                		
     	                	}
         	                  $scope.technicianData.totalTechnicians.text=totalCount;
     	                }
@@ -1351,11 +1472,12 @@ angular.module('theme.demos.dashboard.indi', [
 	                		
 	                		if(largeLoad[i].underAMCCount!=null){
 	                			totalCount=totalCount+largeLoad[i].underAMCCount;
-	                		}
+	                			  $scope.amcDetailsData.activeAmc.text=totalCount;
+	                		}else{
+	                   			$scope.amcDetailsData.activeAmc.text == "0";
+	                 		  }
 	                	}
-  	                	
-  	                  $scope.amcDetailsData.activeAmc.text=totalCount;
-  	                }
+   	                }
   	                if(amcStatus=="InActive"){
   	                	$scope.inactiveAMCDetails = largeLoad.filter(function (item) {
     	                    return item.activeFlag === 0;
@@ -1369,9 +1491,12 @@ angular.module('theme.demos.dashboard.indi', [
 	                		
 	                		if(largeLoad[i].amcPendingCount!=null){
 	                			totalCount=totalCount+largeLoad[i].amcPendingCount;
-	                		}
+	                			$scope.amcDetailsData.expiredAmc.text=totalCount;
+	                		}else{
+	                   			$scope.amcDetailsData.expiredAmc.text == "0";
+	                 		  }
 	                	}
-    	                  $scope.amcDetailsData.expiredAmc.text=totalCount;
+    	                  
   	                }
   	                if(amcStatus=="RenewalForThisMonth"){
   	                	/*$scope.renewalForThisMonthAMC = largeLoad.filter(function (item) {
@@ -1382,9 +1507,12 @@ angular.module('theme.demos.dashboard.indi', [
 	                		
 	                		if(largeLoad[i].renewalDueCount!=null){
 	                			totalCount=totalCount+largeLoad[i].renewalDueCount;
-	                		}
+	                			 $scope.amcDetailsData.totalRenewalForThisMonth.text=totalCount;
+	                		}else{
+	                   			$scope.amcDetailsData.totalRenewalForThisMonth.text == "0";
+	                 		  }
 	                	}
-    	                  $scope.amcDetailsData.totalRenewalForThisMonth.text=totalCount;
+    	                 
   	                }
   	              });
   	          }, 100);
@@ -2335,9 +2463,12 @@ angular.module('theme.demos.dashboard.indi', [
 	  	                		
 	  	                		if(largeLoad[i].totolEventCount!=null){
 	  	                			totalCount=totalCount+largeLoad[i].totolEventCount;
+	  	                			
+	  	                		}else{
+	  	                			$scope.event.inout.text="0";
 	  	                		}
 	  	                	}
-		                  $scope.event.inout.text=totalCount;
+	  	                	 $scope.event.inout.text=totalCount;
 		                }
 	            	  if (eventType=="Error") {
 		                  /*$scope.error = largeLoad.filter(function (item) {
@@ -2347,9 +2478,12 @@ angular.module('theme.demos.dashboard.indi', [
 	  	                	for (var i = 0; i < largeLoad.length; i++) {
 	  	                		if(largeLoad[i].totalErrorCount!=null){
 	  	                			totalCount=totalCount+largeLoad[i].totalErrorCount;
+	  	                			
+	  	                		}else{
+	  	                			$scope.event.error.text="0";
 	  	                		}
 	  	                	}
-		                  $scope.event.error.text=totalCount;
+	  	                	$scope.event.error.text=totalCount;
 
 	            	  }
 	            	  if (eventType=="Response") {
@@ -2357,9 +2491,12 @@ angular.module('theme.demos.dashboard.indi', [
   	                	for (var i = 0; i < largeLoad.length; i++) {
   	                		if(largeLoad[i].totalResCount!=null){
   	                			totalCount=totalCount+largeLoad[i].totalResCount;
+  	                			
+  	                		}else{
+  	                			$scope.event.responses.text="0";
   	                		}
   	                	}
-		                  $scope.event.responses.text=totalCount;
+  	                	$scope.event.responses.text=totalCount;
 	            	  }
 	                //  $scope.event.inout.text=largeLoad.length;
 	              });

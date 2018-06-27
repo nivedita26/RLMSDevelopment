@@ -146,7 +146,6 @@
 						 complaintId:$scope.editComplaint.complaintsNumber,						 
 						 title:$scope.selectedComplaintTitle.selected.name,
 						 //title:$scope.editComplaint.complaintsTitle.name,
-
 						 liftAddress:$scope.editComplaint.complaintsAddress + $scope.editComplaint.complaintsCity,
 						 status:$scope.selectedComplaintStatus,						 						 
 						 serviceCallType:$scope.selectedCallType.selected.id,
@@ -155,7 +154,7 @@
 						 remark:$scope.editComplaint.complaintsRemark,
 						 //status:$scope.editComplaint.status,
 						 status:$scope.selectedComplaintStatus,
-						 technicianDtls:userName,
+						 technicianDtls:$scope.userName,
 						 userRoleId:userRole,
 						 serviceCallType:$rootScope.serviceCallTypeSelect
 				};

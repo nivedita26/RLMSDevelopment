@@ -49,7 +49,7 @@ angular
  	      label: 'Operations',
    	      iconClasses: 'glyphicon glyphicon-user ',
    	      children: [{
-   	          label: 'Operational Dashboard',
+   	          label: 'Manage Operations',
    	          url: '#/complaint-management'
    	      }
    	      ]
@@ -74,6 +74,12 @@ angular
    	      },{
    	   	        label: 'LMS Alerts Report',
    	   	        url: '#/lms-alerts-report'
+   	      },{
+   	   	        label: 'Call Detailed Report',
+   	   	        url: '#/call-detail-report'
+   	      },{
+   	   	        label: 'Call Specific Report',
+   	   	        url: '#/call-specific-report'
    	      }]
    	    },
    	 {

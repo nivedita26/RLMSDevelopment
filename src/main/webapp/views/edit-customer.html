@@ -69,15 +69,16 @@
 			<div class="form-group">
 				<label class="col-sm-3 control-label">Customer Type</label>
 				<div class="col-sm-6">
-						  <ui-select ng-model="selectedCustomerTypes.selected" title="Choose a Branch">
+						  <!-- <ui-select ng-model="selectedCustomerTypes.selected" title="Choose a Branch">
 						    <ui-select-match placeholder="Select or search a branch in the list...">{{$select.selected.name}}</ui-select-match>
 						    <ui-select-choices repeat="iterator in customerTypes | filter: $select.search">
 						      <span ng-bind-html="iterator.name | highlight: $select.search"></span>
 						    </ui-select-choices>
-						  </ui-select>
+						  </ui-select> -->
+						  <input name="customerTypeStr" ng-options="x.name for x in customerTypeArray" placeholder="Required Field" class="form-control">
 				</div>
 			</div>
-			<div class="form-group ">
+			<!-- <div class="form-group ">
 				<label class="col-sm-3 control-label">Customer Status</label>
 				<div class="col-sm-6">
 			   		 <ui-select ng-model="selectedActiveFlag.selected" title="Choose a Status">
@@ -88,7 +89,7 @@
 			  		</ui-select> 
 
   				</div>
-				</div>
+				</div> -->
 			<fieldset>
 		 		 <legend>Chairman Details</legend>
 				<div class="form-group">
@@ -183,7 +184,7 @@
 				</div>
 				<div class="col-sm-6 ">
 					<div class="btn-toolbar">
-						<button class="btn-primary btn" ng-click="editCustomerForm.$invalid && editCustomerForm.$pristine" ng-click="submitEditCustomer()">Submit</button>
+						<button class="btn-primary btn" ng-disabled="addCustomerForm.$invalid && addCustomerForm.$pristine" ng-click="submitEditCustomer()">Submit</button>
 						<button class="btn-default btn" ng-click="resetAddBranch();">Reset</button>
 					</div>
 				</div>
