@@ -21,14 +21,11 @@
 						city:'',
 						area:'',
 						pinCode:'',
-						vatNumber:'',
-						tinNumber:'',
-						panNumber:'',
-						customerType:'',
+						customerTypeStr:'',
 						emailID:'',
 						cntNumber:'',
-						branchName:'',
-						companyName:'',
+						//branchName:'',
+						//companyName:'',
 						totalNumberOfLifts:'',
 						branchCompanyMapId:'',
 						chairmanName :'',
@@ -44,7 +41,7 @@
 						watchmenNumber :'',
 						watchmenEmail :'',
 						//activeFlag:'1',
-						//customerId:''
+						customerId:''
 						
 				};	
 				$scope.customerTypes = [
@@ -72,7 +69,7 @@
 						name:"DUMB_WAITER",
 						id:20
 					}
-				]
+				];
 				/*$scope.activeFlag=[
 					{
 						name:"InActive",
@@ -126,7 +123,7 @@
 			$scope.submitEditCustomer = function(){		
 				var customerData={};
 				customerData={
-						//customerId: $rootScope.editCustomer.customerId,
+						customerId: $rootScope.editCustomer.customerId,
 						firstName:$scope.editCustomer.firstName,
 						address:$scope.editCustomer.address,
 						area:$scope.editCustomer.area,
@@ -147,7 +144,8 @@
 						watchmenName :$scope.editCustomer.watchmenName,
 						watchmenNumber :$scope.editCustomer.watchmenNumber,
 						watchmenEmail :$scope.editCustomer.watchmenEmail,
-						customerType:$scope.editCustomer.customerType
+						//customerTypeStr:$scope.editCustomer.customerTypeStr
+						customerTypeStr:$scope.selectedCustomerTypes.selected.name
 				}				
 				serviceApi.doPostWithData("/RLMS/admin/validateAndUpdateCustomer",customerData)
 				.then(function(response){
@@ -157,8 +155,8 @@
 					$scope.alert.msg = successMessage;
 					$scope.alert.type = "success";
 					initAddCustomer();
-					$scope.addCustomerForm.$setPristine();
-					$scope.addCustomerForm.$setUntouched();
+					$scope.editCustomerForm.$setPristine();
+					$scope.editCustomerForm.$setUntouched();
 				},function(error){
 					$scope.showAlert = true;
 					$scope.alert.msg = error.exceptionMessage;
@@ -170,8 +168,8 @@
 				//$scope.addCustomer.companyName = $scope.selectedCompany.selected.companyName;
 				$scope.addCustomer.branchName = $scope.selectedBranch.selected.rlmsBranchMaster.branchName;
 				$scope.addCustomer.branchCompanyMapId = $scope.selectedBranch.selected.companyBranchMapId;
-				$scope.addCustomer.customerType =$scope.selectedCustomerTypes.selected.id;
-				serviceApi.doPostWithData("/RLMS/admin/validateAndRegisterNewCustomer",addCustomer)
+				//$scope.addCustomer.customerType =$scope.selectedCustomerTypes.selected.id;
+				serviceApi.doPostWithData("/RLMS/admin/validateAndRegisterNewCustomer",$scope.addCustomer)
 				.then(function(response){
 					$scope.showAlert = true;
 					var key = Object.keys(response);
@@ -187,11 +185,11 @@
 					$scope.alert.type = "danger";
 				});
 			}
-			//rese add branch
+			//reset add branch
 			$scope.resetAddCustomer = function(){
 				initAddCustomer();
-				$scope.addCustomerForm.$setPristine();
-				$scope.addCustomerForm.$setUntouched();
+				$scope.editCustomerForm.$setPristine();
+				$scope.editCustomerForm.$setUntouched();
 			}
 			$scope.backPage =function(){
 				 $window.history.back();

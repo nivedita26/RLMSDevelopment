@@ -16,6 +16,7 @@
 					//branchName:'',
 					//branchAddress:'',
 					firstName:'',
+					lastName:'',
 					city:'',
 					area:'',
 					address:'',
@@ -37,10 +38,11 @@
 		$scope.submitEditMember= function(){
 			var memberData = {};
 			memberData = {
-					id:$rootScope.editMember.MemberId,
+					memberId:$rootScope.editMember.memberId,
 					//branchName:$scope.editMember.branchName,
 					contactNumber:$scope.editMember.contactnumber,
 					firstName:$scope.editMember.firstName,
+					lastName:$scope.editMember.lastName,
 					address:$scope.editMember.address,
 					emailId:$scope.editMember.emailId,
 					area:$scope.editMember.area,
@@ -54,8 +56,8 @@
 				var successMessage = response[key[0]];
 				$scope.alert.msg = successMessage;
 				$scope.alert.type = "success";
-				$scope.addBranchForm.$setPristine();
-				$scope.addBranchForm.$setUntouched();
+				$scope.editMemberForm.$setPristine();
+				$scope.editMemberForm.$setUntouched();
 			},function(error){
 				$scope.showAlert = true;
 				$scope.alert.msg = error.exceptionMessage;
@@ -80,8 +82,8 @@
 				$scope.alert.type = "danger";
 			});
 		}
-		//rese add branch
-		$scope.resetAddBranch = function(){
+		//reset add branch
+		$scope.resetEditMember = function(){
 			//initAddBranch();
 		}
 		$scope.backPage =function(){

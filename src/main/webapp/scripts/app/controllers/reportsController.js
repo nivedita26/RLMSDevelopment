@@ -46,15 +46,12 @@
 			 $scope.selectedLift = {};
 			 $scope.selectedAmc = {};
 			 $scope.showMembers = false;
-			 $scope.status = [ {
-					id : 2,
-					name : 'Pending'
-				}, {
+			 $scope.status = [  {
 					id : 3,
 					name : 'Assigned'
 				}, {
 					id : 4,
-					name : 'Completed'
+					name : 'In Progress'
 				}, {
 					id : 5,
 					name : 'Resolved'

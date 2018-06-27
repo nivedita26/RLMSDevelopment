@@ -11,15 +11,44 @@
 		
 		$rootScope.editMember={};
 		$scope.editMemberDetails=function(row){
+			var fullName=row.Name.replace(/-/g, '').split(" ");
 			$rootScope.editMember.memberId=row.MemberId;
 			$rootScope.editMember.address=row.Address;
-			$rootScope.editMember.firstName=row.Name;
+			$rootScope.editMember.firstName=fullName[0];
+			$rootScope.editMember.lastName=fullName[1];
 			$rootScope.editMember.area=row.Area;
 			$rootScope.editMember.city=row.City;
 			$rootScope.editMember.pinCode=row.PinCode;
 			$rootScope.editMember.emailId=row.Email_Id.replace(/-/g, '');
 			$rootScope.editMember.contactnumber=row.Contact_Number.replace(/-/g, '');
 			window.location.hash = "#/edit-member";
+		};
+		
+		$scope.deleteMemberDetails=function(row){
+			var deleteMember = $window.confirm('Are you sure you want to delete the member');
+			if(deleteMember){
+				var memberData = {};
+				memberData = {
+						memberId:row.memberId
+				};
+				serviceApi.doPostWithData("/RLMS/admin/deleteMember",memberData)
+				.then(function(response){
+					$scope.showMemberList();
+					$scope.showAlert = true;
+					var key = Object.keys(response);
+					var successMessage = response[key[0]];
+					$scope.alert.msg = successMessage;
+					$scope.alert.type = "success";
+					$timeout(function() {
+						$scope.showAlert=false;
+					}, 5000);
+				},function(error){
+					$scope.showAlert = true;
+					$scope.alert.msg = error.exceptionMessage;
+					$scope.alert.type = "danger";
+				});
+			}
+			
 		};
 		function initMemberList(){
 			 $scope.selectedCompany={};
@@ -111,12 +140,12 @@
 	  	        	  for(var i=0;i<largeLoad.length;i++){
 	  	        		var detailsObj={};
 	  	        		if(!!largeLoad[i].memberId){
-	  	        			detailsObj["MemberId"] =largeLoad[i].firstName + " " +largeLoad[i].memberId;
+	  	        			detailsObj["MemberId"] =largeLoad[i].memberId;
 	  	        		}else{
 	  	        			detailsObj["MemberId"] =" - ";
 	  	        		}
 	  	        		if(!!largeLoad[i].firstName){
-	  	        			detailsObj["Name"] =largeLoad[i].firstName + " " +largeLoad[i].lastName;
+	  	        			detailsObj["Name"] =largeLoad[i].firstName ;
 	  	        		}else{
 	  	        			detailsObj["Name"] =" - ";
 	  	        		}
@@ -167,15 +196,25 @@
 	  	        	  for(var i=0;i<largeLoad.length;i++){
 		  	        	var detailsObj={};
 		  	        	if(!!largeLoad[i].memberId){
-	  	        			detailsObj["MemberId"] =largeLoad[i].firstName + " " +largeLoad[i].memberId;
+	  	        			detailsObj["MemberId"] =largeLoad[i].memberId;
 	  	        		}else{
 	  	        			detailsObj["MemberId"] =" - ";
 	  	        		}
-	  	        		if(!!largeLoad[i].firstName){
-	  	        			detailsObj["Name"] =largeLoad[i].firstName + " " + largeLoad[i].lastName;
+		  	        	if(!!largeLoad[i].firstName || !!largeLoad[i].lastName ){
+	  	        			detailsObj["Name"] =largeLoad[i].firstName +" " + largeLoad[i].lastName;
 	  	        		}else{
 	  	        			detailsObj["Name"] =" - ";
 	  	        		}
+	  	        		/*if(!!largeLoad[i].firstName){
+	  	        			detailsObj["FirstName"] =largeLoad[i].firstName  ;
+	  	        		}else{
+	  	        			detailsObj["FirstName"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].lastName){
+	  	        			detailsObj["LastName"] =largeLoad[i].lastName ;
+	  	        		}else{
+	  	        			detailsObj["LastName"] =" - ";
+	  	        		}*/
 	  	        		if(!!largeLoad[i].address){
 	  	        			detailsObj["Address"] =largeLoad[i].address;
 	  	        		}else{

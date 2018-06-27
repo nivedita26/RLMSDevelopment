@@ -1,0 +1,92 @@
+<div class="rlms-wrapper">
+<div class="rlms-container amc-management" ng-controller="callDetailedReportCtrl">
+	<h1 class="rlms-heading">Call Detailed Report</h1>
+	<div class="filter-section">
+		<div class="form-group margin-b10">
+			<label class="control-label" ng-show="showCompany">Select Company : </label>
+			<div class="select-container" ng-show="showCompany">
+				  <ui-select ng-model="selectedCompany.selected" title="Choose a Company" on-select="loadBranchData();">
+				    <ui-select-match placeholder="Select company">{{$select.selected.companyName}}</ui-select-match>
+				    <ui-select-choices repeat="companyIterator in companies| filter: $select.search">
+				      <span ng-bind-html="companyIterator.companyName | highlight: $select.search"></span>
+				    </ui-select-choices>
+				  </ui-select>
+			</div>
+			<label class="control-label" ng-show="showBranch">Select Branch</label>
+			<div class="select-container" ng-show="showBranch">
+				  <ui-select ng-model="selectedBranch.selected" title="Choose a Branch" on-select="loadCustomerData()">
+				    <ui-select-match placeholder="Select Branch">{{$select.selected.rlmsBranchMaster.branchName}}</ui-select-match>
+				    <ui-select-choices repeat="branchIterator in branches| filter: $select.search">
+				      <span ng-bind-html="branchIterator.rlmsBranchMaster.branchName | highlight: $select.search"></span>
+				    </ui-select-choices>
+				  </ui-select>
+			</div>
+			
+			<!-- <label class="control-label">Select Customer</label>
+			<div class="select-container">
+				  <ui-select ng-model="selectedCustomer.selected" title="Choose a Customer" on-select="loadLifts();">
+				    <ui-select-match placeholder="Select Customer">{{$select.selected.customerName}}</ui-select-match>
+				    <ui-select-choices refresh="searchCustomer($select.search)" refresh-delay="0" repeat="customerIterator in cutomers| filter: $select.search">
+				      <span ng-bind-html="customerIterator.customerName | highlight: $select.search"></span>
+				    </ui-select-choices>
+				  </ui-select>
+			</div> -->
+			
+					<label class=" control-label">Select Customer</label>
+					<div class="select-container">
+						  <ui-select ng-model="selectedCustomer.selected" title="Choose a Customer" on-select="loadLifts();">
+						    <ui-select-match placeholder="Select Customer">{{$select.selected.firstName}}</ui-select-match>
+						    <ui-select-choices repeat="customerIterator in cutomers| filter: $select.search">
+						      <span ng-bind-html="customerIterator.firstName | highlight: $select.search"></span>
+						    </ui-select-choices>
+						  </ui-select>
+					</div>
+			
+			<label class="control-label">Call Type</label>
+			<div class="select-container">
+			   <ui-select ng-model="selectedCallType.selected" title="Choose a call type">
+			    <ui-select-match placeholder="Select Call Type">{{$select.selected.name}}</ui-select-match>
+			    <ui-select-choices repeat="iterator in callType | filter: $select.search">
+			      <span ng-bind-html="iterator.name | highlight: $select.search"></span>
+			    </ui-select-choices>
+			  </ui-select>
+			  </div>
+			<button class="btn-sky btn" ng-click="loadReportList()">Proceed</button>
+				<button class="btn-sky btn margin-left-10" ng-click="resetReportList()">Reset</button>
+		</div>
+		
+	</div>
+	<div class="container-fluid" ng-show="showMembers">
+	<h5 class="rlms-info"><span class="fa fa-info-circle"></span>Call Specific Report List </h5>
+	<div class="input-icon right mb10">
+     <i class="fa fa-search"></i>
+     <input type="text" ng-model="filterOptions.filterText" class="form-control" placeholder="Search Filter">
+    </div>
+ 		<div class="row">
+	      <div class="col-md-12 report-container">		
+               <table class="table report-table table-bordered table-striped table-responsive">
+				 <tr class="table-active">
+				  <th>Call Type</th>
+				  <th>Title</th>
+				  <th>Lift Number</th>
+				  <th>Customer</th>
+				  <th>Registration Date </th>
+				  <th>Technician Assigned Date</th>
+				  <th>Status</th>
+				  <th>Last Visited Date</th>
+				  <th>Total Days Taken</th>
+				 </tr>
+				 <tr class="table-active" ng-repeat="report in siteViseReport">
+				  <td>{{report.callType}}</td>
+				  <td>{{report.title}}</td>
+				  <td>{{report.branchname}}</td>
+				  <td>{{report.totalComplaintsAssigned}}</td>
+				  <td>{{report.totalComplaintsResolved}}</td>
+				  <td>{{report.avgTimeTaken}}</td>        		 
+				 </tr>
+				</table>
+	        </div>
+	    </div> 
+	</div>
+</div>
+</div>

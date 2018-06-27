@@ -111,37 +111,40 @@
 					},{
 						id : 24,
 						name : 'Under Warranty Support Call'
+					},{
+						id:25,
+						name :'Operator Initiated Call'
 					}
 					];
 				
 				$scope.callType=[
 					{
 						id: 1,
-						name:'Lift Installation call'
+						name:'Lift Installation Call'
 					},{
 						id: 2,
-						name:'Configuration/Settings call'
+						name:'Configuration/Settings Call'
 					},{
 						id: 3,
-						name:'AMC call'
+						name:'AMC Call'
 					},{
 						id: 4,
-						name:'Under Warranty Support call'
+						name:'Under Warranty Support Call'
 					},{
 						id: 5,
-						name:'LMS alert call'
+						name:'LMS Alert Call'
 					},{
 						id: 6,
-						name:'Operator assigned/Generic call'
+						name:'Operator Assigned/Generic Call'
 					},{
 						id: 7,
-						name:'User raised call through App'
+						name:'User Raised Call Through App'
 					},{
 						id: 8,
-						name:'User raised call through Telephone'
+						name:'User Raised Call Through Telephone'
 					},{
 						id: 9,
-						name:'Reassign call'
+						name:'Reassign Call'
 					}
 				];
 			}

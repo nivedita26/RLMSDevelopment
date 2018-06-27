@@ -33,8 +33,8 @@
 									$scope.alert = { type: 'success', msg: 'You successfully Added Complaint.',close:true };
 									$scope.showAlert = false;
 									$scope.address="";
-									 $scope.liftAddress="";
-									 $scope.technicianAddress="";
+									$scope.liftAddress="";
+									$scope.technicianAddress="";
 									$scope.selectedCompany = {};
 									$scope.selectedBranch = {};
 									$scope.selectedCustomer = {};
@@ -729,11 +729,11 @@
 										width : 140
 									}, {
 										field : "Service_StartDate",
-										displayName:"Call Start Date",
+										displayName:"Call Assigned Date",
 										width : 160
 									}, {
 										field : "Service_End_Date",
-										displayName:"Call End Date",
+										displayName:"Call Resolved Date",
 										width : 140
 									}, {
 										field : "Address",
@@ -768,7 +768,7 @@
 								}*/								
 								$rootScope.editComplaint={};
 								$rootScope.technicianDetails=[];
-								$rootScope.complaintStatusArray=['Pending','Resolved','In Progress'];
+								$rootScope.complaintStatusArray=['Pending','Resolved','In Progress','Assigned'];
 								$scope.editThisRow=function(row){
 									if(row.Status==='Resolved' || row.Status==='Completed'){
 										$window.confirm('Complaint already completed or resolved');
@@ -778,6 +778,7 @@
 										$rootScope.editComplaint.complaintsRemark=row.Remark.replace(/-/g, '');
 										$rootScope.editComplaint.complaintsAddress=row.Address.replace(/-/g, '');
 										$rootScope.editComplaint.complaintsCity=row.City.replace(/-/g, '');
+										$rootScope.editComplaint.technicianDtls=row.Technician;
 										$rootScope.editComplaint.regDate=row.Registration_Date;
 										$rootScope.editComplaint.serviceCallType=row.Call_Typeid;
 										$rootScope.editComplaint.serviceEndDate=row.Service_End_Date;
