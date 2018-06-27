@@ -390,8 +390,8 @@ angular.module('theme.demos.dashboard.indi', [
                		  }
             		  }
             	  }
-               
-                              
+
+            
               //Total Assigned
               	 var totalCount=0;
                	  for (var i = 0; i < largeLoad.length; i++)

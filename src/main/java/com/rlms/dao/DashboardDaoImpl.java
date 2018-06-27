@@ -232,7 +232,6 @@ public class DashboardDaoImpl implements DashboardDao {
 			else if(eventType!=null&&eventType!="-1") {
 				criteria.add(Restrictions.eq("eventType", eventType));
 			}
-			
 			eventDtls = criteria.list();
 		} catch (HibernateException e) {
 			e.printStackTrace();
