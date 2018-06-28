@@ -238,27 +238,40 @@ public class CustomerServiceImpl implements CustomerService{
 	@Transactional(propagation = Propagation.REQUIRED)
 	public String validateAndRegisterNewMember(MemberDtlsDto memberDtlsDto, UserMetaInfo metaInfo) throws ValidationException{
 		String statusMessage = "";
-		if(this.validateMemberDtls(memberDtlsDto)){
-		       	RlmsMemberMaster memberMaster =this.customerDao.getMemberById(memberDtlsDto.getMemberId());
-		       	if(memberMaster!=null) {
+		//if(this.validateMemberDtls(memberDtlsDto)){
+		    //   	RlmsMemberMaster memberMaster =this.customerDao.getMemberById(memberDtlsDto.getMemberId());
+		      // 	if(memberMaster!=null) {
+		           	RlmsMemberMaster memberMaster = new RlmsMemberMaster();
 		       		RlmsMemberMaster  memberMastr= this.constructMemberMaster(memberDtlsDto,memberMaster, metaInfo);
 		       		Integer memberID = this.customerDao.saveMemberM(memberMastr);
-		       		memberMaster.setMemberId(memberID);
-		       		RlmsCustomerMemberMap customerMemberMap = this.constructCustoMemberMap(memberMaster, memberDtlsDto, metaInfo);
+		       		memberMastr.setMemberId(memberID);
+		       		RlmsCustomerMemberMap customerMemberMap = this.constructCustoMemberMap(memberMastr, memberDtlsDto, metaInfo);
 		       		this.customerDao.saveCustomerMemberMap(customerMemberMap);
 		       		statusMessage = PropertyUtils.getPrpertyFromContext(RlmsErrorType.MEMBER_REG_SUCCESSFUL.getMessage());
-		       	}
-		}
+		  //     	}
+	//	}
 		return statusMessage;
 	}
 	@Transactional(propagation = Propagation.REQUIRED)
 	public String validateAndUpdateNewMember(MemberDtlsDto memberDtlsDto, UserMetaInfo metaInfo) throws ValidationException{
 		String statusMessage = "";
 		RlmsMemberMaster memberMaster = this.customerDao.getMemberById(memberDtlsDto.getMemberId()) ;
+		
 		if(memberMaster!=null){
-	       memberMaster = this.constructMemberMaster(memberDtlsDto, memberMaster,metaInfo);
-
-			this.customerDao.updateMember(memberMaster);
+	      //memberMaster = this.constructMemberMaster(memberDtlsDto, memberMaster,metaInfo);
+	       
+	       memberMaster.setAddress(memberDtlsDto.getAddress());
+			memberMaster.setContactNumber(memberDtlsDto.getContactNumber());
+			memberMaster.setEmailId(memberDtlsDto.getEmailId());
+			memberMaster.setFirstName(memberDtlsDto.getFirstName());
+			memberMaster.setLastName(memberDtlsDto.getLastName());
+			memberMaster.setCity(memberDtlsDto.getCity());
+			memberMaster.setArea(memberDtlsDto.getArea());
+			memberMaster.setActiveFlag(RLMSConstants.ACTIVE.getId());
+			memberMaster.setPincode(memberDtlsDto.getPinCode());
+			memberMaster.setUpdatedBy(metaInfo.getUserId());
+			memberMaster.setUpdatedDate(new Date());
+	       	this.customerDao.updateMember(memberMaster);
 			statusMessage = PropertyUtils.getPrpertyFromContext(RlmsErrorType.MEMBER_EDIT_SUCCESSFUL.getMessage());
 		}
 			return statusMessage;
@@ -282,12 +295,13 @@ public class CustomerServiceImpl implements CustomerService{
 		memberMaster.setLastName(memberDtlsDto.getLastName());
 		memberMaster.setCity(memberDtlsDto.getCity());
 		memberMaster.setArea(memberDtlsDto.getArea());
+		memberMaster.setActiveFlag(RLMSConstants.ACTIVE.getId());
 		memberMaster.setPincode(memberDtlsDto.getPinCode());
 		memberMaster.setUpdatedBy(metaInfo.getUserId());
 		memberMaster.setUpdatedDate(new Date());
-	//	memberMaster.setCreatedBy(metaInfo.getUserId());
-	//	memberMaster.setCreatedDate(new Date());
-	//	memberMaster.setRegistrationDate(new Date());
+		memberMaster.setCreatedBy(metaInfo.getUserId());
+		memberMaster.setCreatedDate(new Date());
+		memberMaster.setRegistrationDate(new Date());
 		return memberMaster;
 	}
 	

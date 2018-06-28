@@ -1,6 +1,7 @@
 package com.rlms.service;
 
 import java.util.List;
+import java.util.Set;
 
 import com.rlms.contract.AMCDetailsDto;
 import com.rlms.contract.AMCStatusCount;
@@ -49,7 +50,7 @@ public interface DashboardService {
 			List<Integer> listOfApplicableBranchIds, AMCDetailsDto amcDetailsDto);
 	public List<RlmsCompanyBranchMapDtls> getAllBranchesForDashBoard(Integer companyId);
 	public List<BranchDtlsDto> getListOfBranchDtlsForDashboard(Integer companyId, UserMetaInfo metaInfo);
-	public List<BranchCountDtls> getListOfBranchCountDtlsForDashboard(Integer companyId, UserMetaInfo metaInfo);
+	public Set<BranchCountDtls> getListOfBranchCountDtlsForDashboard(Integer companyId, UserMetaInfo metaInfo);
 	public List<ComplaintsDto> getListOfAmcCallsBy(ComplaintsDtlsDto dto);
     public List<EventDtlsDto> getListOfEventsByType(RlmsEventDtls rlmsEventDtls);
     public List<TechnicianCount> getListOfTechniciansForBranch(

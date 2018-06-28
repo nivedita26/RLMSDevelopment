@@ -644,12 +644,12 @@ public class DashboardServiceImpl implements DashboardService {
 		return listOFBranchDtls;
 	}
 	@Transactional(propagation = Propagation.REQUIRED)
-	public List<BranchCountDtls> getListOfBranchCountDtlsForDashboard(Integer companyId, UserMetaInfo metaInfo){
+	public Set<BranchCountDtls> getListOfBranchCountDtlsForDashboard(Integer companyId, UserMetaInfo metaInfo){
 		List<Integer> listOfAllApplicableCompanies = new ArrayList<Integer>();
-		List<Integer> listOFApplicableBranches = new ArrayList<Integer>();
 		List<Integer> listOfBranchIds = new ArrayList<Integer>();
-		List<String> uniqueCityList = new ArrayList<>();
-		List<BranchCountDtls> branchCountDtlsList = new ArrayList<BranchCountDtls>();
+		List<String >uniqueCity = new ArrayList<>();
+		int i = 0;
+		Set<BranchCountDtls> branchCountDtlsList = new HashSet<BranchCountDtls>();
 		listOfAllApplicableCompanies.add(companyId);
 		 List<RlmsCompanyBranchMapDtls> listOfAllBranches = this.dashboardDao.getAllBranchDtlsForDashboard(listOfAllApplicableCompanies);
 		
@@ -659,33 +659,28 @@ public class DashboardServiceImpl implements DashboardService {
 		 List<Object[]> countList = dashboardDao.getBranchCountDtlsForDashboard(listOfBranchIds);
 		  BranchCountDtls branchCountDtls = null;
 		 for (Object[] objects : countList) {
-			  String cityName = objects[0].toString();
-			  if(!uniqueCityList.contains(cityName)) {
-				  branchCountDtls = new BranchCountDtls();
-
-				  branchCountDtls.setBranchCity(objects[0].toString());
+			 if(!uniqueCity.contains(objects[0].toString())) {
+			 uniqueCity.add(objects[0].toString());
+			 branchCountDtls = new BranchCountDtls();
+			  branchCountDtls.setBranchCity(objects[0].toString());
+			  if((Integer)objects[1]==1) {
+				  branchCountDtls.setBranchActiveFlagCount((BigInteger)objects[2]);
+			  }
+			  else {
+				  branchCountDtls.setBranchInactiveFlagCount((BigInteger)objects[2]);
+			  }
+			 }
+			 else if(uniqueCity.contains(objects[0].toString())){
 				  if((Integer)objects[1]==1) {
 					  branchCountDtls.setBranchActiveFlagCount((BigInteger)objects[2]);
 				  }
 				  else {
 					  branchCountDtls.setBranchInactiveFlagCount((BigInteger)objects[2]);
 				  }
-				  uniqueCityList.add(objects[0].toString());
-				  branchCountDtlsList.add(branchCountDtls);
-			    }
-			  if(uniqueCityList.contains(cityName)) {
-			  
-				  		if((Integer)objects[1]==1) {
-				  			branchCountDtls.setBranchActiveFlagCount((BigInteger)objects[2]);
-				  		}
-				  		else {
-				  			branchCountDtls.setBranchInactiveFlagCount((BigInteger)objects[2]);
-				  		}
-				  		 branchCountDtlsList.add(branchCountDtls);
-			  	}
-			 
-
-		}
+			 }
+			   branchCountDtlsList.add(branchCountDtls);
+			   i++;
+			  }
 			List<BranchDtlsDto> listOFBranchDtls = new ArrayList<BranchDtlsDto>();
 		    return branchCountDtlsList;
 	}

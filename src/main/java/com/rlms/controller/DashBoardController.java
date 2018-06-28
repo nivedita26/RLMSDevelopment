@@ -698,9 +698,9 @@ public class DashBoardController extends BaseController {
 	}
 
 	@RequestMapping(value = "/getListOfBranchCountDtlsForDashboard", method = RequestMethod.POST)
-	public @ResponseBody List<BranchCountDtls> getListOfBranchCountDtlsForDashboard(@RequestBody BranchDtlsDto dto)
+	public @ResponseBody Set<BranchCountDtls> getListOfBranchCountDtlsForDashboard(@RequestBody BranchDtlsDto dto)
 			throws RunTimeException {
-		List<BranchCountDtls> branchCountDtls = null;
+		Set<BranchCountDtls> branchCountDtls = null;
 		try {
 			logger.info("Method :: getListOfBranchDtls");
 			branchCountDtls = this.dashboardService.getListOfBranchCountDtlsForDashboard(dto.getCompanyId(),

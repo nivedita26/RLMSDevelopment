@@ -147,7 +147,6 @@
 						 title:$scope.selectedComplaintTitle.selected.name,
 						 //title:$scope.editComplaint.complaintsTitle.name,
 						 liftAddress:$scope.editComplaint.complaintsAddress + $scope.editComplaint.complaintsCity,
-						 status:$scope.selectedComplaintStatus,						 						 
 						 serviceCallType:$scope.selectedCallType.selected.id,
 						 serviceCallTypeStr:$scope.selectedCallType.selected.name,
 						// serviceCallTypeStr:$scope.editComplaint.callType,

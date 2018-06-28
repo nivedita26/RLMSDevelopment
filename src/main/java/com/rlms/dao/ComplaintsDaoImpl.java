@@ -262,37 +262,12 @@ public class ComplaintsDaoImpl implements ComplaintsDao{
 		if(dto.getServiceCallType()!=null) {
 			criteria.add(Restrictions.eq("callType", dto.getCallType()));
 		}
+		if(dto.getToDate()!=null && dto.getFromDate()!=null) {
+			criteria.add(Restrictions.between("registrationDate", dto.getToDate(),dto.getFromDate()));
+		}
 		 List<RlmsComplaintMaster> complaintList= criteria.list();
-		 
-		 //criteria.createAlias("complaintMaster.liftCustomerMap", "lcm");
-		// criteria.createAlias("lcm.branchCustomerMap", "bcm");
-		// criteria.createAlias("bcm.companyBranchMapDtls", "cbm");
-		// criteria.createAlias("cbm.rlmsCompanyMaster", "cm");
-		 
-/*//		 criteria.createAlias("userRoles", "role");
-//		 
-//				 if(null != dto.getBranchCompanyMapId()){
-//					 criteria.add(Restrictions.eq("cbm.companyBranchMapId", dto.getBranchCompanyMapId()));
-//				 }
-//				 if(null != dto.getCompanyId()){
-//					 criteria.add(Restrictions.eq("cm.companyId", dto.getCompanyId()));
-//				 }
-//				
-//				 if(null != dto.getListOfUserRoleIds()){
-//					 criteria.add(Restrictions.in("role.userRoleId", dto.getListOfUserRoleIds())); 
-//				 }
-//				 
-//				 if(null != dto.getListOFRatings()){
-//					 criteria.add(Restrictions.in("userRating", dto.getListOFRatings())); 
-//				 }
-//				 
-//				 criteria.add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
-//		 List<RlmsComplaintTechMapDtls> listOfAllcomplaints = criteria.list();
-//		 return listOfAllcomplaints;
-*/		
-		return complaintList;
+	     return complaintList;
 	}
-
 	@Override
 	public RlmsComplaintMaster getComplaintMasterByComplaintId(int complaintId) {
 		Session session = this.sessionFactory.getCurrentSession();

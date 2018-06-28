@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.rlms.constants.RLMSConstants;
 import com.rlms.constants.Status;
 import com.rlms.contract.AMCDetailsDto;
+import com.rlms.contract.ComplaintsDtlsDto;
 import com.rlms.contract.LiftDtlsDto;
 import com.rlms.model.RlmsBranchCustomerMap;
 import com.rlms.model.RlmsEventDtls;
@@ -382,19 +383,22 @@ public class LiftDaoImpl implements LiftDao{
 		 Session session = this.sessionFactory.getCurrentSession();
 		 Criteria criteria = session.createCriteria(RlmsLiftCustomerMap.class)					 
 				 .add(Restrictions.in("branchCustomerMap.branchCustoMapId",branchCustomerIds));
-				 
+	 	@SuppressWarnings("unchecked")
 		List<RlmsLiftCustomerMap>rlmsLiftCustomerMapsList = (List<RlmsLiftCustomerMap>)criteria.list();
 		 return rlmsLiftCustomerMapsList;
 	}
 
 	@Override
-	public List<RlmsLiftCustomerMap> getliftCustomerMapDtlsByBranchCutomerId(int branchCustomerId) {
+	public List<RlmsLiftCustomerMap> getliftCustomerMapDtlsByBranchCutomerId(ComplaintsDtlsDto dto) {
 		 Session session = this.sessionFactory.getCurrentSession();
 		 Criteria criteria = session.createCriteria(RlmsLiftCustomerMap.class)					 
-				 .add(Restrictions.eq("branchCustomerMap.branchCustoMapId",branchCustomerId));
+				 .add(Restrictions.eq("branchCustomerMap.branchCustoMapId",dto.getBranchCustomerMapId()));
+//		 if(dto.getToDate()!=null && dto.getFromDate()!=null) {
+//			 criteria.add(Restrictions.between(propertyName, lo, hi))
+//		 }
 				 
+		@SuppressWarnings("unchecked")
 		List<RlmsLiftCustomerMap>rlmsLiftCustomerMapsList = (List<RlmsLiftCustomerMap>)criteria.list();
 		 return rlmsLiftCustomerMapsList;
 	}
-	
 }

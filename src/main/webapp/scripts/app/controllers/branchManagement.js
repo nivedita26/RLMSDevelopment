@@ -8,7 +8,7 @@
 		$scope.showTable = false;
 		loadCompanyData();
 		$scope.selectedCompany={};
-		//$scope.selectedActiveFlag = {};
+		$scope.selectedActiveFlag = {};
 		$scope.showCompany = false;
 		
 		function loadCompanyData(){
@@ -18,7 +18,7 @@
 		    });
 		}
 		$rootScope.editBranch={};
-		//$rootScope.activeFlags=[{id:1,name:'Active'},{id:0,name:'Inactive'}];
+		$rootScope.activeFlag=[{id:1,name:'Active'},{id:0,name:'Inactive'}];
 		$scope.editBranchDetails=function(row){
 			$rootScope.editBranch.branchId=row.Branch_Id;
 			$rootScope.editBranch.branchName=row.Branch_Name;
@@ -26,7 +26,8 @@
 			$rootScope.editBranch.area=row.Area;
 			$rootScope.editBranch.city=row.City;
 			$rootScope.editBranch.pinCode=row.PinCode;
-			$rootScope.editBranch.activeFlag=row.Status;
+			$rootScope.editBranch.activeFlag=row.Status.replace(/-/g, '');
+			$rootScope.selectedActiveFlag=row.Status;
 			window.location.hash = "#/edit-branch";
 		};
 				

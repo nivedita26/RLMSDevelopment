@@ -7,7 +7,7 @@
 		//loadBranchListInfo();
 		$scope.showAlert = false;
 		$scope.companies = [];
-		$scope.activeFlag=[{id:1,name:'Active'},{id:1,name:'Inactive'}];
+		$scope.activeFlag=[{id:1,name:'Active'},{id:0,name:'Inactive'}];
 		
 		function initAddBranch(){
 			$scope.selectedCompany = {};
@@ -42,7 +42,7 @@
 					city:$scope.editBranch.city,
 					pinCode:$scope.editBranch.pinCode,
 					activeFlag:$scope.selectedActiveFlag.selected.id,
-					//activeFlag:$scope.editBranch.activeFlag.id
+					//activeFlag:$scope.editBranch.activeFlag
 					};
 			serviceApi.doPostWithData("/RLMS/admin/editBranchInCompany",branchData)
 			.then(function(response){
