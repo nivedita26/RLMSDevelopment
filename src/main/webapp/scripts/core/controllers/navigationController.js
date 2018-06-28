@@ -80,6 +80,9 @@ angular
    	      },{
    	   	        label: 'Call Specific Report',
    	   	        url: '#/call-specific-report'
+   	      },{
+   	   	        label: 'SMS Response Report',
+   	   	        url: '#/response-report'
    	      }]
    	    },
    	 {

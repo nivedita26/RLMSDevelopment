@@ -9,6 +9,26 @@
 		  	      filterText: '',
 		  	      useExternalFilter: true
 		  	    };
+		$scope.loadCustomerData = function(){
+			var branchData ={};
+  	    	if($scope.showBranch == true){
+  	    		branchData = {
+  	    			branchCompanyMapId : $scope.selectedBranch.selected!=null?$scope.selectedBranch.selected.companyBranchMapId:0
+					}
+  	    	}else{
+  	    		branchData = {
+  	    			branchCompanyMapId : $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls.companyBranchMapId
+					}
+  	    	}
+  	    	serviceApi.doPostWithData('/RLMS/admin/getAllCustomersForBranch',branchData)
+ 	         .then(function(customerData) {
+ 	        	 $scope.cutomers = customerData;
+ 	        	 $scope.selectedCustomer.selected = undefined;
+ 	        	// $scope.selectedLifts.selected = undefined;
+ 	        	 var emptyArray=[];
+ 	        	 $scope.myData = emptyArray;
+ 	         })
+		}
 		
 		function initReport(){
 			$scope.selectedCompany = {};
@@ -16,9 +36,21 @@
 			 $scope.lifts=[];
 			 $scope.branches = [];
 			 $scope.selectedCustomer = {};
+			 //$scope.selectedStatus = {};
+			 $scope.selectedEventType = {};
 			 $scope.selectedLift = {};
 			 $scope.selectedAmc = {};
 			 $scope.showMembers = false;
+			 $scope.eventType = [ {
+					id : 21,
+					name : 'Event'
+				}, {
+					id : 31,
+					name : 'Error'
+				}, {
+					id : 41,
+					name : 'Response'
+				} ];
 			 
 		} 
 		// showCompnay Flag
@@ -56,28 +88,9 @@
 					});
 		}
 		
-		$scope.loadCustomerData = function(){
-			var branchData ={};
-  	    	if($scope.showBranch == true){
-  	    		branchData = {
-  	    			branchCompanyMapId : $scope.selectedBranch.selected!=null?$scope.selectedBranch.selected.companyBranchMapId:0
-					}
-  	    	}else{
-  	    		branchData = {
-  	    			branchCompanyMapId : $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls.companyBranchMapId
-					}
-  	    	}
-  	    	serviceApi.doPostWithData('/RLMS/admin/getAllCustomersForBranch',branchData)
- 	         .then(function(customerData) {
- 	        	 $scope.cutomers = customerData;
- 	        	 $scope.selectedCustomer.selected = undefined;
- 	        	 $scope.selectedLifts.selected = undefined;
- 	        	 var emptyArray=[];
- 	        	 $scope.myData = emptyArray;
- 	         })
-		}
 		
 		$scope.loadLifts = function() {
+			
   		var dataToSend = {
   				branchCompanyMapId : $scope.selectedBranch.selected.companyBranchMapId,
 				branchCustomerMapId : $scope.selectedCustomer.selected.branchCustomerMapId
@@ -114,9 +127,13 @@
 			$scope.loadCustomerData();
 		}
 		
+		/*if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel < 3) {
+			$scope.showBranch == true
+			$scope.loadCustomerData();
+		}*/
 		//Show Member List
-		$scope.filterOptions.filterText='';
-		$scope.$watch('filterOptions', function(newVal, oldVal) {
+		//$scope.filterOptions.filterText='';
+/*		$scope.$watch('filterOptions', function(newVal, oldVal) {
 	  	      if (newVal !== oldVal) {
 	  	        $scope.loadReportList($scope.filterOptions.filterText);
 	  	      }
@@ -125,7 +142,7 @@
 			if (searchText) {
 	  	          var ft = searchText.toLowerCase();
 	  	        var dataToSend = constructDataToSend();
-	 	         serviceApi.doPostWithData('/RLMS/report/getListOfEvents',dataToSend)
+	 	         serviceApi.doPostWithData('/RLMS/report/callDetailsReport',dataToSend)
 	 	         .then(function(data) {
 	 	        	$scope.siteViseReport = data.filter(function(item) {
 		  	              return JSON.stringify(item).toLowerCase().indexOf(ft) !== -1;
@@ -133,11 +150,15 @@
 	 	         })
  	         }else{
  	        	var dataToSend = constructDataToSend();
- 	 	         serviceApi.doPostWithData('/RLMS/report/getListOfEvents',dataToSend)
+ 	 	         serviceApi.doPostWithData('/RLMS/report/callDetailsReport',dataToSend)
  	 	         .then(function(data) {
  	 	        	 $scope.siteViseReport = data;
  	 	         })
  	         }
+			$scope.showMembers = true;
+		}*/
+		$scope.loadCallSpecificList = function(){
+			$scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
 			$scope.showMembers = true;
 		}
 		
@@ -166,15 +187,18 @@
 		  	        if (searchText) {
 		  	          var ft = searchText.toLowerCase();
 		  	        var dataToSend = constructDataToSend();
-		  	        serviceApi.doPostWithData('/RLMS/report/callSpecificReport',dataToSend)
+		  	        serviceApi.doPostWithData('/RLMS/report/callDetailsReport',dataToSend)
 		  	         .then(function(largeLoad) {
 		  	        	  var details=[];
 		  	        	  for(var i=0;i<largeLoad.length;i++){
 		  	        		var detailsObj={};
-		  	        		if(!!largeLoad[i].firstName){
-		  	        			detailsObj["firstName"] =largeLoad[i].customerName;
+		  	        		
+		  	        		detailsObj["SrNo"] =i+1 +".";
+		  	        		
+		  	        		if(!!largeLoad[i].customerName){
+		  	        			detailsObj["CustomerName"] =largeLoad[i].customerName;
 		  	        		}else{
-		  	        			detailsObj["firstName"] =" - ";
+		  	        			detailsObj["CustomerName"] =" - ";
 		  	        		}
 		  	        		if(!!largeLoad[i].branchName){
 		  	        			detailsObj["BranchName"] =largeLoad[i].branchName;
@@ -187,39 +211,74 @@
 		  	        			detailsObj["liftNumber"] =" - ";
 		  	        		}
 		  	        		if(!!largeLoad[i].status){
-		  	        			detailsObj["status"] =largeLoad[i].status;
+		  	        			detailsObj["Status"] =largeLoad[i].status;
 		  	        		}else{
-		  	        			detailsObj["status"] =" - ";
+		  	        			detailsObj["Status"] =" - ";
 		  	        		}
 		  	        		if(!!largeLoad[i].amcAmount){
-		  	        			detailsObj["amcAmount"] =largeLoad[i].amcAmount;
+		  	        			detailsObj["CallAssignedDate"] =largeLoad[i].amcAmount;
 		  	        		}else{
-		  	        			detailsObj["amcAmount"] =" - ";
+		  	        			detailsObj["CallAssignedDate"] =" - ";
 		  	        		}
 		  	        		if(!!largeLoad[i].amcTypeStr){
-		  	        			detailsObj["amcTypeStr"] =largeLoad[i].amcTypeStr;
+		  	        			detailsObj["CallResolvedDate"] =largeLoad[i].amcTypeStr;
 		  	        		}else{
-		  	        			detailsObj["amcTypeStr"] =" - ";
+		  	        			detailsObj["CallResolvedDate"] =" - ";
 		  	        		}
-		  	        		if(!!largeLoad[i].amcStartDate){
-		  	        			detailsObj["amcStartDate"] =largeLoad[i].amcStartDate;
+		  	        		if(!!largeLoad[i].remark){
+		  	        			detailsObj["Remark"] =largeLoad[i].remark;
 		  	        		}else{
-		  	        			detailsObj["amcStartDate"] =" - ";
+		  	        			detailsObj["Remark"] =" - ";
 		  	        		}
-		  	        		if(!!largeLoad[i].dueDate){
-		  	        			detailsObj["dueDate"] =largeLoad[i].dueDate;
+		  	        		if(!!largeLoad[i].compalintId){
+		  	        			detailsObj["CallId"] =largeLoad[i].compalintId;
 		  	        		}else{
-		  	        			detailsObj["dueDate"] =" - ";
+		  	        			detailsObj["CallId"] =" - ";
 		  	        		}
-		  	        		if(!!largeLoad[i].area){
-		  	        			detailsObj["area"] =largeLoad[i].area;
+		  	        		if(!!largeLoad[i].address){
+		  	        			detailsObj["address"] =largeLoad[i].address;
 		  	        		}else{
-		  	        			detailsObj["area"] =" - ";
+		  	        			detailsObj["address"] =" - ";
 		  	        		}
 		  	        		if(!!largeLoad[i].city){
 		  	        			detailsObj["city"] =largeLoad[i].city;
 		  	        		}else{
 		  	        			detailsObj["city"] =" - ";
+		  	        		}
+		  	        		if(!!largeLoad[i].city){
+		  	        			detailsObj["CallRegisteredBy"] =largeLoad[i].city;
+		  	        		}else{
+		  	        			detailsObj["CallRegisteredBy"] =" - ";
+		  	        		}
+		  	        		if(!!largeLoad[i].city){
+		  	        			detailsObj["CallType"] =largeLoad[i].city;
+		  	        		}else{
+		  	        			detailsObj["CallType"] =" - ";
+		  	        		}
+		  	        		if(!!largeLoad[i].title){
+		  	        			detailsObj["Title"] =largeLoad[i].title;
+		  	        		}else{
+		  	        			detailsObj["Title"] =" - ";
+		  	        		}
+		  	        		if(!!largeLoad[i].city){
+		  	        			detailsObj["RegistrationDate"] =largeLoad[i].city;
+		  	        		}else{
+		  	        			detailsObj["RegistrationDate"] =" - ";
+		  	        		}
+		  	        		if(!!largeLoad[i].Technician){
+		  	        			detailsObj["Technician"] =largeLoad[i].Technician;
+		  	        		}else{
+		  	        			detailsObj["Technician"] =" - ";
+		  	        		}
+		  	        		if(!!largeLoad[i].FromDate){
+		  	        			detailsObj["FromDate"] =largeLoad[i].FromDate;
+		  	        		}else{
+		  	        			detailsObj["FromDate"] =" - ";
+		  	        		}
+		  	        		if(!!largeLoad[i].toDate){
+		  	        			detailsObj["ToDate"] =largeLoad[i].toDate;
+		  	        		}else{
+		  	        			detailsObj["ToDate"] =" - ";
 		  	        		}
 		  	        		details.push(detailsObj);
 		  	        	  }
@@ -232,20 +291,21 @@
 		  	        	
 		  	        	var dataToSend = constructDataToSend();
 			  	    	
-		  	        	serviceApi.doPostWithData('/RLMS/report/callSpecificReport',dataToSend).then(function(largeLoad) {
+		  	        	serviceApi.doPostWithData('/RLMS/report/callDetailsReport',dataToSend).then(function(largeLoad) {
 		  	        	  var details=[];
 		  	        	  for(var i=0;i<largeLoad.length;i++){
 			  	        	var detailsObj={};
-			  	        		detailsObj["SrNo."] = i+1 + ".";
+		  	        		detailsObj["SrNo"] =i+1 +".";
+		  	        		
 		  	        		if(!!largeLoad[i].customerName){
-		  	        			detailsObj["Customer"] =largeLoad[i].customerName;
+		  	        			detailsObj["CustomerName"] =largeLoad[i].customerName;
 		  	        		}else{
-		  	        			detailsObj["Customer"] =" - ";
+		  	        			detailsObj["CustomerName"] =" - ";
 		  	        		}
-		  	        		if(!!largeLoad[i].callType){
-		  	        			detailsObj["CallType"] =largeLoad[i].callType;
+		  	        		if(!!largeLoad[i].branchName){
+		  	        			detailsObj["BranchName"] =largeLoad[i].branchName;
 		  	        		}else{
-		  	        			detailsObj["CallType"] =" - ";
+		  	        			detailsObj["BranchName"] =" - ";
 		  	        		}
 		  	        		if(!!largeLoad[i].liftNumber){
 		  	        			detailsObj["liftNumber"] =largeLoad[i].liftNumber;
@@ -253,44 +313,74 @@
 		  	        			detailsObj["liftNumber"] =" - ";
 		  	        		}
 		  	        		if(!!largeLoad[i].status){
-		  	        			detailsObj["status"] =largeLoad[i].status;
+		  	        			detailsObj["Status"] =largeLoad[i].status;
 		  	        		}else{
-		  	        			detailsObj["status"] =" - ";
+		  	        			detailsObj["Status"] =" - ";
+		  	        		}
+		  	        		if(!!largeLoad[i].amcAmount){
+		  	        			detailsObj["CallAssignedDate"] =largeLoad[i].amcAmount;
+		  	        		}else{
+		  	        			detailsObj["CallAssignedDate"] =" - ";
+		  	        		}
+		  	        		if(!!largeLoad[i].amcTypeStr){
+		  	        			detailsObj["CallResolvedDate"] =largeLoad[i].amcTypeStr;
+		  	        		}else{
+		  	        			detailsObj["CallResolvedDate"] =" - ";
+		  	        		}
+		  	        		if(!!largeLoad[i].remark){
+		  	        			detailsObj["Remark"] =largeLoad[i].remark;
+		  	        		}else{
+		  	        			detailsObj["Remark"] =" - ";
+		  	        		}
+		  	        		if(!!largeLoad[i].compalintId){
+		  	        			detailsObj["CallId"] =largeLoad[i].compalintId;
+		  	        		}else{
+		  	        			detailsObj["CallId"] =" - ";
+		  	        		}
+		  	        		if(!!largeLoad[i].address){
+		  	        			detailsObj["address"] =largeLoad[i].address;
+		  	        		}else{
+		  	        			detailsObj["address"] =" - ";
+		  	        		}
+		  	        		if(!!largeLoad[i].city){
+		  	        			detailsObj["city"] =largeLoad[i].city;
+		  	        		}else{
+		  	        			detailsObj["city"] =" - ";
+		  	        		}
+		  	        		if(!!largeLoad[i].city){
+		  	        			detailsObj["CallRegisteredBy"] =largeLoad[i].city;
+		  	        		}else{
+		  	        			detailsObj["CallRegisteredBy"] =" - ";
+		  	        		}
+		  	        		if(!!largeLoad[i].city){
+		  	        			detailsObj["CallType"] =largeLoad[i].city;
+		  	        		}else{
+		  	        			detailsObj["CallType"] =" - ";
 		  	        		}
 		  	        		if(!!largeLoad[i].title){
 		  	        			detailsObj["Title"] =largeLoad[i].title;
 		  	        		}else{
 		  	        			detailsObj["Title"] =" - ";
 		  	        		}
-		  	        		if(!!largeLoad[i].regDate){
-		  	        			detailsObj["RegDate"] =largeLoad[i].regDate;
-		  	        		}else{
-		  	        			detailsObj["RegDate"] =" - ";
-		  	        		}
-		  	        		if(!!largeLoad[i].amcStartDate){
-		  	        			detailsObj["amcStartDate"] =largeLoad[i].amcStartDate;
-		  	        		}else{
-		  	        			detailsObj["amcStartDate"] =" - ";
-		  	        		}
-		  	        		if(!!largeLoad[i].amcEndDate){
-		  	        			detailsObj["amcEndDate"] =largeLoad[i].amcEndDate;
-		  	        		}else{
-		  	        			detailsObj["amcEndDate"] =" - ";
-		  	        		}
-		  	        		if(!!largeLoad[i].dueDate){
-		  	        			detailsObj["dueDate"] =largeLoad[i].dueDate;
-		  	        		}else{
-		  	        			detailsObj["dueDate"] =" - ";
-		  	        		}
-		  	        		if(!!largeLoad[i].area){
-		  	        			detailsObj["area"] =largeLoad[i].area;
-		  	        		}else{
-		  	        			detailsObj["area"] =" - ";
-		  	        		}
 		  	        		if(!!largeLoad[i].city){
-		  	        			detailsObj["city"] =largeLoad[i].city;
+		  	        			detailsObj["RegistrationDate"] =largeLoad[i].city;
 		  	        		}else{
-		  	        			detailsObj["city"] =" - ";
+		  	        			detailsObj["RegistrationDate"] =" - ";
+		  	        		}
+		  	        		if(!!largeLoad[i].Technician){
+		  	        			detailsObj["Technician"] =largeLoad[i].Technician;
+		  	        		}else{
+		  	        			detailsObj["Technician"] =" - ";
+		  	        		}
+		  	        		if(!!largeLoad[i].FromDate){
+		  	        			detailsObj["FromDate"] =largeLoad[i].FromDate;
+		  	        		}else{
+		  	        			detailsObj["FromDate"] =" - ";
+		  	        		}
+		  	        		if(!!largeLoad[i].toDate){
+		  	        			detailsObj["ToDate"] =largeLoad[i].toDate;
+		  	        		}else{
+		  	        			detailsObj["ToDate"] =" - ";
 		  	        		}
 		  	        		details.push(detailsObj);
 		  	        	  }
@@ -322,21 +412,41 @@
 		  	      filterOptions: $scope.filterOptions,
 		  	      multiSelect: false,
 		  	      gridFooterHeight:35,
-		  	      groupBy:'customerName',
+		  	      //groupBy:'customerName',
 		  	      columnDefs : [{
+						field : "SrNo",
+						displayName:"Sr No.",
+						width : 120
+			  	  },{
+						field : "CallId",
+						displayName:"Call Id",
+						width : 140
+			  	  },{
+						field : "CallType",
+						displayName:"Call Type",
+						width : 140
+			  	  },{
+						field : "Title",
+						displayName:"Title",
+						width : 140
+			  	  },{
+						field : "CallRegisteredBy",
+						displayName:"Call Registered By",
+						width : 140
+			  	  },{
 						field : "liftNumber",
 						displayName:"Lift Number",
 						width : 140
 			  	  },{
-						field : "firstName",
+						field : "CustomerName",
 						displayName:"Customer",
 						width : 140
 			  	  },{
-						field : "area",
-						displayName:"Area",
+						field : "address",
+						displayName:"Address",
 						width : 140
 			  	  },{
-						field : "branchName",
+						field : "BranchName",
 						displayName:"Branch",
 						width : 140
 			  	  },{
@@ -344,33 +454,42 @@
 						displayName:"City",
 						width : 140
 			  	  },{
-						field : "amcTypeStr",
-						displayName:"AMC Type",
+						field : "serviceStartDate",
+						displayName:"Call Registration Date",
 						width : 140
 			  	  },{
-						field : "amcStartDate",
-						displayName:"AMC Start Date",
+						field : "CallAssignedDate",
+						displayName:"Call Assigned Date",
 						width : 160
 			  	  },{
-						field : "amcEndDate",
-						displayName:"AMC End Date",
+						field : "CallResolvedDate",
+						displayName:"Call Resolved Date",
 						width : 160
 			  	  },{
-						field : "dueDate",
-						displayName:"Due Date",
+						field : "Technician",
+						displayName:"Technician",
 						width : 120
 			  	  },{
-						field : "amcAmount",
-						displayName:"AMC Amount",
+						field : "FromDate",
+						displayName:"From Date",
+						width : 120
+			  	  },{
+						field : "ToDate",
+						displayName:"To Date",
+						width : 120
+			  	  },{
+						field : "Remark",
+						displayName:"Remarks",
 						width : 120
 		  	      },{
-						field : "status",
+						field : "Status",
 						displayName:"Status",
 						width : 120
 			  	  }
 		  	      ]
-		  	    }
-		
+		  	    };
+	   
+
 	  	  $scope.resetReportList = function(){
 	  		initReport();
 	  	  }
@@ -390,26 +509,27 @@
 	  		
 			
 	  		var tempbranchCustomerMapIds = [];
-			if($scope.selectedCustomer.selected.length > 0){
+			/*if($scope.selectedCustomer.selected.length > 0){
 				for (var j = 0; j < $scope.selectedCustomer.selected.length; j++) {
 					tempbranchCustomerMapIds.push($scope.selectedCustomer.selected[j].branchCustomerMapId);
 				}
-			}
+			}*/
+	  		//tempbranchCustomerMapIds.push($scope.selectedCustomer.selected.branchCustomerMapId);
 			
-			if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 3) {
+			/*if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 3) {
 				$scope.companyBranchMapIdForCustomer=$rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls.companyBranchMapId;
 			}else{
 				$scope.companyBranchMapIdForCustomer=$scope.selectedBranch.selected.companyBranchMapId;
-			}
+			}*/
 	  		var data = {
-	  				companyBranchMapId:$scope.companyBranchMapIdForCustomer,
+	  				//companyBranchMapId:$scope.companyBranchMapIdForCustomer,
 	  				//companyId:9,
 	  				//listOfUserRoleIds:tempListOfUserRoleIds,
-	  				listOfEventTypeIds:tempStatus,
+	  				//listOfEventTypeIds:tempStatus,
 //	  				fromDate:"",
 //	  				toDate:"",
-	  				listOfBranchCustoMapIds:tempbranchCustomerMapIds,
-	  				serviceCallType:1
+	  				branchCustomerMapId:$scope.selectedCustomer.selected.branchCustomerMapId
+	  				//serviceCallType:1
 	  		};
 	  		return data;
 	  	  }

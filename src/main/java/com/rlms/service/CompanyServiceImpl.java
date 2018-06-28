@@ -301,14 +301,15 @@ public class CompanyServiceImpl implements CompanyService{
 			branchDtlsDto.setCity(rlmsCompanyBranchMapDtls.getRlmsBranchMaster().getCity());
 			branchDtlsDto.setPinCode(rlmsCompanyBranchMapDtls.getRlmsBranchMaster().getPincode());
 			branchDtlsDto.setCompanyName(rlmsCompanyBranchMapDtls.getRlmsCompanyMaster().getCompanyName());
+			branchDtlsDto.setActiveFlag(rlmsCompanyBranchMapDtls.getRlmsBranchMaster().getActiveFlag());
 			List<UserDtlsDto> listOfAllTech = this.getListOFAllTEchnicians(companyBranchMapId);
-			branchDtlsDto.setListOfAllTechnicians(listOfAllTech);
+			//branchDtlsDto.setListOfAllTechnicians(listOfAllTech);
 			if(null != listOfAllTech && !listOfAllTech.isEmpty()){
 				branchDtlsDto.setNumberOfTechnicians(listOfAllTech.size());
 			}
 			List<LiftDtlsDto> listOfAllLifts = this.getListOfAllLifts(companyBranchMapId);
 			if(null != listOfAllLifts){
-				branchDtlsDto.setListOfAllLifts(listOfAllLifts);
+			//	branchDtlsDto.setListOfAllLifts(listOfAllLifts);
 			}
 			if(null != listOfAllLifts){
 				branchDtlsDto.setNumberOfLifts(listOfAllLifts.size());
