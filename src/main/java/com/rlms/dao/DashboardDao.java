@@ -48,5 +48,8 @@ public interface DashboardDao {
 
     public List<Object[]> getBranchCountDtlsForDashboard(
 			List<Integer> branchIds);
+    
+    
+    public List<RlmsComplaintMaster> getAllComplaintsForAvgLogs(Date fromDate,Date toDate);
 
 }

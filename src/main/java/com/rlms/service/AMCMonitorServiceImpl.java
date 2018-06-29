@@ -6,8 +6,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.rlms.constants.SpocRoleConstants;
 import com.rlms.constants.Status;
 import com.rlms.dao.AMCMonitorDao;
@@ -19,6 +22,9 @@ import com.rlms.utils.DateUtils;
 
 @Service
 public class AMCMonitorServiceImpl implements AMCMonitorService{
+	
+	private static final Logger logger = Logger.getLogger(AMCMonitorServiceImpl.class);
+
 	
 	@Autowired
 	AMCMonitorDao amcMonitorDao;
@@ -42,7 +48,9 @@ public class AMCMonitorServiceImpl implements AMCMonitorService{
 				 int status =  calculateAMCStatus(amcStartDate,amcEndDate);
 				 rlmsLiftAmcDtls.setStatus(status);
 				 rlmsLiftAmcDtls.setUpdatedDate(new Date());
+				 if(status==Status.AMC_PENDING.getStatusId()||status==Status.RENEWAL_DUE.getStatusId()) {
 				 liftDao.mergeLiftAMCDtls(rlmsLiftAmcDtls);
+				 }
 				 if(status==Status.getIdFromString(Status.AMC_PENDING.getStatusMsg())) {
 					 this.AMCExpiredstatusNotifyToUser(rlmsLiftAmcDtls);
 				 }
@@ -89,27 +97,17 @@ public class AMCMonitorServiceImpl implements AMCMonitorService{
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		if((DateUtils.isBeforeToDate(renewalDate, today))){
+		if((DateUtils.isBeforeToDate(renewalDate, today))||(DateUtils.isAfterToDate(today, renewalDate))){
 			renewalDays = DateUtils.daysBetween(renewalDate,today);
 			if(renewalDays<=30 &&renewalDays>=0) {
 				//	if((DateUtils.isAfterOrEqualTo(renewalDate,today)) && (DateUtils.isBeforeOrEqualToDate(today, amcEndDate))){
-				amcStatus = Status.RENEWAL_DUE.getStatusId();
+				return amcStatus = Status.RENEWAL_DUE.getStatusId();
 				}
-		}
-		else if ((DateUtils.isAfterToDate(today, renewalDate))){
-				renewalDays = DateUtils.daysBetween(today,renewalDate);
-				if(renewalDays<=30 &&renewalDays>=0) {
-					//	if((DateUtils.isAfterOrEqualTo(renewalDate,today)) && (DateUtils.isBeforeOrEqualToDate(today, amcEndDate))){
-					amcStatus = Status.RENEWAL_DUE.getStatusId();
-				}
-		 }
-		 else if(DateUtils.isBeforeToDate(amcEndDate, today)){
-				amcStatus = Status.AMC_PENDING.getStatusId();
-			 }
-		 else if((DateUtils.isBeforeOrEqualToDate(amcStartDate,today))&&(DateUtils.isAfterOrEqualTo(today,amcEndDate))){
-				amcStatus = Status.UNDER_AMC.getStatusId();
 			}
-		return amcStatus;
+			if(DateUtils.isBeforeToDate(amcEndDate, today)){
+				return amcStatus = Status.AMC_PENDING.getStatusId();
+			}
+			return amcStatus;
 	}
 	public void  AMCExpiredstatusNotifyToUser(RlmsLiftAmcDtls rlmsLiftAmcDtls) throws UnsupportedEncodingException{
 			List<String> listOfDynamicValues = new ArrayList<String>();
@@ -125,13 +123,12 @@ public class AMCMonitorServiceImpl implements AMCMonitorService{
 				if(null != companyAdmin){
 					listOfDynamicValues.add(companyAdmin.getRlmsUserMaster().getFirstName() + " " + companyAdmin.getRlmsUserMaster().getLastName() + " (" + companyAdmin.getRlmsUserMaster().getContactNumber() + ")");
 				}
-
-			List<String> toList = new ArrayList<String>();
-			toList.add(rlmsLiftAmcDtls.getLiftCustomerMap().getBranchCustomerMap().getCustomerMaster().getEmailID());
-			this.messagingService.sendAMCMail(listOfDynamicValues, toList, com.rlms.constants.EmailTemplateEnum.AMC_EXPIRED.getTemplateId());
+				logger.debug("emailId"+rlmsLiftAmcDtls.getLiftCustomerMap().getBranchCustomerMap().getCustomerMaster().getEmailID());
+     			List<String> toList = new ArrayList<String>();
+     			toList.add(rlmsLiftAmcDtls.getLiftCustomerMap().getBranchCustomerMap().getCustomerMaster().getEmailID());
+     			this.messagingService.sendAMCMail(listOfDynamicValues, toList, com.rlms.constants.EmailTemplateEnum.AMC_EXPIRED.getTemplateId());
 		}
 	}
-	
 	public void AMCRenewalAndNotifyUser(RlmsLiftAmcDtls rlmsLiftAmcDtls) throws UnsupportedEncodingException{
 			rlmsLiftAmcDtls.setStatus(Status.RENEWAL_DUE.getStatusId());
 			this.liftDao.mergeLiftAMCDtls(rlmsLiftAmcDtls);
@@ -151,6 +148,7 @@ public class AMCMonitorServiceImpl implements AMCMonitorService{
 					listOfDynamicValues.add(companyAdmin.getRlmsUserMaster().getFirstName() + " " + companyAdmin.getRlmsUserMaster().getLastName() + " (" + companyAdmin.getRlmsUserMaster().getContactNumber() + ")");
 				}
 			List<String> toList = new ArrayList<String>();
+			logger.debug("emailId" +rlmsLiftAmcDtls.getLiftCustomerMap().getBranchCustomerMap().getCustomerMaster().getEmailID());
 			toList.add(rlmsLiftAmcDtls.getLiftCustomerMap().getBranchCustomerMap().getCustomerMaster().getEmailID());
 			this.messagingService.sendAMCMail(listOfDynamicValues, toList, com.rlms.constants.EmailTemplateEnum.AMC_RENEWAL.getTemplateId());
 		}

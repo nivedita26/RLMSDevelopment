@@ -247,13 +247,35 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 		List<ComplaintsDto> listOfAllComplaints = new ArrayList<ComplaintsDto>();
 		List<RlmsComplaintMaster> listOfComplaints = this.complaintsDao.getAllComplaintsForGivenCriteria(dto.getBranchCompanyMapId(), dto.getBranchCustomerMapId(), dto.getListOfLiftCustoMapId(), dto.getStatusList(),dto.getFromDate(), dto.getToDate(),dto.getServiceCallType());
 		for (RlmsComplaintMaster rlmsComplaintMaster : listOfComplaints) {
-			ComplaintsDto complaintsDto = this.constructComplaintDto(rlmsComplaintMaster);
-			listOfAllComplaints.add(complaintsDto);
+			boolean isToShow = true;
+			if(RLMSCallType.AMC_CALL.getId() == rlmsComplaintMaster.getCallType()){
+				isToShow = this.isServiceCallToShow(rlmsComplaintMaster.getRegistrationDate(),rlmsComplaintMaster.getServiceStartDate());
+			}
+			if(isToShow){
+					ComplaintsDto complaintsDto = this.constructComplaintDto(rlmsComplaintMaster);
+  			         listOfAllComplaints.add(complaintsDto);
+		    }
 		}
-		
 		return listOfAllComplaints;
 	}
 	
+private boolean isServiceCallToShow(Date regDate,Date serviceStartDate){
+	//Date pivotDate = DateUtils.addDaysToDate(new Date(), 8);
+	Date today = null;
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	try {
+			today = sdf.parse(sdf.format(new Date()));
+	} catch (ParseException e) {
+		
+	}
+	int diff = DateUtils.daysBetween(today,serviceStartDate);
+	if(diff>=0&& diff>8) {
+		return false;
+	}
+	
+	return true;
+}
+
 	@Transactional(propagation = Propagation.REQUIRED)
 	public List<RlmsComplaintMaster> getAllComplaintsForGivenCriteria(ComplaintsDtlsDto dto){
 		return this.complaintsDao.getAllComplaintsForGivenCriteria(dto.getBranchCompanyMapId(), dto.getBranchCustomerMapId(), dto.getListOfLiftCustoMapId(), dto.getStatusList(),dto.getFromDate(), dto.getToDate(),0);

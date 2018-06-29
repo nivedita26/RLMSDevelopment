@@ -4,6 +4,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.math.BigInteger;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -588,14 +589,12 @@ public class DashboardServiceImpl implements DashboardService {
 			liftIds.add(liftAmcDtls.getLiftCustomerMap().getLiftMaster()
 					.getLiftId());
 		}
-
 		for (Integer liftId : liftIds) {
 			List<RlmsLiftAmcDtls> listForLift = new ArrayList<RlmsLiftAmcDtls>(
 					listOfAMCDtls);
 			CollectionUtils.filter(listForLift, new LiftPredicate(liftId));
 			listOFAMCDetails.addAll(this.constructListOFAMcDtos(listForLift));
 		}
-
 		return listOFAMCDetails;
 	}
 	
@@ -701,10 +700,8 @@ public class DashboardServiceImpl implements DashboardService {
 					.constructComplaintDto(rlmsComplaintMaster);
 			listOfAllComplaints.add(complaintsDto);
 		}
-
 		return listOfAllComplaints;
 	}
-
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public List<EventDtlsDto> getListOfEventsByType(RlmsEventDtls rlmsEventDtls) {
@@ -788,13 +785,26 @@ public class DashboardServiceImpl implements DashboardService {
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
  	public List<ComplaintsCount> getListOfTotalComplaintsCountByCallType(ComplaintsDtlsDto dto) {
-	List<ComplaintsDto> listOfAllComplaints = new ArrayList<ComplaintsDto>();
+	List<RlmsComplaintMaster> listOfAllComplaints = new ArrayList<RlmsComplaintMaster>();
 	List<ComplaintsCount> complaintsCountsList =  new ArrayList<>();
+	float avgLogsPerDay=0.0f;
+	Date today = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	    Date pivotDate = DateUtils.addDaysToDate(new Date(), -30);
+	    try {
+		 pivotDate=sdf.parse(sdf.format(pivotDate));
+		today = sdf.parse(sdf.format(new Date()));
+		} catch (ParseException e) {
+		}
+		
+	listOfAllComplaints = dashboardDao.getAllComplaintsForAvgLogs(pivotDate,today);
+	avgLogsPerDay =(( listOfAllComplaints.size())/30);
 	List<Object[]> complaintCount = dashboardDao.getTotalComplaintsCallTypeCount(dto.getListOfLiftCustoMapId());
 	for (Object[] objects : complaintCount) {
 		ComplaintsCount complaintsCount = new ComplaintsCount();
 		complaintsCount.setCallType(RLMSCallType.getStringFromID((Integer)objects[0]));
 		complaintsCount.setTotalCallTypeCount((BigInteger)objects[1]);
+		complaintsCount.setAvgLogsPerDay(avgLogsPerDay);
 		complaintsCountsList.add(complaintsCount);
 		}
 		return complaintsCountsList;
@@ -802,7 +812,6 @@ public class DashboardServiceImpl implements DashboardService {
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
  	public List<ComplaintsCount> getListOfTodaysComplaintsCountByCallType(ComplaintsDtlsDto dto) {
-	List<ComplaintsDto> listOfAllComplaints = new ArrayList<ComplaintsDto>();
 	List<ComplaintsCount> complaintsCountsList =  new ArrayList<>();
 	List<Object[]> complaintCount = dashboardDao.getTodaysComplaintsCallTypeCount(dto.getListOfLiftCustoMapId());
 	for (Object[] objects : complaintCount) {
@@ -817,7 +826,7 @@ public class DashboardServiceImpl implements DashboardService {
 @Transactional(propagation = Propagation.REQUIRED)
 public List<ComplaintsCount> getListOfTotalComplaintsCountByStatus(ComplaintsDtlsDto dto) {
 List<ComplaintsCount> complaintsCountsList =  new ArrayList<>();
-		
+//List<RlmsComplaintMaster> resolvedComplaintList= new ArrayList<>();
 List<Object[]> complaintCount = dashboardDao.getTotalComplaintsStatusCount(dto.getListOfLiftCustoMapId());
 	for (Object[] objects : complaintCount) {
 		ComplaintsCount complaintsCount = new ComplaintsCount();

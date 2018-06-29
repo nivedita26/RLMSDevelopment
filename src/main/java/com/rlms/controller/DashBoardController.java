@@ -183,7 +183,6 @@ public class DashBoardController extends BaseController {
 								amcStatusCount.setCity(customerDtlsDto.getCity());
 								amcStatusCount.setTotalLiftCount(list.size());
 								amcStatusDetailsCountList.add(amcStatusCount);
-
 							}
 						}
 					}
@@ -203,14 +202,12 @@ public class DashBoardController extends BaseController {
 			throws RunTimeException {
 		List<UserRoleDtlsDTO> listOfComplaints = null;
 		List<RlmsCompanyBranchMapDtls> listOfAllBranches = null;
-
 		List<Integer> companyBranchMapIds = new ArrayList<>();
 		List<Integer> branchCustomerMapIds = new ArrayList<>();
 		listOfAllBranches = this.companyService.getAllBranches(dto.getCompanyId());
 		for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
 			companyBranchMapIds.add(companyBranchMap.getCompanyBranchMapId());
 		}
-
 		try {
 			logger.info("Method :: getListOfComplaints");
 			listOfComplaints = this.dashboardService.getListOfTechnicians(companyBranchMapIds);

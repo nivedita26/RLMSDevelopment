@@ -2,6 +2,7 @@ package com.rights.batches;
 
 import java.io.UnsupportedEncodingException;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -13,21 +14,20 @@ import com.rlms.service.ReportService;
 @Configuration
 @EnableScheduling
 public class ScheduleTesting {
+	private static final Logger logger = Logger.getLogger(ScheduleTesting.class);
 
 	@Autowired
 	private ReportService reportService;
 
 	@Autowired
   AMCMonitorService  aMCMonitorService;
-	@Scheduled(cron="0 1 00 * * ?")
+	@Scheduled(cron="0 01 00 * * ?")
 	//@Scheduled(cron="0 28 13 * * ?")
     //@Scheduled(fixedRate =10000)
 	 public void schedule() {
-		System.out.println("Batch start");
+		logger.debug("Batch start");
 		 try {
 			 aMCMonitorService.getAllAMCDtlsAndUpdateStatus();
-			 // this.reportService.changeStatusToAMCExpiryAndNotifyUser();
-			 // this.executeAMCBatch();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -62,11 +62,11 @@
 			
 			<div class="form-group">
 				<label class="col-sm-3 control-label">AMC Start Date</label>
-					<div class="col-md-6"><input id="stDate" type="text" class="form-control datepicker" datepicker-popup="{{format}}" ng-click="open($event,fromDate)" is-open="openFlag.fromDate"  ng-model="addAMC.amcStDate"/></div>
+					<div class="col-md-6"><input id="stDate" type="text" class="form-control datepicker" datepicker-popup="{{format}}" ng-click="open($event,'fromDate')" is-open="openFlag.fromDate"  ng-model="addAMC.amcStDate"/></div>
 			</div>
 			<div class="form-group">
 				<label class="col-sm-3 control-label">AMC End Date</label>
-					<div class="col-md-6"><input id="edDate" name="toDate " type="text" class="form-control datepicker" datepicker-popup="{{format}}" ng-click="getdate()" is-open="openFlag.toDate" ng-model="addAMC.amcEdDate"/></div>
+					<div class="col-md-6"><input id="edDate" name="toDate " type="text" class="form-control datepicker" datepicker-popup="{{format}}" ng-click="open($event,'toDate')"is-open="openFlag.toDate" ng-model="addAMC.amcEdDate"/></div>
 			</div>
 			<div class="form-group ">
 				<label class="col-sm-3 control-label margin-left-10">Add Service Calls</label>

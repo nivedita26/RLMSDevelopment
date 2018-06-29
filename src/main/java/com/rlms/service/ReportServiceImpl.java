@@ -336,21 +336,22 @@ public class ReportServiceImpl implements ReportService {
 		return liftAMCDtls;	
 	}
 	private void createServiceCalls(ServiceCall serviceCall, UserMetaInfo metaInfo,
-			RlmsLiftCustomerMap liftCustomerMap) throws ParseException {
+		RlmsLiftCustomerMap liftCustomerMap) throws ParseException {
 		RlmsComplaintMaster complaintMaster = new RlmsComplaintMaster();
 		complaintMaster.setActiveFlag(RLMSConstants.ACTIVE.getId());
 		complaintMaster.setComplaintNumber(String.valueOf(Math.random()));
 		complaintMaster.setLiftCustomerMap(liftCustomerMap);
-		complaintMaster.setRegistrationDate(new Date());
+		complaintMaster.setRegistrationDate(serviceCall.getServiceDate());
 		//complaintMaster.setRegistrationType(dto.getRegistrationType());
 		//complaintMaster.setRemark(dto.getComplaintsRemark());
 		complaintMaster.setStatus(Status.PENDING.getStatusId());
 		complaintMaster.setTitle(serviceCall.getTitle());
+		complaintMaster.setCreatedDate(new Date());
     	complaintMaster.setCreatedBy(metaInfo.getUserId());				
 		complaintMaster.setUpdatedBy(metaInfo.getUserId());				
 		complaintMaster.setUpdatedDate(new Date());
-		complaintMaster.setServiceStartDate(serviceCall.getServiceDate());
-		complaintMaster.setCallType(1);		
+		//complaintMaster.setServiceStartDate(serviceCall.getServiceDate());
+		complaintMaster.setCallType(RLMSCallType.AMC_CALL.getId());		
 		Integer complaintId = this.complaintsDao.saveComplaintM(complaintMaster);
 		complaintMaster.setComplaintNumber(complaintId.toString());
 		this.complaintsDao.mergeComplaintM(complaintMaster);
@@ -540,21 +541,22 @@ public class ReportServiceImpl implements ReportService {
 		List<EventDtlsDto>dtlsDtoList = new ArrayList<EventDtlsDto>();
 		try {
 			List<Integer> liftCustomerMapIds = new ArrayList<>();
-<<<<<<< HEAD
+/*<<<<<<< HEAD
 		//	List<Integer>listLiftCustMapId=new ArrayList<>();
 			if(dto.getBranchCustomerMapId()!=null) {
 			List<Integer>branchCustoMapIds=dto.getBranchCustomerMapId();
 			for (Integer integer : branchCustoMapIds) {
 				LiftDtlsDto dtoTemp = new LiftDtlsDto();
 				dtoTemp.setBranchCustomerMapId(integer);
-=======
+=======*/
+			
+			if(dto.getBranchCustomerMapId()!=null) {
 			List<Integer>branchCustMapIds=dto.getBranchCustomerMapId();
 		
 			for (Integer integer : branchCustMapIds) {
 				
 				LiftDtlsDto dtoTemp = new LiftDtlsDto();
 			    dtoTemp.setBranchCustomerMapId(integer);
->>>>>>> 8e250d4a4e3be71693ffccc6b8831c3acaba64e9
 				List<RlmsLiftCustomerMap> list = dashboardService
 						.getAllLiftsForBranchsOrCustomer(dtoTemp);
 				for (RlmsLiftCustomerMap rlmsLiftCustomerMap : list) {

@@ -5,19 +5,22 @@ import java.math.BigInteger;
 public class ComplaintsCount {
 
 	private String callType;
-	public BigInteger getTotalCallStatusCount() {
-		return totalCallStatusCount;
-	}
-
 	private BigInteger totalCallTypeCount;
 	private BigInteger todaysCallTypeCount;
-
-	
 	private String callStatus;
 	private BigInteger totalCallStatusCount;
 	private BigInteger todaysCallStatusCount;
-
-
+	private float avgLogsPerDay;
+	
+	public float getAvgLogsPerDay() {
+		return avgLogsPerDay;
+	}
+	public void setAvgLogsPerDay(float avgLogsPerDay) {
+		this.avgLogsPerDay = avgLogsPerDay;
+	}
+	public BigInteger getTotalCallStatusCount() {
+		return totalCallStatusCount;
+	}
 	public BigInteger getTodaysCallTypeCount() {
 		return todaysCallTypeCount;
 	}

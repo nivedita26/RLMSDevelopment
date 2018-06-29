@@ -92,14 +92,14 @@
 					toDate:false,
 					serviceDate:false
 			}
-			/*$scope.open = function($event,which) {
+			$scope.open = function($event,which) {
 			      $event.preventDefault();
 			      $event.stopPropagation();
 			      if($scope.openFlag[which] != true)
 			    	  $scope.openFlag[which] = true;
 			      else
 			    	  $scope.openFlag[which] = false;
-			}*/
+			}
 			
 			$scope.getdate=function(){
 				
