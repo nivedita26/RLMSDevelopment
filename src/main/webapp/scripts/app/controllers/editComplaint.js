@@ -145,19 +145,16 @@
 
 						 complaintId:$scope.editComplaint.complaintsNumber,						 
 						 title:$scope.selectedComplaintTitle.selected.name,
-						 //title:$scope.editComplaint.complaintsTitle.name,
 						 liftAddress:$scope.editComplaint.complaintsAddress + $scope.editComplaint.complaintsCity,
-						 status:$scope.selectedComplaintStatus,						 						 
 						 serviceCallType:$scope.selectedCallType.selected.id,
-						 serviceCallTypeStr:$scope.selectedCallType.selected.name,
-						// serviceCallTypeStr:$scope.editComplaint.callType,
+						 //serviceCallTypeStr:$scope.selectedCallType.selected.name,
 						 remark:$scope.editComplaint.complaintsRemark,
 						 //status:$scope.editComplaint.status,
 						 status:$scope.selectedComplaintStatus,
 						 technicianDtls:$scope.userName,
 						 userRoleId:userRole,
-						 serviceCallType:$rootScope.serviceCallTypeSelect
-				};
+						 //serviceCallType:$rootScope.serviceCallTypeSelect
+						 };
 				serviceApi.doPostWithData("/RLMS/complaint/validateAndUpdateComplaint",complaintsData)
 				.then(function(response){
 					$scope.showAlert = true;
