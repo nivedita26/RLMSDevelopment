@@ -634,6 +634,7 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 			this.assignComplaint(complaintsDto, metaInfo);
 		}else{			
 			RlmsComplaintMaster complaintMaster = this.complaintsDao.getComplaintMasterObj(complaintsDto.getComplaintId(),complaintsDto.getServiceCallType());			
+			if(complaintMaster!=null) {
 			if(complaintsDto.getRegistrationDateStr()!=null && !(" - ".equals(complaintsDto.getRegistrationDateStr()))){
 				complaintMaster.setRegistrationDate(DateUtils.convertStringToDateWithoutTime(complaintsDto.getRegistrationDateStr()));
 			}if(complaintsDto.getServiceStartDateStr()!=null && !(" - ".equals(complaintsDto.getServiceStartDateStr()))){
@@ -668,9 +669,12 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 			}else{
 				this.complaintsDao.updateComplaintsMatser(complaintMaster);
 			}
+			return PropertyUtils.getPrpertyFromContext("Complaint Updated Successfully");
+
 		}
-		String statusMessage = PropertyUtils.getPrpertyFromContext("Complaint Updated Successfully");
-		return statusMessage;
+			
+		}
+		return "not updated";
 	}
 	@Transactional(propagation = Propagation.REQUIRED)
 	private void deleteComplaintsTechMapDetails(Integer complaintTechMapId) {

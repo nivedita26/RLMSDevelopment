@@ -7,11 +7,11 @@
 		//loadBranchListInfo();
 		$scope.showAlert = false;
 		$scope.companies = [];
-		$scope.activeFlag=[{id:1,name:'Active'},{id:0,name:'Inactive'}];
+		
 		
 		function initAddBranch(){
 			$scope.selectedCompany = {};
-			$scope.selectedActiveFlag = {};
+			$scope.selectedStatus = {};
 			$scope.addBranch={
 					companyId:'',
 					branchName:'',
@@ -21,6 +21,7 @@
 					pinCode:'',
 					activeFlag:''
 			};	
+			$scope.status=[{id:1,name:'Active'},{id:0,name:'Inactive'}];
 		    $scope.branchList={};
 		   
 		}
@@ -34,6 +35,7 @@
 		//Post call add branch
 		$scope.submitEditBranch = function(){
 			var branchData = {};
+			//$scope.status=['Active','Inactive'];
 			branchData = {
 					id:$rootScope.editBranch.branchId,
 					branchName:$scope.editBranch.branchName,
@@ -41,8 +43,8 @@
 					area:$scope.editBranch.area,
 					city:$scope.editBranch.city,
 					pinCode:$scope.editBranch.pinCode,
-					activeFlag:$scope.selectedActiveFlag.selected.id,
-					//activeFlag:$scope.editBranch.activeFlag
+					activeFlag:$scope.selectedStatus.selected.id,
+					activeFlag:$scope.editBranch.activeFlag
 					};
 			serviceApi.doPostWithData("/RLMS/admin/editBranchInCompany",branchData)
 			.then(function(response){

@@ -145,10 +145,10 @@ public class ComplaintsDaoImpl implements ComplaintsDao{
 		 Criteria criteria = session.createCriteria(RlmsComplaintMaster.class)
 				 .add(Restrictions.eq("complaintId", complaintId))
 				 .add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
-		 if(null != callType && callType!=0){
+	/*	 if(null != callType && callType!=0){
 			criteria.add(Restrictions.eq("callType", callType));
 			// criteria.add(Restrictions.eq("callType", 1));
-		 }
+		 }*/
 		 RlmsComplaintMaster complaintMaster = (RlmsComplaintMaster) criteria.uniqueResult();
 		 return complaintMaster;
 	}

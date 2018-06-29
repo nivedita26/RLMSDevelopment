@@ -540,21 +540,14 @@ public class ReportServiceImpl implements ReportService {
 		List<EventDtlsDto>dtlsDtoList = new ArrayList<EventDtlsDto>();
 		try {
 			List<Integer> liftCustomerMapIds = new ArrayList<>();
-<<<<<<< HEAD
-		//	List<Integer>listLiftCustMapId=new ArrayList<>();
-			if(dto.getBranchCustomerMapId()!=null) {
-			List<Integer>branchCustoMapIds=dto.getBranchCustomerMapId();
-			for (Integer integer : branchCustoMapIds) {
-				LiftDtlsDto dtoTemp = new LiftDtlsDto();
-				dtoTemp.setBranchCustomerMapId(integer);
-=======
+
+if(dto.getBranchCustomerMapId()!=null) {
 			List<Integer>branchCustMapIds=dto.getBranchCustomerMapId();
 		
 			for (Integer integer : branchCustMapIds) {
 				
 				LiftDtlsDto dtoTemp = new LiftDtlsDto();
 			    dtoTemp.setBranchCustomerMapId(integer);
->>>>>>> 8e250d4a4e3be71693ffccc6b8831c3acaba64e9
 				List<RlmsLiftCustomerMap> list = dashboardService
 						.getAllLiftsForBranchsOrCustomer(dtoTemp);
 				for (RlmsLiftCustomerMap rlmsLiftCustomerMap : list) {
