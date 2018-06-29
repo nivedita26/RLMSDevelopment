@@ -656,6 +656,7 @@ private boolean isServiceCallToShow(Date regDate,Date serviceStartDate){
 			this.assignComplaint(complaintsDto, metaInfo);
 		}else{			
 			RlmsComplaintMaster complaintMaster = this.complaintsDao.getComplaintMasterObj(complaintsDto.getComplaintId(),complaintsDto.getServiceCallType());			
+			if(complaintMaster!=null) {
 			if(complaintsDto.getRegistrationDateStr()!=null && !(" - ".equals(complaintsDto.getRegistrationDateStr()))){
 				complaintMaster.setRegistrationDate(DateUtils.convertStringToDateWithoutTime(complaintsDto.getRegistrationDateStr()));
 			}if(complaintsDto.getServiceStartDateStr()!=null && !(" - ".equals(complaintsDto.getServiceStartDateStr()))){
@@ -684,15 +685,16 @@ private boolean isServiceCallToShow(Date regDate,Date serviceStartDate){
 				complaintTechMapDtls.setUpdatedBy(metaInfo.getUserId());
 				complaintTechMapDtls.setUpdatedDate(new Date());
 				RlmsUserRoles userRoles = this.userService.getUserRoleObjhById(complaintsDto.getUserRoleId());
-			complaintTechMapDtls.setUserRoles(userRoles);
-			complaintTechMapDtls.setComplaintMaster(complaintMaster);
-			this.complaintsDao.updateComplaints(complaintTechMapDtls);
-			}else{
-				this.complaintsDao.updateComplaintsMatser(complaintMaster);
+				complaintTechMapDtls.setUserRoles(userRoles);
+				complaintTechMapDtls.setComplaintMaster(complaintMaster);
+				this.complaintsDao.updateComplaints(complaintTechMapDtls);
+		}else{
+			this.complaintsDao.updateComplaintsMatser(complaintMaster);
 		}
+		return PropertyUtils.getPrpertyFromContext("Complaint Updated Successfully");
+			}
 		}
-		String statusMessage = PropertyUtils.getPrpertyFromContext("Complaint Updated Successfully");
-		return statusMessage;
+			return "not updated";
 	}
 	@Transactional(propagation = Propagation.REQUIRED)
 	private void deleteComplaintsTechMapDetails(Integer complaintTechMapId) {

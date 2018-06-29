@@ -40,7 +40,7 @@
 									$scope.selectedCustomer = {};
 									$scope.selectedCalltype = {};
 									$scope.selectedLifts = {};
-									$scope.selectedComplaintsTitle={};
+									//$scope.selectedComplaintsTitle={};
 									$scope.branches = [];
 									$scope.callType = [{
 										id: 1,
