@@ -317,13 +317,13 @@
 		  	        		}else{
 		  	        			detailsObj["Status"] =" - ";
 		  	        		}
-		  	        		if(!!largeLoad[i].amcAmount){
-		  	        			detailsObj["CallAssignedDate"] =largeLoad[i].amcAmount;
+		  	        		if(!!largeLoad[i].serviceStartDateStr){
+		  	        			detailsObj["CallAssignedDate"] =largeLoad[i].serviceStartDateStr;
 		  	        		}else{
 		  	        			detailsObj["CallAssignedDate"] =" - ";
 		  	        		}
-		  	        		if(!!largeLoad[i].amcTypeStr){
-		  	        			detailsObj["CallResolvedDate"] =largeLoad[i].amcTypeStr;
+		  	        		if(!!largeLoad[i].serviceEndDateStr){
+		  	        			detailsObj["CallResolvedDate"] =largeLoad[i].serviceEndDateStr;
 		  	        		}else{
 		  	        			detailsObj["CallResolvedDate"] =" - ";
 		  	        		}
@@ -332,28 +332,28 @@
 		  	        		}else{
 		  	        			detailsObj["Remark"] =" - ";
 		  	        		}
-		  	        		if(!!largeLoad[i].compalintId){
-		  	        			detailsObj["CallId"] =largeLoad[i].compalintId;
+		  	        		if(!!largeLoad[i].complaintNumber){
+		  	        			detailsObj["CallId"] =largeLoad[i].complaintNumber;
 		  	        		}else{
 		  	        			detailsObj["CallId"] =" - ";
 		  	        		}
-		  	        		if(!!largeLoad[i].address){
-		  	        			detailsObj["address"] =largeLoad[i].address;
+		  	        		if(!!largeLoad[i].customerAddress){
+		  	        			detailsObj["address"] =largeLoad[i].customerAddress;
 		  	        		}else{
 		  	        			detailsObj["address"] =" - ";
 		  	        		}
-		  	        		if(!!largeLoad[i].city){
-		  	        			detailsObj["city"] =largeLoad[i].city;
+		  	        		if(!!largeLoad[i].customerCity){
+		  	        			detailsObj["city"] =largeLoad[i].customerCity;
 		  	        		}else{
 		  	        			detailsObj["city"] =" - ";
 		  	        		}
-		  	        		if(!!largeLoad[i].city){
-		  	        			detailsObj["CallRegisteredBy"] =largeLoad[i].city;
+		  	        		if(!!largeLoad[i].registeredBy){
+		  	        			detailsObj["CallRegisteredBy"] =largeLoad[i].registeredBy;
 		  	        		}else{
 		  	        			detailsObj["CallRegisteredBy"] =" - ";
 		  	        		}
-		  	        		if(!!largeLoad[i].city){
-		  	        			detailsObj["CallType"] =largeLoad[i].city;
+		  	        		if(!!largeLoad[i].serviceCallTypeStr){
+		  	        			detailsObj["CallType"] =largeLoad[i].serviceCallTypeStr;
 		  	        		}else{
 		  	        			detailsObj["CallType"] =" - ";
 		  	        		}
@@ -362,18 +362,18 @@
 		  	        		}else{
 		  	        			detailsObj["Title"] =" - ";
 		  	        		}
-		  	        		if(!!largeLoad[i].city){
-		  	        			detailsObj["RegistrationDate"] =largeLoad[i].city;
+		  	        		if(!!largeLoad[i].registrationDateStr){
+		  	        			detailsObj["RegistrationDate"] =largeLoad[i].registrationDateStr;
 		  	        		}else{
 		  	        			detailsObj["RegistrationDate"] =" - ";
 		  	        		}
-		  	        		if(!!largeLoad[i].Technician){
-		  	        			detailsObj["Technician"] =largeLoad[i].Technician;
+		  	        		if(!!largeLoad[i].technicianDtls){
+		  	        			detailsObj["Technician"] =largeLoad[i].technicianDtls;
 		  	        		}else{
 		  	        			detailsObj["Technician"] =" - ";
 		  	        		}
-		  	        		if(!!largeLoad[i].FromDate){
-		  	        			detailsObj["FromDate"] =largeLoad[i].FromDate;
+		  	        		if(!!largeLoad[i].fromDate){
+		  	        			detailsObj["FromDate"] =largeLoad[i].fromDate;
 		  	        		}else{
 		  	        			detailsObj["FromDate"] =" - ";
 		  	        		}
@@ -416,7 +416,7 @@
 		  	      columnDefs : [{
 						field : "SrNo",
 						displayName:"Sr No.",
-						width : 120
+						width : 100
 			  	  },{
 						field : "CallId",
 						displayName:"Call Id",
@@ -436,14 +436,14 @@
 			  	  },{
 						field : "liftNumber",
 						displayName:"Lift Number",
-						width : 140
+						width : 120
 			  	  },{
 						field : "CustomerName",
 						displayName:"Customer",
 						width : 140
 			  	  },{
 						field : "address",
-						displayName:"Address",
+						displayName:"Customer Address",
 						width : 140
 			  	  },{
 						field : "BranchName",
@@ -454,7 +454,7 @@
 						displayName:"City",
 						width : 140
 			  	  },{
-						field : "serviceStartDate",
+						field : "RegistrationDate",
 						displayName:"Call Registration Date",
 						width : 140
 			  	  },{
@@ -505,9 +505,7 @@
 	  			}
 	  		}else{
 	  			alert("Please select Event Type");
-	  		}*/
-	  		
-			
+	  		}*/		
 	  		var tempbranchCustomerMapIds = [];
 			/*if($scope.selectedCustomer.selected.length > 0){
 				for (var j = 0; j < $scope.selectedCustomer.selected.length; j++) {
@@ -522,14 +520,9 @@
 				$scope.companyBranchMapIdForCustomer=$scope.selectedBranch.selected.companyBranchMapId;
 			}*/
 	  		var data = {
-	  				//companyBranchMapId:$scope.companyBranchMapIdForCustomer,
-	  				//companyId:9,
 	  				//listOfUserRoleIds:tempListOfUserRoleIds,
 	  				//listOfEventTypeIds:tempStatus,
-//	  				fromDate:"",
-//	  				toDate:"",
 	  				branchCustomerMapId:$scope.selectedCustomer.selected.branchCustomerMapId
-	  				//serviceCallType:1
 	  		};
 	  		return data;
 	  	  }

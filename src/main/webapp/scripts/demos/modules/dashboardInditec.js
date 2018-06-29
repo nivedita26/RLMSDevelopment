@@ -336,9 +336,15 @@ angular.module('theme.demos.dashboard.indi', [
             	  {
             		  if(largeLoad[i].totalCallTypeCount!=null){
             			  totalCount=totalCount+largeLoad[i].totalCallTypeCount;
+            			  $scope.complaintsData.totalComplaints.text = totalCount;  
+            		  }else{
+            			  $scope.complaintsData.totalComplaints.text ="0";
+            		  }
+            		  if(largeLoad[i].avgLogsPerDay!=null){
+            			  $scope.complaintsData.avgLogPerDay.text = largeLoad[i].avgLogsPerDay;
             		  }
             	  }
-            	  $scope.complaintsData.totalComplaints.text = totalCount;                
+            	                
             });
         }, 100);
       

@@ -605,6 +605,7 @@ public class ReportServiceImpl implements ReportService {
             complaintsDto.setStatus(Status.getStringFromID(rlmsComplaintMaster.getStatus()));
             complaintsDto.setServiceCallType(rlmsComplaintMaster.getCallType());
             RlmsComplaintTechMapDtls complaintTechMapDtls = complaintsDao.getComplTechMapObjByComplaintId(rlmsComplaintMaster.getComplaintId());		
+            if(complaintTechMapDtls!=null) {
 			complaintsDto.setCallAssignedDate(complaintTechMapDtls.getAssignedDate());
         	RlmsUserRoles  rlmsUserRoles = userRoleDao.getUserRoleByUserId(complaintTechMapDtls.getUpdatedBy());
 			if ((rlmsUserRoles.getRlmsSpocRoleMaster().getSpocRoleId())==SpocRoleConstants.TECHNICIAN.getSpocRoleId()) {
@@ -615,13 +616,16 @@ public class ReportServiceImpl implements ReportService {
             int totalDays =  DateUtils.daysBetween(rlmsComplaintMaster.getRegistrationDate(),complaintTechMapDtls.getUpdatedDate());
             complaintsDto.setTotalDaysRequiredToResolveComplaint(totalDays);
             }
-            complaintsDto.setBranchName(rlmsComplaintMaster.getLiftCustomerMap().getBranchCustomerMap().getCompanyBranchMapDtls().getRlmsBranchMaster().getBranchName());
             complaintsDto.setFromDate(complaintTechMapDtls.getAssignedDate());
            // complaintsDto.getServiceStartDate(complaintTechMapDtls.get)
           // complaintsDto.getServiceEndDate(complaintTechMapDtls.get)
             complaintsDto.setTechnicianDtls(complaintTechMapDtls.getUserRoles().getRlmsUserMaster().getFirstName()+" "+complaintTechMapDtls.getUserRoles().getRlmsUserMaster().getLastName());
-            complaintsDto.setRemark(rlmsComplaintMaster.getRemark());
             complaintsDto.setRegisteredBy(rlmsUserRoles.getRlmsUserMaster().getFirstName()+""+rlmsUserRoles.getRlmsUserMaster().getLastName()+""+rlmsUserRoles.getRlmsUserMaster().getContactNumber());
+	
+            }
+            complaintsDto.setRemark(rlmsComplaintMaster.getRemark());
+            complaintsDto.setBranchName(rlmsComplaintMaster.getLiftCustomerMap().getBranchCustomerMap().getCompanyBranchMapDtls().getRlmsBranchMaster().getBranchName());
+
             complaintsDtoList.add(complaintsDto);
 		}
 		return complaintsDtoList;
