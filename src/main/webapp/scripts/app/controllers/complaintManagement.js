@@ -106,7 +106,7 @@
 										branchCompanyMapId = $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls.companyBranchMapId;
 									}
 									var dataToSend = {
-										branchCompanyMapId :branchCompanyMapId,
+										//branchCompanyMapId :branchCompanyMapId,
 										companyId : $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyMaster.companyId,
 									//	branchCustomerMapId : -1,
 										listOfLiftCustoMapId : [],
@@ -582,9 +582,7 @@
 									}else if($scope.selectedCalltype.selected.name=="Reassign call"){
 										$rootScope.serviceCallTypeSelect=9;
 										dataToSend["serviceCallType"]=9;
-									}								
-									
-									
+									}		
 									if ($scope.showBranch == true) {
 										dataToSend["branchCompanyMapId"] = $scope.selectedBranch.selected.companyBranchMapId
 									} else {

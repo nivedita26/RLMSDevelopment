@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.rlms.constants.SpocRoleConstants;
 import com.rlms.contract.UserDtlsDto;
 import com.rlms.contract.UserMetaInfo;
 import com.rlms.model.RlmsUserRoles;
@@ -21,8 +22,12 @@ public class IndexController extends BaseController{
 	
 	
 	  @RequestMapping(value="index",method = RequestMethod.GET)
-	    public String getIndexPage() {
+	    public  String getIndexPage() {
 		  RlmsUserRoles userrole = this.getLoggedInUser();
+		  if(userrole.getRlmsSpocRoleMaster().getSpocRoleId()==SpocRoleConstants.TECHNICIAN.getSpocRoleId()) {
+			  System.out.println("user role"+userrole.getRole());
+			  return  "login.jsp";
+		  }
 		  System.out.println(userrole.getUsername());
 	      return "index.jsp";
 	    }
