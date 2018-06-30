@@ -18,20 +18,20 @@
 					  </ui-select>
 					  <label class="control-label" ng-bind="companyName"></label>
 				</div>
-			</div> 
-			<div class="form-group" ng-show="showBranch">
-					<label class="col-sm-3 control-label">Branch Name: </label>
-					<div class="col-sm-6">
-						  <!-- <ui-select ng-model="selectedBranch.selected" title="Choose a Branch" on-select="loadCustomerData();">
-						    <ui-select-match placeholder="Select or search a branch in the list...">{{$select.selected.rlmsBranchMaster.branchName}}</ui-select-match>
-						    <ui-select-choices repeat="branchIterator in branches| filter: $select.search">
-						      <span ng-bind-html="branchIterator.rlmsBranchMaster.branchName | highlight: $select.search"></span>
-						    </ui-select-choices>
-						  </ui-select> //comment end
-						  <label class="control-label" ng-bind="branchName"></label>
-					</div>
-				</div>-->
+			</div> -->
+			
 			<div class="row seprator" >
+			<div class="form-group col-sm-6" ng-show="showBranch">
+					<label class="col-sm-5  control-label" ng-show="showBranch">Select Branch</label>
+			<div class="col-sm-7 select-container" ng-show="showBranch">
+				  <ui-select ng-model="selectedBranch.selected" title="Choose a Branch" on-select="loadCustomerData();">
+				    <ui-select-match placeholder="Select Branch">{{$select.selected.rlmsBranchMaster.branchName}}</ui-select-match>
+				    <ui-select-choices repeat="branchIterator in branches| filter: $select.search">
+				      <span ng-bind-html="branchIterator.rlmsBranchMaster.branchName | highlight: $select.search"></span>
+				    </ui-select-choices>
+				  </ui-select>
+			</div>
+				</div>
 				<div class="form-group col-sm-6" >
 					<label class="col-sm-5 control-label">Select Customer</label>
 					<div class="col-sm-7">
@@ -42,10 +42,12 @@
 						    </ui-select-choices>
 						  </ui-select>
 					</div>
-				</div>
-				<div class="form-group col-sm-6">
-					<label class="col-sm-5 control-label">Select Lift</label>
-					<div class="col-sm-7">
+				</div>				
+			</div>
+			
+			<div class="form-group ">
+					<label class="col-sm-3 control-label">Select Lift</label>
+					<div class="col-sm-6">
 						  <ui-select ng-model="selectedLift.selected" title="Choose a Lift">
 						    <ui-select-match placeholder="Select Lift">{{$select.selected.liftNumber}}</ui-select-match>
 						    <ui-select-choices repeat="iterator in lifts | filter: $select.search">
@@ -54,8 +56,7 @@
 						  </ui-select>
 					</div>
 				</div>
-			</div>
-			
+				
 			<div class="form-group">
 			<label class="col-sm-3 control-label">Call Type</label>
 			<div class="col-sm-6">

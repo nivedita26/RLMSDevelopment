@@ -39,9 +39,19 @@
 				      <span ng-bind-html="iterator.liftNumber | highlight: $select.search"></span>
 				    </ui-select-choices>
 				  </ui-select>
-			</div>	
 			</div>
-			<br>
+			</div>
+			<div class="form-group margin-b10">
+			<label class="control-label">Select Call ID</label>
+			<div class="select-container">
+				  <ui-select  ng-model="selectedCallID.selected" title="Choose Call ID">
+				    <ui-select-match placeholder="Select Call ID">{{$select.selected.callId}}</ui-select-match>
+				    <ui-select-choices repeat="iterator in callId | filter: $select.search">
+				      <span ng-bind-html="iterator.callId | highlight: $select.search"></span>
+				    </ui-select-choices>
+				  </ui-select>
+			</div>		
+			</div>
 			<!-- <button class="btn-sky btn" ng-click="loadReportList()">Proceed</button>
 				<button class="btn-sky btn margin-left-10" ng-click="resetReportList()">Reset</button> -->
 		<div class="row">

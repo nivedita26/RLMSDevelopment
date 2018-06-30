@@ -249,7 +249,7 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 		for (RlmsComplaintMaster rlmsComplaintMaster : listOfComplaints) {
 			boolean isToShow = true;
 			if(RLMSCallType.AMC_CALL.getId() == rlmsComplaintMaster.getCallType()){
-				isToShow = this.isServiceCallToShow(rlmsComplaintMaster.getRegistrationDate(),rlmsComplaintMaster.getServiceStartDate());
+				isToShow = this.isServiceCallToShow(rlmsComplaintMaster.getRegistrationDate(),rlmsComplaintMaster.getRegistrationDate());
 			}
 			if(isToShow){
 					ComplaintsDto complaintsDto = this.constructComplaintDto(rlmsComplaintMaster);
