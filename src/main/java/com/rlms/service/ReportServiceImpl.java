@@ -604,7 +604,7 @@ public class ReportServiceImpl implements ReportService {
 			complaintsDto.setRegistrationDate(rlmsComplaintMaster.getRegistrationDate());
             complaintsDto.setStatus(Status.getStringFromID(rlmsComplaintMaster.getStatus()));
             complaintsDto.setServiceCallType(rlmsComplaintMaster.getCallType());
-            RlmsComplaintTechMapDtls complaintTechMapDtls = complaintsDao.getComplTechMapObjByComplaintId(rlmsComplaintMaster.getComplaintId());		
+            RlmsComplaintTechMapDtls  complaintTechMapDtls = complaintsDao.getComplTechMapObjByComplaintId(rlmsComplaintMaster.getComplaintId());		
             if(complaintTechMapDtls!=null) {
 			complaintsDto.setCallAssignedDate(complaintTechMapDtls.getAssignedDate());
         	RlmsUserRoles  rlmsUserRoles = userRoleDao.getUserRoleByUserId(complaintTechMapDtls.getUpdatedBy());
@@ -617,15 +617,13 @@ public class ReportServiceImpl implements ReportService {
             complaintsDto.setTotalDaysRequiredToResolveComplaint(totalDays);
             }
             complaintsDto.setFromDate(complaintTechMapDtls.getAssignedDate());
-           // complaintsDto.getServiceStartDate(complaintTechMapDtls.get)
-          // complaintsDto.getServiceEndDate(complaintTechMapDtls.get)
+           //complaintsDto.getServiceStartDate(complaintTechMapDtls.get)
+          //complaintsDto.getServiceEndDate(complaintTechMapDtls.get)
             complaintsDto.setTechnicianDtls(complaintTechMapDtls.getUserRoles().getRlmsUserMaster().getFirstName()+" "+complaintTechMapDtls.getUserRoles().getRlmsUserMaster().getLastName());
             complaintsDto.setRegisteredBy(rlmsUserRoles.getRlmsUserMaster().getFirstName()+""+rlmsUserRoles.getRlmsUserMaster().getLastName()+""+rlmsUserRoles.getRlmsUserMaster().getContactNumber());
-	
             }
             complaintsDto.setRemark(rlmsComplaintMaster.getRemark());
             complaintsDto.setBranchName(rlmsComplaintMaster.getLiftCustomerMap().getBranchCustomerMap().getCompanyBranchMapDtls().getRlmsBranchMaster().getBranchName());
-
             complaintsDtoList.add(complaintsDto);
 		}
 		return complaintsDtoList;
