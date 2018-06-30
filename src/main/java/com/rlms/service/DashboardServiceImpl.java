@@ -798,7 +798,7 @@ public class DashboardServiceImpl implements DashboardService {
 		}
 		
 	listOfAllComplaints = dashboardDao.getAllComplaintsForAvgLogs(pivotDate,today);
-	avgLogsPerDay =(( listOfAllComplaints.size())/30);
+	avgLogsPerDay =((listOfAllComplaints.size())/30);
 	List<Object[]> complaintCount = dashboardDao.getTotalComplaintsCallTypeCount(dto.getListOfLiftCustoMapId());
 	for (Object[] objects : complaintCount) {
 		ComplaintsCount complaintsCount = new ComplaintsCount();
