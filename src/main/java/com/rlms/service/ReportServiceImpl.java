@@ -597,35 +597,52 @@ public class ReportServiceImpl implements ReportService {
 			ComplaintsDto complaintsDto = new ComplaintsDto();
 			complaintsDto.setServiceCallTypeStr(RLMSCallType.getStringFromID(rlmsComplaintMaster.getCallType()));
 			complaintsDto.setTitle(rlmsComplaintMaster.getTitle());
+			complaintsDto.setComplaintNumber(rlmsComplaintMaster.getComplaintNumber());
 			complaintsDto.setLiftNumber(rlmsComplaintMaster.getLiftCustomerMap().getLiftMaster().getLiftNumber());
 			complaintsDto.setCustomerName(rlmsComplaintMaster.getLiftCustomerMap().getBranchCustomerMap().getCustomerMaster().getCustomerName());
 			complaintsDto.setCustomerCity(rlmsComplaintMaster.getLiftCustomerMap().getBranchCustomerMap().getCustomerMaster().getCity());
 			complaintsDto.setCustomerAddress(rlmsComplaintMaster.getLiftCustomerMap().getBranchCustomerMap().getCustomerMaster().getAddress());
-			complaintsDto.setRegistrationDate(rlmsComplaintMaster.getRegistrationDate());
+			complaintsDto.setRegistrationDateStr(DateUtils.convertDateToStringWithTime(rlmsComplaintMaster.getRegistrationDate()));
             complaintsDto.setStatus(Status.getStringFromID(rlmsComplaintMaster.getStatus()));
+         /*   if(rlmsComplaintMaster.getStatus()==Status.RESOLVED.getStatusId()) {
+            	complaintsDto.setResolvedDateStr(DateUtils.convertDateToStringWithTime(rlmsComplaintMaster.getUpdatedDate()));
+            }
+          */
             complaintsDto.setServiceCallType(rlmsComplaintMaster.getCallType());
-            RlmsComplaintTechMapDtls complaintTechMapDtls = complaintsDao.getComplTechMapObjByComplaintId(rlmsComplaintMaster.getComplaintId());		
+        	RlmsUserRoles  rlmsUserRoles = userRoleDao.getUserRoleByUserId(rlmsComplaintMaster.getCreatedBy());
+            RlmsComplaintTechMapDtls  complaintTechMapDtls = complaintsDao.getComplTechMapObjByComplaintId(rlmsComplaintMaster.getComplaintId());		
             if(complaintTechMapDtls!=null) {
-			complaintsDto.setCallAssignedDate(complaintTechMapDtls.getAssignedDate());
-        	RlmsUserRoles  rlmsUserRoles = userRoleDao.getUserRoleByUserId(complaintTechMapDtls.getUpdatedBy());
-			if ((rlmsUserRoles.getRlmsSpocRoleMaster().getSpocRoleId())==SpocRoleConstants.TECHNICIAN.getSpocRoleId()) {
+			complaintsDto.setCallAssignedDateStr(DateUtils.convertDateToStringWithTime(complaintTechMapDtls.getAssignedDate()));
+			/*if ((rlmsUserRoles.getRlmsSpocRoleMaster().getSpocRoleId())==SpocRoleConstants.TECHNICIAN.getSpocRoleId()) {
 				 complaintsDto.setLastVisitedDate(complaintTechMapDtls.getUpdatedDate());
-			}
-            if(complaintTechMapDtls.getStatus()==Status.COMPLETED.getStatusId()) {
-            	complaintsDto.setToDate(complaintTechMapDtls.getUpdatedDate());
-            int totalDays =  DateUtils.daysBetween(rlmsComplaintMaster.getRegistrationDate(),complaintTechMapDtls.getUpdatedDate());
-            complaintsDto.setTotalDaysRequiredToResolveComplaint(totalDays);
+			}*/
+            if(complaintTechMapDtls.getStatus()==Status.INPROGESS.getStatusId() &&complaintTechMapDtls.getStatus()==Status.RESOLVED.getStatusId() ) {
+				 complaintsDto.setLastVisitedDate(complaintTechMapDtls.getUpdatedDate());
             }
-            complaintsDto.setFromDate(complaintTechMapDtls.getAssignedDate());
-           // complaintsDto.getServiceStartDate(complaintTechMapDtls.get)
-          // complaintsDto.getServiceEndDate(complaintTechMapDtls.get)
+                 if(complaintTechMapDtls.getStatus()==Status.RESOLVED.getStatusId()) {
+                	complaintsDto.setToDateStr(DateUtils.convertDateToStringWithTime(complaintTechMapDtls.getUpdatedDate()));
+    	            complaintsDto.setFromDateStr(DateUtils.convertDateToStringWithTime(complaintTechMapDtls.getAssignedDate()));
+                 	complaintsDto.setResolvedDateStr(DateUtils.convertDateToStringWithTime(rlmsComplaintMaster.getUpdatedDate()));
+                 	int totalDays =  DateUtils.daysBetween(rlmsComplaintMaster.getRegistrationDate(),complaintTechMapDtls.getUpdatedDate());
+                	complaintsDto.setTotalDaysRequiredToResolveComplaint(totalDays);
+                 }
+           //complaintsDto.getServiceStartDate(complaintTechMapDtls.get)
+          //complaintsDto.getServiceEndDate(complaintTechMapDtls.get)
             complaintsDto.setTechnicianDtls(complaintTechMapDtls.getUserRoles().getRlmsUserMaster().getFirstName()+" "+complaintTechMapDtls.getUserRoles().getRlmsUserMaster().getLastName());
-            complaintsDto.setRegisteredBy(rlmsUserRoles.getRlmsUserMaster().getFirstName()+""+rlmsUserRoles.getRlmsUserMaster().getLastName()+""+rlmsUserRoles.getRlmsUserMaster().getContactNumber());
-	
-            }
             complaintsDto.setRemark(rlmsComplaintMaster.getRemark());
-            complaintsDto.setBranchName(rlmsComplaintMaster.getLiftCustomerMap().getBranchCustomerMap().getCompanyBranchMapDtls().getRlmsBranchMaster().getBranchName());
+            }
+            
+            if(rlmsUserRoles.getRlmsSpocRoleMaster().getSpocRoleId()==SpocRoleConstants.END_USER.getSpocRoleId()){
+                complaintsDto.setRegisteredBy(rlmsUserRoles.getRlmsUserMaster().getFirstName()+""+rlmsUserRoles.getRlmsUserMaster().getLastName()+" "+"("+"USER"+")");
+            }
+            else if(rlmsUserRoles.getRlmsSpocRoleMaster().getSpocRoleId()==SpocRoleConstants.COMPANY_OPERATOR.getSpocRoleId()){
 
+                complaintsDto.setRegisteredBy(rlmsUserRoles.getRlmsUserMaster().getFirstName()+" "+rlmsUserRoles.getRlmsUserMaster().getLastName()+" "+"("+"OPERATOR"+")");
+            }else if(rlmsUserRoles.getRlmsSpocRoleMaster().getSpocRoleId()==SpocRoleConstants.COMPANY_ADMIN.getSpocRoleId()){
+
+                complaintsDto.setRegisteredBy(rlmsUserRoles.getRlmsUserMaster().getFirstName()+" "+rlmsUserRoles.getRlmsUserMaster().getLastName()+" "+"("+"ADMIN"+")");
+            }
+            complaintsDto.setBranchName(rlmsComplaintMaster.getLiftCustomerMap().getBranchCustomerMap().getCompanyBranchMapDtls().getRlmsBranchMaster().getBranchName());
             complaintsDtoList.add(complaintsDto);
 		}
 		return complaintsDtoList;

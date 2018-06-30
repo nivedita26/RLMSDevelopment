@@ -18,6 +18,21 @@ public class ComplaintsDto {
 	private String customerCity;
 	private Date fromDate;
 	private Date toDate;
+	private String fromDateStr;
+	private String  toDateStr;
+	
+	public String getFromDateStr() {
+		return fromDateStr;
+	}
+	public void setFromDateStr(String fromDateStr) {
+		this.fromDateStr = fromDateStr;
+	}
+	public String getToDateStr() {
+		return toDateStr;
+	}
+	public void setToDateStr(String toDateStr) {
+		this.toDateStr = toDateStr;
+	}
 	private String liftAddress;
 	private String latitude;
 	private String longitude;
@@ -40,6 +55,21 @@ public class ComplaintsDto {
 	private String registeredBy ;
 	private String serviceCallTypeStr;
 	private Date CallAssignedDate;
+	private String CallAssignedDateStr;
+	private String resolvedDateStr;
+
+	public String getResolvedDateStr() {
+		return resolvedDateStr;
+	}
+	public void setResolvedDateStr(String resolvedDateStr) {
+		this.resolvedDateStr = resolvedDateStr;
+	}
+	public String getCallAssignedDateStr() {
+		return CallAssignedDateStr;
+	}
+	public void setCallAssignedDateStr(String callAssignedDateStr) {
+		CallAssignedDateStr = callAssignedDateStr;
+	}
 	private int  totalDaysRequiredToResolveComplaint;
 	private Date lastVisitedDate;
 

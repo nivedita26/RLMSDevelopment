@@ -1,9 +1,7 @@
 package com.rlms.contract;
 
-import com.rlms.model.RlmsComplaintTechMapDtls;
-import com.rlms.model.RlmsUserRoles;
-
 import org.apache.commons.collections.Predicate;
+import com.rlms.model.RlmsComplaintTechMapDtls;
 
 public class UserRolePredicate implements Predicate{
 	 private Integer userRoleId;
@@ -23,6 +21,5 @@ public class UserRolePredicate implements Predicate{
 	  }else{
 		  return false;
 	  }
-	    
 	 }
 }
