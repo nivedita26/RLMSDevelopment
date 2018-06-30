@@ -582,9 +582,7 @@
 									}else if($scope.selectedCalltype.selected.name=="Reassign call"){
 										$rootScope.serviceCallTypeSelect=9;
 										dataToSend["serviceCallType"]=9;
-									}								
-									
-									
+									}		
 									if ($scope.showBranch == true) {
 										dataToSend["branchCompanyMapId"] = $scope.selectedBranch.selected.companyBranchMapId
 									} else {
