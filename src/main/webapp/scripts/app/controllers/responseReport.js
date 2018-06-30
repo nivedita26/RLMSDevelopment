@@ -75,30 +75,6 @@
 					});
 		}
 		
-		/*$scope.loadBranchData = function() {
-			var companyData = {};
-			if ($scope.showCompany == true) {
-				companyData = {
-					companyId : $scope.selectedCompany.selected.companyId
-				}
-			} else {
-				companyData = {
-					companyId : $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyMaster.companyId
-				}
-			}
-			serviceApi
-					.doPostWithData('/RLMS/admin/getAllBranchesForCompany',companyData)
-					.then(function(response) {
-						$scope.branches = response;
-						$scope.selectedBranch.selected=undefined;
-						$scope.selectedCustomer.selected=undefined;
-						//$scope.selectedStatus.selected=undefined;
-						//$scope.selectedEventType.selected=undefined;
-						var emptyReports=[];
-						$scope.siteViseReport=emptyReports;
-					});
-		}*/
-		
 		$scope.loadCustomerData = function(){
 			var branchData ={};
   	    	if($scope.showBranch == true){
@@ -123,7 +99,8 @@
 			
   		var dataToSend = {
   				branchCompanyMapId : $scope.selectedBranch.selected.companyBranchMapId,
-				branchCustomerMapId : $scope.selectedCustomer.selected.branchCustomerMapId
+				branchCustomerMapId : $scope.selectedCustomer.selected.branchCustomerMapId,
+				//liftCustomerMapId:$scope.selectedLift.selected.liftCustomerMapId
 			}
 			serviceApi.doPostWithData('/RLMS/complaint/getAllApplicableLifts',dataToSend)
 					.then(function(liftData) {
@@ -356,12 +333,8 @@
 						displayName:"LMS Contact no.",
 						width : 160
 			  	  },{
-						field : "EventType",
-						displayName:"Event Type",
-						width : 160
-			  	  },{
 						field : "EventDateTime",
-						displayName:"Event DateTime",
+						displayName:"Event Date Time",
 						width : 160
 			  	  },{
 						field : "eventFromContactNo",
@@ -387,6 +360,14 @@
 			}*/
 			tempbranchCustomerMapIds.push($scope.selectedCustomer.selected.branchCustomerMapId);
 			
+			if($scope.selectedlifts.selected){
+				var tempLiftIds = [];
+				for (var i = 0; i < $scope.selectedlifts.selected.length; i++) {
+					tempLiftIds
+							.push($scope.selectedlifts.selected[i].liftId);
+				}
+				dataToSend["listOfLiftCustoMapId"] = tempLiftIds;
+			}
 			if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 3) {
 				$scope.companyBranchMapIdForCustomer=$rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls.companyBranchMapId;
 			}else{
@@ -399,6 +380,7 @@
 	  				//listOfEventTypeIds:$scope.selectedEventType.selected.id,
 	  				eventType:"RES",
 	  				branchCustomerMapId:tempbranchCustomerMapIds,
+	  				listOfLiftCustoMapId:[]
 	  				//serviceCallType:1
 	  		};
 	  		return data;

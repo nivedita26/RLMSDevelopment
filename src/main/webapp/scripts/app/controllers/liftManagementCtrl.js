@@ -212,15 +212,25 @@
 	  	        		}else{
 	  	        			userDetailsObj["Amc_Start_Date"] =" - ";
 	  	        		}
-	  	        		if(!!largeLoad[i].amcEndtDateStr){
+	  	        		if(!!largeLoad[i].amcEndDateStr){
 	  	        			userDetailsObj["Amc_End_Date"] =largeLoad[i].amcEndDateStr;
 	  	        		}else{
 	  	        			userDetailsObj["Amc_End_Date"] =" - ";
 	  	        		}
-	  	        		if(!!largeLoad[i].dateOfInstallationStr){
+	  	        		if(!!largeLoad[i].amcTypeStr){
 	  	        			userDetailsObj["amcType"] =largeLoad[i].amcTypeStr;
 	  	        		}else{
 	  	        			userDetailsObj["amcType"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].liftType){
+	  	        			userDetailsObj["LiftType"] =largeLoad[i].liftType;
+	  	        		}else{
+	  	        			userDetailsObj["LiftType"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].liftId){
+	  	        			userDetailsObj["liftId"] =largeLoad[i].liftId;
+	  	        		}else{
+	  	        			userDetailsObj["liftId"] =" - ";
 	  	        		}
 	  	        		userDetails.push(userDetailsObj);
 	  	        	  }
@@ -277,9 +287,17 @@
 	  	      multiSelect: false,
 	  	      gridFooterHeight:35,
 	  	      columnDefs : [ {
+					field : "liftId",
+					displayName:"Lift Id",
+					width: "120"
+				}, {
 					field : "Lift_Number",
 					displayName:"Lift Number",
 					width: "120"
+				}, {
+					field : "LiftType",
+					displayName:"Lift Type",
+					width: "140"
 				}, {
 					field : "Customer_Name",
 					displayName:"Customer",
