@@ -106,7 +106,7 @@
 										branchCompanyMapId = $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls.companyBranchMapId;
 									}
 									var dataToSend = {
-										branchCompanyMapId :branchCompanyMapId,
+										//branchCompanyMapId :branchCompanyMapId,
 										companyId : $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyMaster.companyId,
 									//	branchCustomerMapId : -1,
 										listOfLiftCustoMapId : [],

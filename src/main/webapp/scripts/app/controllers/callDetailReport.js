@@ -294,8 +294,8 @@
 		  	        		}else{
 		  	        			detailsObj["LastVisitedDate"] =" - ";
 		  	        		}
-		  	        		if(!!largeLoad[i].callAssignedDate){
-		  	        			detailsObj["callAssignedDate"] =largeLoad[i].callAssignedDate;
+		  	        		if(!!largeLoad[i].callAssignedDateStr){
+		  	        			detailsObj["callAssignedDate"] =largeLoad[i].callAssignedDateStr;
 		  	        		}else{
 		  	        			detailsObj["callAssignedDate"] =" - ";
 		  	        		}

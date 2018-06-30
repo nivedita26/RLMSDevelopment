@@ -317,13 +317,13 @@
 		  	        		}else{
 		  	        			detailsObj["Status"] =" - ";
 		  	        		}
-		  	        		if(!!largeLoad[i].serviceStartDateStr){
-		  	        			detailsObj["CallAssignedDate"] =largeLoad[i].serviceStartDateStr;
+		  	        		if(!!largeLoad[i].callAssignedDateStr){
+		  	        			detailsObj["CallAssignedDate"] =largeLoad[i].callAssignedDateStr;
 		  	        		}else{
 		  	        			detailsObj["CallAssignedDate"] =" - ";
 		  	        		}
-		  	        		if(!!largeLoad[i].serviceEndDateStr){
-		  	        			detailsObj["CallResolvedDate"] =largeLoad[i].serviceEndDateStr;
+		  	        		if(!!largeLoad[i].resolvedDateStr){
+		  	        			detailsObj["CallResolvedDate"] =largeLoad[i].resolvedDateStr;
 		  	        		}else{
 		  	        			detailsObj["CallResolvedDate"] =" - ";
 		  	        		}
@@ -372,13 +372,13 @@
 		  	        		}else{
 		  	        			detailsObj["Technician"] =" - ";
 		  	        		}
-		  	        		if(!!largeLoad[i].fromDate){
-		  	        			detailsObj["FromDate"] =largeLoad[i].fromDate;
+		  	        		if(!!largeLoad[i].fromDateStr){
+		  	        			detailsObj["FromDate"] =largeLoad[i].fromDateStr;
 		  	        		}else{
 		  	        			detailsObj["FromDate"] =" - ";
 		  	        		}
-		  	        		if(!!largeLoad[i].toDate){
-		  	        			detailsObj["ToDate"] =largeLoad[i].toDate;
+		  	        		if(!!largeLoad[i].toDateStr){
+		  	        			detailsObj["ToDate"] =largeLoad[i].toDateStr;
 		  	        		}else{
 		  	        			detailsObj["ToDate"] =" - ";
 		  	        		}
