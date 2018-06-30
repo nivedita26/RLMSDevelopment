@@ -73,7 +73,7 @@
                      <tile-simple data="{ title: 'Total Complaints', text: '41', color: 'indigo'}" ng-click="openDemoModal('Total Complaints','2,3,5')"></tile-simple>
                   </div> -->
                   <div class="col-xs-6">
-                     <a class="info-tiles tiles-{{newCustomerRegistered.color}}" ng-click="openDemoModal('newCustomerRegistered','','Average Log per Day','','List of Average Log per Day')">
+                     <a class="info-tiles tiles-{{newCustomerRegistered.color}}" >
                         <div class="tiles-heading">
                            <div class="text-center">{{complaintsData.avgLogPerDay.title}}</div>
                         </div>
@@ -107,7 +107,7 @@
                      </a>
                   </div>
                   <div class="col-xs-6">
-                     <a class="info-tiles tiles-{{complaintsData.todaysUnassignedComplaints.color}}" ng-click="openDemoModal('complaints','2','Todays Unassinged',true,'List of Todays Unassigned Calls')">
+                     <a class="info-tiles tiles-{{complaintsData.todaysUnassignedComplaints.color}}" ng-click="openDemoModal('complaints','2','Todays Unassigned',true,'List of Todays Unassigned Calls')">
                         <div class="tiles-heading">
                            <div class="text-center">{{complaintsData.todaysUnassignedComplaints.title}}</div>
                         </div>
@@ -119,30 +119,31 @@
                   </div>
                </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3 ">
                <div class="row">
-                  <div class="col-xs-6">
-                     <a class="info-tiles tiles-{{complaintsData.todaysAssignedComplaints.color}}" ng-click="openDemoModal('complaints','3','Todays Assigned',true'List of Todays Assigned Calls')">
-                        <div class="tiles-heading">
-                           <div class="text-center">{{complaintsData.todaysAssignedComplaints.title}}</div>
-                        </div>
-                        <div class="tiles-body">
-                           <div class="text-center" ng-show="complaintsData.todaysAssignedComplaints.text">{{complaintsData.todaysAssignedComplaints.text}}</div>
-                        </div>
-                     </a>
-                     <!-- <tile-simple data="{ title: 'Complaints Attempted Today', text: '41', color: 'blue'}" ng-click="openDemoModal('Complaints Attempted Today','3')"></tile-simple> -->
-                  </div>
-                  <div class="col-xs-6">
-                     <a class="info-tiles tiles-{{complaintsData.todaysResolvedComplaints.color}}" ng-click="openDemoModal('complaints','5','Todays Resolved',true'List of Todays Resolved Calls')">
-                        <div class="tiles-heading">
-                           <div class="text-center">{{complaintsData.todaysResolvedComplaints.title}}</div>
-                        </div>
-                        <div class="tiles-body">
-                           <div class="text-center" ng-show="complaintsData.todaysResolvedComplaints.text">{{complaintsData.todaysResolvedComplaints.text}}</div>
-                        </div>
-                     </a>
-                     <!-- <tile-simple data="{ title: 'Resolved Complaints', text: '9', color: 'green'}" ng-click="openDemoModal('Resolved Complaints','5')"></tile-simple> -->
-                  </div>
+                   <div class="col-xs-6">
+                	<a class="info-tiles tiles-{{complaintsData.todaysAssignedComplaints.color}}" ng-click="openDemoModal('complaints','3','Todays Assigned',true,'List of Todays Assigned Calls')">
+						<div class="tiles-heading">
+							<div class="text-center">{{complaintsData.todaysAssignedComplaints.title}}</div>
+						</div>
+						<div class="tiles-body">
+							<div class="text-center" ng-show="complaintsData.todaysAssignedComplaints.text">{{complaintsData.todaysAssignedComplaints.text}}</div>
+						</div>
+					</a>
+                    <!-- <tile-simple data="{ title: 'Complaints Attempted Today', text: '41', color: 'blue'}" ng-click="openDemoModal('Complaints Attempted Today','3')"></tile-simple> -->
+                </div>
+                <div class="col-xs-6">
+                	<a class="info-tiles tiles-{{complaintsData.todaysResolvedComplaints.color}}" ng-click="openDemoModal('complaints','5','Todays Resolved',true,'List of Todays Resolved Calls')">
+						<div class="tiles-heading">
+							<div class="text-center">{{complaintsData.todaysResolvedComplaints.title}}</div>
+						</div>
+						<div class="tiles-body">
+							<div class="text-center" ng-show="complaintsData.todaysResolvedComplaints.text">{{complaintsData.todaysResolvedComplaints.text}}</div>
+						</div>
+					</a>
+                    <!-- <tile-simple data="{ title: 'Resolved Complaints', text: '9', color: 'green'}" ng-click="openDemoModal('Resolved Complaints','5')"></tile-simple> -->
+                </div>
+                
                </div>
             </div>
             <div class="col-md-3">
@@ -159,7 +160,7 @@
                      <tile-simple data="{ title: 'Total Complaints', text: '41', color: 'indigo'}" ng-click="openDemoModal('Total Complaints','2,3,5')"></tile-simple>
                   </div> -->
                   <div class="col-xs-6">
-                     <a class="info-tiles tiles-{{newCustomerRegistered.color}}" ng-click="openDemoModal('complaints','','Average Resolved Per Day','','List of Average Calls Resolved per Day')">
+                     <a class="info-tiles tiles-{{newCustomerRegistered.color}}">
                         <div class="tiles-heading">
                            <div class="text-center">{{complaintsData.avgResolvedPerDayRegistered.title}}</div>
                         </div>
