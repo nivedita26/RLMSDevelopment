@@ -155,8 +155,9 @@ public class DashBoardController extends BaseController {
 
 							amcStatusCounts = this.dashboardService.getAMCDetailsCountForDashboard(liftCustomerMapIds,
 									amcDetailsDto);
+							AMCStatusCount amcStatusCount = new AMCStatusCount();
+
 							if (amcStatusCounts != null && !amcStatusCounts.isEmpty()) {
-								AMCStatusCount amcStatusCount = new AMCStatusCount();
 								for (AMCStatusCount statusCount : amcStatusCounts) {
 									if ((statusCount.getStatusId()) == (Status.UNDER_WARRANTY.getStatusId())) {
 										amcStatusCount.setUnderWarrantyCount(statusCount.getStatusCount());
@@ -170,20 +171,21 @@ public class DashBoardController extends BaseController {
 									if ((statusCount.getStatusId()) == (Status.UNDER_AMC.getStatusId())) {
 										amcStatusCount.setUnderAMCCount(statusCount.getStatusCount());
 									}
-								/*	if ((statusCount.getStatusId()) == (Status.NOT_UNDER_AMC.getStatusId())) {
+									/*if ((statusCount.getStatusId()) == (Status.NOT_UNDER_AMC.getStatusId())) {
 										amcStatusCount.setNotUnderAMCCount(statusCount.getStatusCount());
-									}
-*/
+									}*/
+
 									if ((statusCount.getStatusId()) == (Status.NOT_UNDER_Warranty.getStatusId())) {
 										amcStatusCount.setNotUnderWarranty(statusCount.getStatusCount());
 									}
 								}
+							
 								amcStatusCount.setBranchName(customerDtlsDto.getBranchName());
 								amcStatusCount.setCustomerName(customerDtlsDto.getCustomerName());
 								amcStatusCount.setCity(customerDtlsDto.getCity());
 								amcStatusCount.setTotalLiftCount(list.size());
 								amcStatusDetailsCountList.add(amcStatusCount);
-							}
+						}
 						}
 					}
 				}
