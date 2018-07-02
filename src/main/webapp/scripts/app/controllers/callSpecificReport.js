@@ -34,11 +34,13 @@
 			$scope.selectedCompany = {};
 			$scope.selectedBranch = {};
 			 $scope.lifts=[];
+			 $scope.callID=[];
 			 $scope.branches = [];
 			 $scope.selectedCustomer = {};
 			 //$scope.selectedStatus = {};
 			 $scope.selectedEventType = {};
 			 $scope.selectedLift = {};
+			 $scope.selectedCallID= {};
 			 $scope.selectedAmc = {};
 			 $scope.showMembers = false;
 			 $scope.eventType = [ {
@@ -100,12 +102,24 @@
 						$scope.lifts = liftData;
 					})
 			
-			serviceApi.doPostWithData('/RLMS/admin/getAllCustomersForBranch',dataToSend)
+			/*serviceApi.doPostWithData('/RLMS/admin/getAllCustomersForBranch',dataToSend)
 					.then(function(data) {
 						$scope.customerSelected = true;
 						$scope.companyName = data.companyName;
 						$scope.branchName = data.branchName
-					})
+					})*/
+		}
+		
+		$scope.loadCallID=function(){
+			var dataToSend = {
+	  				branchCompanyMapId : $scope.selectedBranch.selected.companyBranchMapId,
+					branchCustomerMapId : $scope.selectedCustomer.selected.branchCustomerMapId,
+					liftCustomerMapId:$scope.selectedLift.selected.liftCustomerMapId
+				}
+			serviceApi.doPostWithData('/RLMS/report/callDetailsReport',dataToSend)
+			.then(function(callData) {
+				$scope.callID = callData;
+			})
 		}
 		
 		if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 1) {
@@ -133,30 +147,7 @@
 		}*/
 		//Show Member List
 		//$scope.filterOptions.filterText='';
-/*		$scope.$watch('filterOptions', function(newVal, oldVal) {
-	  	      if (newVal !== oldVal) {
-	  	        $scope.loadReportList($scope.filterOptions.filterText);
-	  	      }
-	  	    }, true);
-		$scope.loadReportList = function(searchText){
-			if (searchText) {
-	  	          var ft = searchText.toLowerCase();
-	  	        var dataToSend = constructDataToSend();
-	 	         serviceApi.doPostWithData('/RLMS/report/callDetailsReport',dataToSend)
-	 	         .then(function(data) {
-	 	        	$scope.siteViseReport = data.filter(function(item) {
-		  	              return JSON.stringify(item).toLowerCase().indexOf(ft) !== -1;
-		  	            });
-	 	         })
- 	         }else{
- 	        	var dataToSend = constructDataToSend();
- 	 	         serviceApi.doPostWithData('/RLMS/report/callDetailsReport',dataToSend)
- 	 	         .then(function(data) {
- 	 	        	 $scope.siteViseReport = data;
- 	 	         })
- 	         }
-			$scope.showMembers = true;
-		}*/
+
 		$scope.loadCallSpecificList = function(){
 			$scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
 			$scope.showMembers = true;

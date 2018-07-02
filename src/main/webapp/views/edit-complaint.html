@@ -37,12 +37,13 @@
 			<div class="form-group">
   			<label class="col-sm-3 control-label">Title </label>  			
 				<div class="col-sm-6">
-			   	<ui-select ng-model="selectedComplaintTitle.selected" title="Choose a complaint title">
+				<select ng-model="selectedComplaintTitle" ng-options="x for x in complaintTitle" class="form-control"></select> 
+			<!--    	<ui-select ng-model="selectedComplaintTitle.selected" title="Choose a complaint title">
 			    <ui-select-match placeholder="Select Call Title">{{$select.selected.name}}</ui-select-match>
 			    <ui-select-choices repeat="iterator in complaintTitle | filter: $select.search">
 			      <span ng-bind-html="iterator.name | highlight: $select.search"></span>
 			    </ui-select-choices>
-			  </ui-select>
+			  </ui-select> -->
 			  </div>
   			</div>
 			<div class="form-group ">
@@ -85,7 +86,7 @@
 				<div class="col-sm-6">
 					<div class="select-container">
 						<!-- <select ng-model="selectedTechnician" ng-options="x.name for x in techniciansForEditComplaints" class="form-control"> -->
-						<input disabled name="selectedTechnician" type="text" placeholder="Technician" ng-model="editComplaint.name" class="form-control">
+						<input disabled name="technicianDtls" type="text" placeholder="Technician" ng-model="editComplaint.technicianDtls" class="form-control">
 						</select>
 				</div>
 					<!-- <input name="complaintsTechnician" type="text" placeholder="Technician" ng-model="editComplaint.complaintsTechnician" class="form-control"> -->

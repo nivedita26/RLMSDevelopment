@@ -142,8 +142,8 @@
 				}
 				complaintsData = {
 						 complaintNumber:$scope.editComplaint.complaintsNumber,
-
-						 complaintId:$scope.editComplaint.complaintsNumber,						 
+						 complaintId:$scope.editComplaint.complaintsNumber,
+						// title:$scope.editComplaint.complaintsTitle,
 						 title:$scope.selectedComplaintTitle.selected.name,
 						 liftAddress:$scope.editComplaint.complaintsAddress + $scope.editComplaint.complaintsCity,
 						 serviceCallType:$scope.selectedCallType.selected.id,
@@ -151,9 +151,8 @@
 						 remark:$scope.editComplaint.complaintsRemark,
 						 //status:$scope.editComplaint.status,
 						 status:$scope.selectedComplaintStatus,
-						 technicianDtls:$scope.userName,
+						 technicianDtls:$scope.editComplaint.technicianDtls,
 						 userRoleId:userRole,
-						 //serviceCallType:$rootScope.serviceCallTypeSelect
 						 };
 				serviceApi.doPostWithData("/RLMS/complaint/validateAndUpdateComplaint",complaintsData)
 				.then(function(response){
