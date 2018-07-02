@@ -108,7 +108,7 @@
 		}
 		
 		
-		$scope.loadLifts = function() {
+		/*$scope.loadLifts = function() {
 			
   		var dataToSend = {
   				branchCompanyMapId : $scope.selectedBranch.selected.companyBranchMapId,
@@ -125,7 +125,7 @@
 						$scope.companyName = data.companyName;
 						$scope.branchName = data.branchName
 					})
-		}
+		}*/
 		
 		if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 1) {
 			$scope.showCompany = true;
@@ -142,9 +142,9 @@
 			$scope.showBranch = false;
 		}
 		
-		if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 3) {
+		/*if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 3) {
 			$scope.loadCustomerData();
-		}
+		}*/
 		
 		/*if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel < 3) {
 			$scope.showBranch == true
