@@ -187,7 +187,7 @@
 		  	        if (searchText) {
 		  	          var ft = searchText.toLowerCase();
 		  	        var dataToSend = constructDataToSend();
-		  	        serviceApi.doPostWithData('/RLMS/report/callDetailsReport',dataToSend)
+		  	        serviceApi.doPostWithData('/RLMS/report/callSpecificReport',dataToSend)
 		  	         .then(function(largeLoad) {
 		  	        	  var details=[];
 		  	        	  for(var i=0;i<largeLoad.length;i++){
@@ -291,7 +291,7 @@
 		  	        	
 		  	        	var dataToSend = constructDataToSend();
 			  	    	
-		  	        	serviceApi.doPostWithData('/RLMS/report/callDetailsReport',dataToSend).then(function(largeLoad) {
+		  	        	serviceApi.doPostWithData('/RLMS/report/callSpecificReport',dataToSend).then(function(largeLoad) {
 		  	        	  var details=[];
 		  	        	  for(var i=0;i<largeLoad.length;i++){
 			  	        	var detailsObj={};

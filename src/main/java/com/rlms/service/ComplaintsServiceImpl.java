@@ -27,6 +27,7 @@ import com.rlms.contract.ComplaintsDtlsDto;
 import com.rlms.contract.ComplaintsDto;
 import com.rlms.contract.LiftDtlsDto;
 import com.rlms.contract.SiteVisitDtlsDto;
+import com.rlms.contract.SiteVisitReportDto;
 import com.rlms.contract.UserAppDtls;
 import com.rlms.contract.UserDtlsDto;
 //import com.rlms.contract.UserAppDtls;
@@ -190,6 +191,7 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 		dto.setRegistrationDate(complaintMaster.getRegistrationDate());
 		dto.setRemark(complaintMaster.getRemark());
 		dto.setCity(complaintMaster.getLiftCustomerMap().getLiftMaster().getCity());
+		
 		if(null != complaintMaster.getRegistrationDate()){
 			dto.setRegistrationDateStr(DateUtils.convertDateToStringWithoutTime(complaintMaster.getRegistrationDate()));
 		}
@@ -197,7 +199,6 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 		if(null != complaintMaster.getActualServiceEndDate()){
 			dto.setActualServiceEndDateStr(DateUtils.convertDateToStringWithoutTime(complaintMaster.getActualServiceEndDate()));
 		}
-		dto.setRemark(complaintMaster.getRemark());
 		dto.setServiceCallTypeStr(RLMSCallType.getStringFromID(complaintMaster.getCallType()));
 		dto.setTitle(complaintMaster.getTitle());
 		dto.setServiceStartDate(complaintMaster.getServiceStartDate());
@@ -207,8 +208,12 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 		if(!Status.PENDING.getStatusId().equals(complaintMaster.getStatus())){
 			RlmsComplaintTechMapDtls complaintTechMapDtls = this.complaintsDao.getComplTechMapObjByComplaintId(complaintMaster.getComplaintId());
 			if(null != complaintTechMapDtls){
+						
+				/////
 				String techDtls = complaintTechMapDtls.getUserRoles().getRlmsUserMaster().getFirstName() + " " + complaintTechMapDtls.getUserRoles().getRlmsUserMaster().getLastName() + " (" + complaintTechMapDtls.getUserRoles().getRlmsUserMaster().getContactNumber() + ")";			
 				dto.setTechnicianDtls(techDtls);
+				dto.setCallAssignedDateStr(DateUtils.convertDateToStringWithTime(complaintTechMapDtls.getAssignedDate()));
+			    dto.setLastVisitedDateStr(DateUtils.convertDateTimestampToStringWithTime(complaintTechMapDtls.getUpdatedDate()));
 			}
 		}else{
 			dto.setTechnicianDtls("-");
