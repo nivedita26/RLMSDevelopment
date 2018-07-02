@@ -33,7 +33,7 @@
 
 			<label class="control-label">Select Lift</label>
 			<div class="select-container">
-				  <ui-select multiple ng-model="selectedLift.selected" close-on-select="false" title="Choose lifts">
+				  <ui-select multiple ng-model="selectedLift.selected" close-on-select="false" on-select="loadCallID();" title="Choose lifts">
 				    <ui-select-match placeholder="Select lift from the List...">{{$select.selected[$index].liftNumber}}</ui-select-match>
 				    <ui-select-choices repeat="iterator in lifts | filter: $select.search">
 				      <span ng-bind-html="iterator.liftNumber | highlight: $select.search"></span>
@@ -45,9 +45,9 @@
 			<label class="control-label">Select Call ID</label>
 			<div class="select-container">
 				  <ui-select  ng-model="selectedCallID.selected" title="Choose Call ID">
-				    <ui-select-match placeholder="Select Call ID">{{$select.selected.callId}}</ui-select-match>
-				    <ui-select-choices repeat="iterator in callId | filter: $select.search">
-				      <span ng-bind-html="iterator.callId | highlight: $select.search"></span>
+				    <ui-select-match placeholder="Select Call ID">{{$select.selected.complaintNumber}}</ui-select-match>
+				    <ui-select-choices repeat="iterator in callID | filter: $select.search">
+				      <span ng-bind-html="iterator.complaintNumber | highlight: $select.search"></span>
 				    </ui-select-choices>
 				  </ui-select>
 			</div>		
