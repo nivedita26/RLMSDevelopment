@@ -365,6 +365,13 @@
 			}else{
 				$scope.companyBranchMapIdForCustomer=$scope.selectedBranch.selected.companyBranchMapId;
 			}
+			/*var tempEventType;
+			if($scope.selectedEventType.selected.name =="ALL"){
+				tempEventType.push("-1");
+			}else{
+				tempEventType.push($scope.selectedEventType.selected.name);
+			}*/
+				
 	  		var data = {
 	  				//companyBranchMapId:$scope.companyBranchMapIdForCustomer,
 	  				//companyId:9,
