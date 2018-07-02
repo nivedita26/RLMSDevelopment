@@ -825,31 +825,31 @@
 											var dataToSend ={
 													complaintId:$scope.selectedComplaintId
 											}
-											if($scope.selectedCalltype.selected.name=="Lift Installation call"){
+											if($scope.selectedCalltype.name=="Lift Installation call"){
 												$rootScope.serviceCallTypeSelect=1;
 												dataToSend["serviceCallType"]=1;
-											}else if($scope.selectedCalltype.selected.name=="Configuration/Settings call"){
+											}else if($scope.selectedCalltype.name=="Configuration/Settings call"){
 												$rootScope.serviceCallTypeSelect=2;
 												dataToSend["serviceCallType"]=2;
-											}else if($scope.selectedCalltype.selected.name=="AMC call"){
+											}else if($scope.selectedCalltype.name=="AMC call"){
 												$rootScope.serviceCallTypeSelect=3;
 												dataToSend["serviceCallType"]=3;
-											}else if($scope.selectedCalltype.selected.name=="Under Warranty Support call"){
+											}else if($scope.selectedCalltype.name=="Under Warranty Support call"){
 												$rootScope.serviceCallTypeSelect=4;
 												dataToSend["serviceCallType"]=4;
-											}else if($scope.selectedCalltype.selected.name=="LMS alert call"){
+											}else if($scope.selectedCalltype.name=="LMS alert call"){
 												$rootScope.serviceCallTypeSelect=5;
 												dataToSend["serviceCallType"]=5;
-											}else if($scope.selectedCalltype.selected.name=="Operator assigned/Generic call"){
+											}else if($scope.selectedCalltype.name=="Operator assigned/Generic call"){
 												$rootScope.serviceCallTypeSelect=6;
 												dataToSend["serviceCallType"]=6;
-											}else if($scope.selectedCalltype.selected.name=="User raised call through App"){
+											}else if($scope.selectedCalltype.name=="User raised call through App"){
 												$rootScope.serviceCallTypeSelect=7;
 												dataToSend["serviceCallType"]=7;
-											}else if($scope.selectedCalltype.selected.name=="User raised call through Telephone"){
+											}else if($scope.selectedCalltype.name=="User raised call through Telephone"){
 												$rootScope.serviceCallTypeSelect=8;
 												dataToSend["serviceCallType"]=8;
-											}else if($scope.selectedCalltype.selected.name=="Reassign call"){
+											}else if($scope.selectedCalltype.name=="Reassign call"){
 												$rootScope.serviceCallTypeSelect=9;
 												dataToSend["serviceCallType"]=9;
 											}			
