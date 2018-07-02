@@ -780,7 +780,7 @@ angular.module('theme.demos.dashboard.indi', [
               });
 
           }else if(isTodaysData){
-        	  if(headerValue =="Todays Total"){
+        	  if(headerValue =="Todays Total Calls"){
         		var dataToSend = $scope
                 .construnctObjeToSend(complaintStatus);
             	serviceApi
