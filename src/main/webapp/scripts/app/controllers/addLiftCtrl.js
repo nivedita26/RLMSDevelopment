@@ -401,8 +401,7 @@
 		      $event.preventDefault();
 		      $event.stopPropagation();
 		      if($scope.openFlag[which] != true)
-		    	  $scope.openFlag[which] = true;
-		    
+		    	  $scope.openFlag[which] = true;	    
 		      else
 		    	  $scope.openFlag[which] = false;
 		    };
