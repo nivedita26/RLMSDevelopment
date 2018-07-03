@@ -100,10 +100,7 @@
 						$scope.branchName = data.branchName
 					})*/
 		}
-		if($scope.selectedLift.selected= largeLoad[i].liftNumber){
-			
-		}
-		
+
 		$scope.loadCallID=function(){
 			var dataToSend = {
 	  				branchCompanyMapId : $scope.selectedBranch.selected.companyBranchMapId,
