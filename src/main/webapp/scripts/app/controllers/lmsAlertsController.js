@@ -89,7 +89,7 @@
 			var branchData ={};
   	    	if($scope.showBranch == true){
   	    		branchData = {
-  	    			branchCompanyMapId : $scope.selectedBranch.selected.companyBranchMapId
+  	    			branchCompanyMapId : $scope.selectedBranch.selected!=null?$scope.selectedBranch.selected.companyBranchMapId:0
 					}
   	    	}else{
   	    		branchData = {
@@ -98,34 +98,27 @@
   	    	}
   	    	serviceApi.doPostWithData('/RLMS/admin/getAllCustomersForBranch',branchData)
  	         .then(function(customerData) {
- 	        	$scope.cutomers = customerData;
- 	        	$scope.selectedCustomer.selected=undefined;
-				//$scope.selectedStatus.selected=undefined;
-				//$scope.selectedEventType.selected=undefined;
- 	        	
+ 	        	 $scope.cutomers = customerData;
+ 	        	 $scope.selectedCustomer.selected = undefined;
+ 	        	 $scope.selectedLift.selected = undefined;
+ 	        	// $scope.selectedCallID.selected = undefined;
+ 	        	 var emptyArray=[];
+ 	        	 $scope.myData = emptyArray;
  	         })
- 	         
 		}
 		
-		$scope.loadLifts = function() {
+		/*$scope.loadLifts = function() {
 			
 	  		var dataToSend = {
 	  				branchCompanyMapId : $scope.selectedBranch.selected.companyBranchMapId,
-	  				branchCustomerMapId : $scope.selectedCustomer.selected.branchCustomerMapId,
-					//liftCustomerMapId:$scope.selectedLift.selected.liftCustomerMapId
+					branchCustomerMapId : $scope.selectedCustomer.selected.branchCustomerMapId
 				}
 				serviceApi.doPostWithData('/RLMS/complaint/getAllApplicableLifts',dataToSend)
 						.then(function(liftData) {
 							$scope.lifts = liftData;
 						})
 				
-				serviceApi.doPostWithData('/RLMS/admin/getAllCustomersForBranch',dataToSend)
-						.then(function(data) {
-							$scope.customerSelected = true;
-							$scope.companyName = data.companyName;
-							$scope.branchName = data.branchName
-						})
-			}
+			}*/
 		
 		if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 3) {
 			$scope.loadCustomerData();
