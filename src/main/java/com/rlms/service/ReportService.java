@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.rlms.contract.AMCDetailsDto;
+import com.rlms.contract.CallSpecificReportDto;
 import com.rlms.contract.ComplaintsDtlsDto;
 import com.rlms.contract.ComplaintsDto;
 import com.rlms.contract.EventDtlsDto;
@@ -23,6 +24,8 @@ public interface ReportService {
 	public String addAMCDetailsForLift(AMCDetailsDto dto, UserMetaInfo metaInfo) throws ParseException;
 	public List<SiteVisitReportDto> getSiteVisitReport(SiteVisitReportDto dto);
 	public List<ComplaintsDto> getCallDetailedReport(ComplaintsDtlsDto dto);
+	public List<CallSpecificReportDto> getCallSpecificReport(ComplaintsDtlsDto dto);
+
 	public List<TechnicianWiseReportDTO> getTechnicianWiseReport(TechnicianWiseReportDTO dto);
 	public void changeStatusToAMCRenewalAndNotifyUser() throws UnsupportedEncodingException;
 	public void changeStatusToAMCExpiryAndNotifyUser() throws UnsupportedEncodingException;
