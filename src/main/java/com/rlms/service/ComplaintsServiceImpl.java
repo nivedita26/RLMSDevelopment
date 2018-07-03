@@ -208,7 +208,9 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 		if(!Status.PENDING.getStatusId().equals(complaintMaster.getStatus())){
 			RlmsComplaintTechMapDtls complaintTechMapDtls = this.complaintsDao.getComplTechMapObjByComplaintId(complaintMaster.getComplaintId());
 			if(null != complaintTechMapDtls){
-						
+						if(complaintTechMapDtls.getStatus()==Status.RESOLVED.getStatusId()) {
+							dto.setResolvedDateStr(DateUtils.convertDateToStringWithTime(complaintTechMapDtls.getUpdatedDate()));
+						}
 				/////
 				String techDtls = complaintTechMapDtls.getUserRoles().getRlmsUserMaster().getFirstName() + " " + complaintTechMapDtls.getUserRoles().getRlmsUserMaster().getLastName() + " (" + complaintTechMapDtls.getUserRoles().getRlmsUserMaster().getContactNumber() + ")";			
 				dto.setTechnicianDtls(techDtls);
