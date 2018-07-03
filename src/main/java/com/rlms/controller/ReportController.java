@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.rlms.constants.RlmsErrorType;
 import com.rlms.contract.AMCDetailsDto;
+import com.rlms.contract.CallSpecificReportDto;
 import com.rlms.contract.ComplaintsDtlsDto;
 import com.rlms.contract.ComplaintsDto;
 import com.rlms.contract.EventDtlsDto;
@@ -87,6 +88,19 @@ public class ReportController extends BaseController{
 	        try{
 	        	logger.info("In getSiteVisitReport method");
 	        	complaintsDtoList = this.reportService.getCallDetailedReport(dto);
+	        }catch(Exception e){
+	        	logger.error(ExceptionUtils.getFullStackTrace(e));	       	
+	        	throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
+	        }
+	        return complaintsDtoList;
+	    }
+	 @RequestMapping(value = "/callSpecificReport", method = RequestMethod.POST)
+	    public @ResponseBody List<CallSpecificReportDto>  callSpecificReport(@RequestBody ComplaintsDtlsDto dto) throws RunTimeException, ValidationException {
+	        
+		 List<CallSpecificReportDto>  complaintsDtoList = new ArrayList<CallSpecificReportDto>();
+	        try{
+	        	logger.info("In getSiteVisitReport method");
+	        	complaintsDtoList = this.reportService.getCallSpecificReport(dto);
 	        }catch(Exception e){
 	        	logger.error(ExceptionUtils.getFullStackTrace(e));	       	
 	        	throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));

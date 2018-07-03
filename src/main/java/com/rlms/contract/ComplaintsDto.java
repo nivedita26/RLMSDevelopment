@@ -1,6 +1,7 @@
 package com.rlms.contract;
 
 import java.util.Date;
+import java.util.List;
 
 public class ComplaintsDto {
 
@@ -20,7 +21,14 @@ public class ComplaintsDto {
 	private Date toDate;
 	private String fromDateStr;
 	private String  toDateStr;
+   private SiteVisitReportDto siteVisitDetailsList ; 
 	
+	public SiteVisitReportDto getSiteVisitDetailsList() {
+	return siteVisitDetailsList;
+}
+public void setSiteVisitDetailsList(SiteVisitReportDto siteVisitDetailsList) {
+	this.siteVisitDetailsList = siteVisitDetailsList;
+}
 	public String getFromDateStr() {
 		return fromDateStr;
 	}
@@ -72,7 +80,15 @@ public class ComplaintsDto {
 	}
 	private int  totalDaysRequiredToResolveComplaint;
 	private Date lastVisitedDate;
+	private String lastVisitedDateStr;
 
+
+	public String getLastVisitedDateStr() {
+		return lastVisitedDateStr;
+	}
+	public void setLastVisitedDateStr(String lastVisitedDateStr) {
+		this.lastVisitedDateStr = lastVisitedDateStr;
+	}
 	public Date getFromDate() {
 		return fromDate;
 	}
