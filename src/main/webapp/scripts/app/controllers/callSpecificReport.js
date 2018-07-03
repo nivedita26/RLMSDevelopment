@@ -24,7 +24,8 @@
  	         .then(function(customerData) {
  	        	 $scope.cutomers = customerData;
  	        	 $scope.selectedCustomer.selected = undefined;
- 	        	// $scope.selectedLifts.selected = undefined;
+ 	        	 $scope.selectedLift.selected = undefined;
+ 	        	 $scope.selectedCallID.selected = undefined;
  	        	 var emptyArray=[];
  	        	 $scope.myData = emptyArray;
  	         })
@@ -37,23 +38,11 @@
 			 $scope.callID=[];
 			 $scope.branches = [];
 			 $scope.selectedCustomer = {};
-			 //$scope.selectedStatus = {};
-			 $scope.selectedEventType = {};
 			 $scope.selectedLift = {};
 			 $scope.selectedCallID= {};
 			 $scope.selectedAmc = {};
 			 $scope.showMembers = false;
-			 $scope.eventType = [ {
-					id : 21,
-					name : 'Event'
-				}, {
-					id : 31,
-					name : 'Error'
-				}, {
-					id : 41,
-					name : 'Response'
-				} ];
-			 
+			 			 
 		} 
 		// showCompnay Flag
 				
@@ -100,6 +89,8 @@
 			serviceApi.doPostWithData('/RLMS/complaint/getAllApplicableLifts',dataToSend)
 					.then(function(liftData) {
 						$scope.lifts = liftData;
+						$scope.selectedLift.selected = undefined;
+						
 					})
 			
 			/*serviceApi.doPostWithData('/RLMS/admin/getAllCustomersForBranch',dataToSend)
@@ -109,7 +100,7 @@
 						$scope.branchName = data.branchName
 					})*/
 		}
-		
+
 		$scope.loadCallID=function(){
 			var dataToSend = {
 	  				branchCompanyMapId : $scope.selectedBranch.selected.companyBranchMapId,
@@ -132,7 +123,6 @@
 		}
 		if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel < 3) {
 			$scope.showBranch = true;
-			//loadDefaultComplaintData();
 		} else {
 			$scope.showBranch = false;
 		}
@@ -283,6 +273,7 @@
 		  	        	var dataToSend = constructDataToSend();
 			  	    	
 		  	        	serviceApi.doPostWithData('/RLMS/report/callSpecificReport',dataToSend).then(function(largeLoad) {
+
 		  	        	  var details=[];
 		  	        	  for(var i=0;i<largeLoad.length;i++){
 			  	        	var detailsObj={};

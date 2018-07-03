@@ -107,25 +107,26 @@
  	         
 		}
 		
-		/*$scope.loadEventData = function() {
-			var eventData = {};
-			serviceApi
-					.doPostWithData(
-							'/RLMS/admin/getListofEvents',
-							eventData)
-					.then(
-							function(customerData) {
-								var tempAll = {
-									listOfEventTypeIds : -1,
-									firstName : "All"
-								}
-								$scope.eventId = eventData;
-								$scope.eventId
-								.unshift(tempAll);
-								$scope.selectedEventType.selected=undefined;
-								//$scope.selectedLifts.selected=undefined;
-							})
-		}*/
+		$scope.loadLifts = function() {
+			
+	  		var dataToSend = {
+	  				branchCompanyMapId : $scope.selectedBranch.selected.companyBranchMapId,
+	  				branchCustomerMapId : $scope.selectedCustomer.selected.branchCustomerMapId,
+					//liftCustomerMapId:$scope.selectedLift.selected.liftCustomerMapId
+				}
+				serviceApi.doPostWithData('/RLMS/complaint/getAllApplicableLifts',dataToSend)
+						.then(function(liftData) {
+							$scope.lifts = liftData;
+						})
+				
+				serviceApi.doPostWithData('/RLMS/admin/getAllCustomersForBranch',dataToSend)
+						.then(function(data) {
+							$scope.customerSelected = true;
+							$scope.companyName = data.companyName;
+							$scope.branchName = data.branchName
+						})
+			}
+		
 		if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 3) {
 			$scope.loadCustomerData();
 		}
@@ -365,6 +366,13 @@
 			}else{
 				$scope.companyBranchMapIdForCustomer=$scope.selectedBranch.selected.companyBranchMapId;
 			}
+			/*var tempEventType;
+			if($scope.selectedEventType.selected.name =="ALL"){
+				tempEventType.push("-1");
+			}else{
+				tempEventType.push($scope.selectedEventType.selected.name);
+			}*/
+				
 	  		var data = {
 	  				//companyBranchMapId:$scope.companyBranchMapIdForCustomer,
 	  				//companyId:9,

@@ -90,7 +90,7 @@
  	         .then(function(customerData) {
  	        	 $scope.cutomers = customerData;
  	        	 $scope.selectedCustomer.selected = undefined;
- 	        	 //$scope.selectedLifts.selected = undefined;
+ 	        	 $scope.selectedLift.selected = undefined;
  	        	 var emptyArray=[];
  	        	 $scope.myData = emptyArray;
  	         })
@@ -107,12 +107,12 @@
 						$scope.lifts = liftData;
 					})
 			
-			serviceApi.doPostWithData('/RLMS/admin/getAllCustomersForBranch',dataToSend)
+			/*serviceApi.doPostWithData('/RLMS/admin/getAllCustomersForBranch',dataToSend)
 					.then(function(data) {
 						$scope.customerSelected = true;
 						$scope.companyName = data.companyName;
 						$scope.branchName = data.branchName
-					})
+					})*/
 		}
 		
 		if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 3) {
@@ -216,7 +216,8 @@
 		  	        	
 		  	        	var dataToSend = constructDataToSend();
 			  	    	
-		  	        	serviceApi.doPostWithData('/RLMS/report/getListOfEvents',dataToSend).then(function(largeLoad) {
+		  	        	serviceApi.doPostWithData('/RLMS/report/getListOfEvents',dataToSend)
+		  	        	.then(function(largeLoad) {
 		  	        	  var details=[];
 		  	        	  for(var i=0;i<largeLoad.length;i++){
 			  	        	var detailsObj={};
@@ -360,14 +361,19 @@
 			}*/
 			tempbranchCustomerMapIds.push($scope.selectedCustomer.selected.branchCustomerMapId);
 			
-			if($scope.selectedlifts.selected){
+			/*if($scope.selectedlifts.selected){
 				var tempLiftIds = [];
 				for (var i = 0; i < $scope.selectedlifts.selected.length; i++) {
 					tempLiftIds
 							.push($scope.selectedlifts.selected[i].liftId);
 				}
 				dataToSend["listOfLiftCustoMapId"] = tempLiftIds;
+			}*/
+			var tempLiftIds = [];
+			for (var i = 0; i < $scope.selectedLift.selected.length; i++) {
+				tempLiftIds.push($scope.selectedLift.selected[i].liftId);
 			}
+			
 			if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 3) {
 				$scope.companyBranchMapIdForCustomer=$rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls.companyBranchMapId;
 			}else{
@@ -380,7 +386,7 @@
 	  				//listOfEventTypeIds:$scope.selectedEventType.selected.id,
 	  				eventType:"RES",
 	  				branchCustomerMapId:tempbranchCustomerMapIds,
-	  				listOfLiftCustoMapId:[]
+	  				liftCustomerMapId:tempLiftIds
 	  				//serviceCallType:1
 	  		};
 	  		return data;

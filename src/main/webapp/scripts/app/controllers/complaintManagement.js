@@ -465,20 +465,15 @@
 																			} else {
 																				userDetailsObj["Registration_Date"] = " - ";
 																			}
-																			if (!!largeLoad[i].serviceStartDateStr) {
-																				userDetailsObj["Service_StartDate"] = largeLoad[i].serviceStartDateStr;
+																			if (!!largeLoad[i].callAssignedDateStr) {
+																				userDetailsObj["callAssignedDateStr"] = largeLoad[i].callAssignedDateStr;
 																			} else {
-																				userDetailsObj["Service_StartDate"] = " - ";
+																				userDetailsObj["callAssignedDateStr"] = " - ";
 																			}
-																			if (!!largeLoad[i].serviceStartDateStr) {
-																				userDetailsObj["Service_Start_Date"] = largeLoad[i].serviceStartDateStr;
+																			if (!!largeLoad[i].resolvedDateStr) {
+																				userDetailsObj["resolvedDateStr"] = largeLoad[i].resolvedDateStr;
 																			} else {
-																				userDetailsObj["Service_Start_Date"] = " - ";
-																			}
-																			if (!!largeLoad[i].actualServiceEndDateStr) {
-																				userDetailsObj["Service_End_Date"] = largeLoad[i].actualServiceEndDateStr;
-																			} else {
-																				userDetailsObj["Service_End_Date"] = " - ";
+																				userDetailsObj["resolvedDateStr"] = " - ";
 																			}
 																			if (!!largeLoad[i].liftAddress) {
 																				userDetailsObj["Address"] = largeLoad[i].liftAddress;
@@ -509,7 +504,8 @@
 																				userDetailsObj["complaintId"] = largeLoad[i].complaintId;
 																			} else {
 																				userDetailsObj["complaintId"] = " - ";
-																			}if (!!largeLoad[i].customerName) {
+																			}
+																			if (!!largeLoad[i].customerName) {
 																				userDetailsObj["CustomerName"] = largeLoad[i].customerName;
 																			} else {
 																				userDetailsObj["CustomerName"] = " - ";
@@ -726,11 +722,11 @@
 										displayName:"Registration Date",
 										width : 140
 									}, {
-										field : "Service_StartDate",
+										field : "callAssignedDateStr",
 										displayName:"Call Assigned Date",
 										width : 160
 									}, {
-										field : "Service_End_Date",
+										field : "resolvedDateStr",
 										displayName:"Call Resolved Date",
 										width : 140
 									}, {
