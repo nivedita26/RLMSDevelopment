@@ -23,7 +23,7 @@
 			</div>
 			<label class=" control-label">Select Customer</label>
 					<div class="select-container">
-						  <ui-select ng-model="selectedCustomer.selected" title="Choose a Customer" on-select="loadLifts();">
+						  <ui-select ng-model="selectedCustomer.selected" title="Choose a Customer" on-select="loadLifts();" ng-click="loadCallID();">
 						    <ui-select-match placeholder="Select Customer">{{$select.selected.firstName}}</ui-select-match>
 						    <ui-select-choices repeat="customerIterator in cutomers| filter: $select.search">
 						      <span ng-bind-html="customerIterator.firstName | highlight: $select.search"></span>
@@ -33,7 +33,7 @@
 
 			<label class="control-label">Select Lift</label>
 			<div class="select-container">
-				  <ui-select multiple ng-model="selectedLift.selected" close-on-select="false" on-select="loadCallID();" title="Choose lifts">
+				  <ui-select multiple ng-model="selectedLift.selected" close-on-select="false"  title="Choose lifts">
 				    <ui-select-match placeholder="Select lift from the List...">{{$select.selected[$index].liftNumber}}</ui-select-match>
 				    <ui-select-choices repeat="iterator in lifts | filter: $select.search">
 				      <span ng-bind-html="iterator.liftNumber | highlight: $select.search"></span>
@@ -44,14 +44,14 @@
 			<div class="form-group margin-b10">
 			<label class="control-label">Select Call ID</label>
 			<div class="select-container">
-				  <ui-select  ng-model="selectedCallID.selected" title="Choose Call ID">
+				  <ui-select  ng-model="selectedCallID.selected" title="Choose Call ID" ng-click="loadCallID();">
 				    <ui-select-match placeholder="Select Call ID">{{$select.selected.complaintNumber}}</ui-select-match>
 				    <ui-select-choices repeat="iterator in callID | filter: $select.search">
 				      <span ng-bind-html="iterator.complaintNumber | highlight: $select.search"></span>
 				    </ui-select-choices>
 				  </ui-select>
 			</div>		
-			</div>
+			</div> 
 			<!-- <button class="btn-sky btn" ng-click="loadReportList()">Proceed</button>
 				<button class="btn-sky btn margin-left-10" ng-click="resetReportList()">Reset</button> -->
 		<div class="row">

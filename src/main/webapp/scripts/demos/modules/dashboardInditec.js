@@ -340,10 +340,16 @@ angular.module('theme.demos.dashboard.indi', [
             		  }else{
             			  $scope.complaintsData.totalComplaints.text ="0";
             		  }
-            		  if(largeLoad[i].avgLogsPerDay!=null){
+            		 /* if(largeLoad[i].avgLogsPerDay!=null){
             			  $scope.complaintsData.avgLogPerDay.text = largeLoad[i].avgLogsPerDay;
-            		  }
+            		  }*/
             	  }
+            	  if(largeLoad[0].avgLogsPerDay!=null){
+        			  $scope.complaintsData.avgLogPerDay.text = largeLoad[0].avgLogsPerDay;
+        		  }
+            	  if(largeLoad[0].avgResolvedPerDay!=null){
+        			  $scope.complaintsData.avgResolvedPerDayRegistered.text = largeLoad[0].avgResolvedPerDay;
+        		  }
             	                
             });
         }, 100);

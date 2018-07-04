@@ -297,6 +297,11 @@
 		  	        		}else{
 		  	        			detailsObj["LastVisitedDate"] =" - ";
 		  	        		}
+		  	        		if(!!largeLoad[i].totalNoOfVisits){
+		  	        			detailsObj["TotalAttempts"] =largeLoad[i].totalNoOfVisits;
+		  	        		}else{
+		  	        			detailsObj["TotalAttempts"] =" - ";
+		  	        		}
 		  	        		if(!!largeLoad[i].callAssignedDateStr){
 		  	        			detailsObj["callAssignedDate"] =largeLoad[i].callAssignedDateStr;
 		  	        		}else{
@@ -344,6 +349,11 @@
 	  	        			detailsObj["Title"] =largeLoad[i].title;
 	  	        		}else{
 	  	        			detailsObj["Title"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].totalNoOfVisits){
+	  	        			detailsObj["TotalAttempts"] =largeLoad[i].totalNoOfVisits;
+	  	        		}else{
+	  	        			detailsObj["TotalAttempts"] =" - ";
 	  	        		}
 	  	        		if(!!largeLoad[i].registrationDateStr){
 	  	        			detailsObj["RegDate"] =largeLoad[i].registrationDateStr;
@@ -444,8 +454,12 @@
 						displayName:"Last Visited Date",
 						width : 160
 			  	  },{
+						field : "TotalAttempts",
+						displayName:" Total Attempts",
+						width : 160
+		  	      },{
 						field : "TotalDaysTaken",
-						displayName:"Total Days Taken",
+						displayName:"Total Days Taken ",
 						width : 160
 		  	      }
 		  	      ]

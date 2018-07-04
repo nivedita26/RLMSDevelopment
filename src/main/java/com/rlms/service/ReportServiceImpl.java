@@ -718,7 +718,7 @@ public class ReportServiceImpl implements ReportService {
     				}
             	  if(null != listOfAllVisits &&  !listOfAllVisits.isEmpty()){
             		  complaintwiseSiteVisitReport.setTotalNoOfVisits(listOfAllVisits.size());
-            	  }
+            	  
             	  Long totalTimeForComplaint = 0L;
     			 for (RlmsSiteVisitDtls rlmsSiteVisitDtls : listOfAllVisits) {
     					SiteVisitDtlsDto siteVisitDto = new SiteVisitDtlsDto();
@@ -736,9 +736,13 @@ public class ReportServiceImpl implements ReportService {
     					complaintwiseSiteVisitReport.setTotalTimeTaken(DateUtils.convertTimeIntoDaysHrMin(totalTimeForComplaint, TimeUnit.SECONDS));
     				}
     				complaintwiseSiteVisitReport.setListOFAllVisits(listOfAllVisists);
-    				complaintwiseSiteVisitReport.setUserRating(complaintTechMapDtls.getUserRating());
+    			
     				complaintsDto.setSiteVisitDetailsList(complaintwiseSiteVisitReport);
-            }
+              }
+    				complaintwiseSiteVisitReport.setUserRating(complaintTechMapDtls.getUserRating());
+
+              }
+          //  }
             //
             complaintsDtoList.add(complaintsDto);
 		}
