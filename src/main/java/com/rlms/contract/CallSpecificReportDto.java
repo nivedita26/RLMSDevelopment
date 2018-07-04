@@ -15,8 +15,15 @@ public class CallSpecificReportDto {
 		private String status;
 		private SiteVisitReportDto siteVisitDetailsList ;
 		private String registeredBy ;
+		private String callAssignedDateStr ;
 
 		
+		public String getCallAssignedDateStr() {
+			return callAssignedDateStr;
+		}
+		public void setCallAssignedDateStr(String callAssignedDateStr) {
+			this.callAssignedDateStr = callAssignedDateStr;
+		}
 		public String getRegisteredBy() {
 			return registeredBy;
 		}

@@ -678,6 +678,11 @@ public class ReportServiceImpl implements ReportService {
         	
               RlmsComplaintTechMapDtls  complaintTechMapDtls = complaintsDao.getComplTechMapObjByComplaintId(rlmsComplaintMaster.getComplaintId());		
               if(complaintTechMapDtls!=null) {
+             //	 complaintsDto.setCallAssignedDateStr(DateUtils.convertDateToStringWithTime(complaintTechMapDtls.getAssignedDate()));
+
+             	 complaintsDto.setCallAssignedDateStr(DateUtils.convertDateToStringWithTime(complaintTechMapDtls.getAssignedDate()));
+
+            	  
             	 /* complaintsDto.setCallAssignedDateStr(DateUtils.convertDateToStringWithTime(complaintTechMapDtls.getAssignedDate()));
             	  if(complaintTechMapDtls.getStatus()==Status.RESOLVED.getStatusId()) {
             		  complaintsDto.setResolvedDateStr(DateUtils.convertDateToStringWithTime(rlmsComplaintMaster.getUpdatedDate()));

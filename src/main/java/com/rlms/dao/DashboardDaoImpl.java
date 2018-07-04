@@ -198,9 +198,7 @@ public class DashboardDaoImpl implements DashboardDao {
 		// RLMSConstants.ACTIVE.getId()));
 		List<RlmsCompanyBranchMapDtls> listOfAllBranches = criteria.list();
 		return listOfAllBranches;
-
 	}
-
 	public RlmsCompanyBranchMapDtls getCompanyBranchMapDtlsForDashboard(
 			Integer compBranchMapId) {
 		Session session = this.sessionFactory.getCurrentSession();
@@ -302,7 +300,7 @@ public List<Object[]> getTotalComplaintsCallTypeCount(List<Integer> liftCustomer
 	Session session = this.sessionFactory.getCurrentSession();
 	//String sql = "SELECT call_type,count(*) FROM rlms_complaint_master where lift_customer_map_id in("+str+") group by call_type";
 	//	String sql ="SELECT call_type,count(*) FROM rlms_complaint_master where (created_date or updated_date < DATE_ADD(NOW(), INTERVAL +1 MONTH)) and lift_customer_map_id in ("+str+") group by call_type";
-	String sql ="SELECT call_type,count(*) FROM rlms_complaint_master where (created_date > DATE_ADD(NOW(), INTERVAL -30 DAY)) and  (created_date < DATE_ADD(NOW(),INTERVAL -1 DAY)) and lift_customer_map_id in ("+str+") group by call_type";
+	String sql ="SELECT call_type,count(*) FROM rlms_complaint_master where (registration_date > DATE_ADD(NOW(), INTERVAL -30 DAY)) and  (registration_date < DATE_ADD(NOW(),INTERVAL -1 DAY)) and lift_customer_map_id in ("+str+") group by call_type";
 		SQLQuery query = session.createSQLQuery(sql);
 		@SuppressWarnings("unchecked")
 		List<Object[]>complaintCount = query.list();
@@ -321,7 +319,11 @@ public List<Object[]> getTodaysComplaintsCallTypeCount(List<Integer> liftCustome
 	}
 	Session session = this.sessionFactory.getCurrentSession();
 	//String sql = "SELECT call_type,count(*) FROM rlms_complaint_master where lift_customer_map_id in("+str+") group by call_type";
-	String sql ="SELECT call_type,count(*) FROM rlms_complaint_master where (DATE(created_date)=CURDATE() or DATE(updated_date)=CURDATE()) and lift_customer_map_id in ("+str+") group by call_type";
+	//String sql ="SELECT call_type,count(*) FROM rlms_complaint_master where (DATE(created_date)=CURDATE() or DATE(updated_date)=CURDATE()) and lift_customer_map_id in ("+str+") group by call_type";
+	String sql ="SELECT call_type,count(*) FROM rlms_complaint_master where (DATE(registration_date)=CURDATE()) and lift_customer_map_id in ("+str+") group by call_type";
+
+	
+	
 	SQLQuery query = session.createSQLQuery(sql);
 	 	@SuppressWarnings("unchecked")
 		List<Object[]>complaintCount = query.list();
@@ -339,7 +341,7 @@ public List<Object[]> getTotalComplaintsStatusCount(List<Integer> liftCustomerMa
 	}
 	Session session = this.sessionFactory.getCurrentSession();
 	//String sql = "SELECT status,count(*) FROM rlms_complaint_master where lift_customer_map_id in("+str+") group by status";	
-	String sql ="SELECT call_type,status,count(*) FROM rlms_complaint_master where  (created_date > DATE_ADD(NOW(), INTERVAL -30 DAY)) and  (created_date < DATE_ADD(NOW(),INTERVAL -1 DAY)) and lift_customer_map_id in ("+str+") group by status,call_type";
+	String sql ="SELECT call_type,status,count(*) FROM rlms_complaint_master where  (registration_date > DATE_ADD(NOW(), INTERVAL -30 DAY)) and  (registration_date < DATE_ADD(NOW(),INTERVAL -1 DAY)) and lift_customer_map_id in ("+str+") group by status,call_type";
    SQLQuery query = session.createSQLQuery(sql);
 	 	@SuppressWarnings("unchecked")
 		List<Object[]>complaintCount = query.list();
@@ -358,7 +360,7 @@ public List<Object[]> getTodaysComplaintsStatusCount(List<Integer> liftCustomerM
 	}
 	Session session = this.sessionFactory.getCurrentSession();
 	//String sql = "SELECT status,count(*) FROM rlms_complaint_master where lift_customer_map_id in("+str+") group by status";	
-	String sql ="SELECT call_type,status,count(*) FROM rlms_complaint_master where (DATE(created_date)=CURDATE() or DATE(updated_date)=CURDATE()) and lift_customer_map_id in ("+str+") group by status,call_type";
+	String sql ="SELECT call_type,status,count(*) FROM rlms_complaint_master where (DATE(registration_date)=CURDATE()) and lift_customer_map_id in ("+str+") group by status,call_type";
    SQLQuery query = session.createSQLQuery(sql);
 	 	@SuppressWarnings("unchecked")
 		List<Object[]>complaintCount = query.list();
