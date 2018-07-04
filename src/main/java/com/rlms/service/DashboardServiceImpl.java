@@ -785,30 +785,40 @@ public class DashboardServiceImpl implements DashboardService {
 	List<RlmsComplaintMaster> listOfAllComplaints = new ArrayList<RlmsComplaintMaster>();
 	List<ComplaintsCount> complaintsCountsList =  new ArrayList<>();
 	float avgLogsPerDay=0.0f;
-	Date today = null;
+	
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	    DecimalFormat df = new DecimalFormat("###.##");
         Date pivotDate = DateUtils.addDaysToDate(new Date(), -30);
+        Date today = DateUtils.addDaysToDate(new Date(), -1);
+       float resolvedComplaintCount=0;
 	    try {
 		 pivotDate=sdf.parse(sdf.format(pivotDate));
-		today = sdf.parse(sdf.format(new Date()));
+		today = sdf.parse(sdf.format(today));
 		} catch (ParseException e) {
 		}
 	    listOfAllComplaints = dashboardDao.getAllComplaintsForAvgLogs(pivotDate,today);
-	    int diff =DateUtils.daysBetween(listOfAllComplaints.get(0).getCreatedDate(),today);
+	    int diff =DateUtils.daysBetween(listOfAllComplaints.get(0).getCreatedDate(),new Date());
 	    if(diff>0) {
 	    	float  listSize = listOfAllComplaints.size();
 	    	avgLogsPerDay =(listSize/diff);
 	    	}else {
 	    		avgLogsPerDay = listOfAllComplaints.size();
 	    	}
-	    //df.format(avgLogsPerDay);
-	List<Object[]> complaintCount = dashboardDao.getTotalComplaintsCallTypeCount(dto.getListOfLiftCustoMapId());
-	for (Object[] objects : complaintCount) {
+	    for (RlmsComplaintMaster  complaintMaster : listOfAllComplaints) {
+			if(complaintMaster.getStatus()==Status.RESOLVED.getStatusId()) {
+				resolvedComplaintCount=resolvedComplaintCount+1;
+			}
+		}
+	    if(resolvedComplaintCount>0) {
+	        resolvedComplaintCount =resolvedComplaintCount/diff;
+	    }
+	    List<Object[]> complaintCount = dashboardDao.getTotalComplaintsCallTypeCount(dto.getListOfLiftCustoMapId());
+	    for (Object[] objects : complaintCount) {
 		ComplaintsCount complaintsCount = new ComplaintsCount();
 		complaintsCount.setCallType(RLMSCallType.getStringFromID((Integer)objects[0]));
 		complaintsCount.setTotalCallTypeCount((BigInteger)objects[1]);
 		complaintsCount.setAvgLogsPerDay( df.format(avgLogsPerDay));
+		complaintsCount.setAvgResolvedPerDay(df.format(resolvedComplaintCount));
 		complaintsCountsList.add(complaintsCount);
 		}
 		return complaintsCountsList;
