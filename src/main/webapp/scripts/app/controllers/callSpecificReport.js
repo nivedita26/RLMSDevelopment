@@ -24,7 +24,8 @@
  	         .then(function(customerData) {
  	        	 $scope.cutomers = customerData;
  	        	 $scope.selectedCustomer.selected = undefined;
- 	        	// $scope.selectedLifts.selected = undefined;
+ 	        	 $scope.selectedLift.selected = undefined;
+ 	        	 $scope.selectedCallID.selected = undefined;
  	        	 var emptyArray=[];
  	        	 $scope.myData = emptyArray;
  	         })
@@ -37,23 +38,11 @@
 			 $scope.callID=[];
 			 $scope.branches = [];
 			 $scope.selectedCustomer = {};
-			 //$scope.selectedStatus = {};
-			 $scope.selectedEventType = {};
 			 $scope.selectedLift = {};
 			 $scope.selectedCallID= {};
 			 $scope.selectedAmc = {};
 			 $scope.showMembers = false;
-			 $scope.eventType = [ {
-					id : 21,
-					name : 'Event'
-				}, {
-					id : 31,
-					name : 'Error'
-				}, {
-					id : 41,
-					name : 'Response'
-				} ];
-			 
+			 			 
 		} 
 		// showCompnay Flag
 				
@@ -100,6 +89,8 @@
 			serviceApi.doPostWithData('/RLMS/complaint/getAllApplicableLifts',dataToSend)
 					.then(function(liftData) {
 						$scope.lifts = liftData;
+						$scope.selectedLift.selected = undefined;
+						
 					})
 			
 			/*serviceApi.doPostWithData('/RLMS/admin/getAllCustomersForBranch',dataToSend)
@@ -109,14 +100,14 @@
 						$scope.branchName = data.branchName
 					})*/
 		}
-		
+
 		$scope.loadCallID=function(){
 			var dataToSend = {
 	  				branchCompanyMapId : $scope.selectedBranch.selected.companyBranchMapId,
 					branchCustomerMapId : $scope.selectedCustomer.selected.branchCustomerMapId,
 					liftCustomerMapId:$scope.selectedLift.selected.liftCustomerMapId
 				}
-			serviceApi.doPostWithData('/RLMS/report/callDetailsReport',dataToSend)
+			serviceApi.doPostWithData('/RLMS/report/callSpecificReport',dataToSend)
 			.then(function(callData) {
 				$scope.callID = callData;
 			})
@@ -132,7 +123,6 @@
 		}
 		if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel < 3) {
 			$scope.showBranch = true;
-			//loadDefaultComplaintData();
 		} else {
 			$scope.showBranch = false;
 		}
@@ -283,8 +273,10 @@
 		  	        	var dataToSend = constructDataToSend();
 			  	    	
 		  	        	serviceApi.doPostWithData('/RLMS/report/callSpecificReport',dataToSend).then(function(largeLoad) {
+
 		  	        	  var details=[];
 		  	        	  for(var i=0;i<largeLoad.length;i++){
+		  	        		  if(($scope.selectedLift.selected) &&(  largeLoad[i].liftNumber===$scope.selectedLift.selected.liftNumber)){
 			  	        	var detailsObj={};
 		  	        		detailsObj["SrNo"] =i+1 +".";
 		  	        		
@@ -374,6 +366,100 @@
 		  	        			detailsObj["ToDate"] =" - ";
 		  	        		}
 		  	        		details.push(detailsObj);
+		  	        	  }
+		  	        		  if(!($scope.selectedLift.selected)){
+
+					  	        	var detailsObj={};
+				  	        		detailsObj["SrNo"] =i+1 +".";
+				  	        		
+				  	        		if(!!largeLoad[i].customerName){
+				  	        			detailsObj["CustomerName"] =largeLoad[i].customerName;
+				  	        		}else{
+				  	        			detailsObj["CustomerName"] =" - ";
+				  	        		}
+				  	        		if(!!largeLoad[i].branchName){
+				  	        			detailsObj["BranchName"] =largeLoad[i].branchName;
+				  	        		}else{
+				  	        			detailsObj["BranchName"] =" - ";
+				  	        		}
+				  	        		if(!!largeLoad[i].liftNumber){
+				  	        			detailsObj["liftNumber"] =largeLoad[i].liftNumber;
+				  	        		}else{
+				  	        			detailsObj["liftNumber"] =" - ";
+				  	        		}
+				  	        		if(!!largeLoad[i].status){
+				  	        			detailsObj["Status"] =largeLoad[i].status;
+				  	        		}else{
+				  	        			detailsObj["Status"] =" - ";
+				  	        		}
+				  	        		if(!!largeLoad[i].callAssignedDateStr){
+				  	        			detailsObj["CallAssignedDate"] =largeLoad[i].callAssignedDateStr;
+				  	        		}else{
+				  	        			detailsObj["CallAssignedDate"] =" - ";
+				  	        		}
+				  	        		if(!!largeLoad[i].resolvedDateStr){
+				  	        			detailsObj["CallResolvedDate"] =largeLoad[i].resolvedDateStr;
+				  	        		}else{
+				  	        			detailsObj["CallResolvedDate"] =" - ";
+				  	        		}
+				  	        		if(!!largeLoad[i].remark){
+				  	        			detailsObj["Remark"] =largeLoad[i].remark;
+				  	        		}else{
+				  	        			detailsObj["Remark"] =" - ";
+				  	        		}
+				  	        		if(!!largeLoad[i].complaintNumber){
+				  	        			detailsObj["CallId"] =largeLoad[i].complaintNumber;
+				  	        		}else{
+				  	        			detailsObj["CallId"] =" - ";
+				  	        		}
+				  	        		if(!!largeLoad[i].customerAddress){
+				  	        			detailsObj["address"] =largeLoad[i].customerAddress;
+				  	        		}else{
+				  	        			detailsObj["address"] =" - ";
+				  	        		}
+				  	        		if(!!largeLoad[i].customerCity){
+				  	        			detailsObj["city"] =largeLoad[i].customerCity;
+				  	        		}else{
+				  	        			detailsObj["city"] =" - ";
+				  	        		}
+				  	        		if(!!largeLoad[i].registeredBy){
+				  	        			detailsObj["CallRegisteredBy"] =largeLoad[i].registeredBy;
+				  	        		}else{
+				  	        			detailsObj["CallRegisteredBy"] =" - ";
+				  	        		}
+				  	        		if(!!largeLoad[i].serviceCallTypeStr){
+				  	        			detailsObj["CallType"] =largeLoad[i].serviceCallTypeStr;
+				  	        		}else{
+				  	        			detailsObj["CallType"] =" - ";
+				  	        		}
+				  	        		if(!!largeLoad[i].title){
+				  	        			detailsObj["Title"] =largeLoad[i].title;
+				  	        		}else{
+				  	        			detailsObj["Title"] =" - ";
+				  	        		}
+				  	        		if(!!largeLoad[i].registrationDateStr){
+				  	        			detailsObj["RegistrationDate"] =largeLoad[i].registrationDateStr;
+				  	        		}else{
+				  	        			detailsObj["RegistrationDate"] =" - ";
+				  	        		}
+				  	        		if(!!largeLoad[i].technicianDtls){
+				  	        			detailsObj["Technician"] =largeLoad[i].technicianDtls;
+				  	        		}else{
+				  	        			detailsObj["Technician"] =" - ";
+				  	        		}
+				  	        		if(!!largeLoad[i].fromDateStr){
+				  	        			detailsObj["FromDate"] =largeLoad[i].fromDateStr;
+				  	        		}else{
+				  	        			detailsObj["FromDate"] =" - ";
+				  	        		}
+				  	        		if(!!largeLoad[i].toDateStr){
+				  	        			detailsObj["ToDate"] =largeLoad[i].toDateStr;
+				  	        		}else{
+				  	        			detailsObj["ToDate"] =" - ";
+				  	        		}
+				  	        		details.push(detailsObj);
+				  	        	  
+		  	        		  }
 		  	        	  }
 		  	            $scope.setPagingData(details, page, pageSize);
 		  	          });

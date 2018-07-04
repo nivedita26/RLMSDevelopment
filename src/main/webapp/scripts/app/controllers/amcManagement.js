@@ -328,7 +328,7 @@
 	 	         .then(function(customerData) {
 	 	        	 $scope.cutomers = customerData;
 	 	        	 $scope.selectedCustomer.selected = undefined;
-	 	        	 $scope.selectedLifts.selected = undefined;
+	 	        	 $scope.selectedLift.selected = undefined;
 	 	        	 var emptyArray=[];
 	 	        	 $scope.myData = emptyArray;
 	 	         })
@@ -342,6 +342,7 @@
 				serviceApi.doPostWithData('/RLMS/complaint/getAllApplicableLifts',dataToSend)
 						.then(function(liftData) {
 							$scope.lifts = liftData;
+							$scope.selectedLift.selected = undefined;
 						})
 				
 				serviceApi.doPostWithData('/RLMS/admin/getAllCustomersForBranch',dataToSend)

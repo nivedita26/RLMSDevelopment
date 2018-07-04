@@ -24,7 +24,7 @@
  	         .then(function(customerData) {
  	        	 $scope.cutomers = customerData;
  	        	 $scope.selectedCustomer.selected = undefined;
- 	        	// $scope.selectedLifts.selected = undefined;
+ 	        	 $scope.selectedCallType.selected = undefined;
  	        	 var emptyArray=[];
  	        	 $scope.myData = emptyArray;
  	         })
@@ -245,14 +245,17 @@
 		  	            });
 		  	            $scope.setPagingData(data, page, pageSize);
 		  	          });
-		  	        } else {
-		  	        	
+		  	        }
+		  	        else {		  	        	
 		  	        	var dataToSend = constructDataToSend();
 			  	    	
-		  	        	serviceApi.doPostWithData('/RLMS/report/callDetailsReport',dataToSend).then(function(largeLoad) {
+		  	        	serviceApi.doPostWithData('/RLMS/report/callDetailsReport',dataToSend)
+		  	        	.then(function(largeLoad) {
 		  	        	  var details=[];
 		  	        	  for(var i=0;i<largeLoad.length;i++){
-			  	        	var detailsObj={};
+		  	        		  
+		  	        		if(($scope.selectedCallType.selected) && ($scope.selectedCallType.selected.id ===largeLoad[i].serviceCallType)){
+			  	        		var detailsObj={};		  	        	
 			  	        		detailsObj["SrNo"] = i+1 + ".";
 		  	        		if(!!largeLoad[i].customerName){
 		  	        			detailsObj["Customer"] =largeLoad[i].customerName;
@@ -310,6 +313,70 @@
 		  	        			detailsObj["city"] =" - ";
 		  	        		}
 		  	        		details.push(detailsObj);
+		  	        	  }
+		  	        		
+		  	          if(!($scope.selectedCallType.selected)){
+		  	        		  
+		  	        		  
+		  	        		var detailsObj={};		  	        	
+		  	        		detailsObj["SrNo"] = i+1 + ".";
+	  	        		if(!!largeLoad[i].customerName){
+	  	        			detailsObj["Customer"] =largeLoad[i].customerName;
+	  	        		}else{
+	  	        			detailsObj["Customer"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].serviceCallTypeStr){
+	  	        			detailsObj["CallType"] =largeLoad[i].serviceCallTypeStr;
+	  	        		}else{
+	  	        			detailsObj["CallType"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].liftNumber){
+	  	        			detailsObj["liftNumber"] =largeLoad[i].liftNumber;
+	  	        		}else{
+	  	        			detailsObj["liftNumber"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].status){
+	  	        			detailsObj["Status"] =largeLoad[i].status;
+	  	        		}else{
+	  	        			detailsObj["Status"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].title){
+	  	        			detailsObj["Title"] =largeLoad[i].title;
+	  	        		}else{
+	  	        			detailsObj["Title"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].registrationDateStr){
+	  	        			detailsObj["RegDate"] =largeLoad[i].registrationDateStr;
+	  	        		}else{
+	  	        			detailsObj["RegDate"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].totalDaysRequiredToResolveComplaint){
+	  	        			detailsObj["TotalDaysTaken"] =largeLoad[i].totalDaysRequiredToResolveComplaint;
+	  	        		}else{
+	  	        			detailsObj["TotalDaysTaken"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].lastVisitedDate){
+	  	        			detailsObj["LastVisitedDate"] =largeLoad[i].lastVisitedDate;
+	  	        		}else{
+	  	        			detailsObj["LastVisitedDate"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].callAssignedDateStr){
+	  	        			detailsObj["callAssignedDate"] =largeLoad[i].callAssignedDateStr;
+	  	        		}else{
+	  	        			detailsObj["callAssignedDate"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].area){
+	  	        			detailsObj["area"] =largeLoad[i].area;
+	  	        		}else{
+	  	        			detailsObj["area"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].city){
+	  	        			detailsObj["city"] =largeLoad[i].city;
+	  	        		}else{
+	  	        			detailsObj["city"] =" - ";
+	  	        		}
+	  	        		details.push(detailsObj);
+		  	        	  }
 		  	        	  }
 		  	            $scope.setPagingData(details, page, pageSize);
 		  	          });
@@ -387,18 +454,7 @@
 	  		initReport();
 	  	  }
 	  	  function constructDataToSend(){
-	  		/*var tempStatus = [];
-	  		if($scope.selectedEventType.selected){
-	  			if($scope.selectedEventType.selected.length===0){
-	  				alert("Please select Event Type");
-	  				for (var j = 0; j < $scope.selectedEventType.selected.length; j++) {
-	  					tempStatus.push($scope.selectedEventType.selected[j].id);
-	  					//}
-	  				}
-	  			}
-	  		}else{
-	  			alert("Please select Event Type");
-	  		}*/		
+	
 	  		var tempbranchCustomerMapIds = [];
 			/*if($scope.selectedCustomer.selected.length > 0){
 				for (var j = 0; j < $scope.selectedCustomer.selected.length; j++) {

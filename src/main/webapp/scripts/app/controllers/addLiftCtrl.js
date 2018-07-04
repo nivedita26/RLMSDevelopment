@@ -401,10 +401,11 @@
 		      $event.preventDefault();
 		      $event.stopPropagation();
 		      if($scope.openFlag[which] != true)
-		    	  $scope.openFlag[which] = true;
+		    	  $scope.openFlag[which] = true;	    
 		      else
 		    	  $scope.openFlag[which] = false;
 		    };
+		  
 
 		    //load compay dropdown data
 		//Post call add branch
