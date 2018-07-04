@@ -715,7 +715,7 @@ public class ReportServiceImpl implements ReportService {
             		  complaintwiseSiteVisitReport.setTotalNoOfVisits(listOfAllVisits.size());
             	  }
             	  Long totalTimeForComplaint = 0L;
-    				for (RlmsSiteVisitDtls rlmsSiteVisitDtls : listOfAllVisits) {
+    			 for (RlmsSiteVisitDtls rlmsSiteVisitDtls : listOfAllVisits) {
     					SiteVisitDtlsDto siteVisitDto = new SiteVisitDtlsDto();
     					siteVisitDto.setFromDateDtr(DateUtils.convertDateTimestampToStringWithTime(rlmsSiteVisitDtls.getFromDate()));
     					siteVisitDto.setToDateStr(DateUtils.convertDateTimestampToStringWithTime(rlmsSiteVisitDtls.getToDate()));

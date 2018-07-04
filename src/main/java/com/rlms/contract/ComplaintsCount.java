@@ -11,7 +11,14 @@ public class ComplaintsCount {
 	private BigInteger totalCallStatusCount;
 	private BigInteger todaysCallStatusCount;
 	private String avgLogsPerDay;
+	private String avgResolvedPerDay;
 	
+	public String getAvgResolvedPerDay() {
+		return avgResolvedPerDay;
+	}
+	public void setAvgResolvedPerDay(String avgResolvedPerDay) {
+		this.avgResolvedPerDay = avgResolvedPerDay;
+	}
 	public String getAvgLogsPerDay() {
 		return avgLogsPerDay;
 	}
@@ -64,5 +71,4 @@ public class ComplaintsCount {
 	public void setCallStatus(String callStatus) {
 		this.callStatus = callStatus;
 	}
-	
 }
