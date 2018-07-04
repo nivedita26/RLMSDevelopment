@@ -5,16 +5,13 @@ import java.security.InvalidKeyException;
 import java.util.List;
 
 import com.rlms.contract.AddNewUserDto;
-import com.rlms.contract.CompanyDtlsDTO;
 import com.rlms.contract.RegisterDto;
 import com.rlms.contract.UserDtlsDto;
 import com.rlms.contract.UserMetaInfo;
 import com.rlms.contract.UserRoleDtlsDTO;
 import com.rlms.exception.ValidationException;
-import com.rlms.model.RlmsCompanyRoleMap;
 import com.rlms.model.RlmsSpocRoleMaster;
 import com.rlms.model.RlmsUserRoles;
-import com.rlms.model.RlmsUsersMaster;
 import com.rlms.model.User;
 
 
