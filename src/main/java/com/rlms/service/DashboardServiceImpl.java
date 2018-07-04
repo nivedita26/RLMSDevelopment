@@ -1,13 +1,11 @@
 package com.rlms.service;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import java.math.BigInteger;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -54,7 +52,6 @@ import com.rlms.model.RlmsComplaintTechMapDtls;
 import com.rlms.model.RlmsEventDtls;
 import com.rlms.model.RlmsLiftAmcDtls;
 import com.rlms.model.RlmsLiftCustomerMap;
-import com.rlms.model.RlmsLiftMaster;
 import com.rlms.model.RlmsMemberMaster;
 import com.rlms.model.RlmsSiteVisitDtls;
 import com.rlms.model.RlmsUserRoles;
@@ -790,24 +787,28 @@ public class DashboardServiceImpl implements DashboardService {
 	float avgLogsPerDay=0.0f;
 	Date today = null;
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-	    Date pivotDate = DateUtils.addDaysToDate(new Date(), -30);
+	    DecimalFormat df = new DecimalFormat("###.##");
+        Date pivotDate = DateUtils.addDaysToDate(new Date(), -30);
 	    try {
 		 pivotDate=sdf.parse(sdf.format(pivotDate));
 		today = sdf.parse(sdf.format(new Date()));
 		} catch (ParseException e) {
 		}
-		
-	listOfAllComplaints = dashboardDao.getAllComplaintsForAvgLogs(pivotDate,today);
-	
-	
-       int diff =DateUtils.daysBetween(listOfAllComplaints.get(0).getCreatedDate(),today);
-	avgLogsPerDay =((listOfAllComplaints.size())/diff);
+	    listOfAllComplaints = dashboardDao.getAllComplaintsForAvgLogs(pivotDate,today);
+	    int diff =DateUtils.daysBetween(listOfAllComplaints.get(0).getCreatedDate(),today);
+	    if(diff>0) {
+	    	float  listSize = listOfAllComplaints.size();
+	    	avgLogsPerDay =(listSize/diff);
+	    	}else {
+	    		avgLogsPerDay = listOfAllComplaints.size();
+	    	}
+	    //df.format(avgLogsPerDay);
 	List<Object[]> complaintCount = dashboardDao.getTotalComplaintsCallTypeCount(dto.getListOfLiftCustoMapId());
 	for (Object[] objects : complaintCount) {
 		ComplaintsCount complaintsCount = new ComplaintsCount();
 		complaintsCount.setCallType(RLMSCallType.getStringFromID((Integer)objects[0]));
 		complaintsCount.setTotalCallTypeCount((BigInteger)objects[1]);
-		complaintsCount.setAvgLogsPerDay(avgLogsPerDay);
+		complaintsCount.setAvgLogsPerDay( df.format(avgLogsPerDay));
 		complaintsCountsList.add(complaintsCount);
 		}
 		return complaintsCountsList;
@@ -853,5 +854,11 @@ List<Object[]> complaintCount = dashboardDao.getTodaysComplaintsStatusCount(dto.
 		complaintsCountsList.add(complaintsCount);
 	}
 return complaintsCountsList;
+}
+
+@Override
+public List<RlmsEventDtls> getUnidentifiedEventCountDetails() {
+	
+	return dashboardDao.getUnidentifiedEventCountDtlsForDashboard();
 }
 }

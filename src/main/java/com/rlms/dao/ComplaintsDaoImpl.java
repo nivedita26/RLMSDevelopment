@@ -138,8 +138,6 @@ public class ComplaintsDaoImpl implements ComplaintsDao{
 		 return complaintMapDtls;
 	}
 	
-	
-	
 	public RlmsComplaintMaster getComplaintMasterObj(Integer complaintId, Integer callType){
 		 Session session = this.sessionFactory.getCurrentSession();
 		 Criteria criteria = session.createCriteria(RlmsComplaintMaster.class)

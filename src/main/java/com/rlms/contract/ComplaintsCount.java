@@ -10,12 +10,12 @@ public class ComplaintsCount {
 	private String callStatus;
 	private BigInteger totalCallStatusCount;
 	private BigInteger todaysCallStatusCount;
-	private float avgLogsPerDay;
+	private String avgLogsPerDay;
 	
-	public float getAvgLogsPerDay() {
+	public String getAvgLogsPerDay() {
 		return avgLogsPerDay;
 	}
-	public void setAvgLogsPerDay(float avgLogsPerDay) {
+	public void setAvgLogsPerDay(String avgLogsPerDay) {
 		this.avgLogsPerDay = avgLogsPerDay;
 	}
 	public BigInteger getTotalCallStatusCount() {

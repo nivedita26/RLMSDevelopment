@@ -85,5 +85,4 @@ public enum Status {
 			}*/
 		return 0;
 	}
-	
 }

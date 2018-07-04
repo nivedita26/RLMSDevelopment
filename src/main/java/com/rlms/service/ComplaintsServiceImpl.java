@@ -276,7 +276,7 @@ private boolean isServiceCallToShow(Date regDate,Date serviceStartDate){
 		
 	}
 	int diff = DateUtils.daysBetween(today,serviceStartDate);
-	if(diff>=0&& diff>8) {
+	if(diff!=0&& diff>0) {
 		return false;
 	}
 	
