@@ -238,8 +238,8 @@ $scope.loadCallID=function(){
 		  	        		}else{
 		  	        			detailsObj["RegistrationDate"] =" - ";
 		  	        		}
-		  	        		if(!!largeLoad[i].Technician){
-		  	        			detailsObj["Technician"] =largeLoad[i].Technician;
+		  	        		if(!!largeLoad[i].techNames){
+		  	        			detailsObj["Technician"] =largeLoad[i].techName;
 		  	        		}else{
 		  	        			detailsObj["Technician"] =" - ";
 		  	        		}
@@ -350,8 +350,8 @@ $scope.loadCallID=function(){
 		  	        		}else{
 		  	        			detailsObj["RegistrationDate"] =" - ";
 		  	        		}
-		  	        		if(!!largeLoad[i].technicianDtls){
-		  	        			detailsObj["Technician"] =largeLoad[i].technicianDtls;
+		  	        		if(!!largeLoad[i].techName){
+		  	        			detailsObj["Technician"] =largeLoad[i].techName;
 		  	        		}else{
 		  	        			detailsObj["Technician"] =" - ";
 		  	        		}
@@ -442,8 +442,8 @@ $scope.loadCallID=function(){
 				  	        		}else{
 				  	        			detailsObj["RegistrationDate"] =" - ";
 				  	        		}
-				  	        		if(!!largeLoad[i].technicianDtls){
-				  	        			detailsObj["Technician"] =largeLoad[i].technicianDtls;
+				  	        		if(!!largeLoad[i].techName){
+				  	        			detailsObj["Technician"] =largeLoad[i].techName;
 				  	        		}else{
 				  	        			detailsObj["Technician"] =" - ";
 				  	        		}

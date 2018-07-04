@@ -107,7 +107,7 @@
  	         })
 		}
 		
-		/*$scope.loadLifts = function() {
+		$scope.loadLifts = function() {
 			
 	  		var dataToSend = {
 	  				branchCompanyMapId : $scope.selectedBranch.selected.companyBranchMapId,
@@ -118,7 +118,7 @@
 							$scope.lifts = liftData;
 						})
 				
-			}*/
+			}
 		
 		if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 3) {
 			$scope.loadCustomerData();
