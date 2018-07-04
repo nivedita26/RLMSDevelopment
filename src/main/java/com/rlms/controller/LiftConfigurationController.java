@@ -31,7 +31,6 @@ public class LiftConfigurationController {
 		 try{
 	        	logger.info("Method :: saveAndSendLiftConfiguration");
 	        	reponseDto.setResponse(this.liftConfigurationService.saveAndSendLiftConfiguration(dto));
-	        	
 	        }
 	        catch(Exception e){
 	        	logger.error(ExceptionUtils.getFullStackTrace(e));

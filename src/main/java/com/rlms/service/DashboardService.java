@@ -57,5 +57,6 @@ public interface DashboardService {
 			List<Integer> companyBranchMapIds) ;
     public List<EventCountDtls> getEventCountDetails(List<Integer> companyBranchIds,
 			UserMetaInfo metaInfo);
+    public List<RlmsEventDtls> getUnidentifiedEventCountDetails();
 }
 	

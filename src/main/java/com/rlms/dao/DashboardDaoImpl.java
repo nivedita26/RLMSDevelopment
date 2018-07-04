@@ -1,10 +1,8 @@
 package com.rlms.dao;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
@@ -20,7 +18,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.rlms.constants.RLMSConstants;
-import com.rlms.contract.ComplaintsDtlsDto;
 import com.rlms.model.RlmsCompanyBranchMapDtls;
 import com.rlms.model.RlmsComplaintMaster;
 import com.rlms.model.RlmsComplaintTechMapDtls;
@@ -389,6 +386,14 @@ public List<RlmsComplaintMaster> getAllComplaintsForAvgLogs(Date fromDate, Date 
 	criteria.add(Restrictions.le("registrationDate",toDate));
 	List<RlmsComplaintMaster>complaintList = criteria.list();
 	return complaintList;
-	
 }
+
+@Override
+public List<RlmsEventDtls> getUnidentifiedEventCountDtlsForDashboard() {
+	 Session session = this.sessionFactory.getCurrentSession();
+	 Criteria criteria = session.createCriteria(RlmsEventDtls.class);
+	 criteria.add(Restrictions.eq("rlmsLiftCustomerMap.liftCustomerMapId",null));
+	 List<RlmsEventDtls>eventList = criteria.list();
+	 return eventList;
+ 	}
 }

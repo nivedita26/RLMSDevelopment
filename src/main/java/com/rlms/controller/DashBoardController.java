@@ -41,6 +41,7 @@ import com.rlms.exception.ValidationException;
 import com.rlms.model.RlmsBranchCustomerMap;
 import com.rlms.model.RlmsCompanyBranchMapDtls;
 import com.rlms.model.RlmsComplaintTechMapDtls;
+import com.rlms.model.RlmsEventDtls;
 import com.rlms.model.RlmsLiftCustomerMap;
 import com.rlms.model.RlmsSiteVisitDtls;
 import com.rlms.service.CompanyService;
@@ -824,5 +825,16 @@ public class DashBoardController extends BaseController {
 					PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
 		}
 		return eventCountDtls;
+	}
+	
+	@RequestMapping(value = "/getUnidentifiedImeiEventCount", method = RequestMethod.POST)
+	public @ResponseBody List<RlmsEventDtls> getUnidentifiedImeiEventCount(@RequestBody int companyId)
+			throws RunTimeException {
+			List<RlmsEventDtls> eventDtls = null;
+	
+			logger.info("Method :: getAllBranchesForCompany");
+			eventDtls = this.dashboardService.getUnidentifiedEventCountDetails();
+	
+			return eventDtls;
 	}
 }
