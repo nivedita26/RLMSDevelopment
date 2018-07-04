@@ -226,7 +226,8 @@
 		  	        				  tempLiftIds.push($scope.selectedLift.selected[i].liftNumber);
 		  	        			  }
 		  	        			  for(var j=0; j<tempLiftIds.length;j++){
-		  	        				  if(tempLiftIds[j]==largeload[i].liftNumber){
+		  	        				 for(var i=0;i<largeLoad.length;i++){
+		  	        				  if(tempLiftIds[j]==largeLoad[i].liftNumber){
 		  	        					var detailsObj={};
 		  		  	        			
 		  				  	        	detailsObj["No"] = i+1 +".";
@@ -282,7 +283,7 @@
 		  			  	        			detailsObj["Description"] =" - ";
 		  			  	        		}
 		  			  	        		details.push(detailsObj);
-		  			  	        	  
+		  	        				  }
 		  	        				  }
 		  	        			  }
 		  	        		  }if(!($scope.selectedLift.selected)){

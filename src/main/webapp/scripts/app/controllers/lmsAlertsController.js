@@ -219,6 +219,14 @@
 		  	        	serviceApi.doPostWithData('/RLMS/report/getListOfEvents',dataToSend).then(function(largeLoad) {
 		  	        	  var details=[];
 		  	        	  for(var i=0;i<largeLoad.length;i++){
+		  	        		if($scope.selectedLift.selected){	  
+		  	        			  var tempLiftIds = [];
+		  	        			  for (var i = 0; i < $scope.selectedLift.selected.length; i++) {
+		  	        				  tempLiftIds.push($scope.selectedLift.selected[i].liftNumber);
+		  	        			  }
+		  	        			  for(var j=0; j<tempLiftIds.length;j++){
+		  	        				 for(var i=0;i<largeLoad.length;i++){
+		  	        				  if(tempLiftIds[j]==largeLoad[i].liftNumber){ 
 			  	        	var detailsObj={};
 	  	        			
 			  	        	detailsObj["No"] = i+1 +".";
@@ -269,6 +277,66 @@
 		  	        			detailsObj["Description"] =" - ";
 		  	        		}
 		  	        		details.push(detailsObj);
+		  	        	  }
+		  	        				 }
+		  	        			  }
+		  	        		}if(!($scope.selectedLift.selected)){
+				  	        	var detailsObj={};
+		  	        			
+				  	        	detailsObj["No"] = i+1 +".";
+		  	        			
+		  	        			if(!!largeLoad[i].customerName){
+			  	        			detailsObj["CustomerName"] =largeLoad[i].customerName;
+			  	        		}else{
+			  	        			detailsObj["CustomerName"] =" - ";
+			  	        		}
+			  	        		if(!!largeLoad[i].branchName){
+			  	        			detailsObj["BranchName"] =largeLoad[i].branchName;
+			  	        		}else{
+			  	        			detailsObj["BranchName"] =" - ";
+			  	        		}
+			  	        		if(!!largeLoad[i].liftNumber){
+			  	        			detailsObj["liftNumber"] =largeLoad[i].liftNumber;
+			  	        		}else{
+			  	        			detailsObj["liftNumber"] =" - ";
+			  	        		}
+			  	        		if(!!largeLoad[i].liftAddress){
+			  	        			detailsObj["liftAddress"] =largeLoad[i].liftAddress;
+			  	        		}else{
+			  	        			detailsObj["liftAddress"] =" - ";
+			  	        		}
+			  	        		if(!!largeLoad[i].city){
+			  	        			detailsObj["city"] =largeLoad[i].city;
+			  	        		}else{
+			  	        			detailsObj["city"] =" - ";
+			  	        		}
+			  	        		if(!!largeLoad[i].eventFromContactNo){
+			  	        			detailsObj["LMSContactNo"] =largeLoad[i].eventFromContactNo;
+			  	        		}else{
+			  	        			detailsObj["LMSContactNo"] =" - ";
+			  	        		}
+			  	        		if(!!largeLoad[i].eventType){
+			  	        			detailsObj["EventType"] =largeLoad[i].eventType;
+			  	        		}else{
+			  	        			detailsObj["EventType"] =" - ";
+			  	        		}
+			  	        		if(!!largeLoad[i].date){
+			  	        			detailsObj["EventDateTime"] =largeLoad[i].date;
+			  	        		}else{
+			  	        			detailsObj["EventDateTime"] =" - ";
+			  	        		}
+			  	        		if(!!largeLoad[i].eventFromContactNo){
+			  	        			detailsObj["eventFromContactNo"] =largeLoad[i].eventFromContactNo;
+			  	        		}else{
+			  	        			detailsObj["eventFromContactNo"] =" - ";
+			  	        		}
+			  	        		if(!!largeLoad[i].eventDescription){
+			  	        			detailsObj["Description"] =largeLoad[i].eventDescription;
+			  	        		}else{
+			  	        			detailsObj["Description"] =" - ";
+			  	        		}
+			  	        		details.push(detailsObj);
+			  	        	  }
 		  	        	  }
 		  	            $scope.setPagingData(details, page, pageSize);
 		  	          });
@@ -348,11 +416,11 @@
 	  	  }
 	  	  function constructDataToSend(){
 	  		var tempbranchCustomerMapIds = [];
-			if($scope.selectedCustomer.selected.length > 0){
-				for (var j = 0; j < $scope.selectedCustomer.selected.length; j++) {
-					tempbranchCustomerMapIds.push($scope.selectedCustomer.selected[j].branchCustomerMapId);
-				}
-			}
+			//if($scope.selectedCustomer.selected.length ){
+			//	for (var j = 0; j < $scope.selectedCustomer.selected.length; j++) {
+					tempbranchCustomerMapIds.push($scope.selectedCustomer.selected.branchCustomerMapId);
+				//}
+			//}
 			
 			if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 3) {
 				$scope.companyBranchMapIdForCustomer=$rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls.companyBranchMapId;
