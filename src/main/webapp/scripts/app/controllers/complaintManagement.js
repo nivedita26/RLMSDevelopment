@@ -721,7 +721,7 @@
 										displayName:"Call Assigned Date",
 										width : 160
 									}, {
-										field : "resolvedDateStr",
+										field : "ResolvedDateStr",
 										displayName:"Call Resolved Date",
 										width : 140
 									}, {

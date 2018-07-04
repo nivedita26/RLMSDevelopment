@@ -4,7 +4,6 @@
 	.controller('callSpecificReportCtrl', ['$scope', '$filter','serviceApi','$route','$http','utility','$rootScope', function($scope, $filter,serviceApi,$route,$http,utility,$rootScope) {
 		initReport();
 		$scope.cutomers=[];
-		$scope.eventId=[];
 		$scope.filterOptions = {
 		  	      filterText: '',
 		  	      useExternalFilter: true
@@ -77,6 +76,7 @@
 						var emptyComplaint=[];
 						$scope.myData=emptyComplaint;
 					});
+			//$scope.loadCallID();
 		}
 		
 		
@@ -90,28 +90,23 @@
 					.then(function(liftData) {
 						$scope.lifts = liftData;
 						$scope.selectedLift.selected = undefined;
+						$scope.selectedCallID.selected = undefined;
 						
 					})
-			
-			/*serviceApi.doPostWithData('/RLMS/admin/getAllCustomersForBranch',dataToSend)
-					.then(function(data) {
-						$scope.customerSelected = true;
-						$scope.companyName = data.companyName;
-						$scope.branchName = data.branchName
-					})*/
-		}
 
-		$scope.loadCallID=function(){
-			var dataToSend = {
-	  				branchCompanyMapId : $scope.selectedBranch.selected.companyBranchMapId,
-					branchCustomerMapId : $scope.selectedCustomer.selected.branchCustomerMapId,
-					liftCustomerMapId:$scope.selectedLift.selected.liftCustomerMapId
-				}
-			serviceApi.doPostWithData('/RLMS/report/callSpecificReport',dataToSend)
-			.then(function(callData) {
-				$scope.callID = callData;
-			})
 		}
+$scope.loadCallID=function(){
+	var dataToSend = {
+				branchCompanyMapId : $scope.selectedBranch.selected.companyBranchMapId,
+			branchCustomerMapId : $scope.selectedCustomer.selected.branchCustomerMapId
+		}
+		serviceApi.doPostWithData('/RLMS/report/callSpecificReport',dataToSend)
+				.then(function(callData) {
+					$scope.callID = callData;			
+					
+				})
+	
+}
 		
 		if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 1) {
 			$scope.showCompany = true;
@@ -127,9 +122,6 @@
 			$scope.showBranch = false;
 		}
 		
-		if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 3) {
-			$scope.loadCustomerData();
-		}
 		
 		/*if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel < 3) {
 			$scope.showBranch == true
@@ -272,11 +264,19 @@
 		  	        	
 		  	        	var dataToSend = constructDataToSend();
 			  	    	
-		  	        	serviceApi.doPostWithData('/RLMS/report/callSpecificReport',dataToSend).then(function(largeLoad) {
+		  	        	serviceApi.doPostWithData('/RLMS/report/callSpecificReport',dataToSend)
+		  	        	.then(function(largeLoad) {
 
 		  	        	  var details=[];
+		  	        	  if($scope.selectedLift.selected){
+		  	        	  var liftNum=[];
+		  	        	for (var j = 0; j < $scope.selectedLift.selected.length; i++) {
+		  	        		liftNum.push($scope.selectedLift.selected[j].liftNumber);
+		  				} 
+		  	        	}
 		  	        	  for(var i=0;i<largeLoad.length;i++){
-		  	        		  if(($scope.selectedLift.selected) &&(  largeLoad[i].liftNumber===$scope.selectedLift.selected.liftNumber)){
+		  	        		
+		  	        		  if((($scope.selectedCallID.selected) &&($scope.selectedCallID.selected.complaintNumber === largeLoad[i].complaintNumber)) ||(($scope.selectedLift.selected) &&(liftNum== largeLoad[i].liftNumber))){
 			  	        	var detailsObj={};
 		  	        		detailsObj["SrNo"] =i+1 +".";
 		  	        		
@@ -367,7 +367,7 @@
 		  	        		}
 		  	        		details.push(detailsObj);
 		  	        	  }
-		  	        		  if(!($scope.selectedLift.selected)){
+		  	        		  if((!($scope.selectedCallID.selected))&& (!($scope.selectedLift.selected))){
 
 					  	        	var detailsObj={};
 				  	        		detailsObj["SrNo"] =i+1 +".";
