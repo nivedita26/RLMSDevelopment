@@ -368,6 +368,7 @@ public class LiftServiceImpl implements LiftService{
 			if(null != liftM.getServiceEndDate()){
 				dto.setServiceEndDateStr(DateUtils.convertDateToStringWithoutTime(liftM.getServiceEndDate()));
 			}
+			dto.setLiftType(liftM.getLiftType());
 			listOfAllDtos.add(dto);
 		}
 		return listOfAllDtos;
@@ -474,7 +475,6 @@ public class LiftServiceImpl implements LiftService{
 		}else{
 			dto.setBlank(true);
 		}
-		
 		return dto;
 	}
 	
