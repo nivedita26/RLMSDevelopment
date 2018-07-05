@@ -270,7 +270,7 @@ $scope.loadCallID=function(){
 		  	        	  var details=[];
 		  	        	  if($scope.selectedLift.selected){
 		  	        	  var liftNum=[];
-		  	        	for (var j = 0; j < $scope.selectedLift.selected.length; i++) {
+		  	        	for (var j = 0; j < $scope.selectedLift.selected.length;j++) {
 		  	        		liftNum.push($scope.selectedLift.selected[j].liftNumber);
 		  				} 
 		  	        	}
