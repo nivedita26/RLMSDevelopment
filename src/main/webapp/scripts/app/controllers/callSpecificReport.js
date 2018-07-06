@@ -350,21 +350,30 @@ $scope.loadCallID=function(){
 		  	        		}else{
 		  	        			detailsObj["RegistrationDate"] =" - ";
 		  	        		}
-		  	        		if(!!largeLoad[i].techName){
-		  	        			detailsObj["Technician"] =largeLoad[i].techName;
-		  	        		}else{
-		  	        			detailsObj["Technician"] =" - ";
-		  	        		}
-		  	        		if(!!largeLoad[i].fromDateStr){
-		  	        			detailsObj["FromDate"] =largeLoad[i].fromDateStr;
-		  	        		}else{
-		  	        			detailsObj["FromDate"] =" - ";
-		  	        		}
-		  	        		if(!!largeLoad[i].toDateStr){
-		  	        			detailsObj["ToDate"] =largeLoad[i].toDateStr;
-		  	        		}else{
-		  	        			detailsObj["ToDate"] =" - ";
-		  	        		}
+		  	        		if(largeLoad[i].siteVisitDetailsList){
+	  	        				if(!!largeLoad[i].siteVisitDetailsList.techName){
+	  	        					detailsObj["Technician"] =largeLoad[i].siteVisitDetailsList.techName;
+	  	        				}else{
+	  	        					detailsObj["Technician"] =" - ";
+	  	        				}
+	  	        				if(largeLoad[i].siteVisitDetailsList.listOFAllVisits){
+	  	        					if(!!largeLoad[i].fromDateDtr){
+	  	        						detailsObj["FromDate"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits.fromDateDtr;
+	  	        					}else{
+	  	        						detailsObj["FromDate"] =" - ";
+	  	        					}
+	  	        					if(!!largeLoad[i].toDateStr){
+	  	        						detailsObj["ToDate"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits.toDateStr;
+	  	        					}else{
+	  	        						detailsObj["ToDate"] =" - ";
+	  	        					}
+	  	        					if(!!largeLoad[i].siteVisitDetailsList.listOFAllVisits.remark){
+				  	        			detailsObj["Remark"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits.remark;
+				  	        		}else{
+				  	        			detailsObj["Remark"] =" - ";
+				  	        		}
+	  	        				}
+	  	        		}
 		  	        		details.push(detailsObj);
 		  	        	  }
 		  	        		  if((!($scope.selectedCallID.selected))&& (!($scope.selectedLift.selected))){
@@ -402,11 +411,7 @@ $scope.loadCallID=function(){
 				  	        		}else{
 				  	        			detailsObj["CallResolvedDate"] =" - ";
 				  	        		}
-				  	        		if(!!largeLoad[i].remark){
-				  	        			detailsObj["Remark"] =largeLoad[i].remark;
-				  	        		}else{
-				  	        			detailsObj["Remark"] =" - ";
-				  	        		}
+				  	        		
 				  	        		if(!!largeLoad[i].complaintNumber){
 				  	        			detailsObj["CallId"] =largeLoad[i].complaintNumber;
 				  	        		}else{
@@ -441,22 +446,31 @@ $scope.loadCallID=function(){
 				  	        			detailsObj["RegistrationDate"] =largeLoad[i].registrationDateStr;
 				  	        		}else{
 				  	        			detailsObj["RegistrationDate"] =" - ";
+				  	        		}if(largeLoad[i].siteVisitDetailsList){
+				  	        				if(!!largeLoad[i].siteVisitDetailsList.techName){
+				  	        					detailsObj["Technician"] =largeLoad[i].siteVisitDetailsList.techName;
+				  	        				}else{
+				  	        					detailsObj["Technician"] =" - ";
+				  	        				}
+				  	        				if(largeLoad[i].siteVisitDetailsList.listOFAllVisits){
+				  	        					if(!!largeLoad[i].fromDateDtr){
+				  	        						detailsObj["FromDate"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits.fromDateDtr;
+				  	        					}else{
+				  	        						detailsObj["FromDate"] =" - ";
+				  	        					}
+				  	        					if(!!largeLoad[i].toDateStr){
+				  	        						detailsObj["ToDate"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits.toDateStr;
+				  	        					}else{
+				  	        						detailsObj["ToDate"] =" - ";
+				  	        					}
+				  	        					if(!!largeLoad[i].siteVisitDetailsList.listOFAllVisits.remark){
+							  	        			detailsObj["Remark"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits.remark;
+							  	        		}else{
+							  	        			detailsObj["Remark"] =" - ";
+							  	        		}
+				  	        				}
 				  	        		}
-				  	        		if(!!largeLoad[i].techName){
-				  	        			detailsObj["Technician"] =largeLoad[i].techName;
-				  	        		}else{
-				  	        			detailsObj["Technician"] =" - ";
-				  	        		}
-				  	        		if(!!largeLoad[i].fromDateStr){
-				  	        			detailsObj["FromDate"] =largeLoad[i].fromDateStr;
-				  	        		}else{
-				  	        			detailsObj["FromDate"] =" - ";
-				  	        		}
-				  	        		if(!!largeLoad[i].toDateStr){
-				  	        			detailsObj["ToDate"] =largeLoad[i].toDateStr;
-				  	        		}else{
-				  	        			detailsObj["ToDate"] =" - ";
-				  	        		}
+				  	        		
 				  	        		details.push(detailsObj);
 				  	        	  
 		  	        		  }
