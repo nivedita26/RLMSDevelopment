@@ -394,6 +394,7 @@
 	<script src="scripts/app/controllers/editMember.js"></script>
 	<script src="scripts/app/controllers/callDetailReport.js"></script>
 	<script src="scripts/app/controllers/editCustomer.js"></script>	
+	<script src="scripts/app/controllers/editLift.js"></script>	
 	<script src="scripts/app/controllers/amcManagement.js"></script>
 	<script src="scripts/app/controllers/reportsController.js"></script>
 	<script src="scripts/app/controllers/lmsAlertsController.js"></script>

@@ -20,8 +20,8 @@
 		} 
 		
 		$rootScope.editCustomer={};
-		$rootScope.customerTypeArray=[{id:15,name:'RESIDENTIAL'},{id:16,name:'COMMERCIAL'},{id:17,name:'BUNGLOW'},{id:18,name:'HOSPITAL'},{id:19,name:'GOODS'},{id:20,name:'DUMB_WAITER'}];
-		$rootScope.customerStatus=[{id:1,name:'Active'},{id:0,name:'Inactive'}];
+		//$rootScope.customerTypeArray=[{id:15,name:'RESIDENTIAL'},{id:16,name:'COMMERCIAL'},{id:17,name:'BUNGLOW'},{id:18,name:'HOSPITAL'},{id:19,name:'GOODS'},{id:20,name:'DUMB_WAITER'}];
+		//$rootScope.customerStatus=[{id:1,name:'Active'},{id:0,name:'Inactive'}];
 		$scope.editCustomerDetails=function(row){
 			$rootScope.editCustomer.customerId=row.CustomerId;
 			$rootScope.editCustomer.firstName=row.Name;
@@ -36,7 +36,7 @@
 			$rootScope.editCustomer.emailID=row.Email_Id.replace(/-/g, '');
 			$rootScope.editCustomer.totalNumberOfLifts=row.Lift_Count;
 			$rootScope.editCustomer.chairmanName=row.ChairmanName.replace(/-/g, '');
-			$rootScope.editCustomer.chairmanNumber=row.ChairmanNumber.replace(/-/g, '');
+			$rootScope.editCustomer.chairmansNumber=row.ChairmanNumber.replace(/-/g, '');
 			$rootScope.editCustomer.chairmanEmail=row.ChairmanEmail.replace(/-/g, '');
 			$rootScope.editCustomer.secretaryName=row.SecretaryName.replace(/-/g, '');
 			$rootScope.editCustomer.secretaryNumber=row.SecretaryNumber.replace(/-/g, '');
@@ -47,6 +47,9 @@
 			$rootScope.editCustomer.watchmenName=row.WatchmenName.replace(/-/g, '');
 			$rootScope.editCustomer.watchmenNumber=row.WatchmenNumber.replace(/-/g, '');
 			$rootScope.editCustomer.watchmenEmail=row.WatchmenEmail.replace(/-/g, '');
+			$rootScope.editCustomer.vatNumber=row.VatNumber.replace(/-/g, '');
+			$rootScope.editCustomer.tinNumber=row.TinNumber.replace(/-/g, '');
+			$rootScope.editCustomer.panNumber=row.PanNumber.replace(/-/g, '');
 			$rootScope.editCustomer.activeFlag=row.Active_Flag;
 			window.location.hash = "#/edit-customer";
 		};
@@ -297,6 +300,21 @@
 	  	        			userDetailsObj["WatchmenNumber"] =largeLoad[i].watchmenNumber;
 	  	        		}else{
 	  	        			userDetailsObj["WatchmenNumber"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].vatNumber){
+	  	        			userDetailsObj["VatNumber"] =largeLoad[i].vatNumber;
+	  	        		}else{
+	  	        			userDetailsObj["VatNumber"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].tinNumber){
+	  	        			userDetailsObj["TinNumber"] =largeLoad[i].tinNumber;
+	  	        		}else{
+	  	        			userDetailsObj["TinNumber"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].panNumber){
+	  	        			userDetailsObj["PanNumber"] =largeLoad[i].panNumber;
+	  	        		}else{
+	  	        			userDetailsObj["PanNumber"] =" - ";
 	  	        		}
 	  	        		if(!!largeLoad[i].watchmenName){
 	  	        			userDetailsObj["WatchmenName"] =largeLoad[i].watchmenName;

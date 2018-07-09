@@ -37,8 +37,7 @@
 			<div class="form-group">
   			<label class="col-sm-3 control-label">Title </label>  			
 				<div class="col-sm-6">
-				
-			  	<ui-select ng-model="selectedComplaintTitle.selected" title="Choose a complaint title">
+			  	<ui-select  ng-model="selectedComplaintTitle.selected" title="Choose a complaint title">
 			    <ui-select-match placeholder="Select Call Title">{{$select.selected.name}}</ui-select-match>
 			    <ui-select-choices repeat="iterator in complaintTitle | filter: $select.search">
 			      <span ng-bind-html="iterator.name | highlight: $select.search"></span>

@@ -222,16 +222,67 @@
 	  	        		}else{
 	  	        			userDetailsObj["amcType"] =" - ";
 	  	        		}
+	  	        		if(!!largeLoad[i].amcAmount){
+	  	        			userDetailsObj["Amc_Amount"] =largeLoad[i].amcAmount;
+	  	        		}else{
+	  	        			userDetailsObj["Amc_Amount"] =" - ";
+	  	        		}
 	  	        		if(!!largeLoad[i].liftType){
 	  	        			userDetailsObj["LiftType"] =largeLoad[i].liftType;
 	  	        		}else{
 	  	        			userDetailsObj["LiftType"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].noOfStops){
+	  	        			userDetailsObj["NoOfStops"] =largeLoad[i].noOfStops;
+	  	        		}else{
+	  	        			userDetailsObj["NoOfStops"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].pinCode){
+	  	        			userDetailsObj["PinCode"] =largeLoad[i].pinCode;
+	  	        		}else{
+	  	        			userDetailsObj["PinCode"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].latitude){
+	  	        			userDetailsObj["Latitude"] =largeLoad[i].latitude;
+	  	        		}else{
+	  	        			userDetailsObj["Latitude"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].machineMake){
+	  	        			userDetailsObj["MachineMake"] =largeLoad[i].machineMake;
+	  	        		}else{
+	  	        			userDetailsObj["MachineMake"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].longitude){
+	  	        			userDetailsObj["Longitude"] =largeLoad[i].longitude;
+	  	        		}else{
+	  	        			userDetailsObj["Longitude"] =" - ";
 	  	        		}
 	  	        		if(!!largeLoad[i].liftId){
 	  	        			userDetailsObj["liftId"] =largeLoad[i].liftId;
 	  	        		}else{
 	  	        			userDetailsObj["liftId"] =" - ";
 	  	        		}
+	  	        		if(!!largeLoad[i].area){
+	  	        			userDetailsObj["Area"] =largeLoad[i].area;
+	  	        		}else{
+	  	        			userDetailsObj["Area"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].machineCurrent){
+	  	        			userDetailsObj["MachineCurrent"] =largeLoad[i].machineCurrent;
+	  	        		}else{
+	  	        			userDetailsObj["MachineCurrent"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].breakVoltage){
+	  	        			userDetailsObj["BreakVoltage"] =largeLoad[i].breakVoltage;
+	  	        		}else{
+	  	        			userDetailsObj["BreakVoltage"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].panelMake){
+	  	        			userDetailsObj["PanelMake"] =largeLoad[i].panelMake;
+	  	        		}else{
+	  	        			userDetailsObj["PanelMake"] =" - ";
+	  	        		}
+	  	        		
 	  	        		userDetails.push(userDetailsObj);
 	  	        	  }
 	  	            $scope.setPagingData(userDetails, page, pageSize);
@@ -348,6 +399,128 @@
 				}
 				]
 	  	    };
-		
+	  	  $rootScope.editLift={};
+		  	$scope.selectedDoorType={};
+				//$rootScope.technicianDetails=[];
+			//	$rootScope.complaintStatusArray=['Pending','Assigned','Completed','In Progress'];
+				$scope.editLiftDetails=function(row){
+					
+					
+					//serviceApi.doPostWithData('/RLMS/admin/getLiftById',row.liftId)
+					//.then(function(data) {
+						
+						//$rootScope.editLift = data.response;
+					
+						//$scope.selectedDoorType.id= $scope.editLift.doorType; 
+						//$scope.selectedDoorType.selected =$scope.editLift.doorType;
+						$rootScope.editLift.liftId=row.liftId;
+						$rootScope.editLift.address=row.Address.replace(/-/g, '');
+						$rootScope.editLift.city=row.City.replace(/-/g, '');
+						$rootScope.editLift.customerName=row.Customer_Name.replace(/-/g, '');
+						$rootScope.editLift.branchName=row.Branch_Name.replace(/-/g, '');
+						$rootScope.editLift.serviceStartDate=row.Service_Start_Date;
+						$rootScope.editLift.serviceEndDate=row.Service_End_Date;
+						$rootScope.editLift.dateOfInstallation=row.Installation_Date;
+						$rootScope.editLift.amcStartDate=row.Amc_Start_Date;
+						$rootScope.editLift.area=row.Area;
+						$rootScope.editLift.liftNumber=row.Lift_Number;
+						$rootScope.editLift.amcEndDate=row.Amc_End_Date;
+						$rootScope.editLift.amcAmount=row.Amc_Amount;
+						$rootScope.editLift.pincode=row.PinCode;						
+						$rootScope.editLift.latitude=row.Latitude;
+						$rootScope.editLift.longitude=row.Longitude;
+						$rootScope.editLift.noOfStops=row.NoOfStops;
+						$rootScope.editLift.machineMake=row.MachineMake;
+						$rootScope.editLift.machineCurrent=row.MachineCurrent;
+						$rootScope.editLift.breakVoltage=row.breakVoltage;
+						$rootScope.editLift.panelMake=row.panelMake;
+						$rootScope.editLift.ard=row.ard;
+						$rootScope.editLift.noOfBatteries=row.noOfBatteries;
+						$rootScope.editLift.batteryCapacity=row.batteryCapacity;
+						$rootScope.editLift.batteryMake=row.batteryMake;
+						$rootScope.editLift.copMake=row.copMake;
+						$rootScope.editLift.lopMake=row.lopMake;
+						$rootScope.editLift.autoDoorMake=row.autoDoorMake;
+						$rootScope.editLift.fireMode=row.fireMode;
+						$rootScope.editLift.intercomm=row.intercomm;
+						$rootScope.editLift.alarm=row.alarm;
+						$rootScope.editLift.alarmBattery=row.alarmBattery;
+						$rootScope.editLift.accessControl=row.accessControl;
+						
+						$rootScope.editLift.machinePhoto=row.machinePhoto;
+						$rootScope.editLift.panelPhoto=row.panelPhoto;
+						$rootScope.editLift.ardPhoto=row.ardPhoto;
+						$rootScope.editLift.lopPhoto=row.lopPhoto;
+						$rootScope.editLift.copPhoto=row.copPhoto;
+						$rootScope.editLift.cartopPhoto=row.cartopPhoto;
+						$rootScope.editLift.autoDoorHeaderPhoto=row.autoDoorHeaderPhoto;
+						$rootScope.editLift.wiringPhoto=row.wiringPhoto;
+						$rootScope.editLift.lobbyPhoto=row.lobbyPhoto;
+						
+						//var technicianArray=$rootScope.techniciansForEditComplaints;
+						
+						window.location.hash = "#/edit-lift";
+					//});
+					
+					
+						/*$rootScope.editLift.liftNumber=$rootScope.outData.liftNumber;
+						$rootScope.editLift.address=row.Address.replace(/-/g, '');
+						$rootScope.editLift.city=row.City.replace(/-/g, '');
+						$rootScope.editLift.customerName=row.Customer_Name.replace(/-/g, '');
+						$rootScope.editLift.branchName=row.Branch_Name.replace(/-/g, '');
+						$rootScope.editLift.serviceStartDate=row.Service_Start_Date;
+						$rootScope.editLift.serviceEndDate=row.Service_End_Date;
+						$rootScope.editLift.installationDate=row.Installation_Date;
+						$rootScope.editLift.amcStartDate=row.Amc_Start_Date;
+						$rootScope.editLift.amcType="NA";
+						$rootScope.editLift.area="NA";
+						$rootScope.editLift.pincode="NA";
+						
+						$rootScope.editLift.latitude="NA";
+						$rootScope.editLift.longitude="NA";
+						$rootScope.editLift.amcEndDate="NA";
+						$rootScope.editLift.amcAmount="NA";
+						$rootScope.editLift.noOfStops="NA";
+						$rootScope.editLift.machineMake="NA";
+						$rootScope.editLift.machineCurrent="NA";
+						$rootScope.editLift.machineCapacity="NA";
+						$rootScope.editLift.breakVoltage="NA";
+						$rootScope.editLift.panelMake="NA";
+						$rootScope.editLift.ard="NA";
+						$rootScope.editLift.noOfBatteries="NA";
+						$rootScope.editLift.batteryCapacity="NA";
+						$rootScope.editLift.batteryMake="NA";
+						$rootScope.editLift.copMake="NA";
+						$rootScope.editLift.lopMake="NA";
+						$rootScope.editLift.autoDoorMake="NA";
+						$rootScope.editLift.fireMode="NA";
+						$rootScope.editLift.intercomm="NA";
+						$rootScope.editLift.alarm="NA";
+						$rootScope.editLift.alarmBattery="NA";
+						$rootScope.editLift.accessControl="NA";
+						
+						$rootScope.editLift.machinePhoto="NA";
+						$rootScope.editLift.panelPhoto="NA";
+						$rootScope.editLift.ardPhoto="NA";
+						$rootScope.editLift.lopPhoto="NA";
+						$rootScope.editLift.copPhoto="NA";
+						$rootScope.editLift.cartopPhoto="NA";
+						$rootScope.editLift.autoDoorHeaderPhoto="NA";
+						$rootScope.editLift.wiringPhoto="NA";
+						$rootScope.editLift.lobbyPhoto="NA";*/
+						
+						
+						
+						
+					//	$rootScope.editLift.installationDate=row.Service_StartDate;
+						//$rootScope.editLift.installationDate=row.Service_StartDate;
+						//$rootScope.editLift.installationDate=row.Service_StartDate;
+						
+					//	$rootScope.selectedComplaintStatus=row.Status;
+						//$rootScope.editComplaint.complaintsStatus=row.Status.replace(/-/g, '');
+						
+						//window.location.hash = "#/edit-lift";
+					
+				};
 	}]);
 })();

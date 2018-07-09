@@ -3,6 +3,7 @@
 	angular.module('rlmsApp')
 	.controller('editBranchCtrl', ['$scope', '$filter','serviceApi','$route','$http','utility','$window','$rootScope', function($scope, $filter,serviceApi,$route,$http,utility,$window,$rootScope) {
 		//initialize add Branch
+		 initAddBranch();
 		$scope.alert = { type: 'success', msg: 'You successfully Edited Branch.',close:true };
 		//loadBranchListInfo();
 		$scope.showAlert = false;
@@ -11,6 +12,7 @@
 		
 		function initAddBranch(){
 			$scope.selectedCompany = {};
+			$scope.selectedActiveFlag = {};
 			$scope.selectedStatus = {};
 			$scope.addBranch={
 					companyId:'',
@@ -21,11 +23,23 @@
 					pinCode:'',
 					activeFlag:''
 			};	
-			$scope.status=[{id:1,name:'Active'},{id:0,name:'Inactive'}];
-		    $scope.branchList={};
+			$scope.activeFlag=[
+				{
+					
+					name:'InActive',
+					id:0
+					
+				},
+				{				
+					name:'Active',
+					id:1
+				}
+			];
+			 $scope.branchList={};
 		   
 		}
-		//load compay dropdown data
+		
+		//load company dropdown data
 		function loadCompayInfo(){
 			serviceApi.doPostWithoutData('/RLMS/admin/getAllApplicableCompanies')
 		    .then(function(response){
@@ -41,10 +55,11 @@
 					branchName:$scope.editBranch.branchName,
 					branchAddress:$scope.editBranch.branchAddress,
 					area:$scope.editBranch.area,
-					city:$scope.editBranch.city,
-					pinCode:$scope.editBranch.pinCode,
 					activeFlag:$scope.selectedStatus.selected.id,
-					activeFlag:$scope.editBranch.activeFlag
+					city:$scope.editBranch.city,
+					pinCode:$scope.editBranch.pinCode
+					
+					//activeFlag:$scope.editBranch.activeFlag
 					};
 			serviceApi.doPostWithData("/RLMS/admin/editBranchInCompany",branchData)
 			.then(function(response){
