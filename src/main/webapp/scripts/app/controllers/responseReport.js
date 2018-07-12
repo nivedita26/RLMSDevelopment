@@ -154,7 +154,9 @@
 		  	        	  var details=[];
 		  	        	  for(var i=0;i<largeLoad.length;i++){
 		  	        		var detailsObj={};
-		  	        		if(!!largeLoad[i].customerName){
+detailsObj["No"] = i+1 +".";
+	  	        			
+	  	        			if(!!largeLoad[i].customerName){
 		  	        			detailsObj["CustomerName"] =largeLoad[i].customerName;
 		  	        		}else{
 		  	        			detailsObj["CustomerName"] =" - ";
@@ -179,8 +181,8 @@
 		  	        		}else{
 		  	        			detailsObj["city"] =" - ";
 		  	        		}
-		  	        		if(!!largeLoad[i].amcStartDate){
-		  	        			detailsObj["LMSContactNo"] =largeLoad[i].amcStartDate;
+		  	        		if(!!largeLoad[i].eventFromContactNo){
+		  	        			detailsObj["LMSContactNo"] =largeLoad[i].eventFromContactNo;
 		  	        		}else{
 		  	        			detailsObj["LMSContactNo"] =" - ";
 		  	        		}
@@ -378,6 +380,22 @@
 						displayName:"Sr No.",
 						width : 100
 			  	  },{
+						field : "LMSContactNo",
+						displayName:"LMS Contact no.",
+						width : 160
+			  	  },{
+						field : "EventDateTime",
+						displayName:"Event Date Time",
+						width : 160
+			  	  },{
+						field : "eventFromContactNo",
+						displayName:"Response Contact No.",
+						width : 160
+			  	  },{
+						field : "Description",
+						displayName:"Description",
+						width : 160
+			  	  },{
 						field : "CustomerName",
 						displayName:"Customer",
 						width : 140
@@ -397,22 +415,6 @@
 						field : "city",
 						displayName:"City",
 						width : 140
-			  	  },{
-						field : "LMSContactNo",
-						displayName:"LMS Contact no.",
-						width : 160
-			  	  },{
-						field : "EventDateTime",
-						displayName:"Event Date Time",
-						width : 160
-			  	  },{
-						field : "eventFromContactNo",
-						displayName:"Response Contact No.",
-						width : 160
-			  	  },{
-						field : "Description",
-						displayName:"Description",
-						width : 160
 			  	  }
 		  	      ]
 		  	    };

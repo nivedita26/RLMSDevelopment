@@ -75,10 +75,10 @@ angular
    	   	        label: 'LMS Alerts Report',
    	   	        url: '#/lms-alerts-report'
    	      },{
-   	   	        label: 'Call Detailed Report',
+   	   	        label: 'Detailed Call Report',
    	   	        url: '#/call-detail-report'
    	      },{
-   	   	        label: 'Call Specific Report',
+   	   	        label: 'Specific Call Report',
    	   	        url: '#/call-specific-report'
    	      },{
    	   	        label: 'SMS Response Report',

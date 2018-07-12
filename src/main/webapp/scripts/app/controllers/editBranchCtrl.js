@@ -46,6 +46,10 @@
 		    		$scope.companies = response;
 		    });
 		};
+		
+		/*if($scope.editBranch.activeFlag== "1"){
+			var statusFlag="Active";
+		}*/
 		//Post call add branch
 		$scope.submitEditBranch = function(){
 			var branchData = {};

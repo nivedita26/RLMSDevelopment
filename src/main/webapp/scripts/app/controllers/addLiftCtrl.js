@@ -4,6 +4,8 @@
 	.controller('addUserCtrl', ['$scope', '$filter','serviceApi','$route','$http','utility','$window','pinesNotifications','$rootScope','$modal', function($scope, $filter,serviceApi,$route,$http,utility,$window,pinesNotifications,$rootScope,$modal) {
 		//initialize add Branch
 		initAddLift();
+		$scope.showIMEI=false;
+		$scope.showLmsCnt=false;
 		$scope.displayMachinePhoto=false;
 		$scope.displayPanelPhoto=false;
 		$scope.displayArdPhoto=false;
@@ -135,8 +137,8 @@
 		      return (mode === 'day' && (date.getDay() === 0 || date.getDay() === 6));
 		    };
 		    
-		    var warrantyPeriod= $scope.warrantyPeriod;
-		    //var serviceEndDate =$scope.serviceStartDate
+		   // var warrantyPeriod= $scope.warrantyPeriod;
+		   var serviceEndDate =$scope.serviceStartDate;
 		    $scope.toggleMin = function() {
 		      $scope.minDate = $scope.minDate ? null : new Date();
 		    };
@@ -149,9 +151,7 @@
 		    $scope.initDate = new Date('2016-15-20');
 		    $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
 		    $scope.format = $scope.formats[0];
-		    
-		    
-		    
+	    
 	    //Date Picker End
 		    
 		    
@@ -374,6 +374,7 @@
 					alarm : '',
 					alarmBattery : '',
 					accessControl : '',
+					lmsAvailable:'',
 					imei :'',
 					lmsEventFromContactNo:'',
 					
@@ -390,6 +391,11 @@
 			$scope.showWizard = false;
 			
 		}
+		
+		 if($scope.lmsAvailable=="1"){
+			  	$scope.showIMEI=true;
+			  	$scope.showLmsCnt=true;
+		  }
 		$scope.openFlag={
 				serviceStartDate:false,
 				serviceEndDate:false,
@@ -400,13 +406,38 @@
 		$scope.open = function($event,which) {
 		      $event.preventDefault();
 		      $event.stopPropagation();
-		      if($scope.openFlag[which] != true)
-		    	  $scope.openFlag[which] = true;	    
-		      else
+		      if($scope.openFlag[which] != true){
+		    	  $scope.openFlag[which] = true;	   
+		      }
+		      else{
 		    	  $scope.openFlag[which] = false;
-		    };
-		  
+		      }
+		      };
+		    $scope.getDate=function(){
+		    	if ($scope.addLift.serviceStartDate){
+			    	  var serviceStDate=$scope.addLift.serviceStartDate;  	  
+			      }
+		    	var warrantyPeriod=$scope.warrantyPeriod;
+		    	
+		    	var serviceEdDate=serviceStDate.setMonth(serviceStDate.getMonth()+warrantyPeriod);
+		    	var serviceEdDate=serviceStDate.setDate(serviceStDate.getDate()-1);
+		    	$scope.addLift.serviceEndDate=serviceEdDate;
+		    }
+		    
+		    $scope.getAmcDate=function(){
+		    	if ($scope.addLift.amcStartDate){
+			    	  var amcStDate=$scope.addLift.amcStartDate;  	  
+			      }		    	
+		    	var amcEdDate;
+		    	amcEdDate=amcStDate.setFullYear(amcStDate.getFullYear()+1);
+		    	amcEdDate=amcStDate.setDate(amcStDate.getDate()-1);
 
+		    	$scope.addLift.amcEndDate=amcEdDate;
+		    }
+		    
+		    //$scope.lmsData=function(){
+		    	
+		  //}
 		    //load compay dropdown data
 		//Post call add branch
 		function parseBase64(){

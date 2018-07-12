@@ -156,6 +156,9 @@
 					},{
 						id:25,
 						name :'Operator Initiated Call'
+					},{
+						id:26,
+						name :'Other'
 					}
 					];
 				

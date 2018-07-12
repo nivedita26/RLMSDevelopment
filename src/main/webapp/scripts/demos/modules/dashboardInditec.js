@@ -99,12 +99,12 @@ angular.module('theme.demos.dashboard.indi', [
     	        color: 'red'
     	      },
     	      activeLiftStatus: {
-    	        title: 'Active',
+    	        title: 'Under Warranty',
     	        text: '0',
     	        color: 'amber'
     	      },
     	      inactiveLiftStatus: {
-    	        title: 'Expired',
+    	        title: 'Warranty Expired',
     	        text: '0',
     	        color: 'blue'
     	      }

@@ -17,7 +17,7 @@
 				$scope.selectedStatus = {};
 				$scope.addCustomer={
 						firstName:'',
-						lastName:'',
+						//lastName:'',
 						address:'',
 						city:'',
 						area:'',

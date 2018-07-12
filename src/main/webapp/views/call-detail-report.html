@@ -1,9 +1,9 @@
 <div class="rlms-wrapper">
 <div class="rlms-container amc-management" ng-controller="callDetailedReportCtrl">
-	<h1 class="rlms-heading">Call Detailed Report</h1>
+	<h1 class="rlms-heading">Detailed Call Report</h1>
 	<div class="filter-section">
 		<div class="form-group margin-b10">
-			<label class="control-label" ng-show="showCompany">Select Company : </label>
+			<label class="control-label" ng-show="showCompany">Select Company </label>
 			<div class="select-container" ng-show="showCompany">
 				  <ui-select ng-model="selectedCompany.selected" title="Choose a Company" on-select="loadBranchData();">
 				    <ui-select-match placeholder="Select company">{{$select.selected.companyName}}</ui-select-match>
@@ -60,7 +60,7 @@
 		</div>
 	</div>
 	 <div class="container-fluid" ng-show="showMembers">
-	<h5 class="rlms-info"><span class="fa fa-info-circle"></span>Call Specific Report List </h5>
+	<h5 class="rlms-info"><span class="fa fa-info-circle"></span>Detailed Call Report</h5>
 	<div class="input-icon right mb10">
      <i class="fa fa-search"></i>
      <input type="text" ng-model="filterOptions.filterText" class="form-control" placeholder="Search Filter">

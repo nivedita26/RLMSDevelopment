@@ -138,6 +138,7 @@
   	    	if($scope.showBranch == true){
   	    		branchData = {
   	    			branchCompanyMapId : $scope.selectedBranch.selected.companyBranchMapId
+  	    			
 					}
   	    	}else{
   	    		branchData = {
@@ -357,7 +358,7 @@
 
 		    //load compay dropdown data
 		//Post call add branch
-		function parseBase64(){
+/*		function parseBase64(){
 			if($scope.addLift.machinePhoto != ''){
 				$scope.addLift.machinePhoto = $scope.addLift.machinePhoto.base64;
 			}
@@ -385,14 +386,14 @@
 			if($scope.addLift.lobbyPhoto != ''){
 				$scope.addLift.lobbyPhoto = $scope.addLift.lobbyPhoto.base64;
 			}
-		}
+		}*/
 		$scope.submitEditLift = function(){
 			var liftData={};
 			liftData={
 					liftId:$scope.editLift.liftId,
 					address:$scope.editLift.address,
 					liftType:$scope.editLift.liftType,
-					//liftNumber : ,
+					liftNumber :$scope.editLift.liftNumber ,
 					city:$scope.editLift.city,
 					area:$scope.editLift.area,
 					pinCode:$scope.editLift.pinCode,
@@ -475,7 +476,7 @@
 			}*/
 			//$scope.addLift.liftTypeName=$scope.addLift.liftTypeName;
 			//$scope.editLift.branchCustomerMapId = $scope.selectedCustomer.selected.branchCustomerMapId
-			serviceApi.doPostWithData("/RLMS/admin/lift/updateLiftParams",$scope.addLift)
+			serviceApi.doPostWithData("/RLMS/admin/lift/updateLiftParams",liftData)
 			.then(function(response){
 				$scope.showAlert = true;
 				var key = Object.keys(response);
@@ -485,6 +486,65 @@
 				initAddCustomer();
 				$scope.editLiftForm.$setPristine();
 				$scope.editLiftForm.$setUntouched();
+			},function(error){
+				$scope.showAlert = true;
+				$scope.alert.msg = error.exceptionMessage;
+				$scope.alert.type = "danger";
+			});
+		}
+		
+		$scope.submitAddLift = function(){
+			parseBase64();
+			//addLift.customerType = $scope.selectedCustomerType;
+			
+        if($scope.selectedAMCType.selected){
+	      $scope.addLift.amcType = $scope.selectedAMCType.selected.id;
+       }
+	    	if($scope.selectedAMCType.selected){
+	    			$scope.addLift.amcType = $scope.selectedAMCType.selected.id;
+		}
+			if($scope.selectedDoorType.selected){
+				$scope.addLift.doorType = $scope.selectedDoorType.selected.id;
+			}
+			if($scope.selectedEngineMachineType.selected){
+				$scope.addLift.engineType = $scope.selectedEngineMachineType.selected.id;
+			}
+			if($scope.selectedCollectiveType.selected){
+				$scope.addLift.collectiveType = $scope.selectedCollectiveType.selected.id;
+		    }
+		   if($scope.selectedSimplexDuplex.selected){
+			   $scope.addLift.simplexDuplex = $scope.selectedSimplexDuplex.selected.id;
+		   }
+		   if($scope.selectedWiringScheme.selected){
+			$scope.addLift.wiringShceme = $scope.selectedWiringScheme.selected.id;
+		   }
+			
+			if($scope.addLift.fireMode){
+				$scope.addLift.fireMode = 1;
+			}else{
+				$scope.addLift.fireMode = 0;
+			}
+			//$scope.addLift.liftTypeName=$scope.addLift.liftTypeName;
+			$scope.addLift.branchCustomerMapId = $scope.selectedCustomer.selected.branchCustomerMapId
+			serviceApi.doPostWithData("/RLMS/admin/validateAndRegisterNewLift",$scope.addLift)
+			.then(function(response){
+				$scope.showAlert = true;
+				var key = Object.keys(response);
+				var successMessage = response[key[0]];
+				if(successMessage!=false){
+				$scope.alert.msg = response[key[1]];
+				$scope.alert.type = "success";
+				resetAddLift();
+				//initAddLift();
+				$scope.addLiftForm.$setPristine();
+				$scope.addLiftForm.$setUntouched();
+		     	}
+				else{
+					$scope.showAlert = true;
+					$scope.alert.msg =  response[key[1]];
+					$scope.alert.type="danger";
+				}
+				$scope.alert.type=' ';
 			},function(error){
 				$scope.showAlert = true;
 				$scope.alert.msg = error.exceptionMessage;

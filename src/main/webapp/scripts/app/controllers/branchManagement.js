@@ -19,7 +19,9 @@
 		    });
 		}
 		$rootScope.editBranch={};
-		//$rootScope.activeFlag=[{id:1,name:'Active'},{id:0,name:'Inactive'}];
+	//	$rootScope.status={};
+	//	$rootScope.status.statusId="1";
+		//$rootScope.status.activeFlags=[{id:1,name:'Active'},{id:0,name:'Inactive'}];
 		$scope.editBranchDetails=function(row){
 			$rootScope.editBranch.branchId=row.Branch_Id;
 			$rootScope.editBranch.branchName=row.Branch_Name;

@@ -5,7 +5,7 @@
 		<alert ng-show="showAlert" type="{{alert.type}}">
 				<span ng-bind-html="alert.msg | safe_html"></alert>
 		<div class="form-group">
-			<label class="control-label" ng-show="showCompany">Select Company : </label>
+			<label class="control-label" ng-show="showCompany">Select Company</label>
 			<div class="select-container" ng-show="showCompany">
 				  <ui-select ng-model="selectedCompany.selected" title="Choose a Company" on-select="loadBranchData();">
 				    <ui-select-match placeholder="Select company">{{$select.selected.companyName}}</ui-select-match>
@@ -88,23 +88,24 @@
 			<div class="col-md-6"><input ng-model="addLift.longitude" class="form-control"  type="text" name="longitude"></div>
 		</div>
 		<div class="form-group">
+			<label for="dateOfInstallation" class="col-md-3 control-label">Date Of Installation <sup class="red font-12">*</sup></label>
+			<div class="col-md-6"><input type="text" class="form-control datepicker" datepicker-popup="{{format}}" ng-click="open($event,'dateOfInstallation')" is-open="openFlag.dateOfInstallation" ng-model="addLift.dateOfInstallation" required/></div>
+		</div>
+		<div class="form-group">
 			<label for="serviceStartDate" class="col-md-3 control-label">Warranty Start Date <sup class="red font-12">*</sup></label>
 			<div class="col-md-6"><input  type="text" class="form-control datepicker" datepicker-popup="{{format}}" ng-click="open($event,'serviceStartDate')" is-open="openFlag.serviceStartDate" ng-model="addLift.serviceStartDate" required/></div>
 		</div>
 		<div class="form-group">
 			<label for="warrantyPeriod" class="col-md-3 control-label">Warranty Period(in Months)<sup class="red font-12">*</sup></label>
 			<div class="col-md-6">
-				<input ng-model="warrantyPeriod" required class="form-control" name="liftNumber" type="number"/>
+				<input ng-model="warrantyPeriod" required class="form-control" name="warrantyPeriod" type="number"/>
 			</div>
 		</div> 
 		<div class="form-group">
 			<label for="serviceEndDate" class="col-md-3 control-label">Warranty End Date <sup class="red font-12">*</sup></label>
-			<div class="col-md-6"><input  type="text" class="form-control datepicker" datepicker-popup="{{format}}" ng-click="open($event,'serviceEndDate')" is-open="openFlag.serviceEndDate" ng-model="addLift.serviceEndDate" required/></div>
+			<div class="col-md-6"><input  type="text" class="form-control datepicker"  datepicker-popup="{{format}}" ng-click="getDate();" is-open="openFlag.serviceEndDate" ng-model="addLift.serviceEndDate" required/></div>
 		</div>
-		<div class="form-group">
-			<label for="dateOfInstallation" class="col-md-3 control-label">Date Of Installation</label>
-			<div class="col-md-6"><input type="text" class="form-control datepicker" datepicker-popup="{{format}}" ng-click="open($event,'dateOfInstallation')" is-open="openFlag.dateOfInstallation" ng-model="addLift.dateOfInstallation" required/></div>
-		</div>
+		
 		<legend>Add AMC</legend>
 		<div class="form-group">
 			<label for="amcStartDate" class="col-md-3 control-label">Amc Start Date</label>
@@ -112,7 +113,7 @@
 		</div>
 		<div class="form-group">
 			<label for="amcStartDate" class="col-md-3 control-label">Amc End Date</label>
-			<div class="col-md-6"><input type="text" class="form-control datepicker" datepicker-popup="{{format}}" ng-click="open($event,'amcEndDate')" is-open="openFlag.amcEndDate" ng-model="addLift.amcEndDate" /></div>
+			<div class="col-md-6"><input type="text" class="form-control datepicker" datepicker-popup="{{format}}" ng-click="getAmcDate();" is-open="openFlag.amcEndDate" ng-model="addLift.amcEndDate" /></div>
 		</div>
 		
 		<div class="form-group">
@@ -280,7 +281,6 @@
 			<label for="fireMode" class="col-md-3 control-label">Fire Mode</label>
 			<!-- <div class="col-md-6"><input ng-model="addLift.fireMode" class="form-control"  type="number" name="fireMode"></div> -->
 			<div class="col-sm-6"><input type="checkbox" ng-model="addLift.fireMode" class="js-switch" ui-switch="{color: '#4697ce', secondaryColor: '#c5cbd1'}" /></div>
-			
 		</div>
 		<div class="form-group">
 			<label for="intercomm" class="col-md-3 control-label">Text Details</label>
@@ -299,12 +299,17 @@
 			<div class="col-md-6"><input ng-model="addLift.accessControl" class="form-control"  type="text" name="accessControl"></div>
 		</div>
 		<div class="form-group">
-			<label for="imei" class="col-md-3 control-label">IMEI Number</label>
-			<div class="col-md-6"><input ng-model="addLift.imei" class="form-control" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : this.value.length<15" type="number" name="imei" required></div>
+			<label for="lmsAvailable" class="col-md-3 control-label">LMS</label>
+			<!-- <div class="col-md-6"><input ng-model="addLift.fireMode" class="form-control"  type="number" name="fireMode"></div> -->
+			<div class="col-sm-6"><input type="checkbox"  ng-model="lmsAvailable" class="js-switch" ui-switch="{color: '#4697ce', secondaryColor: '#c5cbd1'}" /></div>
 		</div>
 		<div class="form-group">
-			<label for="lmsEventFromContactNo" class="col-md-3 control-label">LMS Contact Number</label>
-			<div class="col-md-6"><input ng-model="addLift.lmsEventFromContactNo" class="form-control" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : this.value.length<10" type="number" name="lmsEventFromContactNo" required></div>
+			<label for="imei" class="col-md-3 control-label" ng-show="showIMEI" >IMEI Number</label>
+			<div class="col-md-6" ng-show="showIMEI"><input ng-model="addLift.imei" class="form-control" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : this.value.length<15" type="number" name="imei" required></div>
+		</div>
+		<div class="form-group">
+			<label for="lmsEventFromContactNo" class="col-md-3 control-label" ng-show="showLmsCnt">LMS Contact Number</label>
+			<div class="col-md-6" ng-show="showLmsCnt"><input ng-model="addLift.lmsEventFromContactNo" class="form-control" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : this.value.length<10" type="number" name="lmsEventFromContactNo" required></div>
 		</div>
 		
 	</fieldset>

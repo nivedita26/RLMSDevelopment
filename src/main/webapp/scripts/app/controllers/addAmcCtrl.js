@@ -5,6 +5,7 @@
 		initAddAMC();
 			//loadCompayInfo();
 			$scope.alert = { type: 'success', msg: 'You successfully Added AMC details.',close:true };
+			$scope.alert = { type: 'error', msg: '',close:false };
 			$scope.showAlert = false;
 			$scope.showCompany = false;
 			$scope.showBranch = false;
@@ -23,7 +24,27 @@
 			                    $scope.newCallTypes.title = "";
 			                    $scope.newCallTypes.serviceDate = "";
 			                };
+			                
+			                $scope.submitAdd=function(){
+			                	if(($scope.newCallTypes.title &&$scope.newCallTypes.serviceDate)){
+			                		 $scope.showAlert = false;
+			                		 $scope.Add();
+			                	}else{
+			                			$scope.showAlert = true;
+										$scope.alert.msg =  'Add Service Call Title and Date';
+										$scope.alert.type="danger";
+			                	}
+			                }
 
+			                $scope.dateOptions = {
+			          		      formatYear: 'yy',
+			          		      startingDay: 1,
+			          		    };
+
+			          		    $scope.initDate = new Date('2016-15-20');
+			          		    $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+			          		    $scope.format = $scope.formats[0];
+			          		    
 			                $scope.Remove = function (index) {
 			                    //Find the record using Index from Array.
 			                    var name = $scope.callTypesArray[index].title;
@@ -32,10 +53,8 @@
 			                        $scope.callTypesArray.splice(index, 1);
 			                    }
 			                }
-			               /* $(document).ready(function () {
-			                    $('#stDate').datepicker();
-			                    $('#eddate').datepicker();
-			                });*/
+			                
+
 			function initAddAMC() {
 				$scope.customerSelected = false;
 				$scope.selectedCompany={};
@@ -95,28 +114,26 @@
 			$scope.open = function($event,which) {
 			      $event.preventDefault();
 			      $event.stopPropagation();
-			      if($scope.openFlag[which] != true)
+			      if($scope.openFlag[which] != true){
 			    	  $scope.openFlag[which] = true;
-			      else
+			      }
+			      else{
 			    	  $scope.openFlag[which] = false;
+			      }
 			}
-			
-			$scope.getdate=function(){
-				
-				var tt = document.getElementById('stDate').value;
-				//var tt =$scope.fromDate;
-			    var date = new Date(tt);
-			    var newdate = new Date(date);
 
-			    newdate.setDate(newdate.getDate() - 1);
-			    
-			    var dd = newdate.getDate();
-			    var mm = newdate.getMonth() + 1;
-			    var y = newdate.getFullYear() + 1;
-
-			    var someFormattedDate = mm + '/' + dd + '/' + y;
-			    document.getElementById('edDate').value = someFormattedDate;
-			    //$scope.toDate=someFormattedDate;
+			$scope.getDateTime=function(){
+				// var AmcStartDate=$scope.addAMC.amcStDate ;
+				if ($scope.addAMC.amcStDate){
+					 var amcEndDate;
+					var amcStartDate=$scope.addAMC.amcStDate;  	  
+			     	    	
+		    	 amcEndDate=amcStartDate.setFullYear(amcStartDate.getFullYear()+1);
+		    	 amcEndDate=amcStartDate.setDate(amcStartDate.getDate()-1);
+				 }	
+		    	//$scope.addAMC.amcStDate=amcStartDate;
+		    	$scope.addAMC.amcEdDate=amcEndDate;
+		    	//$scope.addAMC.amcStDate=AmcStartDate;
 			}
 			
 			$scope.loadBranchData = function(){
@@ -186,6 +203,7 @@
 			 $scope.cancelAssign = function(){
 	        	  $scope.modalInstance.dismiss('cancel');
 	          }
+			 
 			//Post call add customer
 			$scope.submitaddAMC = function(){
 			//	$scope.addAMC.liftCustomerMapId =  $scope.selectedCustomer.selected.branchCustomerMapId;
@@ -193,8 +211,8 @@
 				$scope.addAMC.amcType=$scope.selectedAmc.selected.id;
 				$scope.addAMC.amcServiceCalls=$scope.callTypesArray;
 				//$scope.addAMC.amcType=42;
-				//$scope.addAMC.amcEdDate=$filter('date')($scope.addAMC.amcEdDate, "dd-MMM-yyyy");
-				//$scope.addAMC.amcStDate=$filter('date')($scope.addAMC.amcStDate, "dd-MMM-yyyy");
+				$scope.addAMC.amcEdDate=$filter('date')($scope.addAMC.amcEdDate, "yyyy-MM-dd");
+				$scope.addAMC.amcStDate=$filter('date')($scope.addAMC.amcStDate, "yyyy-MM-dd");
 				serviceApi.doPostWithData("/RLMS/report/addAMCDetailsForLift",$scope.addAMC)
 				.then(function(response){
 					$scope.showAlert = true;

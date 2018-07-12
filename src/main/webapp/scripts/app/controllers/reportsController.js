@@ -47,9 +47,6 @@
 			 $scope.selectedAmc = {};
 			 $scope.showMembers = false;
 			 $scope.status = [  {
-					id : 3,
-					name : 'Assigned'
-				}, {
 					id : 4,
 					name : 'In Progress'
 				}, {
