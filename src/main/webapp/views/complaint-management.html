@@ -73,12 +73,24 @@
                      <tile-simple data="{ title: 'Total Complaints', text: '41', color: 'indigo'}" ng-click="openDemoModal('Total Complaints','2,3,5')"></tile-simple>
                   </div> -->
                   <div class="col-xs-6">
-                     <a class="info-tiles tiles-{{newCustomerRegistered.color}}" >
+                     <a class="info-tiles tiles-{{complaintsData.totalPendingComplaints.color}}" >
                         <div class="tiles-heading">
                            <div class="text-center">{{complaintsData.avgLogPerDay.title}}</div>
                         </div>
                         <div class="tiles-body">
                            <div class="text-center" ng-show="newCustomerRegistered.text">{{complaintsData.avgLogPerDay.text}}</div>
+                        </div>
+                     </a>
+                     <!-- <tile-simple data="{ title: 'New Customers Registered', text: '9', color: 'grey'}" ng-click="openDemoModal('New Customers Registered','2')"></tile-simple> -->
+                  </div>
+                  
+                   <div class="col-xs-6">
+                     <a class="info-tiles tiles-{{newCustomerRegistered.color}}">
+                        <div class="tiles-heading">
+                           <div class="text-center">{{complaintsData.avgResolvedPerDayRegistered.title}}</div>
+                        </div>
+                        <div class="tiles-body">
+                           <div class="text-center" ng-show="newCustomerRegistered.text">{{complaintsData.avgResolvedPerDayRegistered.text}}</div>
                         </div>
                      </a>
                      <!-- <tile-simple data="{ title: 'New Customers Registered', text: '9', color: 'grey'}" ng-click="openDemoModal('New Customers Registered','2')"></tile-simple> -->
@@ -159,17 +171,7 @@
                      </a>
                      <tile-simple data="{ title: 'Total Complaints', text: '41', color: 'indigo'}" ng-click="openDemoModal('Total Complaints','2,3,5')"></tile-simple>
                   </div> -->
-                  <div class="col-xs-6">
-                     <a class="info-tiles tiles-{{newCustomerRegistered.color}}">
-                        <div class="tiles-heading">
-                           <div class="text-center">{{complaintsData.avgResolvedPerDayRegistered.title}}</div>
-                        </div>
-                        <div class="tiles-body">
-                           <div class="text-center" ng-show="newCustomerRegistered.text">{{complaintsData.avgResolvedPerDayRegistered.text}}</div>
-                        </div>
-                     </a>
-                     <!-- <tile-simple data="{ title: 'New Customers Registered', text: '9', color: 'grey'}" ng-click="openDemoModal('New Customers Registered','2')"></tile-simple> -->
-                  </div>
+                 
                </div>
             </div>
          </div>
@@ -180,7 +182,7 @@
 		</div>
 		<div class="filter-section">
 			<div class="form-group">
-				<label class="control-label" ng-show="showCompany">Select Company : </label>
+				<label class="control-label" ng-show="showCompany">Select Company </label>
 				<div class="select-container" ng-show="showCompany">
 					<ui-select ng-model="selectedCompany.selected" title="Choose a Company" on-select="loadBranchData();">
 						<ui-select-match placeholder="Select company">{{$select.selected.companyName}}</ui-select-match>
@@ -207,8 +209,6 @@
 						</ui-select-choices>
 					</ui-select>
 				</div>
-				<br>
-					<br>
 						<label class="control-label">Select Call Type</label>
 						<div class="select-container">
 							<ui-select ng-model="selectedCalltype.selected" title="Choose a Call Type"  on-select="showWizardFun()">
@@ -231,7 +231,7 @@
 								<span class="input-group-addon">
 									<i class="glyphicon glyphicon-calendar"></i>
 								</span>
-								<input type="daterange" placeholder="Select Date" class="form-control" daterangepicker="" ng-model="date">
+								<input type="daterange.date" placeholder="Select Date" class="form-control" daterangepicker="" ng-model="date">
 								</div>
 							</div>
 							<label class="control-label" >Select Lifts </label>
@@ -279,7 +279,7 @@
 							</div>
 							<!--  <pre>{{gridOptions.selectedItems}}</pre> -->
 							<div class="col-lg-12 align-right">
-								<button class="btn-primary btn rlms-btn" ng-click="assignComplaint()">Assign Complaint</button>
+								<button class="btn-primary btn rlms-btn" ng-click="assignComplaint()">Assign Technician</button>
 								<!-- ng-disabled="isAssigned"
 			  -->
 							</div>
@@ -338,7 +338,7 @@
 			<td>
 				<div style="height: 504;">
 					<div class="modal-header">
-						<h3 class="modal-title">Assign Complaint To Technician</h3>
+						<h3 class="modal-title">Assign Technician To Call </h3>
 					</div>
 					<div class="modal-body">
 						                    <alert ng-show="showAlert" type="{{alert.type}}">
@@ -362,7 +362,7 @@
 									<tr>
 										<th>Name</th>
 										<th>Contact Number</th>
-										<th>Assigned Complaints</th>
+										<th>Assigned Calls</th>
 									</tr>
 								</thead>
 								<tbody>

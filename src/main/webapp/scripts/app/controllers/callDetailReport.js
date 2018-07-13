@@ -188,15 +188,16 @@
 		  	        	  var details=[];
 		  	        	  for(var i=0;i<largeLoad.length;i++){
 		  	        		var detailsObj={};
-		  	        		if(!!largeLoad[i].firstName){
-		  	        			detailsObj["firstName"] =largeLoad[i].customerName;
+		  	        		detailsObj["SrNo"] = i+1 + ".";
+		  	        		if(!!largeLoad[i].customerName){
+		  	        			detailsObj["Customer"] =largeLoad[i].customerName;
 		  	        		}else{
-		  	        			detailsObj["firstName"] =" - ";
+		  	        			detailsObj["Customer"] =" - ";
 		  	        		}
-		  	        		if(!!largeLoad[i].branchName){
-		  	        			detailsObj["BranchName"] =largeLoad[i].branchName;
+		  	        		if(!!largeLoad[i].serviceCallTypeStr){
+		  	        			detailsObj["CallType"] =largeLoad[i].serviceCallTypeStr;
 		  	        		}else{
-		  	        			detailsObj["BranchName"] =" - ";
+		  	        			detailsObj["CallType"] =" - ";
 		  	        		}
 		  	        		if(!!largeLoad[i].liftNumber){
 		  	        			detailsObj["liftNumber"] =largeLoad[i].liftNumber;
@@ -204,29 +205,39 @@
 		  	        			detailsObj["liftNumber"] =" - ";
 		  	        		}
 		  	        		if(!!largeLoad[i].status){
-		  	        			detailsObj["status"] =largeLoad[i].status;
+		  	        			detailsObj["Status"] =largeLoad[i].status;
 		  	        		}else{
-		  	        			detailsObj["status"] =" - ";
+		  	        			detailsObj["Status"] =" - ";
 		  	        		}
-		  	        		if(!!largeLoad[i].amcAmount){
-		  	        			detailsObj["amcAmount"] =largeLoad[i].amcAmount;
+		  	        		if(!!largeLoad[i].title){
+		  	        			detailsObj["Title"] =largeLoad[i].title;
 		  	        		}else{
-		  	        			detailsObj["amcAmount"] =" - ";
+		  	        			detailsObj["Title"] =" - ";
 		  	        		}
-		  	        		if(!!largeLoad[i].amcTypeStr){
-		  	        			detailsObj["amcTypeStr"] =largeLoad[i].amcTypeStr;
+		  	        		if(!!largeLoad[i].totalNoOfVisits){
+		  	        			detailsObj["TotalAttempts"] =largeLoad[i].totalNoOfVisits;
 		  	        		}else{
-		  	        			detailsObj["amcTypeStr"] =" - ";
+		  	        			detailsObj["TotalAttempts"] =" - ";
 		  	        		}
-		  	        		if(!!largeLoad[i].amcStartDate){
-		  	        			detailsObj["amcStartDate"] =largeLoad[i].amcStartDate;
+		  	        		if(!!largeLoad[i].registrationDateStr){
+		  	        			detailsObj["RegDate"] =largeLoad[i].registrationDateStr;
 		  	        		}else{
-		  	        			detailsObj["amcStartDate"] =" - ";
+		  	        			detailsObj["RegDate"] =" - ";
 		  	        		}
-		  	        		if(!!largeLoad[i].dueDate){
-		  	        			detailsObj["dueDate"] =largeLoad[i].dueDate;
+		  	        		if(!!largeLoad[i].totalDaysRequiredToResolveComplaint){
+		  	        			detailsObj["TotalDaysTaken"] =largeLoad[i].totalDaysRequiredToResolveComplaint;
 		  	        		}else{
-		  	        			detailsObj["dueDate"] =" - ";
+		  	        			detailsObj["TotalDaysTaken"] =" - ";
+		  	        		}
+		  	        		if(!!largeLoad[i].lastVisitedDate){
+		  	        			detailsObj["LastVisitedDate"] =largeLoad[i].lastVisitedDate;
+		  	        		}else{
+		  	        			detailsObj["LastVisitedDate"] =" - ";
+		  	        		}
+		  	        		if(!!largeLoad[i].callAssignedDateStr){
+		  	        			detailsObj["callAssignedDate"] =largeLoad[i].callAssignedDateStr;
+		  	        		}else{
+		  	        			detailsObj["callAssignedDate"] =" - ";
 		  	        		}
 		  	        		if(!!largeLoad[i].area){
 		  	        			detailsObj["area"] =largeLoad[i].area;

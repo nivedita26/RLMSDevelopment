@@ -14,16 +14,20 @@
 				$scope.selectedCompany = {};
 				$scope.selectedBranch = {};
 				$scope.selectedCustomerTypes = {};
+				$scope.selectedStatus = {};
 				$scope.addCustomer={
 						firstName:'',
-						lastName:'',
+						//lastName:'',
 						address:'',
 						city:'',
 						area:'',
 						pinCode:'',
-						customerTypeStr:'',
+						customerType:'',
 						emailID:'',
 						cntNumber:'',
+						vatNumber:'',
+						tinNumber:'',
+						panNumber:'',
 						//branchName:'',
 						//companyName:'',
 						totalNumberOfLifts:'',
@@ -40,7 +44,7 @@
 						watchmenName :'',
 						watchmenNumber :'',
 						watchmenEmail :'',
-						//activeFlag:'1',
+						activeFlag:'',
 						customerId:''
 						
 				};	
@@ -70,7 +74,7 @@
 						id:20
 					}
 				];
-				/*$scope.activeFlag=[
+				$scope.activeFlag=[
 					{
 						name:"InActive",
 						id:0
@@ -79,9 +83,12 @@
 						name:"Active",
 						id:1
 					}
-				];*/
+				];
 			}
 			
+			if($scope.editCustomer.activeFlag=="1"){
+				
+			}
 			//load compay dropdown data
 			function loadCompayInfo(){
 				serviceApi.doPostWithoutData('/RLMS/admin/getAllApplicableCompanies')
@@ -131,7 +138,7 @@
 						emailID:$scope.editCustomer.emailID,
 						city:$scope.editCustomer.city,
 						pinCode:$scope.editCustomer.pinCode,
-						//activeFlag:$scope.editCustomer.activeFlag,
+						activeFlag:$scope.selectedStatus.selected.id,
 						chairmanName :$scope.editCustomer.chairmanName,
 						chairmanNumber :$scope.editCustomer.chairmanNumber,
 						chairmanEmail :$scope.editCustomer.chairmanEmail,
@@ -144,8 +151,11 @@
 						watchmenName :$scope.editCustomer.watchmenName,
 						watchmenNumber :$scope.editCustomer.watchmenNumber,
 						watchmenEmail :$scope.editCustomer.watchmenEmail,
+						vatNumber:$scope.editCustomer.vatNumber,
+						tinNumber:$scope.editCustomer.tinNumber,
+						panNumber:$scope.editCustomer.panNumber,
 						//customerTypeStr:$scope.editCustomer.customerTypeStr
-						customerTypeStr:$scope.selectedCustomerTypes.selected.name
+						customerType:$scope.selectedCustomerTypes.selected.name
 				}				
 				serviceApi.doPostWithData("/RLMS/admin/validateAndUpdateCustomer",customerData)
 				.then(function(response){

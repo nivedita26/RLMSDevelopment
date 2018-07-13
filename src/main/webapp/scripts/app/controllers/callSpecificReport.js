@@ -165,7 +165,6 @@ $scope.loadCallID=function(){
 		  	        	  var details=[];
 		  	        	  for(var i=0;i<largeLoad.length;i++){
 		  	        		var detailsObj={};
-		  	        		
 		  	        		detailsObj["SrNo"] =i+1 +".";
 		  	        		
 		  	        		if(!!largeLoad[i].customerName){
@@ -188,43 +187,39 @@ $scope.loadCallID=function(){
 		  	        		}else{
 		  	        			detailsObj["Status"] =" - ";
 		  	        		}
-		  	        		if(!!largeLoad[i].amcAmount){
-		  	        			detailsObj["CallAssignedDate"] =largeLoad[i].amcAmount;
+		  	        		if(!!largeLoad[i].callAssignedDateStr){
+		  	        			detailsObj["CallAssignedDate"] =largeLoad[i].callAssignedDateStr;
 		  	        		}else{
 		  	        			detailsObj["CallAssignedDate"] =" - ";
 		  	        		}
-		  	        		if(!!largeLoad[i].amcTypeStr){
-		  	        			detailsObj["CallResolvedDate"] =largeLoad[i].amcTypeStr;
+		  	        		if(!!largeLoad[i].resolvedDateStr){
+		  	        			detailsObj["CallResolvedDate"] =largeLoad[i].resolvedDateStr;
 		  	        		}else{
 		  	        			detailsObj["CallResolvedDate"] =" - ";
 		  	        		}
-		  	        		if(!!largeLoad[i].remark){
-		  	        			detailsObj["Remark"] =largeLoad[i].remark;
-		  	        		}else{
-		  	        			detailsObj["Remark"] =" - ";
-		  	        		}
-		  	        		if(!!largeLoad[i].compalintId){
-		  	        			detailsObj["CallId"] =largeLoad[i].compalintId;
+		  	        		
+		  	        		if(!!largeLoad[i].complaintNumber){
+		  	        			detailsObj["CallId"] =largeLoad[i].complaintNumber;
 		  	        		}else{
 		  	        			detailsObj["CallId"] =" - ";
 		  	        		}
-		  	        		if(!!largeLoad[i].address){
-		  	        			detailsObj["address"] =largeLoad[i].address;
+		  	        		if(!!largeLoad[i].customerAddress){
+		  	        			detailsObj["address"] =largeLoad[i].customerAddress;
 		  	        		}else{
 		  	        			detailsObj["address"] =" - ";
 		  	        		}
-		  	        		if(!!largeLoad[i].city){
-		  	        			detailsObj["city"] =largeLoad[i].city;
+		  	        		if(!!largeLoad[i].customerCity){
+		  	        			detailsObj["city"] =largeLoad[i].customerCity;
 		  	        		}else{
 		  	        			detailsObj["city"] =" - ";
 		  	        		}
-		  	        		if(!!largeLoad[i].city){
-		  	        			detailsObj["CallRegisteredBy"] =largeLoad[i].city;
+		  	        		if(!!largeLoad[i].registeredBy){
+		  	        			detailsObj["CallRegisteredBy"] =largeLoad[i].registeredBy;
 		  	        		}else{
 		  	        			detailsObj["CallRegisteredBy"] =" - ";
 		  	        		}
-		  	        		if(!!largeLoad[i].city){
-		  	        			detailsObj["CallType"] =largeLoad[i].city;
+		  	        		if(!!largeLoad[i].serviceCallTypeStr){
+		  	        			detailsObj["CallType"] =largeLoad[i].serviceCallTypeStr;
 		  	        		}else{
 		  	        			detailsObj["CallType"] =" - ";
 		  	        		}
@@ -233,25 +228,33 @@ $scope.loadCallID=function(){
 		  	        		}else{
 		  	        			detailsObj["Title"] =" - ";
 		  	        		}
-		  	        		if(!!largeLoad[i].city){
-		  	        			detailsObj["RegistrationDate"] =largeLoad[i].city;
+		  	        		if(!!largeLoad[i].registrationDateStr){
+		  	        			detailsObj["RegistrationDate"] =largeLoad[i].registrationDateStr;
 		  	        		}else{
 		  	        			detailsObj["RegistrationDate"] =" - ";
-		  	        		}
-		  	        		if(!!largeLoad[i].techNames){
-		  	        			detailsObj["Technician"] =largeLoad[i].techName;
-		  	        		}else{
-		  	        			detailsObj["Technician"] =" - ";
-		  	        		}
-		  	        		if(!!largeLoad[i].FromDate){
-		  	        			detailsObj["FromDate"] =largeLoad[i].FromDate;
-		  	        		}else{
-		  	        			detailsObj["FromDate"] =" - ";
-		  	        		}
-		  	        		if(!!largeLoad[i].toDate){
-		  	        			detailsObj["ToDate"] =largeLoad[i].toDate;
-		  	        		}else{
-		  	        			detailsObj["ToDate"] =" - ";
+		  	        		}if(largeLoad[i].siteVisitDetailsList){
+		  	        				if(!!largeLoad[i].siteVisitDetailsList.techName){
+		  	        					detailsObj["Technician"] =largeLoad[i].siteVisitDetailsList.techName;
+		  	        				}else{
+		  	        					detailsObj["Technician"] =" - ";
+		  	        				}
+		  	        				if(largeLoad[i].siteVisitDetailsList.listOFAllVisits){
+		  	        					if(!!largeLoad[i].fromDateDtr){
+		  	        						detailsObj["FromDate"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits.fromDateDtr;
+		  	        					}else{
+		  	        						detailsObj["FromDate"] =" - ";
+		  	        					}
+		  	        					if(!!largeLoad[i].toDateStr){
+		  	        						detailsObj["ToDate"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits.toDateStr;
+		  	        					}else{
+		  	        						detailsObj["ToDate"] =" - ";
+		  	        					}
+		  	        					if(!!largeLoad[i].siteVisitDetailsList.listOFAllVisits.remark){
+					  	        			detailsObj["Remark"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits.remark;
+					  	        		}else{
+					  	        			detailsObj["Remark"] =" - ";
+					  	        		}
+		  	        				}
 		  	        		}
 		  	        		details.push(detailsObj);
 		  	        	  }
@@ -268,16 +271,18 @@ $scope.loadCallID=function(){
 		  	        	.then(function(largeLoad) {
 
 		  	        	  var details=[];
-		  	        	  if($scope.selectedLift.selected){
-		  	        	  var liftNum=[];
-		  	        	for (var j = 0; j < $scope.selectedLift.selected.length; i++) {
-		  	        		liftNum.push($scope.selectedLift.selected[j].liftNumber);
-		  				} 
-		  	        	}
+		  	        	 
 		  	        	  for(var i=0;i<largeLoad.length;i++){
 		  	        		
 		  	        		  if((($scope.selectedCallID.selected) &&($scope.selectedCallID.selected.complaintNumber === largeLoad[i].complaintNumber)) ||(($scope.selectedLift.selected) &&(liftNum== largeLoad[i].liftNumber))){
-			  	        	var detailsObj={};
+			  	        	
+		  	        			 if($scope.selectedLift.selected){
+		  			  	        	  var liftNum=[];
+		  			  	        	for (var j = 0; j < $scope.selectedLift.selected.length;j++) {
+		  			  	        		liftNum.push($scope.selectedLift.selected[j].liftNumber);
+		  			  				} 
+		  			  	        	}
+		  	        			  var detailsObj={};
 		  	        		detailsObj["SrNo"] =i+1 +".";
 		  	        		
 		  	        		if(!!largeLoad[i].customerName){
@@ -350,21 +355,30 @@ $scope.loadCallID=function(){
 		  	        		}else{
 		  	        			detailsObj["RegistrationDate"] =" - ";
 		  	        		}
-		  	        		if(!!largeLoad[i].techName){
-		  	        			detailsObj["Technician"] =largeLoad[i].techName;
-		  	        		}else{
-		  	        			detailsObj["Technician"] =" - ";
-		  	        		}
-		  	        		if(!!largeLoad[i].fromDateStr){
-		  	        			detailsObj["FromDate"] =largeLoad[i].fromDateStr;
-		  	        		}else{
-		  	        			detailsObj["FromDate"] =" - ";
-		  	        		}
-		  	        		if(!!largeLoad[i].toDateStr){
-		  	        			detailsObj["ToDate"] =largeLoad[i].toDateStr;
-		  	        		}else{
-		  	        			detailsObj["ToDate"] =" - ";
-		  	        		}
+		  	        		if(largeLoad[i].siteVisitDetailsList){
+	  	        				if(!!largeLoad[i].siteVisitDetailsList.techName){
+	  	        					detailsObj["Technician"] =largeLoad[i].siteVisitDetailsList.techName;
+	  	        				}else{
+	  	        					detailsObj["Technician"] =" - ";
+	  	        				}
+	  	        				if(largeLoad[i].siteVisitDetailsList.listOFAllVisits){
+	  	        					if(!!largeLoad[i].fromDateDtr){
+	  	        						detailsObj["FromDate"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits.fromDateDtr;
+	  	        					}else{
+	  	        						detailsObj["FromDate"] =" - ";
+	  	        					}
+	  	        					if(!!largeLoad[i].toDateStr){
+	  	        						detailsObj["ToDate"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits.toDateStr;
+	  	        					}else{
+	  	        						detailsObj["ToDate"] =" - ";
+	  	        					}
+	  	        					if(!!largeLoad[i].siteVisitDetailsList.listOFAllVisits.remark){
+				  	        			detailsObj["Remark"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits.remark;
+				  	        		}else{
+				  	        			detailsObj["Remark"] =" - ";
+				  	        		}
+	  	        				}
+	  	        		}
 		  	        		details.push(detailsObj);
 		  	        	  }
 		  	        		  if((!($scope.selectedCallID.selected))&& (!($scope.selectedLift.selected))){
@@ -402,11 +416,7 @@ $scope.loadCallID=function(){
 				  	        		}else{
 				  	        			detailsObj["CallResolvedDate"] =" - ";
 				  	        		}
-				  	        		if(!!largeLoad[i].remark){
-				  	        			detailsObj["Remark"] =largeLoad[i].remark;
-				  	        		}else{
-				  	        			detailsObj["Remark"] =" - ";
-				  	        		}
+				  	        		
 				  	        		if(!!largeLoad[i].complaintNumber){
 				  	        			detailsObj["CallId"] =largeLoad[i].complaintNumber;
 				  	        		}else{
@@ -441,22 +451,31 @@ $scope.loadCallID=function(){
 				  	        			detailsObj["RegistrationDate"] =largeLoad[i].registrationDateStr;
 				  	        		}else{
 				  	        			detailsObj["RegistrationDate"] =" - ";
+				  	        		}if(largeLoad[i].siteVisitDetailsList){
+				  	        				if(!!largeLoad[i].siteVisitDetailsList.techName){
+				  	        					detailsObj["Technician"] =largeLoad[i].siteVisitDetailsList.techName;
+				  	        				}else{
+				  	        					detailsObj["Technician"] =" - ";
+				  	        				}
+				  	        				if(largeLoad[i].siteVisitDetailsList.listOFAllVisits){
+				  	        					if(!!largeLoad[i].fromDateDtr){
+				  	        						detailsObj["FromDate"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits.fromDateDtr;
+				  	        					}else{
+				  	        						detailsObj["FromDate"] =" - ";
+				  	        					}
+				  	        					if(!!largeLoad[i].toDateStr){
+				  	        						detailsObj["ToDate"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits.toDateStr;
+				  	        					}else{
+				  	        						detailsObj["ToDate"] =" - ";
+				  	        					}
+				  	        					if(!!largeLoad[i].siteVisitDetailsList.listOFAllVisits.remark){
+							  	        			detailsObj["Remark"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits.remark;
+							  	        		}else{
+							  	        			detailsObj["Remark"] =" - ";
+							  	        		}
+				  	        				}
 				  	        		}
-				  	        		if(!!largeLoad[i].techName){
-				  	        			detailsObj["Technician"] =largeLoad[i].techName;
-				  	        		}else{
-				  	        			detailsObj["Technician"] =" - ";
-				  	        		}
-				  	        		if(!!largeLoad[i].fromDateStr){
-				  	        			detailsObj["FromDate"] =largeLoad[i].fromDateStr;
-				  	        		}else{
-				  	        			detailsObj["FromDate"] =" - ";
-				  	        		}
-				  	        		if(!!largeLoad[i].toDateStr){
-				  	        			detailsObj["ToDate"] =largeLoad[i].toDateStr;
-				  	        		}else{
-				  	        			detailsObj["ToDate"] =" - ";
-				  	        		}
+				  	        		
 				  	        		details.push(detailsObj);
 				  	        	  
 		  	        		  }

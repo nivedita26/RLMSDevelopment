@@ -99,12 +99,12 @@ angular.module('theme.demos.dashboard.indi', [
     	        color: 'red'
     	      },
     	      activeLiftStatus: {
-    	        title: 'Active',
+    	        title: 'Under Warranty',
     	        text: '0',
     	        color: 'amber'
     	      },
     	      inactiveLiftStatus: {
-    	        title: 'Expired',
+    	        title: 'Warranty Expired',
     	        text: '0',
     	        color: 'blue'
     	      }
@@ -1179,16 +1179,16 @@ angular.module('theme.demos.dashboard.indi', [
     	              .then(
     	              function (
     	                largeLoad) {
-    	                if (technicianStatus=="Active") {
+    	                 if (technicianStatus=="Active") {
     	                	var totalCount= 0;
     	                	for (var i = 0; i < largeLoad.length; i++) {
     	                		
     	                		if(largeLoad[i].totolActiveTechnician!=null){
     	                			totalCount=totalCount+largeLoad[i].totolActiveTechnician;
     	                			$scope.technicianData.activeTechnicians.text=totalCount;
-    	                		}else{
+    	                		}/*else{
     	                			$scope.technicianData.activeTechnicians.text="0";
-    	                		}
+    	                		}*/
     	                	}
     	                	  	                 
     	                  
@@ -2150,10 +2150,10 @@ angular.module('theme.demos.dashboard.indi', [
       	                  });*/
     	                	for (var i = 0; i < largeLoad.length; i++) {
     	                		
-    	                		if(largeLoad[i].branchInActiveFlagCount!=null){
+    	                		if(largeLoad[i].branchInactiveFlagCount!=null){
     	                			var dataCount={};
     	                			dataCount.branchCity=largeLoad[i].branchCity
-    	                			dataCount.branchCount=largeLoad[i].branchInActiveFlagCount
+    	                			dataCount.branchCount=largeLoad[i].branchInactiveFlagCount
 
     	                			data.push(dataCount);
     	                		}    	                		
@@ -2165,10 +2165,10 @@ angular.module('theme.demos.dashboard.indi', [
       	                  });*/
     	                	for (var i = 0; i < largeLoad.length; i++) {
     	                		
-    	                		if(largeLoad[i].branchActiveFlagCount!=null &&largeLoad[i].branchInActiveFlagCount!=null){
+    	                		if(largeLoad[i].branchActiveFlagCount!=null ||largeLoad[i].branchInactiveFlagCount!=null){
     	                			var dataCount={};
     	                			dataCount.branchCity=largeLoad[i].branchCity
-    	                			dataCount.branchCount=largeLoad[i].branchInActiveFlagCount +largeLoad[i].branchActiveFlagCount 
+    	                			dataCount.branchCount=largeLoad[i].branchInactiveFlagCount +largeLoad[i].branchActiveFlagCount 
 
     	                			data.push(dataCount);
     	                		}
@@ -2179,10 +2179,10 @@ angular.module('theme.demos.dashboard.indi', [
 
     	                			data.push(dataCount);
     	                		}
-    	                		else if(largeLoad[i].branchInActiveFlagCount!=null ){
+    	                		else if(largeLoad[i].branchInactiveFlagCount!=null ){
     	                			var dataCount={};
     	                			dataCount.branchCity=largeLoad[i].branchCity
-    	                			dataCount.branchCount=largeLoad[i].branchInActiveFlagCount
+    	                			dataCount.branchCount=largeLoad[i].branchInactiveFlagCount
 
     	                			data.push(dataCount);
     	                		}
@@ -2248,8 +2248,8 @@ angular.module('theme.demos.dashboard.indi', [
 	                	var totalCount=0;
 	                	
 	                	for (var i = 0; i < largeLoad.length; i++) {
-	                		if(largeLoad[i].branchInActiveFlagCount!=null){
-	                			totalCount=totalCount+largeLoad[i].branchInActiveFlagCount;
+	                		if(largeLoad[i].branchInactiveFlagCount!=null){
+	                			totalCount=totalCount+largeLoad[i].branchInactiveFlagCount;
 	                		}
 	                	}
 	                  $scope.branchDetails.inactiveBranches.text=totalCount;
@@ -2258,11 +2258,11 @@ angular.module('theme.demos.dashboard.indi', [
 	                	var totalCount=0;
 	                	
 	                	for (var i = 0; i < largeLoad.length; i++) {
-	                		if(largeLoad[i].branchInActiveFlagCount!=null && largeLoad[i].branchActiveFlagCount!=null){
-	                			totalCount=totalCount+(largeLoad[i].branchInActiveFlagCount +largeLoad[i].branchActiveFlagCount) ;
+	                		if(largeLoad[i].branchInactiveFlagCount!=null || largeLoad[i].branchActiveFlagCount!=null){
+	                			totalCount=totalCount+(largeLoad[i].branchInactiveFlagCount +largeLoad[i].branchActiveFlagCount) ;
 	                		}
-	                		else if(largeLoad[i].branchInActiveFlagCount!=null){
-	                			totalCount=totalCount+(largeLoad[i].branchInActiveFlagCount) ;
+	                		else if(largeLoad[i].branchInactiveFlagCount!=null){
+	                			totalCount=totalCount+(largeLoad[i].branchInactiveFlagCount) ;
 	                		}
 	                		else if(largeLoad[i].branchActiveFlagCount!=null){
 	                			totalCount=totalCount+(largeLoad[i].branchActiveFlagCount) ;
@@ -2641,6 +2641,7 @@ angular.module('theme.demos.dashboard.indi', [
 	  	                		
 	  	                		if(largeLoad[i].totolEventCount!=null){
 	  	                			var dataCount={};
+	  	                			dataCount.liftNumber=largeLoad[i].liftNumber
 	  	                			dataCount.branchName=largeLoad[i].branchName
 	  	                			dataCount.customerName=largeLoad[i].customerName
 	  	                			dataCount.city=largeLoad[i].city
@@ -2653,6 +2654,7 @@ angular.module('theme.demos.dashboard.indi', [
   	            	  		for (var i = 0; i < largeLoad.length; i++) {
   	            	  			if(largeLoad[i].totalErrorCount!=null){
   	            	  				var dataCount={};
+  	            	  				dataCount.liftNumber=largeLoad[i].liftNumber
   	            	  				dataCount.branchName=largeLoad[i].branchName
   	            	  				dataCount.customerName=largeLoad[i].customerName
   	            	  				dataCount.city=largeLoad[i].city
@@ -2668,6 +2670,7 @@ angular.module('theme.demos.dashboard.indi', [
   	            		  for (var i = 0; i < largeLoad.length; i++) {
   	            			  if(largeLoad[i].totalResCount!=null){
   	            				var dataCount={};
+  	            				dataCount.liftNumber=largeLoad[i].liftNumber
   	            				dataCount.branchName=largeLoad[i].branchName
   	            				dataCount.customerName=largeLoad[i].customerName
   	            				dataCount.city=largeLoad[i].city
@@ -2680,7 +2683,12 @@ angular.module('theme.demos.dashboard.indi', [
       	                  var userDetailsObj = {};
       	                  
         	                    userDetailsObj["No"] = i+1;
-        	                  
+        	                    
+        	                    if (!!data[i].liftNumber) {
+       	                    	   userDetailsObj["LiftNo"] = data[i].liftNumber;
+       	                       } else {
+       	                    	   userDetailsObj["LiftNo"] = " - ";
+       	                       }
       	                       if (!!data[i].branchName) {
       	                    	   userDetailsObj["Branch"] = data[i].branchName;
       	                       } else {

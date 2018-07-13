@@ -92,7 +92,7 @@
 	  	        	  var details=[];
 	  	        	  for(var i=0;i<largeLoad.length;i++){
 	  	        		var detailsObj={};
-	  	        		if(!!largeLoad[i].firstName){
+	  	        		if(!!largeLoad[i].customerName){
 	  	        			detailsObj["firstName"] =largeLoad[i].customerName;
 	  	        		}else{
 	  	        			detailsObj["firstName"] =" - ";
@@ -126,6 +126,11 @@
 	  	        			detailsObj["amcStartDate"] =largeLoad[i].amcStartDate;
 	  	        		}else{
 	  	        			detailsObj["amcStartDate"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].amcEndDate){
+	  	        			detailsObj["amcEndDate"] =largeLoad[i].amcEndDate;
+	  	        		}else{
+	  	        			detailsObj["amcEndDate"] =" - ";
 	  	        		}
 	  	        		if(!!largeLoad[i].dueDate){
 	  	        			detailsObj["dueDate"] =largeLoad[i].dueDate;

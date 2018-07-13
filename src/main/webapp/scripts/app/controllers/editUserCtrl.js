@@ -9,8 +9,8 @@
 		$scope.backPage = function(){
 			$window.history.back();
 		}
-		$scope.alert = { type: 'success', msg: 'You successfully Added new user.',close:true };
-		$scope.showAlert = false;
+		//$scope.alert = { type: 'success', msg: 'You successfully edited user.',close:true };
+		//$scope.showAlert = false;
 		function initAddUser(){
 			$scope.selectedCompany = {};
 			$scope.addUser={

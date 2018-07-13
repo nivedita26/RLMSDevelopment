@@ -9,6 +9,7 @@
 		loadCompanyData();
 		$scope.selectedCompany={};
 		$scope.selectedActiveFlag = {};
+		$scope.selectedStatus = {};
 		$scope.showCompany = false;
 		
 		function loadCompanyData(){
@@ -18,7 +19,9 @@
 		    });
 		}
 		$rootScope.editBranch={};
-		//$rootScope.activeFlag=[{id:1,name:'Active'},{id:0,name:'Inactive'}];
+	//	$rootScope.status={};
+	//	$rootScope.status.statusId="1";
+		//$rootScope.status.activeFlags=[{id:1,name:'Active'},{id:0,name:'Inactive'}];
 		$scope.editBranchDetails=function(row){
 			$rootScope.editBranch.branchId=row.Branch_Id;
 			$rootScope.editBranch.branchName=row.Branch_Name;
@@ -26,7 +29,8 @@
 			$rootScope.editBranch.area=row.Area;
 			$rootScope.editBranch.city=row.City;
 			$rootScope.editBranch.pinCode=row.PinCode;
-			$rootScope.editBranch.status=row.Status;
+			//$rootScope.editBranch.activeFlag=row.Status;
+			$rootScope.editBranch.activeFlag=row.Active_Flag;
 			//$rootScope.selectedActiveFlag=row.Status;
 			window.location.hash = "#/edit-branch";
 		};
@@ -90,7 +94,7 @@
 	  	        		brachDetailsObj["Number_Of_Lifts"] =largeLoad[i].numberOfLifts;
 	  	        		brachDetailsObj["PinCode"] =largeLoad[i].pinCode;
 	  	        		brachDetailsObj["Area"] =largeLoad[i].area;
-	  	        		brachDetailsObj["Status"] =largeLoad[i].activeFlag;
+	  	        		brachDetailsObj["Active_Flag"] =largeLoad[i].activeFlag;
 	  	        		branchDetails.push(brachDetailsObj);
 	  	        	  }
 	  	            data = branchDetails.filter(function(item) {
@@ -123,7 +127,7 @@
 	  	        		brachDetailsObj["Number_Of_Lifts"] =largeLoad[i].numberOfLifts;
 	  	        		brachDetailsObj["PinCode"] =largeLoad[i].pinCode;
 	  	        		brachDetailsObj["Area"] =largeLoad[i].area;
-	  	        		brachDetailsObj["Status"] =largeLoad[i].activeFlag;
+	  	        		brachDetailsObj["Active_Flag"] =largeLoad[i].activeFlag;
 	  	        		branchDetails.push(brachDetailsObj);
 	  	        	  }
 	  	            $scope.setPagingData(branchDetails, page, pageSize);
