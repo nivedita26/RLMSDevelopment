@@ -14,6 +14,7 @@ import com.rlms.constants.CustomerType;
 import com.rlms.constants.RLMSConstants;
 import com.rlms.constants.RlmsErrorType;
 import com.rlms.constants.SpocRoleConstants;
+import com.rlms.constants.Status;
 import com.rlms.contract.CustomerCountDtls;
 import com.rlms.contract.CustomerDtlsDto;
 import com.rlms.contract.LiftDtlsDto;
@@ -630,6 +631,19 @@ public class CustomerServiceImpl implements CustomerService{
 		customerMaster.setUpdatedDate(new Date());
 		this.customerDao.updateCustomer(customerMaster);
 		return statusMessage;
+	}
+
+
+	@Override
+	public String deleteMember(MemberDtlsDto memberDtlsDto, UserMetaInfo metaInfo) throws ValidationException {
+		RlmsMemberMaster memberMaster = this.customerDao.getMemberById(memberDtlsDto.getMemberId()) ;
+		if(memberMaster!=null) {
+			memberMaster.setActiveFlag(RLMSConstants.INACTIVE.getId());
+		}
+		customerDao.deleteMember(memberMaster);
+		
+		return  "Memeber deleted successfully";
+
 	}
 }
 

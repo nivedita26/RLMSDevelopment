@@ -4,7 +4,6 @@ public enum XMPPServerDetails {
 	
 	FCM_PROJECT_SENDER_ID(1, "fcm_project_sender_id"),
 	FCM_SERVER_KEY(2, "fcm_server_key"),
-
 	FCM_API_URL(3, "fcm_api_url"),
 	FCM_USER_APP_AUTH_KEY(4, "fcm_user_app_auth_key"),
 	FCM_TECH_APP_AUTH_KEY(4, "fcm_tech_app_auth_key");

@@ -157,6 +157,7 @@ public class LiftDaoImpl implements LiftDao{
 	}
 	
 	@SuppressWarnings("unchecked")
+	@Transactional 
 	public List<RlmsLiftCustomerMap> getAllLiftsForCustomres(List<Integer> branchCustoMapId){		
 			 Session session = this.sessionFactory.getCurrentSession();
 			 Criteria criteria = session.createCriteria(RlmsLiftCustomerMap.class);				 

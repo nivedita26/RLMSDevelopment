@@ -24,7 +24,10 @@ public interface CustomerService {
 	
 	public String validateAndRegisterNewMember(MemberDtlsDto memberDtlsDto, UserMetaInfo metaInfo) throws ValidationException;
 	public String validateAndUpdateNewMember(MemberDtlsDto memberDtlsDto, UserMetaInfo metaInfo) throws ValidationException;
+	public String  deleteMember(MemberDtlsDto memberDtlsDto, UserMetaInfo metaInfo) throws ValidationException;
 
+	
+	
 	public List<MemberDtlsDto> getListOfAllMemberDtls(MemberDtlsDto memberDtlsDto);
 	public UserAppDtls getUserAppDtls(Integer userId, Integer userType);
 	public List<RlmsCustomerMemberMap> getAllMembersForCustomer(

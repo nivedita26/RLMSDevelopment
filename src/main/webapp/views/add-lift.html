@@ -304,11 +304,11 @@
 			<div class="col-sm-6"><input type="checkbox"  ng-model="lmsAvailable" class="js-switch" ui-switch="{color: '#4697ce', secondaryColor: '#c5cbd1'}" /></div>
 		</div>
 		<div class="form-group">
-			<label for="imei" class="col-md-3 control-label" ng-show="showIMEI" >IMEI Number</label>
+			<label for="imei" class="col-md-3 control-label"  >IMEI Number</label>
 			<div class="col-md-6" ng-show="showIMEI"><input ng-model="addLift.imei" class="form-control" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : this.value.length<15" type="number" name="imei" required></div>
 		</div>
 		<div class="form-group">
-			<label for="lmsEventFromContactNo" class="col-md-3 control-label" ng-show="showLmsCnt">LMS Contact Number</label>
+			<label for="lmsEventFromContactNo" class="col-md-3 control-label" >LMS Contact Number</label>
 			<div class="col-md-6" ng-show="showLmsCnt"><input ng-model="addLift.lmsEventFromContactNo" class="form-control" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : this.value.length<10" type="number" name="lmsEventFromContactNo" required></div>
 		</div>
 		

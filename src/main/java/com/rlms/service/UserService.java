@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.rlms.contract.AddNewUserDto;
 import com.rlms.contract.RegisterDto;
+import com.rlms.contract.ResponseDto;
 import com.rlms.contract.UserDtlsDto;
 import com.rlms.contract.UserMetaInfo;
 import com.rlms.contract.UserRoleDtlsDTO;
@@ -68,7 +69,7 @@ public interface UserService {
 	
 	public UserDtlsDto getTechnicianRoleObjByUserNameAndPassword(UserDtlsDto dtlsDto, UserMetaInfo metaInfo) throws ValidationException;
 	
-	public String logout(UserDtlsDto userDto);
+	public ResponseDto logout(UserDtlsDto userDto);
 
 	
 }

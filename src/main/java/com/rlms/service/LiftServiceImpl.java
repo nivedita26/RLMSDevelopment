@@ -22,6 +22,7 @@ import com.rlms.constants.SpocRoleConstants;
 import com.rlms.constants.Status;
 import com.rlms.contract.AMCDetailsDto;
 import com.rlms.contract.CustomerDtlsDto;
+import com.rlms.contract.CustomerLiftDtls;
 import com.rlms.contract.LiftDtlsDto;
 import com.rlms.contract.ResponseDto;
 import com.rlms.contract.UserDtlsDto;
@@ -304,9 +305,11 @@ public class LiftServiceImpl implements LiftService{
 			RlmsLiftAmcDtls amcDtls = liftDao.getRlmsLiftAmcDtlsByLiftCustomerMapId(liftCustomerMap.getLiftCustomerMapId());
 			LiftDtlsDto dto = new LiftDtlsDto();
 			if(amcDtls!=null) {
+				if(amcDtls.getAmcStartDate()!=null && amcDtls.getAmcEndDate()!=null) {
 				dto.setAmcStartDateStr(DateUtils.convertDateToStringWithoutTime(amcDtls.getAmcStartDate()));
 				dto.setAmcEndDateStr(DateUtils.convertDateToStringWithoutTime(amcDtls.getAmcEndDate()));
 				dto.setAmcType(liftM.getAmcType());
+				}
 				if(amcDtls.getAmcType()!=null){
 					if (AMCType.COMPREHENSIVE.getId() == amcDtls.getAmcType()) {
 						dto.setAmcTypeStr(AMCType.COMPREHENSIVE.getType());
@@ -788,10 +791,10 @@ public class LiftServiceImpl implements LiftService{
 				}
 		}
 	@Override
-	public List<LiftDtlsDto> getLiftDetailsList(UserDtlsDto dtlsDto) {
+	public List<CustomerLiftDtls> getLiftDetailsList(UserDtlsDto dtlsDto) {
       List<Integer> branchCompanyMapId= new ArrayList<>();
       List<Integer> branchCustomerMapIDs = new ArrayList<>();
-      List<LiftDtlsDto> liftDtlsDtoList = new ArrayList<>();
+      List<CustomerLiftDtls> liftDtlsDtoList = new ArrayList<>();
 		RlmsUserRoles  rlmsUserRoles = userRoleDao.getUserRoleByUserId(dtlsDto.getUserId());
 		if(rlmsUserRoles!=null) {
 			branchCompanyMapId.add(rlmsUserRoles.getRlmsCompanyBranchMapDtls().getCompanyBranchMapId());
@@ -803,10 +806,11 @@ public class LiftServiceImpl implements LiftService{
 				List<RlmsLiftCustomerMap> rlmsLiftCustomerMapsList =  liftDao.getAllLiftsForCustomres(branchCustomerMapIDs);
 				if(rlmsLiftCustomerMapsList !=null && !rlmsLiftCustomerMapsList.isEmpty()) {
 					for (RlmsLiftCustomerMap rlmsLiftCustomerMap : rlmsLiftCustomerMapsList) {
-						LiftDtlsDto liftDtlsDto = new LiftDtlsDto();
-						liftDtlsDto.setLiftNumber(rlmsLiftCustomerMap.getLiftMaster().getLiftNumber());
-						liftDtlsDto.setLiftCustomerMapId(rlmsLiftCustomerMap.getLiftCustomerMapId());
-						liftDtlsDtoList.add(liftDtlsDto);
+						CustomerLiftDtls  CustomerLiftDtlsDto = new CustomerLiftDtls();
+						CustomerLiftDtlsDto.setLiftNumber(rlmsLiftCustomerMap.getLiftMaster().getLiftNumber());
+						CustomerLiftDtlsDto.setLiftCustomerMapId(rlmsLiftCustomerMap.getLiftCustomerMapId());
+						CustomerLiftDtlsDto.setCustomerName(rlmsLiftCustomerMap.getBranchCustomerMap().getCustomerMaster().getCustomerName());
+						liftDtlsDtoList.add(CustomerLiftDtlsDto);
 					}
 				}
 			}

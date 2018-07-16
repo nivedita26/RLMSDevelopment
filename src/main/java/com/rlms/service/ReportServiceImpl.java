@@ -615,14 +615,23 @@ public class ReportServiceImpl implements ReportService {
                  	complaintsDto.setResolvedDateStr(DateUtils.convertDateToStringWithTime(rlmsComplaintMaster.getUpdatedDate()));
                  	int totalDays =  DateUtils.daysBetween(complaintTechMapDtls.getAssignedDate(),complaintTechMapDtls.getUpdatedDate());
                 	complaintsDto.setTotalDaysRequiredToResolveComplaint(totalDays);
+                	  List<RlmsSiteVisitDtls> listOfAllVisits = this.complaintsDao.getAllVisitsForComnplaints(complaintTechMapDtls.getComplaintTechMapId());
+                  	  if(listOfAllVisits!=null && !listOfAllVisits.isEmpty()) {
+                  		complaintsDto.setTotalAttempts(listOfAllVisits.size());
+                  	  }
+                  	  complaintsDto.setLastVisitedDate(complaintTechMapDtls.getUpdatedDate());
                 }
                 	complaintsDto.setToDateStr(DateUtils.convertDateToStringWithTime(complaintTechMapDtls.getUpdatedDate()));
     	            complaintsDto.setFromDateStr(DateUtils.convertDateToStringWithTime(complaintTechMapDtls.getAssignedDate()));
        
     	           	complaintsDto.setTechnicianDtls(complaintTechMapDtls.getUserRoles().getRlmsUserMaster().getFirstName()+" "+complaintTechMapDtls.getUserRoles().getRlmsUserMaster().getLastName());
     	           	complaintsDto.setRemark(rlmsComplaintMaster.getRemark());
+    	           	
+    	           	///////
+    	       //     SiteVisitReportDto complaintwiseSiteVisitReport = new SiteVisitReportDto();
+              	//  List<SiteVisitDtlsDto> listOfAllVisists = new ArrayList<SiteVisitDtlsDto>();
+              	
             }
-            
             if(rlmsUserRoles.getRlmsSpocRoleMaster().getSpocRoleId()==SpocRoleConstants.END_USER.getSpocRoleId()){
                 complaintsDto.setRegisteredBy(rlmsUserRoles.getRlmsUserMaster().getFirstName()+""+rlmsUserRoles.getRlmsUserMaster().getLastName()+" "+"("+"USER"+")");
             }

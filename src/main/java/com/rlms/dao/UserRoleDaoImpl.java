@@ -40,6 +40,7 @@ UserRoleDao{
 		 return (RlmsUserRoles)criteria.uniqueResult();
 	}
 	
+	@Transactional 
 	public RlmsUserRoles getUserRoleByUserId(Integer userID){
 		 Session session = this.sessionFactory.getCurrentSession();
 		 Criteria criteria = session.createCriteria(RlmsUserRoles.class)
@@ -219,7 +220,7 @@ UserRoleDao{
 		 Criteria criteria = session.createCriteria(RlmsUserRoles.class)
 				 .createAlias("rlmsUserMaster", "um")
 		 		 .createAlias("rlmsSpocRoleMaster", "sm")
-				 .add(Restrictions.eq("um.userName", dtlsDto.getUserName()))
+				 .add(Restrictions.eq("um.username", dtlsDto.getUserName()))
 				 .add(Restrictions.eq("um.password", dtlsDto.getPassword()))
 		 	     .add(Restrictions.eq("sm.spocRoleId", roleId))
 		 	     .add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));

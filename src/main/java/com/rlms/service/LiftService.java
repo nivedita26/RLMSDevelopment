@@ -3,6 +3,7 @@ package com.rlms.service;
 import java.text.ParseException;
 import java.util.List;
 import com.rlms.contract.CustomerDtlsDto;
+import com.rlms.contract.CustomerLiftDtls;
 import com.rlms.contract.LiftDtlsDto;
 import com.rlms.contract.ResponseDto;
 import com.rlms.contract.UserDtlsDto;
@@ -38,6 +39,6 @@ public interface LiftService {
 
 	public void updateLiftParams(RlmsLiftMaster liftMaster);
 	
-	public List<LiftDtlsDto> getLiftDetailsList(UserDtlsDto dtlsDto);
+	public List<CustomerLiftDtls> getLiftDetailsList(UserDtlsDto dtlsDto);
 
 }

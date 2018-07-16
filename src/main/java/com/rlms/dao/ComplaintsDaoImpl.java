@@ -2,11 +2,11 @@ package com.rlms.dao;
 
 import java.util.Date;
 import java.util.List;
-
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -104,6 +104,11 @@ public class ComplaintsDaoImpl implements ComplaintsDao{
 					 criteria.add(Restrictions.eq("callType", callType));
 				 }
 				 criteria.add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
+				// criteria.add(Order.("registrationDate"));
+				 
+				 criteria.addOrder(Order.desc("registrationDate"));
+				 
+				 
 		 List<RlmsComplaintMaster> listOfAllcomplaints = criteria.list();
 		 return listOfAllcomplaints;
 	}
@@ -192,6 +197,10 @@ public class ComplaintsDaoImpl implements ComplaintsDao{
 				 criteria.add(Restrictions.eq("ccm.callType", 1));
 				 
 				 criteria.add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
+				 
+				 criteria.addOrder(Order.desc("ccm.complaintId"));
+
+				 
 		 List<RlmsComplaintTechMapDtls> listOfAllcomplaints = criteria.list();
 		 return listOfAllcomplaints;
 	}
@@ -200,7 +209,8 @@ public class ComplaintsDaoImpl implements ComplaintsDao{
 		 Session session = this.sessionFactory.getCurrentSession();
 		 Criteria criteria = session.createCriteria(RlmsSiteVisitDtls.class)
 				 .add(Restrictions.eq("complaintTechMapDtls.complaintTechMapId", complaintTechMapId));
-		 List<RlmsSiteVisitDtls> listOFAllVisits =  criteria.list();
+			   	 criteria.addOrder(Order.desc("updatedDate"));
+			   	 List<RlmsSiteVisitDtls> listOFAllVisits =  criteria.list();
 		 return listOFAllVisits;
 	}
 	@SuppressWarnings("unchecked")
@@ -263,6 +273,9 @@ public class ComplaintsDaoImpl implements ComplaintsDao{
 		if(dto.getToDate()!=null && dto.getFromDate()!=null) {
 			criteria.add(Restrictions.between("registrationDate", dto.getToDate(),dto.getFromDate()));
 		}
+		
+		 criteria.addOrder(Order.desc("registrationDate"));
+
 		 List<RlmsComplaintMaster> complaintList= criteria.list();
 	     return complaintList;
 	}

@@ -17,6 +17,7 @@ public interface CustomerDao {
 	public RlmsMemberMaster getMemberByCntNo(String phoneNumber);
 	public Integer saveMemberM(RlmsMemberMaster memberMaster);
 	public void updateMember(RlmsMemberMaster memberMaster);
+	public void deleteMember(RlmsMemberMaster memberMaster);
 
 	public RlmsCustomerMaster getCustomerById(Integer customerId);
 	public Integer saveCustomerMemberMap(RlmsCustomerMemberMap customerMemberMap);

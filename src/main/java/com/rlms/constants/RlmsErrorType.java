@@ -49,7 +49,7 @@ public enum RlmsErrorType {
 	TECHNICIAN_LOCATION_UPDATED(46,"location_updated"),
 	INVALID_USER_LOGIN_CREDENTIALS(47,"invalid_user_login_credentials"),
 	USER_ALREADY_LOGGED_IN(48,"user_already_loggedin "),
-	USER_LOGOUT(49,"user_logout_successfully"),
+	USER_LOGOUT(49,"user_logout"),
 	USER_DELETED(50,"user_deleted_successfully"),
 	USER_PASSWORD_CHANGED(51,"user_password_changed_successfully");
 	private Integer code;

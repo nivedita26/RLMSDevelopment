@@ -24,6 +24,7 @@ import com.rlms.constants.Status;
 import com.rlms.contract.AddNewUserDto;
 import com.rlms.contract.CompanyDtlsDTO;
 import com.rlms.contract.RegisterDto;
+import com.rlms.contract.ResponseDto;
 import com.rlms.contract.UserAppDtls;
 import com.rlms.contract.UserDtlsDto;
 import com.rlms.contract.UserMetaInfo;
@@ -593,11 +594,6 @@ public class UserServiceImpl implements UserService {
 				this.sendNotificationsAboutUserDeactivation(rlmsUserRoles);
 			}
 		}
-		
-		
-		
-		
-		
 		return statusMesage;
 	}
 	
@@ -631,51 +627,64 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserDtlsDto getTechnicianRoleObjByUserNameAndPassword(UserDtlsDto dtlsDto, UserMetaInfo metaInfo) throws ValidationException {
 		RlmsUserRoles userRole = this.userRoleDao.getTechnicianRoleObjByUserNameAndPassword(dtlsDto,	SpocRoleConstants.TECHNICIAN.getSpocRoleId());
+	    UserDtlsDto dto = new UserDtlsDto();	
 		if (null == userRole) {
-			throw new ValidationException(
+			dto.setMsg("invalid user login credentials");
+		    return dto;
+		/*	throw new ValidationException(
 					ExceptionCode.VALIDATION_EXCEPTION.getExceptionCode(),
-					PropertyUtils
+				PropertyUtils
 							.getPrpertyFromContext(RlmsErrorType.INVALID_USER_LOGIN_CREDENTIALS
-									.getMessage()));
+									.getMessage()));*/
 		}
 		else {
 			if(userRole.getRlmsUserMaster().getIsLoggedIn()) {
-				throw new ValidationException(
+		/*	throw new ValidationException(
 				ExceptionCode.VALIDATION_EXCEPTION.getExceptionCode(),
 				PropertyUtils
 						.getPrpertyFromContext(RlmsErrorType.USER_ALREADY_LOGGED_IN
-								.getMessage()));
+								.getMessage()));*/
+				
+				dto.setMsg("user already loggedin");
+				return dto;
 			}
 		}
 		this.registerUserDevice(dtlsDto, userRole, metaInfo);
 		return this.constructMemberDltsSto(userRole);
 	}
 	@Override
-	public String logout(UserDtlsDto userDto) {
+	public ResponseDto  logout(UserDtlsDto userDto) {
 		RlmsUsersMaster rlmsUsersMaster = userMasterDao.getUserByUserIdAndPassword(userDto);
-		if(rlmsUsersMaster!=null) {
+		ResponseDto responseDto = new ResponseDto();
+		if(rlmsUsersMaster!=null && rlmsUsersMaster.getIsLoggedIn()) {
 		rlmsUsersMaster.setIsLoggedIn(false);
 		userMasterDao.updateUser(rlmsUsersMaster);
+		responseDto.setStatus(true);
+		responseDto.setResponse(PropertyUtils.getPrpertyFromContext(RlmsErrorType.USER_LOGOUT.getMessage()));
+		return responseDto;
 		}
-		return PropertyUtils.getPrpertyFromContext(RlmsErrorType.USER_LOGOUT
-				.getMessage());
+		else if(rlmsUsersMaster!=null && !rlmsUsersMaster.getIsLoggedIn()) {
+			responseDto.setStatus(false);
+			responseDto.setResponse("user already logout");
+			return responseDto;
+		}
+		else {
+			responseDto.setStatus(false);
+			responseDto.setResponse("user is not found");
+		}
+		return responseDto;
 	}
-	
-
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void sendNotificationsAboutUserDeactivation(RlmsUserRoles  rlmsUserRoles){
 		 JSONObject  dataPayload = new JSONObject();
 		try {
-			dataPayload.put("title", PropertyUtils.getPrpertyFromContext(RLMSMessages.USER_DEACTIVATED.getMessage()) + " - " + "This RLMS technecian deactivated from service");
+			dataPayload.put("title",  rlmsUserRoles.getRlmsUserMaster().getFirstName()+" "+rlmsUserRoles.getRlmsUserMaster().getLastName()+" - " + "This RLMS technecian deactivated from service");
 			dataPayload.put("body", "Your RLMS account is deacivated"
 					+ ""
 					+ "");
 		} catch (JSONException e1) {
 			e1.printStackTrace();
 		}
-		//List<UserAppDtls> listOfUsers = this.getRegIdsOfAllApplicableUsers(rlmsUserRoles.getLiftCustomerMap().getLiftCustomerMapId());
-		//if(listOfUsers !=null && !listOfUsers.isEmpty()) {
-		//	for (UserAppDtls userAppDtls : listOfUsers) {
 		RlmsUserApplicationMapDtls rlmsUserApplicationMapDtls =  customerDao.getUserAppDtls(rlmsUserRoles.getUserRoleId(), RLMSConstants.USER_ROLE_TYPE.getId());
 		if(rlmsUserApplicationMapDtls!=null) {
 				try{

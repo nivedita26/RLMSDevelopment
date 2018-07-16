@@ -381,6 +381,20 @@ public class AdminController extends BaseController{
 	        }
 	        return reponseDto;
 	 }
+	 
+	 @RequestMapping(value = "/deleteMember", method = RequestMethod.POST)
+	 public @ResponseBody ResponseDto deleteMember(@RequestBody MemberDtlsDto memberDtlsDto) throws RunTimeException{
+		 ResponseDto reponseDto = new ResponseDto();
+	        try{
+	        	logger.info("Method :: validateAndUpdateNewMember");
+	          	reponseDto.setResponse(this.customerService.deleteMember(memberDtlsDto,this.getMetaInfo()));
+	        }
+	        catch(Exception e){
+	        	logger.error(ExceptionUtils.getFullStackTrace(e));
+	        	throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
+	        }
+	        return reponseDto;
+	 }
 	 @RequestMapping(value = "/getListOfAllMemberDtls", method = RequestMethod.POST)
 	 public @ResponseBody List<MemberDtlsDto> getListOfAllMemberDtls(@RequestBody MemberDtlsDto memberDtlsDto) throws RunTimeException{
 		 List<MemberDtlsDto> listOFMembers = new ArrayList<MemberDtlsDto>();

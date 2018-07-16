@@ -21,6 +21,7 @@ import com.rlms.constants.RlmsErrorType;
 import com.rlms.constants.Status;
 import com.rlms.contract.ComplaintsDtlsDto;
 import com.rlms.contract.ComplaintsDto;
+import com.rlms.contract.CustomerLiftDtls;
 import com.rlms.contract.LiftDtlsDto;
 import com.rlms.contract.LoginDtlsDto;
 import com.rlms.contract.MemberDtlsDto;
@@ -246,20 +247,29 @@ public class RestControllerController  extends BaseController {
     public @ResponseBody ResponseDto registerTechnicianDeviceByUserNamePassword(@RequestBody UserDtlsDto userDtlsDto) throws ValidationException, RunTimeException{
     	ResponseDto reponseDto = new ResponseDto();
     	ObjectMapper mapper = new ObjectMapper();
-        try{
+       try{
         	log.info("Method :: registerTechnicianDeviceByMblNo");
         	RlmsUserRoles userRoles = this.userService.getUserRoleObjhById(1);
         	UserMetaInfo metaInfo = new UserMetaInfo();
         	metaInfo.setUserId(userRoles.getRlmsUserMaster().getUserId());
         	metaInfo.setUserName(userRoles.getRlmsUserMaster().getFirstName());
         	metaInfo.setUserRole(userRoles);
-        	reponseDto.setResponse(mapper.writeValueAsString(this.userService.getTechnicianRoleObjByUserNameAndPassword(userDtlsDto, metaInfo)));
+        	
+        	UserDtlsDto dtlsDto=this.userService.getTechnicianRoleObjByUserNameAndPassword(userDtlsDto, metaInfo);
+        	
+        	if(dtlsDto.getMsg()==null) {
+        	reponseDto.setResponse(mapper.writeValueAsString(dtlsDto));
         	reponseDto.setStatus(true);
+        	}
+        	else {
+        		reponseDto.setStatus(false);
+            	reponseDto.setResponse(dtlsDto.getMsg());
+        	}
         	
         }catch(ValidationException vex){
-        	log.error(ExceptionUtils.getFullStackTrace(vex));
-        	reponseDto.setStatus(false);
-        	reponseDto.setResponse(vex.getExceptionMessage());
+      	log.error(ExceptionUtils.getFullStackTrace(vex));
+       	reponseDto.setStatus(false);
+      	reponseDto.setResponse(vex.getExceptionMessage());
         }
         catch(Exception e){
         	reponseDto.setStatus(false);
@@ -362,7 +372,6 @@ public class RestControllerController  extends BaseController {
         	log.error(ExceptionUtils.getFullStackTrace(e));
         	reponseDto.setStatus(false);
         	reponseDto.setResponse(PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
-        
         }
     	return reponseDto;
     }
@@ -414,11 +423,8 @@ public class RestControllerController  extends BaseController {
     		 log.error("some Unknown exception occurs.");
     		 dto.setResponse(PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
     	 }
-    	 
     	 return dto;
-        
     }
-    
     @RequestMapping(value = "/lift/getLiftParameters", method = RequestMethod.POST)
     public @ResponseBody ResponseDto getLiftParameters(@RequestBody LiftDtlsDto dto) throws RunTimeException, ValidationException {
 		List<LiftDtlsDto> listOfLiftdtls = null;
@@ -466,13 +472,13 @@ public class RestControllerController  extends BaseController {
 	 
     	return  rlmsLiftEventService.addEvent(msgFrom,msg);     
     }
-    @RequestMapping(value = "/logout", method = RequestMethod.GET)
-    public String logout(@RequestBody UserDtlsDto userDtlsDto) {
+    @RequestMapping(value = "/logout", method = RequestMethod.POST)
+    public @ResponseBody ResponseDto logout(@RequestBody UserDtlsDto userDtlsDto) {
 	
 		return  userService.logout(userDtlsDto);
     }
     @RequestMapping(value="/getCustomerListForTechnician", method = RequestMethod.POST)
-    public List<LiftDtlsDto> getCustomerListForTechnician(@RequestBody UserDtlsDto dtlsDto){
+    public List<CustomerLiftDtls> getCustomerListForTechnician(@RequestBody UserDtlsDto dtlsDto){
     	
     	return   liftService.getLiftDetailsList(dtlsDto);
     }
