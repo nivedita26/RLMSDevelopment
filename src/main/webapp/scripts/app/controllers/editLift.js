@@ -433,6 +433,7 @@
 					accessControl :$scope.editLift.accessControl,
 					imei :$scope.editLift.imei,
 					lmsEventFromContactNo:$scope.editLift.lmsEventFromContactNo,
+					 amcType:$scope.selectedAmcType,
 					
 					machinePhoto : '',
 					panelPhoto : '',

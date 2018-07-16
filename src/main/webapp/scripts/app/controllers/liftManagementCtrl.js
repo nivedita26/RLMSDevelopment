@@ -139,10 +139,20 @@
 	  	        		}else{
 	  	        			userDetailsObj["Amc_End_Date"] =" - ";
 	  	        		}
-	  	        		if(!!largeLoad[i].dateOfInstallationStr){
+	  	        		if(!!largeLoad[i].amcTypeStr){
 	  	        			userDetailsObj["amcType"] =largeLoad[i].amcTypeStr;
 	  	        		}else{
 	  	        			userDetailsObj["amcType"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].liftId){
+	  	        			userDetailsObj["liftId"] =largeLoad[i].liftId;
+	  	        		}else{
+	  	        			userDetailsObj["liftId"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].liftType){
+	  	        			userDetailsObj["LiftType"] =largeLoad[i].liftType;
+	  	        		}else{
+	  	        			userDetailsObj["LiftType"] =" - ";
 	  	        		}
 	  	        		userDetails.push(userDetailsObj);
 	  	        	  }
@@ -171,6 +181,11 @@
 	  	        			userDetailsObj["Lift_Number"] =largeLoad[i].liftNumber;
 	  	        		}else{
 	  	        			userDetailsObj["Lift_Number"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].liftId){
+	  	        			userDetailsObj["liftId"] =largeLoad[i].liftId;
+	  	        		}else{
+	  	        			userDetailsObj["liftId"] =" - ";
 	  	        		}
 	  	        		if(!!largeLoad[i].customerName){
 	  	        			userDetailsObj["Customer_Name"] =largeLoad[i].customerName;
@@ -232,11 +247,6 @@
 	  	        		}else{
 	  	        			userDetailsObj["LiftType"] =" - ";
 	  	        		}
-	  	        		if(!!largeLoad[i].noOfStops){
-	  	        			userDetailsObj["NoOfStops"] =largeLoad[i].noOfStops;
-	  	        		}else{
-	  	        			userDetailsObj["NoOfStops"] =" - ";
-	  	        		}
 	  	        		if(!!largeLoad[i].pinCode){
 	  	        			userDetailsObj["PinCode"] =largeLoad[i].pinCode;
 	  	        		}else{
@@ -247,25 +257,30 @@
 	  	        		}else{
 	  	        			userDetailsObj["Latitude"] =" - ";
 	  	        		}
-	  	        		if(!!largeLoad[i].machineMake){
-	  	        			userDetailsObj["MachineMake"] =largeLoad[i].machineMake;
-	  	        		}else{
-	  	        			userDetailsObj["MachineMake"] =" - ";
-	  	        		}
 	  	        		if(!!largeLoad[i].longitude){
 	  	        			userDetailsObj["Longitude"] =largeLoad[i].longitude;
 	  	        		}else{
 	  	        			userDetailsObj["Longitude"] =" - ";
 	  	        		}
-	  	        		if(!!largeLoad[i].liftId){
-	  	        			userDetailsObj["liftId"] =largeLoad[i].liftId;
-	  	        		}else{
-	  	        			userDetailsObj["liftId"] =" - ";
-	  	        		}
 	  	        		if(!!largeLoad[i].area){
 	  	        			userDetailsObj["Area"] =largeLoad[i].area;
 	  	        		}else{
 	  	        			userDetailsObj["Area"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].noOfStops){
+	  	        			userDetailsObj["NoOfStops"] =largeLoad[i].noOfStops;
+	  	        		}else{
+	  	        			userDetailsObj["NoOfStops"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].machineMake){
+	  	        			userDetailsObj["MachineMake"] =largeLoad[i].machineMake;
+	  	        		}else{
+	  	        			userDetailsObj["MachineMake"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].machineCapacity){
+	  	        			userDetailsObj["machineCapacity"] =largeLoad[i].machineCapacity;
+	  	        		}else{
+	  	        			userDetailsObj["machineCapacity"] =" - ";
 	  	        		}
 	  	        		if(!!largeLoad[i].machineCurrent){
 	  	        			userDetailsObj["MachineCurrent"] =largeLoad[i].machineCurrent;
@@ -282,7 +297,71 @@
 	  	        		}else{
 	  	        			userDetailsObj["PanelMake"] =" - ";
 	  	        		}
-	  	        		
+	  	        		if(!!largeLoad[i].ard){
+	  	        			userDetailsObj["ard"] =largeLoad[i].ard;
+	  	        		}else{
+	  	        			userDetailsObj["ard"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].noOfBatteries){
+	  	        			userDetailsObj["noOfBatteries"] =largeLoad[i].noOfBatteries;
+	  	        		}else{
+	  	        			userDetailsObj["noOfBatteries"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].batteryCapacity){
+	  	        			userDetailsObj["batteryCapacity"] =largeLoad[i].batteryCapacity;
+	  	        		}else{
+	  	        			userDetailsObj["batteryCapacity"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].batteryMake){
+	  	        			userDetailsObj["batteryMake"] =largeLoad[i].batteryMake;
+	  	        		}else{
+	  	        			userDetailsObj["batteryMake"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].copMake){
+	  	        			userDetailsObj["copMake"] =largeLoad[i].copMake;
+	  	        		}else{
+	  	        			userDetailsObj["copMake"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].lopMake){
+	  	        			userDetailsObj["lopMake"] =largeLoad[i].lopMake;
+	  	        		}else{
+	  	        			userDetailsObj["lopMake"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].alarmBattery){
+	  	        			userDetailsObj["alarmBattery"] =largeLoad[i].alarmBattery;
+	  	        		}else{
+	  	        			userDetailsObj["alarmBattery"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].accessControl){
+	  	        			userDetailsObj["accessControl"] =largeLoad[i].accessControl;
+	  	        		}else{
+	  	        			userDetailsObj["accessControl"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].imei){
+	  	        			userDetailsObj["imei"] =largeLoad[i].imei;
+	  	        		}else{
+	  	        			userDetailsObj["imei"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].lmsEventFromContactNo){
+	  	        			userDetailsObj["lmsEventFromContactNo"] =largeLoad[i].lmsEventFromContactNo;
+	  	        		}else{
+	  	        			userDetailsObj["lmsEventFromContactNo"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].autoDoorMake){
+	  	        			userDetailsObj["autoDoorMake"] =totalLiftCountForCustomer[i].autoDoorMake;
+	  	        		}else{
+	  	        			userDetailsObj["autoDoorMake"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].fireMode){
+	  	        			userDetailsObj["fireMode"] =totalLiftCountForCustomer[i].fireMode;
+	  	        		}else{
+	  	        			userDetailsObj["fireMode"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].intercomm){
+	  	        			userDetailsObj["intercomm"] =totalLiftCountForCustomer[i].intercomm;
+	  	        		}else{
+	  	        			userDetailsObj["intercomm"] =" - ";
+	  	        		}
 	  	        		userDetails.push(userDetailsObj);
 	  	        	  }
 	  	            $scope.setPagingData(userDetails, page, pageSize);
@@ -413,6 +492,7 @@
 					
 						//$scope.selectedDoorType.id= $scope.editLift.doorType; 
 						//$scope.selectedDoorType.selected =$scope.editLift.doorType;
+						$rootScope.amcTypeArray=['Comprehensive','Non-Comprehensive','On Demand','Other'];
 						$rootScope.editLift.liftId=row.liftId;
 						$rootScope.editLift.address=row.Address.replace(/-/g, '');
 						$rootScope.editLift.city=row.City.replace(/-/g, '');
@@ -425,15 +505,17 @@
 						$rootScope.editLift.area=row.Area;
 						$rootScope.editLift.liftNumber=row.Lift_Number;
 						$rootScope.editLift.amcEndDate=row.Amc_End_Date;
+						$rootScope.selectedAmcType=row.amcType;
 						$rootScope.editLift.amcAmount=row.Amc_Amount;
-						$rootScope.editLift.pincode=row.PinCode;						
+						$rootScope.editLift.pinCode=row.PinCode;						
 						$rootScope.editLift.latitude=row.Latitude;
 						$rootScope.editLift.longitude=row.Longitude;
 						$rootScope.editLift.noOfStops=row.NoOfStops;
 						$rootScope.editLift.machineMake=row.MachineMake;
 						$rootScope.editLift.machineCurrent=row.MachineCurrent;
-						$rootScope.editLift.breakVoltage=row.breakVoltage;
-						$rootScope.editLift.panelMake=row.panelMake;
+						$rootScope.editLift.machineCapacity=row.machineCapacity;
+						$rootScope.editLift.breakVoltage=row.BreakVoltage;
+						$rootScope.editLift.panelMake=row.PanelMake;
 						$rootScope.editLift.ard=row.ard;
 						$rootScope.editLift.noOfBatteries=row.noOfBatteries;
 						$rootScope.editLift.batteryCapacity=row.batteryCapacity;
@@ -446,6 +528,8 @@
 						$rootScope.editLift.alarm=row.alarm;
 						$rootScope.editLift.alarmBattery=row.alarmBattery;
 						$rootScope.editLift.accessControl=row.accessControl;
+						$rootScope.editLift.imei=row.imei;
+						$rootScope.editLift.lmsEventFromContactNo=row.lmsEventFromContactNo;
 						
 						$rootScope.editLift.machinePhoto=row.machinePhoto;
 						$rootScope.editLift.panelPhoto=row.panelPhoto;

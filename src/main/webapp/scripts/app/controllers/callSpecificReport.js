@@ -239,18 +239,18 @@ $scope.loadCallID=function(){
 		  	        					detailsObj["Technician"] =" - ";
 		  	        				}
 		  	        				if(largeLoad[i].siteVisitDetailsList.listOFAllVisits){
-		  	        					if(!!largeLoad[i].fromDateDtr){
-		  	        						detailsObj["FromDate"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits.fromDateDtr;
+		  	        					if(!!largeLoad[i].siteVisitDetailsList.listOFAllVisits[i].fromDateDtr){
+		  	        						detailsObj["FromDate"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits[i].fromDateDtr;
 		  	        					}else{
 		  	        						detailsObj["FromDate"] =" - ";
 		  	        					}
-		  	        					if(!!largeLoad[i].toDateStr){
-		  	        						detailsObj["ToDate"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits.toDateStr;
+		  	        					if(!!largeLoad[i].siteVisitDetailsList.listOFAllVisits[i].toDateStr){
+		  	        						detailsObj["ToDate"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits[i].toDateStr;
 		  	        					}else{
 		  	        						detailsObj["ToDate"] =" - ";
 		  	        					}
-		  	        					if(!!largeLoad[i].siteVisitDetailsList.listOFAllVisits.remark){
-					  	        			detailsObj["Remark"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits.remark;
+		  	        					if(!!largeLoad[i].siteVisitDetailsList.listOFAllVisits[i].remark){
+					  	        			detailsObj["Remark"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits[i].remark;
 					  	        		}else{
 					  	        			detailsObj["Remark"] =" - ";
 					  	        		}
@@ -362,22 +362,22 @@ $scope.loadCallID=function(){
 	  	        					detailsObj["Technician"] =" - ";
 	  	        				}
 	  	        				if(largeLoad[i].siteVisitDetailsList.listOFAllVisits){
-	  	        					if(!!largeLoad[i].fromDateDtr){
-	  	        						detailsObj["FromDate"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits.fromDateDtr;
-	  	        					}else{
-	  	        						detailsObj["FromDate"] =" - ";
-	  	        					}
-	  	        					if(!!largeLoad[i].toDateStr){
-	  	        						detailsObj["ToDate"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits.toDateStr;
-	  	        					}else{
-	  	        						detailsObj["ToDate"] =" - ";
-	  	        					}
-	  	        					if(!!largeLoad[i].siteVisitDetailsList.listOFAllVisits.remark){
-				  	        			detailsObj["Remark"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits.remark;
-				  	        		}else{
-				  	        			detailsObj["Remark"] =" - ";
-				  	        		}
-	  	        				}
+	  	        					if(!!largeLoad[i].siteVisitDetailsList.listOFAllVisits[i].fromDateDtr){
+  	        						detailsObj["FromDate"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits[i].fromDateDtr;
+  	        					}else{
+  	        						detailsObj["FromDate"] =" - ";
+  	        					}
+  	        					if(!!largeLoad[i].siteVisitDetailsList.listOFAllVisits[i].toDateStr){
+  	        						detailsObj["ToDate"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits[i].toDateStr;
+  	        					}else{
+  	        						detailsObj["ToDate"] =" - ";
+  	        					}
+  	        					if(!!largeLoad[i].siteVisitDetailsList.listOFAllVisits[i].remark){
+			  	        			detailsObj["Remark"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits[i].remark;
+			  	        		}else{
+			  	        			detailsObj["Remark"] =" - ";
+			  	        		}
+  	        					}
 	  	        		}
 		  	        		details.push(detailsObj);
 		  	        	  }

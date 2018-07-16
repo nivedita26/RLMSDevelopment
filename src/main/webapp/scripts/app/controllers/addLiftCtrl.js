@@ -149,8 +149,8 @@
 		    };
 
 		    $scope.initDate = new Date('2016-15-20');
-		    $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
-		    $scope.format = $scope.formats[0];
+		    $scope.formats = ['dd-MMMM-yyyy', 'yyyy-MM-dd', 'dd.MM.yyyy', 'shortDate'];
+		    $scope.format = $scope.formats[1];
 	    
 	    //Date Picker End
 		    
@@ -228,6 +228,16 @@
 			$scope.selectedCollectiveType={};
 			$scope.selectedSimplexDuplex={};
 			$scope.selectedWiringScheme={};
+			$scope.selectedLmsAvailable={};
+			$scope.lmsAvailable=[
+					{
+						id:0,
+						name:'No'
+					},{
+						id:1,
+						name:'Yes'
+					}];
+			
 			$scope.customerType=[
 					{
 						id:0,
@@ -374,7 +384,7 @@
 					alarm : '',
 					alarmBattery : '',
 					accessControl : '',
-					lmsAvailable:'',
+					//lmsAvailable:'',
 					imei :'',
 					lmsEventFromContactNo:'',
 					
@@ -391,11 +401,19 @@
 			$scope.showWizard = false;
 			
 		}
-		
-		 if($scope.lmsAvailable=="1"){
-			  	$scope.showIMEI=true;
-			  	$scope.showLmsCnt=true;
-		  }
+		$scope.lmsData=function(){
+		if($scope.selectedLmsAvailable.selected){
+			if($scope.selectedLmsAvailable.selected.id =="1"){
+				$scope.showIMEI=true;
+				$scope.showLmsCnt= true;
+			}else{
+				//$scope.addLift.imei=="0";
+				//$scope.addLift.lmsEventFromContactNo=="0";
+				$scope.showIMEI=false;
+				$scope.showLmsCnt= false;
+			}
+		}
+		}
 		$scope.openFlag={
 				serviceStartDate:false,
 				serviceEndDate:false,
@@ -403,6 +421,7 @@
 				amcStartDate :false,
 				amcEndDate:false,
 		}
+		
 		$scope.open = function($event,which) {
 		      $event.preventDefault();
 		      $event.stopPropagation();
@@ -418,9 +437,10 @@
 			    	  var serviceStDate=$scope.addLift.serviceStartDate;  	  
 			      }
 		    	var warrantyPeriod=$scope.warrantyPeriod;
-		    	
-		    	var serviceEdDate=serviceStDate.setMonth(serviceStDate.getMonth()+warrantyPeriod);
-		    	var serviceEdDate=serviceStDate.setDate(serviceStDate.getDate()-1);
+		    	var serviceEdDate=new Date();
+		    	serviceEdDate.setMonth(serviceStDate.getMonth()+warrantyPeriod);
+		    	serviceEdDate.setDate(serviceStDate.getDate()-1);
+		    	serviceEdDate=serviceEdDate.toISOString().slice(0, 10);
 		    	$scope.addLift.serviceEndDate=serviceEdDate;
 		    }
 		    
@@ -428,10 +448,10 @@
 		    	if ($scope.addLift.amcStartDate){
 			    	  var amcStDate=$scope.addLift.amcStartDate;  	  
 			      }		    	
-		    	var amcEdDate;
-		    	amcEdDate=amcStDate.setFullYear(amcStDate.getFullYear()+1);
-		    	amcEdDate=amcStDate.setDate(amcStDate.getDate()-1);
-
+		    	var amcEdDate=new Date();
+		    	amcEdDate.setFullYear(amcStDate.getFullYear()+1);
+		    	amcEdDate.setDate(amcStDate.getDate()-1);
+		    	amcEdDate=amcEdDate.toISOString().slice(0, 10);
 		    	$scope.addLift.amcEndDate=amcEdDate;
 		    }
 		    

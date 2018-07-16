@@ -36,7 +36,7 @@
 			$rootScope.editCustomer.emailID=row.Email_Id.replace(/-/g, '');
 			$rootScope.editCustomer.totalNumberOfLifts=row.Lift_Count;
 			$rootScope.editCustomer.chairmanName=row.ChairmanName.replace(/-/g, '');
-			$rootScope.editCustomer.chairmansNumber=row.ChairmanNumber.replace(/-/g, '');
+			$rootScope.editCustomer.chairmanNumber=row.ChairmanNumber.replace(/-/g, '');
 			$rootScope.editCustomer.chairmanEmail=row.ChairmanEmail.replace(/-/g, '');
 			$rootScope.editCustomer.secretaryName=row.SecretaryName.replace(/-/g, '');
 			$rootScope.editCustomer.secretaryNumber=row.SecretaryNumber.replace(/-/g, '');

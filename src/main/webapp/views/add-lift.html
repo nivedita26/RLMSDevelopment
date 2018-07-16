@@ -80,12 +80,12 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="latitude" class="col-md-3 control-label">Latitude</label>
-			<div class="col-md-6"><input ng-model="addLift.latitude" class="form-control"  type="text" name="latitude"></div>
+			<label for="latitude" class="col-md-3 control-label">Latitude<sup class="red font-12">*</sup></label>
+			<div class="col-md-6"><input ng-model="addLift.latitude" class="form-control"  type="text" required name="latitude"></div>
 		</div>
 		<div class="form-group">
-			<label for="longitude" class="col-md-3 control-label">Longitude</label>
-			<div class="col-md-6"><input ng-model="addLift.longitude" class="form-control"  type="text" name="longitude"></div>
+			<label for="longitude" class="col-md-3 control-label">Longitude<sup class="red font-12">*</sup></label>
+			<div class="col-md-6"><input ng-model="addLift.longitude" class="form-control"  type="text" required name="longitude"></div>
 		</div>
 		<div class="form-group">
 			<label for="dateOfInstallation" class="col-md-3 control-label">Date Of Installation <sup class="red font-12">*</sup></label>
@@ -265,7 +265,7 @@
 			<div class="col-md-6"><input ng-model="addLift.autoDoorMake" class="form-control"  type="text" name="autoDoorMake"></div>
 		</div>
 		<div class="form-group">
-			<label for="wiringShceme" class="col-md-3 control-label">Wiring Shceme</label>
+			<label for="wiringShceme" class="col-md-3 control-label">Wiring Scheme</label>
 			<!-- <div class="col-md-6"><input ng-model="addLift.wiringShceme" class="form-control"  type="number" name="wiringShceme"></div> -->
 			<div class="col-sm-6">
 					  <ui-select ng-model="selectedWiringScheme.selected" title="Choose a Wiring Scheme Type">
@@ -300,16 +300,23 @@
 		</div>
 		<div class="form-group">
 			<label for="lmsAvailable" class="col-md-3 control-label">LMS</label>
-			<!-- <div class="col-md-6"><input ng-model="addLift.fireMode" class="form-control"  type="number" name="fireMode"></div> -->
-			<div class="col-sm-6"><input type="checkbox"  ng-model="lmsAvailable" class="js-switch" ui-switch="{color: '#4697ce', secondaryColor: '#c5cbd1'}" /></div>
+			<div class="col-sm-6">
+			 <ui-select ng-model="selectedLmsAvailable.selected"  ng-click="lmsData() " title="Choose a LMS Availability">
+					    <ui-select-match placeholder="Select availability of LMS">{{$select.selected.name}}</ui-select-match> 
+					    <ui-select-choices repeat="iterator in lmsAvailable |filter: $select.search">
+								<span ng-bind-html="iterator.name | highlight: $select.search"></span>
+							</ui-select-choices>
+					  </ui-select>
+					  </div>
+					  </div>
+					  
+		<div class="form-group">
+			<label for="imei" class="col-md-3 control-label" ng-show="showIMEI" >IMEI Number <sup class="red font-12">*</sup></label>
+			<div class="col-md-6" ng-show="showIMEI"><input ng-model="addLift.imei" class="form-control" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : this.value.length<15" type="number" name="imei" ></div>
 		</div>
 		<div class="form-group">
-			<label for="imei" class="col-md-3 control-label"  >IMEI Number</label>
-			<div class="col-md-6" ng-show="showIMEI"><input ng-model="addLift.imei" class="form-control" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : this.value.length<15" type="number" name="imei" required></div>
-		</div>
-		<div class="form-group">
-			<label for="lmsEventFromContactNo" class="col-md-3 control-label" >LMS Contact Number</label>
-			<div class="col-md-6" ng-show="showLmsCnt"><input ng-model="addLift.lmsEventFromContactNo" class="form-control" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : this.value.length<10" type="number" name="lmsEventFromContactNo" required></div>
+			<label for="lmsEventFromContactNo" class="col-md-3 control-label" ng-show="showLmsCnt">LMS Contact Number <sup class="red font-12">*</sup></label>
+			<div class="col-md-6" ng-show="showLmsCnt"><input ng-model="addLift.lmsEventFromContactNo" class="form-control" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : this.value.length<10" type="number" name="lmsEventFromContactNo" ></div>
 		</div>
 		
 	</fieldset>
