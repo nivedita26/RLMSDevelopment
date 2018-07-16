@@ -27,7 +27,6 @@ import com.rlms.contract.ComplaintsDtlsDto;
 import com.rlms.contract.ComplaintsDto;
 import com.rlms.contract.LiftDtlsDto;
 import com.rlms.contract.SiteVisitDtlsDto;
-import com.rlms.contract.SiteVisitReportDto;
 import com.rlms.contract.UserAppDtls;
 import com.rlms.contract.UserDtlsDto;
 //import com.rlms.contract.UserAppDtls;
@@ -36,6 +35,7 @@ import com.rlms.contract.UserRoleDtlsDTO;
 import com.rlms.dao.ComplaintsDao;
 import com.rlms.dao.LiftDao;
 import com.rlms.dao.UserMasterDao;
+import com.rlms.dao.UserRoleDao;
 import com.rlms.exception.ExceptionCode;
 import com.rlms.exception.ValidationException;
 import com.rlms.model.RlmsComplaintMaster;
@@ -44,9 +44,7 @@ import com.rlms.model.RlmsCustomerMemberMap;
 import com.rlms.model.RlmsLiftCustomerMap;
 import com.rlms.model.RlmsMemberMaster;
 import com.rlms.model.RlmsSiteVisitDtls;
-import com.rlms.model.RlmsUserApplicationMapDtls;
 import com.rlms.model.RlmsUserRoles;
-import com.rlms.model.RlmsUsersMaster;
 import com.rlms.utils.DateUtils;
 import com.rlms.utils.PropertyUtils;
 //import com.telesist.xmpp.AndroidNotificationService;
@@ -64,6 +62,9 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 	
 	@Autowired
 	private  UserMasterDao userMasterDao;
+	
+	@Autowired
+	private  UserRoleDao userRoleDao;
 	
 	@Autowired
 	private UserService userService;
@@ -172,7 +173,10 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 		return complaintMaster;
 	}
 	private ComplaintsDto constructComplaintDto(RlmsComplaintMaster complaintMaster){
-		RlmsUsersMaster  rlmsUsersMaster  = userMasterDao.getUserByUserId(complaintMaster.getCreatedBy());
+		
+		RlmsUserRoles  rlmsUserRoles  = userRoleDao.getUserRoleByUserId(complaintMaster.getCreatedBy());
+
+	//	RlmsUsersMaster  rlmsUsersMaster  = userMasterDao.getUserByUserId(complaintMaster.getCreatedBy());
 		ComplaintsDto dto = new ComplaintsDto();
 		if(RLMSConstants.COMPLAINT_REG_TYPE_ADMIN.getId().equals(complaintMaster.getRegistrationType())){
 			dto.setRegistrationTypeStr(RLMSConstants.COMPLAINT_REG_TYPE_ADMIN.getName());
@@ -181,7 +185,7 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 		}else if(RLMSConstants.COMPLAINT_REG_TYPE_LIFT_EVENT.getId().equals(complaintMaster.getRegistrationType())){
 			dto.setRegistrationTypeStr(RLMSConstants.COMPLAINT_REG_TYPE_LIFT_EVENT.getName());
 		}
-    	 dto.setRegisteredBy(rlmsUsersMaster.getFirstName() +" "+rlmsUsersMaster.getLastName()+"("+rlmsUsersMaster.getContactNumber()+")");
+    	 dto.setRegisteredBy(rlmsUserRoles.getRlmsUserMaster().getFirstName() +" "+rlmsUserRoles.getRlmsUserMaster().getLastName()+"("+rlmsUserRoles.getRole()+")");
 		dto.setComplaintId(complaintMaster.getComplaintId());
 		dto.setComplaintNumber(complaintMaster.getComplaintNumber());
 		dto.setBranchName(complaintMaster.getLiftCustomerMap().getBranchCustomerMap().getCompanyBranchMapDtls().getRlmsBranchMaster().getBranchName());
@@ -191,7 +195,11 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 		dto.setRegistrationDate(complaintMaster.getRegistrationDate());
 		dto.setRemark(complaintMaster.getRemark());
 		dto.setCity(complaintMaster.getLiftCustomerMap().getLiftMaster().getCity());
-		
+		/*
+		if(RLMSCallType.AMC_CALL.getId() == complaintMaster.getCallType()){
+			dto.setRegistrationDateStr(DateUtils.convertDateToStringWithoutTime(complaintMaster.getRegistrationDate()));
+		}
+		 */
 		if(null != complaintMaster.getRegistrationDate()){
 			dto.setRegistrationDateStr(DateUtils.convertDateToStringWithoutTime(complaintMaster.getRegistrationDate()));
 		}
@@ -246,6 +254,9 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 			dto.setRegType(RLMSConstants.COMPLAINT_REG_TYPE_LIFT_EVENT.getName());
 			complaintent = RLMSConstants.COMPLAINT_REG_TYPE_LIFT_EVENT.getName();
 		}
+		
+		
+		
 		dto.setComplaintent(complaintent);
 		return dto;
 	}
@@ -481,10 +492,9 @@ private boolean isServiceCallToShow(Date regDate,Date serviceStartDate){
    		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
    		Date today =null;
 		try {
-  		 today = sdf.parse(sdf.format(new Date()));
+			today = sdf.parse(sdf.format(new Date()));
 		} catch (ParseException e) {
-	}
-
+		}
 		RlmsComplaintMaster complaintMaster = this.complaintsDao.getComplaintMasterObj(complaintsDtlsDto.getComplaintId(),complaintsDtlsDto.getServiceCallType());
 		List<UserRoleDtlsDTO> listOFUserAdtls = new ArrayList<UserRoleDtlsDTO>();
 		List<RlmsUserRoles> listOfAllTechnicians = this.userService.getListOfTechniciansForBranch(complaintMaster.getLiftCustomerMap().getBranchCustomerMap().getCompanyBranchMapDtls().getCompanyBranchMapId());
@@ -503,7 +513,6 @@ private boolean isServiceCallToShow(Date regDate,Date serviceStartDate){
 			if(null != complaintMaster.getLiftCustomerMap().getLiftMaster().getLatitude() && !complaintMaster.getLiftCustomerMap().getLiftMaster().getLatitude().isEmpty()){
 				dto.setLiftLatitude(Double.valueOf(complaintMaster.getLiftCustomerMap().getLiftMaster().getLatitude()));
 			}
-			
 			if(null != complaintMaster.getLiftCustomerMap().getLiftMaster().getLongitude() && !complaintMaster.getLiftCustomerMap().getLiftMaster().getLatitude().isEmpty()){
 				dto.setLiftLongitude(Double.valueOf(complaintMaster.getLiftCustomerMap().getLiftMaster().getLongitude()));
 			}

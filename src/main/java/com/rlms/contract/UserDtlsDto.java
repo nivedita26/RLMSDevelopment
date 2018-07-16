@@ -17,8 +17,13 @@ public class UserDtlsDto {
 	private String appRegId;
 	private Double latitude;
 	private Double longitude;
-	
-	
+	private String msg;
+	public String getMsg() {
+		return msg;
+	}
+	public void setMsg(String msg) {
+		this.msg = msg;
+	}
 	private String city;
 	private String area;
 	private Integer pinCode;

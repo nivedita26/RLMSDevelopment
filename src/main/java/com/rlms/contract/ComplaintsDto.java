@@ -21,7 +21,15 @@ public class ComplaintsDto {
 	private Date toDate;
 	private String fromDateStr;
 	private String  toDateStr;
-   private SiteVisitReportDto siteVisitDetailsList ; 
+	private int totalAttempts;
+
+   public int getTotalAttempts() {
+		return totalAttempts;
+	}
+	public void setTotalAttempts(int totalAttempts) {
+		this.totalAttempts = totalAttempts;
+	}
+private SiteVisitReportDto siteVisitDetailsList ; 
 	
 	public SiteVisitReportDto getSiteVisitDetailsList() {
 	return siteVisitDetailsList;

@@ -2,6 +2,8 @@ package com.rlms.dao;
 
 import java.util.List;
 
+
+
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -9,6 +11,7 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.rlms.constants.RLMSConstants;
 import com.rlms.model.RlmsBranchCustomerMap;
@@ -163,6 +166,7 @@ public class CustomerDaoImpl implements CustomerDao{
 		 return criteria.list();
 	}
 	@Override
+	@Transactional 
 	public List<RlmsBranchCustomerMap> getAllCustomersForDashboard(List<Integer> listOfBranchCompanyMapId) {
 		 Session session = this.sessionFactory.getCurrentSession();
 		 Criteria criteria = session.createCriteria(RlmsBranchCustomerMap.class)
@@ -177,5 +181,11 @@ public class CustomerDaoImpl implements CustomerDao{
 	@Override
 	public void updateMember(RlmsMemberMaster memberMaster) {
 		this.sessionFactory.getCurrentSession().update(memberMaster);
+	}
+
+	@Override
+	public void deleteMember(RlmsMemberMaster memberMaster) {
+		this.sessionFactory.getCurrentSession().update(memberMaster);
+
 	}
 }
