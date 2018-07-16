@@ -5,7 +5,7 @@
 		initAddAMC();
 			//loadCompayInfo();
 			$scope.alert = { type: 'success', msg: 'You successfully Added AMC details.',close:true };
-			$scope.alert = { type: 'error', msg: '',close:false };
+			//$scope.alert = { type: 'error', msg: '',close:false };
 			$scope.showAlert = false;
 			$scope.showCompany = false;
 			$scope.showBranch = false;
@@ -42,8 +42,8 @@
 			          		    };
 
 			          		    $scope.initDate = new Date('2016-15-20');
-			          		    $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
-			          		    $scope.format = $scope.formats[0];
+			          		    $scope.formats = ['dd-MMMM-yyyy', 'yyyy-MM-dd', 'dd.MM.yyyy', 'shortDate'];
+			          		    $scope.format = $scope.formats[1];
 			          		    
 			                $scope.Remove = function (index) {
 			                    //Find the record using Index from Array.
@@ -123,17 +123,16 @@
 			}
 
 			$scope.getDateTime=function(){
-				// var AmcStartDate=$scope.addAMC.amcStDate ;
+				var amc_StartDate=$scope.addAMC.amcStDate ;
 				if ($scope.addAMC.amcStDate){
-					 var amcEndDate;
-					var amcStartDate=$scope.addAMC.amcStDate;  	  
+					 var amcStartDate=amc_StartDate;  	  
+					 var amcEndDate=new Date();
 			     	    	
-		    	 amcEndDate=amcStartDate.setFullYear(amcStartDate.getFullYear()+1);
-		    	 amcEndDate=amcStartDate.setDate(amcStartDate.getDate()-1);
+					amcEndDate.setFullYear(amcStartDate.getFullYear()+1);
+					amcEndDate.setDate(amcStartDate.getDate()-1);
 				 }	
-		    	//$scope.addAMC.amcStDate=amcStartDate;
+				amcEndDate=amcEndDate.toISOString().slice(0, 10);
 		    	$scope.addAMC.amcEdDate=amcEndDate;
-		    	//$scope.addAMC.amcStDate=AmcStartDate;
 			}
 			
 			$scope.loadBranchData = function(){
