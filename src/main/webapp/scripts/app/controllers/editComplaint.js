@@ -178,6 +178,7 @@
 			}
 		  	
 			$scope.resetEditComplaint = function(){
+				//$scope.addComplaintForm.$setPristine(true);
 				$window.history.back();
 			}
 			$scope.backPage =function(){

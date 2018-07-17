@@ -130,6 +130,7 @@
 			     	    	
 					amcEndDate.setFullYear(amcStartDate.getFullYear()+1);
 					amcEndDate.setDate(amcStartDate.getDate()-1);
+					amcEndDate.setMonth(amcStartDate.getMonth());
 				 }	
 				amcEndDate=amcEndDate.toISOString().slice(0, 10);
 		    	$scope.addAMC.amcEdDate=amcEndDate;
@@ -232,7 +233,7 @@
 		  
 			//rese add branch
 			$scope.resetaddAmc = function(){
-				initAddComplaint();
+				initAddAMC();
 			}
 			$scope.backPage =function(){
 				 $window.history.back();

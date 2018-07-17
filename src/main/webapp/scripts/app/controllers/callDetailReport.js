@@ -2,7 +2,7 @@
     'use strict';
 	angular.module('rlmsApp')
 	.controller('callDetailedReportCtrl', ['$scope', '$filter','serviceApi','$route','$http','utility','$rootScope', function($scope, $filter,serviceApi,$route,$http,utility,$rootScope) {
-		initReport();
+		initCallDReport();
 		$scope.cutomers=[];
 		$scope.eventId=[];
 		$scope.filterOptions = {
@@ -30,7 +30,7 @@
  	         })
 		}
 		
-		function initReport(){
+		function initCallDReport(){
 			$scope.selectedCompany = {};
 			$scope.selectedBranch = {};
 			$scope.lifts=[];
@@ -475,8 +475,8 @@
 		  	      }
 		  	      ]
 		  	    };
-	  	  $scope.resetReportList = function(){
-	  		initReport();
+	  	  $scope.resetCallDReport= function(){
+	  		initCallDReport();
 	  	  }
 	  	  function constructDataToSend(){
 	
