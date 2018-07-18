@@ -33,6 +33,7 @@
 									$scope.selectedBranch = {};
 									$scope.selectedCustomer = {};
 									$scope.selectedCalltype = {};
+									//$scope.loadDefaultComplaintData();
 									$scope.alert = { type: 'success', msg: 'You successfully Added Complaint.',close:true };
 									$scope.showAlert = false;
 									$scope.address="";

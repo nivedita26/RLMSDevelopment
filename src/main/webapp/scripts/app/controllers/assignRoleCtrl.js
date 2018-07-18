@@ -6,6 +6,8 @@
 		loadRolesData();
 		$scope.alert = { type: 'success', msg: 'You successfully Assigned Role.',close:true };
 		$scope.showAlert = false;
+		$scope.showCompany = false;
+		$scope.showBranch = false;
 		$scope.roles = [];
 		$scope.companies = [];
 		$scope.branches = [];
@@ -36,12 +38,23 @@
 			//loadBranchData();
 			$scope.isRoleSelected = true;
 		}
+	  	
 		$scope.loadBranchData = function(){
-			var data = {
+			/*var data = {
 				companyId : $scope.selectedCompany.selected.companyId
-			}
+			}*/
+			var companyData={};
+			if($scope.showCompany == true){
+  	    		companyData = {
+						companyId : $scope.selectedCompany.selected.companyId
+					}
+  	    	}else{
+  	    		companyData = {
+						companyId : $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyMaster.companyId
+					}
+  	    	}
 			loadUsersData();
-		    serviceApi.doPostWithData('/RLMS/admin/getAllBranchesForCompany',data)
+		    serviceApi.doPostWithData('/RLMS/admin/getAllBranchesForCompany',companyData)
 		    .then(function(response){
 		    	$scope.branches = response;
 		    	
@@ -63,7 +76,8 @@
 		    	$scope.users = response;
 		    	console.log(response);
 		    });
-		}
+		}	
+		
 		//Post call
 		$scope.submitAssignRole = function(){
 			$scope.assignRole.companyBranchMapId = $scope.selectedBranch.selected.companyBranchMapId;
