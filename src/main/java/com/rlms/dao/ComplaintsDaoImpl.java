@@ -194,7 +194,7 @@ public class ComplaintsDaoImpl implements ComplaintsDao{
 				 if(null != dto.getListOfStatusIds() && !dto.getListOfStatusIds().isEmpty()){
 					 criteria.add(Restrictions.in("status", dto.getListOfStatusIds()));
 				 }
-				 criteria.add(Restrictions.eq("ccm.callType", 1));
+			//	 criteria.add(Restrictions.eq("ccm.callType", 2));
 				 
 				 criteria.add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
 				 

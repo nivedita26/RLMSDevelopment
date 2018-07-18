@@ -1000,6 +1000,7 @@
 									}*/
 									/////
 									for(var i = 0; i < $scope.technicians.length; i++){
+										if($scope.technicians[i].latitude!=0.0 && $scope.technicians[i].longitude!=0.0){
 										if($scope.technicians[i].countOfComplaintsAssigned==null){
 											$scope.technicians[i].countOfComplaintsAssigned=0;
 										}
@@ -1030,6 +1031,7 @@
 											}	
 										}));
 									}
+								}
 									//////
 									$scope.map.fitBounds(bounds);
 								}

@@ -155,7 +155,7 @@ public class DashboardDaoImpl implements DashboardDao {
 				str = str.concat("," + mapId);
 			}
 		}
-	  String sql ="select company_branch_map_id,count(*) from rlms_user_roles where company_branch_map_id in ("+ str+") and spoc_role_id="+ spocRoleId+" group by company_branch_map_id ";
+	  String sql ="select company_branch_map_id,count(*) from rlms_user_roles where company_branch_map_id in ("+ str+") and spoc_role_id="+ spocRoleId+" and active_flag=1 group by company_branch_map_id ";
     	SQLQuery query = session.createSQLQuery(sql);
 		//query.addEntity(RlmsUserRoles.class);
 		 //query.executeUpdate();

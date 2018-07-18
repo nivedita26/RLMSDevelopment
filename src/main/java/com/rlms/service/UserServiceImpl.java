@@ -31,6 +31,7 @@ import com.rlms.contract.UserMetaInfo;
 import com.rlms.contract.UserRoleDtlsDTO;
 import com.rlms.dao.ComplaintsDao;
 import com.rlms.dao.CustomerDao;
+import com.rlms.dao.MemberDao;
 import com.rlms.dao.UserMasterDao;
 import com.rlms.dao.UserRoleDao;
 import com.rlms.exception.ExceptionCode;
@@ -38,6 +39,7 @@ import com.rlms.exception.ValidationException;
 import com.rlms.model.RlmsCompanyBranchMapDtls;
 import com.rlms.model.RlmsCompanyMaster;
 import com.rlms.model.RlmsComplaintMaster;
+import com.rlms.model.RlmsMemberMaster;
 import com.rlms.model.RlmsSpocRoleMaster;
 import com.rlms.model.RlmsUserApplicationMapDtls;
 import com.rlms.model.RlmsUserRoles;
@@ -70,6 +72,9 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	private ComplaintsDao  complaintDao;
+	
+	@Autowired
+	private MemberDao memberDao;
 	
 	
 
@@ -591,12 +596,13 @@ public class UserServiceImpl implements UserService {
 		RlmsUserRoles rlmsUserRoles = userRoleDao.getUserIFRoleisAssigned(usersMaster.getUserId());
 		if(rlmsUserRoles!=null) {
 			if(rlmsUserRoles.getRlmsSpocRoleMaster().getSpocRoleId() == SpocRoleConstants.TECHNICIAN.getSpocRoleId()) {
+				rlmsUserRoles.setActiveFlag(RLMSConstants.INACTIVE.getId());
+				userMasterDao.mergerUserRole(rlmsUserRoles);
 				this.sendNotificationsAboutUserDeactivation(rlmsUserRoles);
 			}
 		}
 		return statusMesage;
 	}
-	
 	@Transactional(propagation = Propagation.REQUIRED)
 	public String updateTechnicianLocation(UserDtlsDto dto,
 			UserMetaInfo metaInfo) {
@@ -694,6 +700,12 @@ public class UserServiceImpl implements UserService {
 				}catch(Exception e){
 				}
 			}
+	}
+
+	@Override
+	public RlmsMemberMaster getMemberById(int id) {
+
+		return memberDao.getMemberById(id);
 	}
 
 }

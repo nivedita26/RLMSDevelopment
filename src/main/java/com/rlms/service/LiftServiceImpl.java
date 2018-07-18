@@ -23,6 +23,7 @@ import com.rlms.constants.Status;
 import com.rlms.contract.AMCDetailsDto;
 import com.rlms.contract.CustomerDtlsDto;
 import com.rlms.contract.CustomerLiftDtls;
+import com.rlms.contract.LiftCustomerMap;
 import com.rlms.contract.LiftDtlsDto;
 import com.rlms.contract.ResponseDto;
 import com.rlms.contract.UserDtlsDto;
@@ -793,28 +794,35 @@ public class LiftServiceImpl implements LiftService{
 	@Override
 	public List<CustomerLiftDtls> getLiftDetailsList(UserDtlsDto dtlsDto) {
       List<Integer> branchCompanyMapId= new ArrayList<>();
-      List<Integer> branchCustomerMapIDs = new ArrayList<>();
+    //List<Integer> branchCustomerMapIDs = new ArrayList<>();
       List<CustomerLiftDtls> liftDtlsDtoList = new ArrayList<>();
+  // List<LiftCustomerMap> customerMapList = new ArrayList<>();
+ // List<String> uniqueCustomerList= new ArrayList<>();
 		RlmsUserRoles  rlmsUserRoles = userRoleDao.getUserRoleByUserId(dtlsDto.getUserId());
 		if(rlmsUserRoles!=null) {
 			branchCompanyMapId.add(rlmsUserRoles.getRlmsCompanyBranchMapDtls().getCompanyBranchMapId());
 			List<RlmsBranchCustomerMap> rlmsBranchCustomerMaps = customerDao.getAllCustomersForDashboard(branchCompanyMapId);
 			if(rlmsBranchCustomerMaps!=null && !rlmsBranchCustomerMaps.isEmpty()) {
-				for (RlmsBranchCustomerMap rlmsBranchCustomerMap : rlmsBranchCustomerMaps) {
+			   	  for (RlmsBranchCustomerMap rlmsBranchCustomerMap : rlmsBranchCustomerMaps) {
+			   		List<Integer> branchCustomerMapIDs = new ArrayList<>();
 					branchCustomerMapIDs.add(rlmsBranchCustomerMap.getBranchCustoMapId());
-				}
-				List<RlmsLiftCustomerMap> rlmsLiftCustomerMapsList =  liftDao.getAllLiftsForCustomres(branchCustomerMapIDs);
-				if(rlmsLiftCustomerMapsList !=null && !rlmsLiftCustomerMapsList.isEmpty()) {
-					for (RlmsLiftCustomerMap rlmsLiftCustomerMap : rlmsLiftCustomerMapsList) {
-						CustomerLiftDtls  CustomerLiftDtlsDto = new CustomerLiftDtls();
-						CustomerLiftDtlsDto.setLiftNumber(rlmsLiftCustomerMap.getLiftMaster().getLiftNumber());
-						CustomerLiftDtlsDto.setLiftCustomerMapId(rlmsLiftCustomerMap.getLiftCustomerMapId());
-						CustomerLiftDtlsDto.setCustomerName(rlmsLiftCustomerMap.getBranchCustomerMap().getCustomerMaster().getCustomerName());
-						liftDtlsDtoList.add(CustomerLiftDtlsDto);
-					}
+			        CustomerLiftDtls  CustomerLiftDtlsDto = new CustomerLiftDtls();
+			   	    CustomerLiftDtlsDto.setCustomerName(rlmsBranchCustomerMap.getCustomerMaster().getCustomerName()+"("+ rlmsBranchCustomerMap.getCustomerMaster().getArea() +")");
+				    List<RlmsLiftCustomerMap> rlmsLiftCustomerMapsList =  liftDao.getAllLiftsForCustomres(branchCustomerMapIDs);
+			        if(rlmsLiftCustomerMapsList!=null && !rlmsLiftCustomerMapsList.isEmpty()) {
+			        	List<LiftCustomerMap> customerMapList = new ArrayList<>();
+			        	for (RlmsLiftCustomerMap rlmsLiftCustomerMap : rlmsLiftCustomerMapsList) {
+			        	      LiftCustomerMap liftCustomerMap = new LiftCustomerMap();
+								liftCustomerMap.setLiftNumber(rlmsLiftCustomerMap.getLiftMaster().getLiftNumber());
+								liftCustomerMap.setLiftCustomerMapId(rlmsLiftCustomerMap.getLiftCustomerMapId());
+								customerMapList.add(liftCustomerMap);
+						}
+				        CustomerLiftDtlsDto.setLiftCustomerMapList(customerMapList);
+			        }
+				    liftDtlsDtoList.add(CustomerLiftDtlsDto);
 				}
 			}
 		}
-	return liftDtlsDtoList;
-}
+		return liftDtlsDtoList;
+	}
 }
