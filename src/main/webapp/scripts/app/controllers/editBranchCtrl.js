@@ -3,14 +3,14 @@
 	angular.module('rlmsApp')
 	.controller('editBranchCtrl', ['$scope', '$filter','serviceApi','$route','$http','utility','$window','$rootScope', function($scope, $filter,serviceApi,$route,$http,utility,$window,$rootScope) {
 		//initialize add Branch
-		 initAddBranch();
+		 initEditBranch();
+		 loadCompayInfo();
 		$scope.alert = { type: 'success', msg: 'You successfully Edited Branch.',close:true };
 		//loadBranchListInfo();
 		$scope.showAlert = false;
 		$scope.companies = [];
 		
-		
-		function initAddBranch(){
+		function initEditBranch(){
 			$scope.selectedCompany = {};
 			$scope.selectedActiveFlag = {};
 			$scope.selectedStatus = {};
@@ -81,9 +81,10 @@
 			});
 		}
 		//rese add branch
-		$scope.resetAddBranch = function(){
-			//initAddBranch();
-		}
+	/*	$scope.resetEditBranch = function(){
+			initEditBranch();
+			//$window.location.reload();
+		}*/
 		$scope.backPage =function(){
 			 $window.history.back();
 		}

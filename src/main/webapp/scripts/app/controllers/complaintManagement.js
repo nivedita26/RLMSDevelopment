@@ -135,12 +135,12 @@
 								};
 								function loadDefaultComplaintData() {
 									
-									 //$scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
-									var branchCompanyMapId;
+									 $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
+									/*var branchCompanyMapId;
 									if(null != $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls && undefined != $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls){
 										branchCompanyMapId = $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls.companyBranchMapId;
-									}
-									var dataToSend = {
+									}*/
+									/*var dataToSend = {
 										//branchCompanyMapId :branchCompanyMapId,
 										companyId : $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyMaster.companyId,
 										//branchCustomerMapId : -1,
@@ -148,8 +148,8 @@
 										statusList : [],
 										//serviceCallType : 0
 
-									};
-									serviceApi
+									};*/
+									/*serviceApi
 											.doPostWithData('/RLMS/complaint/getListOfComplaints', dataToSend)
 											.then(
 													function(largeLoad) {
@@ -253,7 +253,7 @@
 														};
 
 														$scope.setPagingData(userDetails, 1, 10);
-													});
+													});*/
 									
 
 								}
@@ -330,9 +330,9 @@
 												if (searchText) {
 													var ft = searchText
 															.toLowerCase();
-													var dataToSend = $scope
-															.construnctObjeToSend();
-													/*var companyData = {};
+													//var dataToSend = $scope
+														//	.construnctObjeToSend();
+													var companyData = {};
 													if ($scope.showCompany == true) {
 														companyData = {
 															companyId : $scope.selectedCompany.selected.companyId
@@ -340,10 +340,11 @@
 													} else {
 														companyData = {
 															companyId : $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyMaster.companyId
+															
 														}
-													}*/
+													}
 													serviceApi
-															.doPostWithData('/RLMS/complaint/getListOfComplaints',dataToSend)
+															.doPostWithData('/RLMS/complaint/getListOfComplaints',companyData)
 															.then(
 																	function(largeLoad) {
 																		$scope.complaints = largeLoad;
@@ -455,9 +456,9 @@
 																						pageSize);
 																	});
 												} else {
-													var dataToSend = $scope
-															.construnctObjeToSend();
-													/*var companyData = {};
+													//var dataToSend = $scope
+														//	.construnctObjeToSend();
+													var companyData = {};
 													if ($scope.showCompany == true) {
 														companyData = {
 															companyId : $scope.selectedCompany.selected.companyId
@@ -466,11 +467,11 @@
 														companyData = {
 															companyId : $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyMaster.companyId
 														}
-													}*/
+													}
 													
 													serviceApi
 															.doPostWithData(
-																	'/RLMS/complaint/getListOfComplaints',	dataToSend)
+																	'/RLMS/complaint/getListOfComplaints',	companyData)
 															.then(
 																	function(
 																			largeLoad) {

@@ -3,7 +3,7 @@
 	angular.module('rlmsApp')
 	.controller('editUserCtrl', ['$scope', '$filter','serviceApi','$route','$http','utility','$window','pinesNotifications','$rootScope', function($scope, $filter,serviceApi,$route,$http,utility,$window,pinesNotifications,$rootScope) {
 		//initialize add Branch
-		initAddUser();
+		initEditUser();
 		loadCompayInfo();
 		//loadBranchListInfo();
 		$scope.backPage = function(){
@@ -11,7 +11,7 @@
 		}
 		//$scope.alert = { type: 'success', msg: 'You successfully edited user.',close:true };
 		//$scope.showAlert = false;
-		function initAddUser(){
+		function initEditUser(){
 			$scope.selectedCompany = {};
 			$scope.addUser={
 				firstName:'',
@@ -88,11 +88,12 @@
 			});
 		}
 		//reset add branch
-		$scope.resetAddUser = function(){
+		$scope.initEditUser = function(){
 			$scope.showAlert = false;
-			initAddUser();
-			$scope.addUserForm.$setPristine();
-			$scope.addUserForm.$setUntouched();
+			//initAddUser();
+			initEditUser();
+			//$scope.addUserForm.$setPristine();
+			//$scope.addUserForm.$setUntouched();
 		}
 		
 	}]);

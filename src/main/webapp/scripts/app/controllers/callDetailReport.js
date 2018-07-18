@@ -214,8 +214,8 @@
 		  	        		}else{
 		  	        			detailsObj["Title"] =" - ";
 		  	        		}
-		  	        		if(!!largeLoad[i].totalNoOfVisits){
-		  	        			detailsObj["TotalAttempts"] =largeLoad[i].totalNoOfVisits;
+		  	        		if(!!largeLoad[i].totalAttempts){
+		  	        			detailsObj["TotalAttempts"] =largeLoad[i].totalAttempts;
 		  	        		}else{
 		  	        			detailsObj["TotalAttempts"] =" - ";
 		  	        		}
@@ -229,8 +229,8 @@
 		  	        		}else{
 		  	        			detailsObj["TotalDaysTaken"] =" - ";
 		  	        		}
-		  	        		if(!!largeLoad[i].lastVisitedDate){
-		  	        			detailsObj["LastVisitedDate"] =largeLoad[i].lastVisitedDate;
+		  	        		if(!!largeLoad[i].lastVisitedDateStr){
+		  	        			detailsObj["LastVisitedDate"] =largeLoad[i].lastVisitedDateStr;
 		  	        		}else{
 		  	        			detailsObj["LastVisitedDate"] =" - ";
 		  	        		}
@@ -303,13 +303,13 @@
 		  	        		}else{
 		  	        			detailsObj["TotalDaysTaken"] =" - ";
 		  	        		}
-		  	        		if(!!largeLoad[i].lastVisitedDate){
-		  	        			detailsObj["LastVisitedDate"] =largeLoad[i].lastVisitedDate;
+		  	        		if(!!largeLoad[i].lastVisitedDateStr){
+		  	        			detailsObj["LastVisitedDate"] =largeLoad[i].lastVisitedDateStr;
 		  	        		}else{
 		  	        			detailsObj["LastVisitedDate"] =" - ";
 		  	        		}
-		  	        		if(!!largeLoad[i].totalNoOfVisits){
-		  	        			detailsObj["TotalAttempts"] =largeLoad[i].totalNoOfVisits;
+		  	        		if(!!largeLoad[i].totalAttempts){
+		  	        			detailsObj["TotalAttempts"] =largeLoad[i].totalAttempts;
 		  	        		}else{
 		  	        			detailsObj["TotalAttempts"] =" - ";
 		  	        		}
@@ -361,8 +361,8 @@
 	  	        		}else{
 	  	        			detailsObj["Title"] =" - ";
 	  	        		}
-	  	        		if(!!largeLoad[i].totalNoOfVisits){
-	  	        			detailsObj["TotalAttempts"] =largeLoad[i].totalNoOfVisits;
+	  	        		if(!!largeLoad[i].totalAttempts){
+	  	        			detailsObj["TotalAttempts"] =largeLoad[i].totalAttempts;
 	  	        		}else{
 	  	        			detailsObj["TotalAttempts"] =" - ";
 	  	        		}
@@ -376,8 +376,8 @@
 	  	        		}else{
 	  	        			detailsObj["TotalDaysTaken"] =" - ";
 	  	        		}
-	  	        		if(!!largeLoad[i].lastVisitedDate){
-	  	        			detailsObj["LastVisitedDate"] =largeLoad[i].lastVisitedDate;
+	  	        		if(!!largeLoad[i].lastVisitedDateStr){
+	  	        			detailsObj["LastVisitedDate"] =largeLoad[i].lastVisitedDateStr;
 	  	        		}else{
 	  	        			detailsObj["LastVisitedDate"] =" - ";
 	  	        		}
