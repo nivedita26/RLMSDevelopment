@@ -633,8 +633,7 @@ public class CustomerServiceImpl implements CustomerService{
 		return statusMessage;
 	}
 
-
-	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
 	public String deleteMember(MemberDtlsDto memberDtlsDto, UserMetaInfo metaInfo) throws ValidationException {
 		RlmsMemberMaster memberMaster = this.customerDao.getMemberById(memberDtlsDto.getMemberId()) ;
 		if(memberMaster!=null) {

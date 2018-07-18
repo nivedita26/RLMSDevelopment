@@ -517,7 +517,7 @@
 					
 						//$scope.selectedDoorType.id= $scope.editLift.doorType; 
 						//$scope.selectedDoorType.selected =$scope.editLift.doorType;
-						$rootScope.amcTypeArray=['Comprehensive','Non-Comprehensive','On Demand','Other'];
+						$rootScope.amcTypeArray=['Comprehensive','NonComprehensive','On Demand','Other'];
 						$rootScope.engineTypeArray=['Geared','Gearless'];
 						$rootScope.collectiveTypeArray=['Down Collective','Full Collective'];
 						$rootScope.simplexTypeArray=['Simplex','Duplex','Group'];

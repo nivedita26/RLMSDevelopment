@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 	angular.module('rlmsApp')
-	.controller('memberManagementCtrl', ['$scope', '$filter','serviceApi','$route','$http','utility','$rootScope', function($scope, $filter,serviceApi,$route,$http,utility,$rootScope) {
+	.controller('memberManagementCtrl', ['$scope', '$filter','serviceApi','$route','$http','utility','$rootScope','$window', function($scope, $filter,serviceApi,$route,$http,utility,$rootScope,$window) {
 		initMemberList();
 		$scope.showCompany = false;
 		$scope.showBranch = false;
@@ -29,7 +29,7 @@
 			if(deleteMember){
 				var memberData = {};
 				memberData = {
-						memberId:row.memberId
+						memberId:row.MemberId
 				};
 				serviceApi.doPostWithData("/RLMS/admin/deleteMember",memberData)
 				.then(function(response){
