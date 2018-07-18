@@ -11,6 +11,7 @@ import com.rlms.contract.UserDtlsDto;
 import com.rlms.contract.UserMetaInfo;
 import com.rlms.contract.UserRoleDtlsDTO;
 import com.rlms.exception.ValidationException;
+import com.rlms.model.RlmsMemberMaster;
 import com.rlms.model.RlmsSpocRoleMaster;
 import com.rlms.model.RlmsUserRoles;
 import com.rlms.model.User;
@@ -70,6 +71,8 @@ public interface UserService {
 	public UserDtlsDto getTechnicianRoleObjByUserNameAndPassword(UserDtlsDto dtlsDto, UserMetaInfo metaInfo) throws ValidationException;
 	
 	public ResponseDto logout(UserDtlsDto userDto);
+	
+	public RlmsMemberMaster getMemberById(int id);
 
 	
 }

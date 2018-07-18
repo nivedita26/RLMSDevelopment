@@ -51,6 +51,7 @@ import com.rlms.model.RlmsCustomerMemberMap;
 import com.rlms.model.RlmsEventDtls;
 import com.rlms.model.RlmsLiftAmcDtls;
 import com.rlms.model.RlmsLiftCustomerMap;
+import com.rlms.model.RlmsMemberMaster;
 import com.rlms.model.RlmsSiteVisitDtls;
 import com.rlms.model.RlmsUserRoles;
 import com.rlms.model.RlmsUsersMaster;
@@ -94,6 +95,9 @@ public class ReportServiceImpl implements ReportService {
 	
 	@Autowired
 	private  CustomerDao customerDao;
+	
+	@Autowired
+	private UserService userService;
 	
 	@Transactional(propagation = Propagation.REQUIRED)
 	public List<AMCDetailsDto> getAMCDetailsForLifts(AMCDetailsDto dto){
@@ -606,7 +610,7 @@ public class ReportServiceImpl implements ReportService {
 			complaintsDto.setRegistrationDateStr(DateUtils.convertDateToStringWithTime(rlmsComplaintMaster.getRegistrationDate()));
             complaintsDto.setStatus(Status.getStringFromID(rlmsComplaintMaster.getStatus()));
             complaintsDto.setServiceCallType(rlmsComplaintMaster.getCallType());
-        	RlmsUserRoles  rlmsUserRoles = userRoleDao.getUserRoleByUserId(rlmsComplaintMaster.getCreatedBy());
+        //	RlmsUserRoles  rlmsUserRoles = userRoleDao.getUserRoleByUserId(rlmsComplaintMaster.getCreatedBy());
             RlmsComplaintTechMapDtls  complaintTechMapDtls = complaintsDao.getComplTechMapObjByComplaintId(rlmsComplaintMaster.getComplaintId());		
             if(complaintTechMapDtls!=null) {
 			complaintsDto.setCallAssignedDateStr(DateUtils.convertDateToStringWithTime(complaintTechMapDtls.getAssignedDate()));
@@ -626,13 +630,20 @@ public class ReportServiceImpl implements ReportService {
        
     	           	complaintsDto.setTechnicianDtls(complaintTechMapDtls.getUserRoles().getRlmsUserMaster().getFirstName()+" "+complaintTechMapDtls.getUserRoles().getRlmsUserMaster().getLastName());
     	           	complaintsDto.setRemark(rlmsComplaintMaster.getRemark());
-    	           	
-    	           	///////
-    	       //     SiteVisitReportDto complaintwiseSiteVisitReport = new SiteVisitReportDto();
-              	//  List<SiteVisitDtlsDto> listOfAllVisists = new ArrayList<SiteVisitDtlsDto>();
-              	
+    	           
             }
-            if(rlmsUserRoles.getRlmsSpocRoleMaster().getSpocRoleId()==SpocRoleConstants.END_USER.getSpocRoleId()){
+            
+        	if(RLMSConstants.COMPLAINT_REG_TYPE_ADMIN.getId().equals(rlmsComplaintMaster.getRegistrationType())){
+    		   		RlmsUserRoles  rlmsUserRoles  = userRoleDao.getUserRoleByUserId(rlmsComplaintMaster.getCreatedBy());
+    			  complaintsDto.setRegisteredBy(rlmsUserRoles.getRlmsUserMaster().getFirstName() +" "+rlmsUserRoles.getRlmsUserMaster().getLastName()+"("+rlmsUserRoles.getRole()+")");
+    		}else if(RLMSConstants.COMPLAINT_REG_TYPE_END_USER.getId().equals(rlmsComplaintMaster.getRegistrationType())){
+    			RlmsMemberMaster memberMaster = userService.getMemberById(rlmsComplaintMaster.getCreatedBy());
+    			if(memberMaster!=null) {
+    				 complaintsDto.setRegisteredBy(memberMaster.getFirstName() +" "+memberMaster.getLastName()+"("+memberMaster.getContactNumber()+")");
+    			}
+    		}
+            
+        /*    if(rlmsUserRoles.getRlmsSpocRoleMaster().getSpocRoleId()==SpocRoleConstants.END_USER.getSpocRoleId()){
                 complaintsDto.setRegisteredBy(rlmsUserRoles.getRlmsUserMaster().getFirstName()+""+rlmsUserRoles.getRlmsUserMaster().getLastName()+" "+"("+"USER"+")");
             }
             else if(rlmsUserRoles.getRlmsSpocRoleMaster().getSpocRoleId()==SpocRoleConstants.COMPANY_OPERATOR.getSpocRoleId()){
@@ -641,7 +652,7 @@ public class ReportServiceImpl implements ReportService {
             }else if(rlmsUserRoles.getRlmsSpocRoleMaster().getSpocRoleId()==SpocRoleConstants.COMPANY_ADMIN.getSpocRoleId()){
 
                 complaintsDto.setRegisteredBy(rlmsUserRoles.getRlmsUserMaster().getFirstName()+" "+rlmsUserRoles.getRlmsUserMaster().getLastName()+" "+"("+"ADMIN"+")");
-            }
+            }*/
             complaintsDto.setBranchName(rlmsComplaintMaster.getLiftCustomerMap().getBranchCustomerMap().getCompanyBranchMapDtls().getRlmsBranchMaster().getBranchName());
             complaintsDtoList.add(complaintsDto);
 		}
@@ -672,7 +683,18 @@ public class ReportServiceImpl implements ReportService {
             complaintsDto.setStatus(Status.getStringFromID(rlmsComplaintMaster.getStatus()));
             //complaintsDto.setServiceCallType(rlmsComplaintMaster.getCallType());
             complaintsDto.setComplaintNumber(rlmsComplaintMaster.getComplaintNumber());
-        	RlmsUserRoles  rlmsUserRoles = userRoleDao.getUserRoleByUserId(rlmsComplaintMaster.getCreatedBy());
+            
+        	if(RLMSConstants.COMPLAINT_REG_TYPE_ADMIN.getId().equals(rlmsComplaintMaster.getRegistrationType())){
+    		   		RlmsUserRoles  rlmsUserRoles  = userRoleDao.getUserRoleByUserId(rlmsComplaintMaster.getCreatedBy());
+    			  complaintsDto.setRegisteredBy(rlmsUserRoles.getRlmsUserMaster().getFirstName() +" "+rlmsUserRoles.getRlmsUserMaster().getLastName()+"("+rlmsUserRoles.getRole()+")");
+    		}else if(RLMSConstants.COMPLAINT_REG_TYPE_END_USER.getId().equals(rlmsComplaintMaster.getRegistrationType())){
+    			RlmsMemberMaster memberMaster = userService.getMemberById(rlmsComplaintMaster.getCreatedBy());
+    			if(memberMaster!=null) {
+    				 complaintsDto.setRegisteredBy(memberMaster.getFirstName() +" "+memberMaster.getLastName()+"("+memberMaster.getContactNumber()+")");
+    			}
+    		}
+            
+        /*	RlmsUserRoles  rlmsUserRoles = userRoleDao.getUserRoleByUserId(rlmsComplaintMaster.getCreatedBy());
         	  if(rlmsUserRoles.getRlmsSpocRoleMaster().getSpocRoleId()==SpocRoleConstants.END_USER.getSpocRoleId()){
                   complaintsDto.setRegisteredBy(rlmsUserRoles.getRlmsUserMaster().getFirstName()+""+rlmsUserRoles.getRlmsUserMaster().getLastName()+" "+"("+"USER"+")");
               }
@@ -682,7 +704,7 @@ public class ReportServiceImpl implements ReportService {
               }else if(rlmsUserRoles.getRlmsSpocRoleMaster().getSpocRoleId()==SpocRoleConstants.COMPANY_ADMIN.getSpocRoleId()){
 
                   complaintsDto.setRegisteredBy(rlmsUserRoles.getRlmsUserMaster().getFirstName()+" "+rlmsUserRoles.getRlmsUserMaster().getLastName()+" "+"("+"COMPANY ADMIN"+")");
-              }
+              }*/
               complaintsDto.setBranchName(rlmsComplaintMaster.getLiftCustomerMap().getBranchCustomerMap().getCompanyBranchMapDtls().getRlmsBranchMaster().getBranchName());
         	
               RlmsComplaintTechMapDtls  complaintTechMapDtls = complaintsDao.getComplTechMapObjByComplaintId(rlmsComplaintMaster.getComplaintId());		

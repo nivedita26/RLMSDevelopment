@@ -108,8 +108,7 @@ public class ReportController extends BaseController{
 	    }
 	 @RequestMapping(value = "/getTechnicianWiseReport", method = RequestMethod.POST)
 	    public @ResponseBody List<TechnicianWiseReportDTO>  getTechnicianWiseReport(@RequestBody TechnicianWiseReportDTO dto) throws RunTimeException, ValidationException {
-	        
-		 List<TechnicianWiseReportDTO>  listOfTEchis = new ArrayList<TechnicianWiseReportDTO>();
+		 	List<TechnicianWiseReportDTO>  listOfTEchis = new ArrayList<TechnicianWiseReportDTO>();
 	        try{
 	        	logger.info("In getTechnicianWiseReport method");
 	        	listOfTEchis = this.reportService.getTechnicianWiseReport(dto);
