@@ -137,8 +137,6 @@
 		      return (mode === 'day' && (date.getDay() === 0 || date.getDay() === 6));
 		    };
 		    
-		   // var warrantyPeriod= $scope.warrantyPeriod;
-		   var serviceEndDate =$scope.serviceStartDate;
 		    $scope.toggleMin = function() {
 		      $scope.minDate = $scope.minDate ? null : new Date();
 		    };
@@ -440,6 +438,7 @@
 		    	var serviceEdDate=new Date();
 		    	serviceEdDate.setMonth(serviceStDate.getMonth()+warrantyPeriod);
 		    	serviceEdDate.setDate(serviceStDate.getDate()-1);
+		    	//serviceEdDate.setFullYear(serviceStDate.getFullYear());
 		    	serviceEdDate=serviceEdDate.toISOString().slice(0, 10);
 		    	$scope.addLift.serviceEndDate=serviceEdDate;
 		    }
@@ -451,13 +450,11 @@
 		    	var amcEdDate=new Date();
 		    	amcEdDate.setFullYear(amcStDate.getFullYear()+1);
 		    	amcEdDate.setDate(amcStDate.getDate()-1);
+		    	amcEdDate.setMonth(amcStDate.getMonth());
 		    	amcEdDate=amcEdDate.toISOString().slice(0, 10);
 		    	$scope.addLift.amcEndDate=amcEdDate;
 		    }
-		    
-		    //$scope.lmsData=function(){
-		    	
-		  //}
+
 		    //load compay dropdown data
 		//Post call add branch
 		function parseBase64(){

@@ -274,14 +274,14 @@ $scope.loadCallID=function(){
 		  	        	 
 		  	        	  for(var i=0;i<largeLoad.length;i++){
 		  	        		
-		  	        		  if((($scope.selectedCallID.selected) &&($scope.selectedCallID.selected.complaintNumber === largeLoad[i].complaintNumber)) ||(($scope.selectedLift.selected) &&(liftNum== largeLoad[i].liftNumber))){
+		  	        		  if((($scope.selectedCallID.selected) &&($scope.selectedCallID.selected.complaintNumber === largeLoad[i].complaintNumber)) ){
 			  	        	
-		  	        			 if($scope.selectedLift.selected){
+		  	        			/* if($scope.selectedLift.selected){
 		  			  	        	  var liftNum=[];
 		  			  	        	for (var j = 0; j < $scope.selectedLift.selected.length;j++) {
 		  			  	        		liftNum.push($scope.selectedLift.selected[j].liftNumber);
 		  			  				} 
-		  			  	        	}
+		  			  	        	}*/
 		  	        			  var detailsObj={};
 		  	        		detailsObj["SrNo"] =i+1 +".";
 		  	        		
@@ -362,21 +362,23 @@ $scope.loadCallID=function(){
 	  	        					detailsObj["Technician"] =" - ";
 	  	        				}
 	  	        				if(largeLoad[i].siteVisitDetailsList.listOFAllVisits){
-	  	        					if(!!largeLoad[i].siteVisitDetailsList.listOFAllVisits[i].fromDateDtr){
-  	        						detailsObj["FromDate"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits[i].fromDateDtr;
+	  	        					for(j=0;j<=listOFAllVisits.length;j++){
+	  	        					if(!!largeLoad[i].siteVisitDetailsList.listOFAllVisits[j].fromDateDtr){
+  	        						detailsObj["FromDate"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits[j].fromDateDtr;
   	        					}else{
   	        						detailsObj["FromDate"] =" - ";
   	        					}
-  	        					if(!!largeLoad[i].siteVisitDetailsList.listOFAllVisits[i].toDateStr){
-  	        						detailsObj["ToDate"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits[i].toDateStr;
+  	        					if(!!largeLoad[i].siteVisitDetailsList.listOFAllVisits[j].toDateStr){
+  	        						detailsObj["ToDate"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits[j].toDateStr;
   	        					}else{
   	        						detailsObj["ToDate"] =" - ";
   	        					}
   	        					if(!!largeLoad[i].siteVisitDetailsList.listOFAllVisits[i].remark){
-			  	        			detailsObj["Remark"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits[i].remark;
+			  	        			detailsObj["Remark"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits[j].remark;
 			  	        		}else{
 			  	        			detailsObj["Remark"] =" - ";
 			  	        		}
+	  	        					}
   	        					}
 	  	        		}
 		  	        		details.push(detailsObj);
@@ -458,21 +460,23 @@ $scope.loadCallID=function(){
 				  	        					detailsObj["Technician"] =" - ";
 				  	        				}
 				  	        				if(largeLoad[i].siteVisitDetailsList.listOFAllVisits){
-				  	        					if(!!largeLoad[i].fromDateDtr){
-				  	        						detailsObj["FromDate"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits.fromDateDtr;
+				  	        					for(j=0;j<=listOFAllVisits.length;j++){
+				  	        					if(!!largeLoad[i].siteVisitDetailsList.listOFAllVisits[j].fromDateDtr){
+				  	        						detailsObj["FromDate"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits[j].fromDateDtr;
 				  	        					}else{
 				  	        						detailsObj["FromDate"] =" - ";
 				  	        					}
-				  	        					if(!!largeLoad[i].toDateStr){
-				  	        						detailsObj["ToDate"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits.toDateStr;
+				  	        					if(!!largeLoad[i].siteVisitDetailsList.listOFAllVisits[j].toDateStr){
+				  	        						detailsObj["ToDate"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits[j].toDateStr;
 				  	        					}else{
 				  	        						detailsObj["ToDate"] =" - ";
 				  	        					}
-				  	        					if(!!largeLoad[i].siteVisitDetailsList.listOFAllVisits.remark){
-							  	        			detailsObj["Remark"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits.remark;
+				  	        					if(!!largeLoad[i].siteVisitDetailsList.listOFAllVisits[j].remark){
+							  	        			detailsObj["Remark"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits[j].remark;
 							  	        		}else{
 							  	        			detailsObj["Remark"] =" - ";
 							  	        		}
+				  	        					}
 				  	        				}
 				  	        		}
 				  	        		

@@ -282,9 +282,11 @@
 				}
 			];
 			$scope.addLift={
+					fyaTranId:'',
 					liftType:'',
 					branchCustomerMapId :'',
 					liftNumber : '',
+					liftId:'',
 					address : '',
 					city:'',
 					area:'',
@@ -323,8 +325,11 @@
 					alarm : '',
 					alarmBattery : '',
 					accessControl : '',
+					activeFlag:'',
 					imei :'',
 					lmsEventFromContactNo:'',
+					blank:'',
+					totalLiftCountForCustomer:'',
 					
 					machinePhoto : '',
 					panelPhoto : '',
@@ -432,8 +437,14 @@
 					alarmBattery : $scope.editLift.alarmBattery,
 					accessControl :$scope.editLift.accessControl,
 					imei :$scope.editLift.imei,
+					liftType :$scope.editLift.liftType,
 					lmsEventFromContactNo:$scope.editLift.lmsEventFromContactNo,
-					 amcType:$scope.selectedAmcType,
+					amcType:$scope.selectedAmcType,
+					engineType:$scope.selectedEngineType,
+					wiringShceme:$scope.selectedWiringType,
+					collectiveType:$scope.selectedCollectiveType,
+					simplexDuplex:$scope.selectedSimplexType,
+					doorType:$scope.selectedDoorType.selected.id,
 					
 					machinePhoto : '',
 					panelPhoto : '',
@@ -476,7 +487,7 @@
 				$scope.addLift.fireMode = 0;
 			}*/
 			//$scope.addLift.liftTypeName=$scope.addLift.liftTypeName;
-			//$scope.editLift.branchCustomerMapId = $scope.selectedCustomer.selected.branchCustomerMapId
+			//$scope.addLift.branchCustomerMapId = $scope.selectedCustomer.selected.branchCustomerMapId
 			serviceApi.doPostWithData("/RLMS/admin/lift/updateLiftParams",liftData)
 			.then(function(response){
 				$scope.showAlert = true;
@@ -494,7 +505,7 @@
 			});
 		}
 		
-		$scope.submitAddLift = function(){
+		/*$scope.submitAddLift = function(){
 			parseBase64();
 			//addLift.customerType = $scope.selectedCustomerType;
 			
@@ -551,7 +562,7 @@
 				$scope.alert.msg = error.exceptionMessage;
 				$scope.alert.type = "danger";
 			});
-		}
+		}*/
 		//reset edit branch
 		$scope.resetEditLift = function(){
 			$scope.showAlert = false;

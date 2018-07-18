@@ -152,13 +152,14 @@
 			<label for="engineType" class="col-md-3 control-label">Machine Type</label>
 			<!-- <div class="col-md-6"><input ng-model="editLift.engineType" class="form-control"  type="number" name="engineType"></div> -->
 			<div class="col-sm-6">
-					  <ui-select ng-model="selectedEngineMachineType.selected" title="Choose a Door Type">
+			<select  ng-model="selectedEngineType" ng-options="x for x in engineTypeArray" class="form-control"></select> 
+					 <!--  <ui-select ng-model="selectedEngineMachineType.selected" title="Choose a Door Type">
 					    <ui-select-match placeholder="Select a door type...">{{$select.selected.name}}</ui-select-match> <ui-select-choices
 								repeat="iterator in EngineMachineType| filter: $select.search">
 							<span
 								ng-bind-html="iterator.name | highlight: $select.search"></span>
 							</ui-select-choices>
-					  </ui-select>
+					  </ui-select> -->
 			</div>
 		</div>
 		<div class="form-group">
@@ -208,13 +209,14 @@
 		<div class="form-group">
 			<label for="collectiveType" class="col-md-3 control-label">Collective Type</label>
 			<div class="col-sm-6">
-					  <ui-select ng-model="selectedCollectiveType.selected" title="Choose a Collective Type">
+			<select  ng-model="selectedCollectiveType" ng-options="x for x in collectiveTypeArray" class="form-control"></select> 
+					<!--   <ui-select ng-model="selectedCollectiveType.selected" title="Choose a Collective Type">
 					    <ui-select-match placeholder="Select a collective type...">{{$select.selected.name}}</ui-select-match> <ui-select-choices
 								repeat="iterator in CollectiveType |filter: $select.search">
 							<span
 								ng-bind-html="iterator.name | highlight: $select.search"></span>
 							</ui-select-choices>
-					  </ui-select>
+					  </ui-select> -->
 			</div>
 			<!-- <div class="col-md-6"><input ng-model="editLift.collectiveType" class="form-control"  type="number" name="collectiveType"></div> -->
 		</div>
@@ -222,13 +224,14 @@
 			<label for="simplexDuplex" class="col-md-3 control-label">Simplex Duplex</label>
 			<!-- <div class="col-md-6"><input ng-model="editLift.simplexDuplex" class="form-control"  type="number" name="simplexDuplex"></div> -->
 			<div class="col-sm-6">
-					  <ui-select ng-model="selectedSimplexDuplex.selected" title="Choose a simplexDuplex Type">
+			<select  ng-model="selectedSimplexType" ng-options="x for x in simplexTypeArray" class="form-control"></select> 
+					<!--   <ui-select ng-model="selectedSimplexDuplex.selected" title="Choose a simplexDuplex Type">
 					    <ui-select-match placeholder="Select a simplexDuplex type...">{{$select.selected.name}}</ui-select-match> <ui-select-choices
 								repeat="iterator in SimplexDuplex| filter: $select.search">
 							<span
 								ng-bind-html="iterator.name | highlight: $select.search"></span>
 							</ui-select-choices>
-					  </ui-select>
+					  </ui-select> -->
 			</div>
 		</div>
 		<div class="form-group">
@@ -238,15 +241,17 @@
 		<div class="form-group">
 			<label for="wiringShceme" class="col-md-3 control-label">Wiring Scheme</label>
 			<!-- <div class="col-md-6"><input ng-model="editLift.wiringShceme" class="form-control"  type="number" name="wiringShceme"></div> -->
-			<div class="col-sm-6">
-					  <ui-select ng-model="selectedWiringScheme.selected" title="Choose a Wiring Scheme Type">
+			
+			 <div class="col-sm-6">
+			<select  ng-model="selectedWiringType" ng-options="x for x in wiringTypeArray" class="form-control"></select> 
+					  <!-- <ui-select ng-model="selectedWiringScheme.selected" title="Choose a Wiring Scheme Type">
 					    <ui-select-match placeholder="Select a Wiring Scheme type...">{{$select.selected.name}}</ui-select-match> <ui-select-choices
 								repeat="iterator in WiringScheme |filter: $select.search">
 							<span
 								ng-bind-html="iterator.name | highlight: $select.search"></span>
 							</ui-select-choices>
-					  </ui-select>
-			</div>
+					  </ui-select> -->
+			</div> 
 		</div>
 		<div class="form-group">
 			<label for="fireMode" class="col-md-3 control-label">Fire Mode</label>

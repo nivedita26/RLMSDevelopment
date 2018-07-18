@@ -348,19 +348,44 @@
 	  	        			userDetailsObj["lmsEventFromContactNo"] =" - ";
 	  	        		}
 	  	        		if(!!largeLoad[i].autoDoorMake){
-	  	        			userDetailsObj["autoDoorMake"] =totalLiftCountForCustomer[i].autoDoorMake;
+	  	        			userDetailsObj["autoDoorMake"] =largeLoad[i].autoDoorMake;
 	  	        		}else{
 	  	        			userDetailsObj["autoDoorMake"] =" - ";
 	  	        		}
 	  	        		if(!!largeLoad[i].fireMode){
-	  	        			userDetailsObj["fireMode"] =totalLiftCountForCustomer[i].fireMode;
+	  	        			userDetailsObj["fireMode"] =largeLoad[i].fireMode;
 	  	        		}else{
 	  	        			userDetailsObj["fireMode"] =" - ";
 	  	        		}
 	  	        		if(!!largeLoad[i].intercomm){
-	  	        			userDetailsObj["intercomm"] =totalLiftCountForCustomer[i].intercomm;
+	  	        			userDetailsObj["intercomm"] =largeLoad[i].intercomm;
 	  	        		}else{
 	  	        			userDetailsObj["intercomm"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].alarm){
+	  	        			userDetailsObj["alarm"] =largeLoad[i].alarm;
+	  	        		}else{
+	  	        			userDetailsObj["alarm"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].engineType){
+	  	        			userDetailsObj["engineType"] =largeLoad[i].engineType;
+	  	        		}else{
+	  	        			userDetailsObj["engineType"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].collectiveType){
+	  	        			userDetailsObj["collectiveType"] =largeLoad[i].collectiveType;
+	  	        		}else{
+	  	        			userDetailsObj["collectiveType"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].simplexDuplex){
+	  	        			userDetailsObj["simplexDuplex"] =largeLoad[i].simplexDuplex;
+	  	        		}else{
+	  	        			userDetailsObj["simplexDuplex"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].wiringShceme){
+	  	        			userDetailsObj["wiringShceme"] =largeLoad[i].wiringShceme;
+	  	        		}else{
+	  	        			userDetailsObj["wiringShceme"] =" - ";
 	  	        		}
 	  	        		userDetails.push(userDetailsObj);
 	  	        	  }
@@ -493,6 +518,10 @@
 						//$scope.selectedDoorType.id= $scope.editLift.doorType; 
 						//$scope.selectedDoorType.selected =$scope.editLift.doorType;
 						$rootScope.amcTypeArray=['Comprehensive','Non-Comprehensive','On Demand','Other'];
+						$rootScope.engineTypeArray=['Geared','Gearless'];
+						$rootScope.collectiveTypeArray=['Down Collective','Full Collective'];
+						$rootScope.simplexTypeArray=['Simplex','Duplex','Group'];
+						$rootScope.wiringTypeArray=['Pluggable','NonPluggable'];
 						$rootScope.editLift.liftId=row.liftId;
 						$rootScope.editLift.address=row.Address.replace(/-/g, '');
 						$rootScope.editLift.city=row.City.replace(/-/g, '');
@@ -529,7 +558,12 @@
 						$rootScope.editLift.alarmBattery=row.alarmBattery;
 						$rootScope.editLift.accessControl=row.accessControl;
 						$rootScope.editLift.imei=row.imei;
+						$rootScope.editLift.liftType=row.LiftType;
 						$rootScope.editLift.lmsEventFromContactNo=row.lmsEventFromContactNo;
+						$rootScope.selectedEngineType=row.engineType;
+						$rootScope.selectedWiringType=row.wiringShceme;
+						$rootScope.selectedCollectiveType=row.collectiveType;
+						$rootScope.selectedSimplexType=row.simplexDuplex;
 						
 						$rootScope.editLift.machinePhoto=row.machinePhoto;
 						$rootScope.editLift.panelPhoto=row.panelPhoto;

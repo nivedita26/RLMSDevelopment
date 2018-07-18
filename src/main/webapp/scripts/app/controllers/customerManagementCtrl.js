@@ -3,6 +3,7 @@
 	angular.module('rlmsApp')
 	.controller('customerManagementCtrl', ['$scope', '$filter','serviceApi','$route','$http','utility','$rootScope', function($scope, $filter,serviceApi,$route,$http,utility,$rootScope) {
 		initCustomerList();
+		loadCompanyData();
 		$scope.showCompany = false;
 		$scope.showBranch = false;
 		$scope.goToAddCustomer = function(){
@@ -339,6 +340,7 @@
 	  	    	
 	  	    	 $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
 	  	    }
+	  	    
 	  	    $scope.resetCustomerList=function(){
 	  	    	initCustomerList();
 	  	    }
