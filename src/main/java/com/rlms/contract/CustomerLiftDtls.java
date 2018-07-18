@@ -1,21 +1,17 @@
 package com.rlms.contract;
 
+import java.util.List;
+
 public class CustomerLiftDtls {
-	private String liftNumber;
-	private Integer liftCustomerMapId;
+
 	private String customerName;
-	
-	public String getLiftNumber() {
-		return liftNumber;
+	private List<LiftCustomerMap> liftCustomerMapList;
+		
+	public List<LiftCustomerMap> getLiftCustomerMapList() {
+		return liftCustomerMapList;
 	}
-	public void setLiftNumber(String liftNumber) {
-		this.liftNumber = liftNumber;
-	}
-	public Integer getLiftCustomerMapId() {
-		return liftCustomerMapId;
-	}
-	public void setLiftCustomerMapId(Integer liftCustomerMapId) {
-		this.liftCustomerMapId = liftCustomerMapId;
+	public void setLiftCustomerMapList(List<LiftCustomerMap> liftCustomerMapList) {
+		this.liftCustomerMapList = liftCustomerMapList;
 	}
 	public String getCustomerName() {
 		return customerName;

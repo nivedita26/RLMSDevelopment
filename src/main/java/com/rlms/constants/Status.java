@@ -10,10 +10,10 @@ public enum Status {
 	COMPLETED(10,"Completed"),
 	UNDER_WARRANTY(38,"Under Warranty"),
 	RENEWAL_DUE(39,"Renewal Due"),
-	AMC_PENDING(40,"AMC Pending"),
+	AMC_PENDING(40,"AMC Expired"),
 	UNDER_AMC(41,"Under AMC"),
 	//NOT_UNDER_AMC(42,"Not Under AMC"),
-	NOT_UNDER_Warranty(42,"Not Under Warranty");
+	NOT_UNDER_Warranty(42,"Warranty Expired");
 
 	private Integer statusId;
 	private String statusMsg;

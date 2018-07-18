@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.rlms.constants.RLMSCallType;
 import com.rlms.constants.RlmsErrorType;
 import com.rlms.constants.Status;
 import com.rlms.contract.ComplaintsDtlsDto;
@@ -307,7 +308,7 @@ public class RestControllerController  extends BaseController {
     	ObjectMapper mapper = new ObjectMapper();
         try{
         	log.info("Method :: getAllComplaintsByMembers");
-        	listOfAllComplaints =  this.ComplaintsService.getAllComplaintsByMember(memberDtlsDto.getMemberId(),0);
+        	listOfAllComplaints =  this.ComplaintsService.getAllComplaintsByMember(memberDtlsDto.getMemberId(),RLMSCallType.USER_RAIGED_CALL_THROUGH_APP.getId());
         	reponseDto.setResponse(mapper.writeValueAsString(listOfAllComplaints));
         	reponseDto.setStatus(true);
         }
@@ -475,6 +476,7 @@ public class RestControllerController  extends BaseController {
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
     public @ResponseBody ResponseDto logout(@RequestBody UserDtlsDto userDtlsDto) {
 	
+    	
 		return  userService.logout(userDtlsDto);
     }
     @RequestMapping(value="/getCustomerListForTechnician", method = RequestMethod.POST)

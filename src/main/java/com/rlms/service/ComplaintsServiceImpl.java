@@ -155,7 +155,10 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 		complaintMaster.setRegistrationType(dto.getRegistrationType());
 		complaintMaster.setRemark(dto.getComplaintsRemark());
 		complaintMaster.setStatus(Status.PENDING.getStatusId());
-		complaintMaster.setCallType(dto.getCallType());
+	//	complaintMaster.setCallType(dto.getCallType());
+		
+		complaintMaster.setCallType(RLMSCallType.USER_RAIGED_CALL_THROUGH_APP.getId());
+
 		complaintMaster.setTitle(dto.getComplaintsTitle());
 				
 		if(RLMSConstants.COMPLAINT_REG_TYPE_ADMIN.getId() == dto.getRegistrationType()){
@@ -173,19 +176,21 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 		return complaintMaster;
 	}
 	private ComplaintsDto constructComplaintDto(RlmsComplaintMaster complaintMaster){
-		
-		RlmsUserRoles  rlmsUserRoles  = userRoleDao.getUserRoleByUserId(complaintMaster.getCreatedBy());
-
 	//	RlmsUsersMaster  rlmsUsersMaster  = userMasterDao.getUserByUserId(complaintMaster.getCreatedBy());
 		ComplaintsDto dto = new ComplaintsDto();
 		if(RLMSConstants.COMPLAINT_REG_TYPE_ADMIN.getId().equals(complaintMaster.getRegistrationType())){
+			RlmsUserRoles  rlmsUserRoles  = userRoleDao.getUserRoleByUserId(complaintMaster.getCreatedBy());
 			dto.setRegistrationTypeStr(RLMSConstants.COMPLAINT_REG_TYPE_ADMIN.getName());
+	    	dto.setRegisteredBy(rlmsUserRoles.getRlmsUserMaster().getFirstName() +" "+rlmsUserRoles.getRlmsUserMaster().getLastName()+"("+rlmsUserRoles.getRole()+")");
 		}else if(RLMSConstants.COMPLAINT_REG_TYPE_END_USER.getId().equals(complaintMaster.getRegistrationType())){
 			dto.setRegistrationTypeStr(RLMSConstants.COMPLAINT_REG_TYPE_END_USER.getName());
+			RlmsMemberMaster memberMaster = userService.getMemberById(complaintMaster.getCreatedBy());
+			if(memberMaster!=null) {
+		    	 dto.setRegisteredBy(memberMaster.getFirstName() +" "+memberMaster.getLastName()+"("+memberMaster.getContactNumber()+")");
+			}
 		}else if(RLMSConstants.COMPLAINT_REG_TYPE_LIFT_EVENT.getId().equals(complaintMaster.getRegistrationType())){
 			dto.setRegistrationTypeStr(RLMSConstants.COMPLAINT_REG_TYPE_LIFT_EVENT.getName());
 		}
-    	 dto.setRegisteredBy(rlmsUserRoles.getRlmsUserMaster().getFirstName() +" "+rlmsUserRoles.getRlmsUserMaster().getLastName()+"("+rlmsUserRoles.getRole()+")");
 		dto.setComplaintId(complaintMaster.getComplaintId());
 		dto.setComplaintNumber(complaintMaster.getComplaintNumber());
 		dto.setBranchName(complaintMaster.getLiftCustomerMap().getBranchCustomerMap().getCompanyBranchMapDtls().getRlmsBranchMaster().getBranchName());
@@ -254,9 +259,6 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 			dto.setRegType(RLMSConstants.COMPLAINT_REG_TYPE_LIFT_EVENT.getName());
 			complaintent = RLMSConstants.COMPLAINT_REG_TYPE_LIFT_EVENT.getName();
 		}
-		
-		
-		
 		dto.setComplaintent(complaintent);
 		return dto;
 	}
@@ -290,10 +292,8 @@ private boolean isServiceCallToShow(Date regDate,Date serviceStartDate){
 	if(diff!=0&& diff>0) {
 		return false;
 	}
-	
 	return true;
 }
-
 	@Transactional(propagation = Propagation.REQUIRED)
 	public List<RlmsComplaintMaster> getAllComplaintsForGivenCriteria(ComplaintsDtlsDto dto){
 		return this.complaintsDao.getAllComplaintsForGivenCriteria(dto.getBranchCompanyMapId(), dto.getBranchCustomerMapId(), dto.getListOfLiftCustoMapId(), dto.getStatusList(),dto.getFromDate(), dto.getToDate(),0);
@@ -318,9 +318,7 @@ private boolean isServiceCallToShow(Date regDate,Date serviceStartDate){
 		String statusMessage = PropertyUtils.getPrpertyFromContext(RlmsErrorType.COMPLAINT_ASSIGNED_SUUCESSFULLY.getMessage()) + " " + techName;
 		this.sendNotificationsAboutComplaintAssign(complaintTechMapDtls);
 		return statusMessage;
-		
 	}
-	
 	private RlmsComplaintTechMapDtls constructComplaintTechMapDtlsDto(ComplaintsDto complaintsDto, UserMetaInfo metaInfo){
 		RlmsComplaintTechMapDtls complaintTechMapDtls = new RlmsComplaintTechMapDtls();
 		RlmsComplaintMaster complaintMaster = this.complaintsDao.getComplaintMasterObj(complaintsDto.getComplaintId(),complaintsDto.getServiceCallType());
