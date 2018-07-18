@@ -273,6 +273,7 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 			}
 			if(isToShow){
 					ComplaintsDto complaintsDto = this.constructComplaintDto(rlmsComplaintMaster);
+
   			         listOfAllComplaints.add(complaintsDto);
 		    }
 		}

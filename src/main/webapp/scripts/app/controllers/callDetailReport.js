@@ -2,7 +2,7 @@
     'use strict';
 	angular.module('rlmsApp')
 	.controller('callDetailedReportCtrl', ['$scope', '$filter','serviceApi','$route','$http','utility','$rootScope', function($scope, $filter,serviceApi,$route,$http,utility,$rootScope) {
-		initReport();
+		initCallDReport();
 		$scope.cutomers=[];
 		$scope.eventId=[];
 		$scope.filterOptions = {
@@ -30,7 +30,7 @@
  	         })
 		}
 		
-		function initReport(){
+		function initCallDReport(){
 			$scope.selectedCompany = {};
 			$scope.selectedBranch = {};
 			$scope.lifts=[];
@@ -214,8 +214,8 @@
 		  	        		}else{
 		  	        			detailsObj["Title"] =" - ";
 		  	        		}
-		  	        		if(!!largeLoad[i].totalNoOfVisits){
-		  	        			detailsObj["TotalAttempts"] =largeLoad[i].totalNoOfVisits;
+		  	        		if(!!largeLoad[i].totalAttempts){
+		  	        			detailsObj["TotalAttempts"] =largeLoad[i].totalAttempts;
 		  	        		}else{
 		  	        			detailsObj["TotalAttempts"] =" - ";
 		  	        		}
@@ -229,8 +229,8 @@
 		  	        		}else{
 		  	        			detailsObj["TotalDaysTaken"] =" - ";
 		  	        		}
-		  	        		if(!!largeLoad[i].lastVisitedDate){
-		  	        			detailsObj["LastVisitedDate"] =largeLoad[i].lastVisitedDate;
+		  	        		if(!!largeLoad[i].lastVisitedDateStr){
+		  	        			detailsObj["LastVisitedDate"] =largeLoad[i].lastVisitedDateStr;
 		  	        		}else{
 		  	        			detailsObj["LastVisitedDate"] =" - ";
 		  	        		}
@@ -303,13 +303,13 @@
 		  	        		}else{
 		  	        			detailsObj["TotalDaysTaken"] =" - ";
 		  	        		}
-		  	        		if(!!largeLoad[i].lastVisitedDate){
-		  	        			detailsObj["LastVisitedDate"] =largeLoad[i].lastVisitedDate;
+		  	        		if(!!largeLoad[i].lastVisitedDateStr){
+		  	        			detailsObj["LastVisitedDate"] =largeLoad[i].lastVisitedDateStr;
 		  	        		}else{
 		  	        			detailsObj["LastVisitedDate"] =" - ";
 		  	        		}
-		  	        		if(!!largeLoad[i].totalNoOfVisits){
-		  	        			detailsObj["TotalAttempts"] =largeLoad[i].totalNoOfVisits;
+		  	        		if(!!largeLoad[i].totalAttempts){
+		  	        			detailsObj["TotalAttempts"] =largeLoad[i].totalAttempts;
 		  	        		}else{
 		  	        			detailsObj["TotalAttempts"] =" - ";
 		  	        		}
@@ -361,8 +361,8 @@
 	  	        		}else{
 	  	        			detailsObj["Title"] =" - ";
 	  	        		}
-	  	        		if(!!largeLoad[i].totalNoOfVisits){
-	  	        			detailsObj["TotalAttempts"] =largeLoad[i].totalNoOfVisits;
+	  	        		if(!!largeLoad[i].totalAttempts){
+	  	        			detailsObj["TotalAttempts"] =largeLoad[i].totalAttempts;
 	  	        		}else{
 	  	        			detailsObj["TotalAttempts"] =" - ";
 	  	        		}
@@ -376,8 +376,8 @@
 	  	        		}else{
 	  	        			detailsObj["TotalDaysTaken"] =" - ";
 	  	        		}
-	  	        		if(!!largeLoad[i].lastVisitedDate){
-	  	        			detailsObj["LastVisitedDate"] =largeLoad[i].lastVisitedDate;
+	  	        		if(!!largeLoad[i].lastVisitedDateStr){
+	  	        			detailsObj["LastVisitedDate"] =largeLoad[i].lastVisitedDateStr;
 	  	        		}else{
 	  	        			detailsObj["LastVisitedDate"] =" - ";
 	  	        		}
@@ -475,8 +475,8 @@
 		  	      }
 		  	      ]
 		  	    };
-	  	  $scope.resetReportList = function(){
-	  		initReport();
+	  	  $scope.resetCallDReport= function(){
+	  		initCallDReport();
 	  	  }
 	  	  function constructDataToSend(){
 	

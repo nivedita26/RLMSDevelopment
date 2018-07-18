@@ -56,6 +56,7 @@
 				var successMessage = response[key[0]];
 				$scope.alert.msg = successMessage;
 				$scope.alert.type = "success";
+				initEditMember();
 				$scope.editMemberForm.$setPristine();
 				$scope.editMemberForm.$setUntouched();
 			},function(error){
@@ -73,9 +74,9 @@
 				var successMessage = response[key[0]];
 				$scope.alert.msg = successMessage;
 				$scope.alert.type = "success";
-				initAddMember();
-				$scope.addMemberForm.$setPristine();
-				$scope.addMemberForm.$setUntouched();
+				initEditMember();
+				$scope.editMemberForm.$setPristine();
+				$scope.editMemberForm.$setUntouched();
 			},function(error){
 				$scope.showAlert = true;
 				$scope.alert.msg = error.exceptionMessage;
@@ -84,7 +85,7 @@
 		}
 		//reset add branch
 		$scope.resetEditMember = function(){
-			//initAddBranch();
+			initEditMember();
 		}
 		$scope.backPage =function(){
 			 $window.history.back();

@@ -17,7 +17,9 @@
 							'$window',
 							function($scope, $filter, serviceApi, $route,
 									$http, utility, $rootScope,$modal,$log,$window) {
-								initCustomerList();
+								initComplaintList();
+								loadCompanyData();
+//							loadBranchData();
 								$scope.showCompany = false;
 								$scope.showBranch = false;
 								
@@ -25,23 +27,25 @@
 									window.location.hash = "#/add-complaint";
 								};
 								
-								function initCustomerList() {
-									$scope.date = {
-								        startDate: moment().subtract(1, "days"),
-								        endDate: moment()
-								    };
+								function initComplaintList() {
+									
+									$scope.selectedCompany = {};
+									$scope.selectedBranch = {};
+									$scope.selectedCustomer = {};
+									$scope.selectedCalltype = {};
 									$scope.alert = { type: 'success', msg: 'You successfully Added Complaint.',close:true };
 									$scope.showAlert = false;
 									$scope.address="";
 									$scope.liftAddress="";
 									$scope.technicianAddress="";
-									$scope.selectedCompany = {};
-									$scope.selectedBranch = {};
-									$scope.selectedCustomer = {};
-									$scope.selectedCalltype = {};
 									$scope.selectedLifts = {};
+									//loadDefaultComplaintData();
 									//$scope.selectedComplaintsTitle={};
 									$scope.branches = [];
+									$scope.date = {
+									        startDate: moment().subtract(1, "days"),
+									        endDate: moment()
+									    };
 									$scope.callType = [{
 										id: 1,
 										name:'Lift Installation call'
@@ -336,6 +340,7 @@
 													} else {
 														companyData = {
 															companyId : $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyMaster.companyId
+															
 														}
 													}
 													serviceApi
@@ -644,9 +649,9 @@
 											$scope.pagingOptions.pageSize,
 											$scope.pagingOptions.currentPage);
 								}
-								$scope.resetComplaintList = function() {
-									initCustomerList();
-								};
+								 $scope.resetComplaintList = function(){
+									 initComplaintList();
+								  	  }
 								// showCompnay Flag
 								if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 1) {
 									$scope.showCompany = true;
@@ -798,6 +803,7 @@
 								$rootScope.editComplaint={};
 								$rootScope.technicianDetails=[];
 								$rootScope.complaintStatusArray=['Pending','Resolved','In Progress','Assigned'];
+								
 								$scope.editThisRow=function(row){
 									if(row.Status==='Resolved' || row.Status==='Completed'){
 										$window.confirm('Complaint already completed or resolved');
