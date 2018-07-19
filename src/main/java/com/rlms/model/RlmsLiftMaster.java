@@ -74,8 +74,6 @@ public class RlmsLiftMaster implements Serializable{
 	private Integer createdBy;
 	private Date updatedDate;
 	private Integer updatedBy;
-	private String imei;
-	private String lmsEventContactNumber;
 	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
