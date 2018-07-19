@@ -357,6 +357,7 @@ public class LiftServiceImpl implements LiftService{
 			dto.setFireMode(liftM.getFireMode());
 			dto.setIntercomm(liftM.getIntercomm());
 			dto.setLiftType(liftM.getLiftType());
+			dto.setPanelMake(liftM.getPanelMake());
 			dto.setImei(liftM.getImei());
 			dto.setLmsEventFromContactNo(liftM.getLmsEventContactNumber());
 			
