@@ -155,11 +155,13 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 		complaintMaster.setRegistrationType(dto.getRegistrationType());
 		complaintMaster.setRemark(dto.getComplaintsRemark());
 		complaintMaster.setStatus(Status.PENDING.getStatusId());
-	//	complaintMaster.setCallType(dto.getCallType());
-		
-		complaintMaster.setCallType(RLMSCallType.USER_RAIGED_CALL_THROUGH_APP.getId());
-
-		complaintMaster.setTitle(dto.getComplaintsTitle());
+		if(dto.getCallType()!=RLMSCallType.USER_RAIGED_CALL_THROUGH_APP.getId()) {
+			complaintMaster.setCallType(dto.getCallType());
+		}else {
+			complaintMaster.setCallType(RLMSCallType.USER_RAIGED_CALL_THROUGH_APP.getId());
+		}
+			//complaintMaster.setCallType(dto.getCallType());
+		    complaintMaster.setTitle(dto.getComplaintsTitle());
 				
 		if(RLMSConstants.COMPLAINT_REG_TYPE_ADMIN.getId() == dto.getRegistrationType()){
 				complaintMaster.setCreatedBy(metaInfo.getUserId());				

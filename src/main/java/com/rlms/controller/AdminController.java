@@ -534,7 +534,7 @@ public class AdminController extends BaseController{
 	  }
 	 
 	 @RequestMapping(value = "/lift/updateLiftParams", method = RequestMethod.POST)
-	    public @ResponseBody ResponseDto validateAndUpdateLiftDetails(@RequestBody RlmsLiftMaster dto) throws RunTimeException, ValidationException {
+	    public @ResponseBody ResponseDto validateAndUpdateLiftDetails(@RequestBody LiftDtlsDto dto) throws RunTimeException, ValidationException {
 		 ResponseDto reponseDto = new ResponseDto();
 	     try{
 	          	this.liftService.updateLiftParams(dto);

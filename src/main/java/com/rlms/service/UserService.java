@@ -15,9 +15,6 @@ import com.rlms.model.RlmsMemberMaster;
 import com.rlms.model.RlmsSpocRoleMaster;
 import com.rlms.model.RlmsUserRoles;
 import com.rlms.model.User;
-
-
-
 public interface UserService {
 	
 	User findById(long id);
