@@ -67,16 +67,11 @@ public class RlmsLiftMaster implements Serializable{
 	private Integer status;
 	private String imei;
 	private String lmsEventContactNumber;
-
-	
 	private Integer activeFlag;
 	private Date createdDate;
 	private Integer createdBy;
 	private Date updatedDate;
 	private Integer updatedBy;
-//	private String imei;
-	//private String lmsEventContactNumber;
-	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "lift_id", unique = true, nullable = true)

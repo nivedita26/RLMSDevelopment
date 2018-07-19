@@ -336,7 +336,7 @@
 					activeFlag:'',
 					imei :'',
 					lmsEventFromContactNo:'',
-					status:'',
+					//status:'',
 					//photoType:'',
 					//totalLiftCountForCustomer:'',
 					
