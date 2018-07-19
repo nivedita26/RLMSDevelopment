@@ -1,7 +1,3 @@
-
-
-
-
 package com.rlms.model;
 
 import static javax.persistence.GenerationType.IDENTITY;
@@ -69,7 +65,9 @@ public class RlmsLiftMaster implements Serializable{
 	private byte[] lobbyPhoto;
 	private Integer liftType;
 	private Integer status;
-	
+	private String imei;
+	private String lmsEventContactNumber;
+
 	
 	private Integer activeFlag;
 	private Date createdDate;
@@ -517,10 +515,7 @@ public class RlmsLiftMaster implements Serializable{
 	public void setAmcEndDate(Date amcEndDate) {
 		this.amcEndDate = amcEndDate;
 	}
-	
-	
-	
-	
+
 	@Column(name="imei")
 	public String getImei() {
 		return imei;
@@ -528,8 +523,6 @@ public class RlmsLiftMaster implements Serializable{
 	public void setImei(String imei) {
 		this.imei = imei;
 	}
-
-
 
 	@Column(name="lms_event_contact_no",unique = true, nullable = true)
   	public String getLmsEventContactNumber() {
