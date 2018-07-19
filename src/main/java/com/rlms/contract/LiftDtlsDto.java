@@ -70,6 +70,7 @@ public class LiftDtlsDto {
 	private boolean isBlank;
 	private Integer activeFlag;
 	private String imei;
+	public String lmsEventFromContactNo;
 	
 
 	private BigInteger totalLiftCountForCustomer;
@@ -477,7 +478,7 @@ public class LiftDtlsDto {
 		this.imei = imei;
 	}
 	
-	public String lmsEventFromContactNo;
+	
 
 	public String getLmsEventFromContactNo() {
 		return lmsEventFromContactNo;
