@@ -466,7 +466,6 @@ public class RlmsLiftMaster implements Serializable{
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
-
 	@Column(name = "city", unique = true, nullable = false)
 	public String getCity() {
 		return city;
@@ -475,16 +474,13 @@ public class RlmsLiftMaster implements Serializable{
 	public void setCity(String city) {
 		this.city = city;
 	}
-
 	@Column(name = "area", unique = true, nullable = false)
 	public String getArea() {
 		return area;
 	}
-
 	public void setArea(String area) {
 		this.area = area;
 	}
-
 	@Column(name = "pincode", unique = true, nullable = false)
 	public Integer getPincode() {
 		return pincode;
@@ -493,8 +489,6 @@ public class RlmsLiftMaster implements Serializable{
 	public void setPincode(Integer pincode) {
 		this.pincode = pincode;
 	}
-	
-	
 	@Column(name = "lift_type", unique = true, nullable = true)
 	public Integer getLiftType() {
 		return liftType;
@@ -526,6 +520,4 @@ public class RlmsLiftMaster implements Serializable{
 	public void setLmsEventContactNumber(String lmsEventContactNumber) {
 		this.lmsEventContactNumber = lmsEventContactNumber;
 	}
-
-	
 }
