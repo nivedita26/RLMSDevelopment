@@ -448,7 +448,7 @@
 					imei :$scope.editLift.imei,
 					liftType :$scope.editLift.liftType,
 					lmsEventContactNumber:$scope.editLift.lmsEventFromContactNo,
-					amcType:$scope.selectedAmcType.selected.id,
+					amcType:$scope.selectedAMCType.selected.id,
 					engineType:$scope.selectedEngineMachineType.selected.id,
 					wiringShceme:$scope.selectedWiringScheme.selected.id,
 					collectiveType:$scope.selectedCollectiveType.selected.id,
