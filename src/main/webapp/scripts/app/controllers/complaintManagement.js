@@ -96,6 +96,7 @@
 									$scope.showAdvanceFilter = false;
 									$scope.showTable = false;
 								}
+								
 								function loadCompanyData() {
 									serviceApi
 											.doPostWithoutData(

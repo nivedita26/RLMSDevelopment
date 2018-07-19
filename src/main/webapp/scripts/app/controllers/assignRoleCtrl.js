@@ -1,7 +1,7 @@
 -	(function () {
     'use strict';
 	angular.module('rlmsApp')
-	.controller('assignRoleCtrl', ['$scope', '$filter','serviceApi','$route','utility', function($scope, $filter,serviceApi,$route,utility) {
+	.controller('assignRoleCtrl', ['$scope', '$filter','serviceApi','$route','utility','$rootScope', function($scope, $filter,serviceApi,$route,utility,$rootScope) {
 		initAssignRole();
 		loadRolesData();
 		$scope.alert = { type: 'success', msg: 'You successfully Assigned Role.',close:true };
@@ -25,6 +25,7 @@
 					spocRoleId:''
 			}
 		};
+		
 		//Load Roles Data
 		function loadRolesData(){
 		    serviceApi.doPostWithoutData('/RLMS/admin/getApplicableRoles')
@@ -39,6 +40,12 @@
 			$scope.isRoleSelected = true;
 		}
 	  	
+		function loadCompanyData(){
+			serviceApi.doPostWithoutData('/RLMS/admin/getAllApplicableCompanies')
+		    .then(function(response){
+		    		$scope.companies = response;
+		    });
+		}
 		$scope.loadBranchData = function(){
 			/*var data = {
 				companyId : $scope.selectedCompany.selected.companyId
@@ -60,12 +67,6 @@
 		    	
 		    });
 		}
-		function loadCompanyData(){
-			serviceApi.doPostWithoutData('/RLMS/admin/getAllApplicableCompanies')
-		    .then(function(response){
-		    		$scope.companies = response;
-		    });
-		}
 		function loadUsersData(){
 			var companyId = $scope.selectedCompany.selected.companyId;
 			var data = {
@@ -77,7 +78,21 @@
 		    	console.log(response);
 		    });
 		}	
+		if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 1) {
+		$scope.showCompany = true;
+		loadCompanyData();
 		
+	} else {
+		$scope.showCompany = false;
+		$scope.loadBranchData();
+	}
+		/*if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 2) {
+			$scope.showBranch = true;
+			$scope.loadBranchData();
+			
+		} else {
+			$scope.showBranch = false;
+		}*/
 		//Post call
 		$scope.submitAssignRole = function(){
 			$scope.assignRole.companyBranchMapId = $scope.selectedBranch.selected.companyBranchMapId;
