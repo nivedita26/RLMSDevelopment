@@ -357,7 +357,8 @@ public class LiftServiceImpl implements LiftService{
 			dto.setFireMode(liftM.getFireMode());
 			dto.setIntercomm(liftM.getIntercomm());
 			dto.setLiftType(liftM.getLiftType());
-		
+			dto.setImei(liftM.getImei());
+			dto.setLmsEventFromContactNo(liftM.getLmsEventContactNumber());
 			
 			/*if(null != liftM.getAmcStartDate()){
 				dto.setAmcStartDateStr(DateUtils.convertDateToStringWithoutTime(liftCustomerMap.getLiftMaster().get));
