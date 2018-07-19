@@ -72,7 +72,8 @@ public class RlmsLiftMaster implements Serializable{
 	private Integer createdBy;
 	private Date updatedDate;
 	private Integer updatedBy;
-	
+	private String imei;
+	private String lmsEventContactNumber;
 	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
@@ -513,10 +514,10 @@ public class RlmsLiftMaster implements Serializable{
 		this.amcEndDate = amcEndDate;
 	}
 	
+	
+	
+	
 	@Column(name="imei")
-	private String imei;
-	
-	
 	public String getImei() {
 		return imei;
 	}
@@ -524,7 +525,7 @@ public class RlmsLiftMaster implements Serializable{
 		this.imei = imei;
 	}
 
-	private String lmsEventContactNumber;
+
 
 	@Column(name="lms_event_contact_no",unique = true, nullable = true)
   	public String getLmsEventContactNumber() {
