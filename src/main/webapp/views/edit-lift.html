@@ -113,7 +113,7 @@
 			<div class="col-md-6">
 			<!-- <select  ng-model="selectedAmcType" ng-options="x for x in amcTypeArray" class="form-control"></select>  -->
 			 <div class="col-sm-6">
-					  <ui-select ng-model="selectedAMCType.selected" title="Choose a AMC Type" ng-required="true" name="amctype" ng-required="true">
+					  <ui-select ng-model="selectedAMCType.selected" title="Choose a AMC Type" ng-required="true" name="amcType" ng-required="true">
 					    <ui-select-match placeholder="Select a AMC Type in the list...">{{$select.selected.name}}</ui-select-match> <ui-select-choices
 								repeat="iterator in AMCType| filter: $select.search">
 							<span
