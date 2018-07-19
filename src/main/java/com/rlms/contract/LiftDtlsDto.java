@@ -71,8 +71,6 @@ public class LiftDtlsDto {
 	private Integer activeFlag;
 	private String imei;
 	public String lmsEventFromContactNo;
-	
-
 	private BigInteger totalLiftCountForCustomer;
 	
 	public BigInteger getTotalLiftCountForCustomer() {
