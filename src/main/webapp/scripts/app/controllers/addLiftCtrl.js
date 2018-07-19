@@ -493,9 +493,9 @@
         if($scope.selectedAMCType.selected){
 	      $scope.addLift.amcType = $scope.selectedAMCType.selected.id;
        }
-	    	if($scope.selectedAMCType.selected){
+	    	/*if($scope.selectedAMCType.selected){
 	    			$scope.addLift.amcType = $scope.selectedAMCType.selected.id;
-		}
+		}*/
 			if($scope.selectedDoorType.selected){
 				$scope.addLift.doorType = $scope.selectedDoorType.selected.id;
 			}

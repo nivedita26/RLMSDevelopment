@@ -10,14 +10,14 @@
 		  <div class="form-group">
 				<label class="col-sm-3 control-label">Select Role</label>
 				<div class="col-sm-6">
-					  <ui-select ng-model="selectedRole.selected" title="Choose a Role">
+					  <ui-select ng-model="selectedRole.selected" title="Choose a Role" on-select="proceedRole()">
 					    <ui-select-match placeholder="Select or search a role in the list...">{{$select.selected.roleName}}</ui-select-match>
 					    <ui-select-choices repeat="roleIterator in roles | filter: $select.search">
 					      <span ng-bind-html="roleIterator.roleName | highlight: $select.search"></span>
 					    </ui-select-choices>
 					  </ui-select>
 				</div>
-				<button class="btn-sky btn" ng-click="proceedRole()">Proceed</button>
+				<!-- <button class="btn-sky btn" ng-click="proceedRole()">Proceed</button> -->
 			</div>
 			
 			<div ng-show="isRoleSelected">
