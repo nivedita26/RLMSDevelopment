@@ -1,3 +1,7 @@
+
+
+
+
 package com.rlms.model;
 
 import static javax.persistence.GenerationType.IDENTITY;
@@ -27,13 +31,11 @@ public class RlmsLiftMaster implements Serializable{
 	private Date serviceStartDate;
 	private Date serviceEndDate;
 	private Date dateOfInstallation; 
-	
 	private Date amcStartDate;
 	private Date amcEndDate;
 	private Integer amcType;
 	private String amcAmount;
-	
-	private Integer doorType;
+   private Integer doorType;
 	private String noOfStops;
 	private Integer engineType; 
 	private String machineMake;
@@ -67,6 +69,8 @@ public class RlmsLiftMaster implements Serializable{
 	private byte[] lobbyPhoto;
 	private Integer liftType;
 	private Integer status;
+	
+	
 	private Integer activeFlag;
 	private Date createdDate;
 	private Integer createdBy;

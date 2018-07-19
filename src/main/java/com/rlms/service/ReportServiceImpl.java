@@ -173,8 +173,7 @@ public class ReportServiceImpl implements ReportService {
 			Date tempDateOfInstallation = listOFAMCs.get(listOFAMCs.size() - 1).getLiftCustomerMap().getLiftMaster().getDateOfInstallation();
 			Date tempWarrantyStartDate = listOFAMCs.get(listOFAMCs.size() - 1).getLiftCustomerMap().getLiftMaster().getServiceStartDate();
 			Date tempWarrantyEndDate = listOFAMCs.get(listOFAMCs.size() - 1).getLiftCustomerMap().getLiftMaster().getServiceEndDate();
-
-			*/
+		*/
 			Date tempEndDate = listOFAMCs.get(listOFAMCs.size() - 1).getAmcEndDate();
 			Date tempDateOfInstallation = listOFAMCs.get(listOFAMCs.size() - 1).getLiftCustomerMap().getLiftMaster().getDateOfInstallation();
 			Date tempWarrantyStartDate = listOFAMCs.get(listOFAMCs.size() - 1).getLiftCustomerMap().getLiftMaster().getServiceStartDate();
@@ -213,7 +212,6 @@ public class ReportServiceImpl implements ReportService {
 		}
 		return listOFDtos;
 	}
-	
 	private Status calculateAMCStatus(Date amcStartDate, Date amcEndDate, Date dateOfInstallation,Date warrantyStartDate,Date warrantyEndDate) {
 		Status amcStatus = null;
 		Date today = new Date();
@@ -276,8 +274,8 @@ public class ReportServiceImpl implements ReportService {
 	public RlmsLiftAmcDtls constructLiftAMCDtls(AMCDetailsDto dto, UserMetaInfo metaInfo) throws ParseException{
 	    RlmsLiftAmcDtls liftAMCDtls = new RlmsLiftAmcDtls();
 		RlmsLiftCustomerMap liftCustomerMap = this.liftDao.getLiftCustomerMapById(dto.getLiftCustoMapId());
-	    liftAMCDtls = 	liftDao.getRlmsLiftAmcDtlsByLiftCustomerMapId(liftCustomerMap.getLiftCustomerMapId());	
-	    if(liftAMCDtls==null) {
+		liftAMCDtls = 	liftDao.getRlmsLiftAmcDtlsByLiftCustomerMapId(liftCustomerMap.getLiftCustomerMapId());	
+		if(liftAMCDtls==null) {
 		   liftAMCDtls = new RlmsLiftAmcDtls();
 	   }
 		List<ServiceCall> amacServiceCalls=dto.getAmcServiceCalls();

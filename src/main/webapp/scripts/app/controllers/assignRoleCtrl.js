@@ -1,4 +1,4 @@
-(function () {
+-	(function () {
     'use strict';
 	angular.module('rlmsApp')
 	.controller('assignRoleCtrl', ['$scope', '$filter','serviceApi','$route','utility', function($scope, $filter,serviceApi,$route,utility) {

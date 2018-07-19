@@ -17,11 +17,7 @@ import com.rlms.service.UserService;
 public class IndexController extends BaseController{
 	@Autowired
 	UserService userService;
-	
-	
-	
-	
-	  @RequestMapping(value="index",method = RequestMethod.GET)
+	@RequestMapping(value="index",method = RequestMethod.GET)
 	    public  String getIndexPage() {
 		  RlmsUserRoles userrole = this.getLoggedInUser();
 		  if(userrole.getRlmsSpocRoleMaster().getSpocRoleId()==SpocRoleConstants.TECHNICIAN.getSpocRoleId()) {

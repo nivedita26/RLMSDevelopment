@@ -92,10 +92,10 @@ public class CustomerDaoImpl implements CustomerDao{
 	}
 	
 	@Override
-	public RlmsMemberMaster getMemberById(Integer memeberId) {
+	public RlmsMemberMaster getMemberById(Integer memberId) {
 		 Session session = this.sessionFactory.getCurrentSession();
 		 Criteria criteria = session.createCriteria(RlmsMemberMaster.class)
-				 .add(Restrictions.eq("memberId", memeberId))
+				 .add(Restrictions.eq("memberId", memberId))
 				 .add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
 		 
 		 return (RlmsMemberMaster)criteria.uniqueResult();
