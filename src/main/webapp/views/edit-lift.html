@@ -352,18 +352,18 @@
 							<span class="input-group-addon btn btn-default btn-file">
 								<span class="fileinput-new">Select file</span>
 								<span class="fileinput-exists">Change</span>
-								<input type="file" name="..." ng-model='editLift.ardphoto' base-sixty-four-input onchange="angular.element(this).scope().setMachinePhoto(this,'ARD')" accept="image/*">
+								<input type="file" name="..." ng-model='editLift.ardPhoto' base-sixty-four-input onchange="angular.element(this).scope().setMachinePhoto(this,'ARD')" accept="image/*">
 							</span>
 							<a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput" ng-click="displayArdPhoto = false;">Remove</a>
 						</div>
-						{{editLift.ardphoto.size}}
+						{{editLift.ardPhoto.size}}
 						
 					</div>
 				</div>
 				
 				<div class="col-sm-3">
-					<img ng-src="{{image_source1}}" height="200px" width="200px" ng-show="displayPanelPhoto">
-					<span ng-hide="displayPanelPhoto" ><img height="200px" width="200px" ng-src="data:image/JPEG;base64,{{editLift.panelPhoto}}"  ></span>
+					<img ng-src="{{image_source1}}" height="200px" width="200px" ng-show="displayArdPhoto">
+					<span ng-hide="displayArdPhoto" ><img height="200px" width="200px" ng-src="data:image/JPEG;base64,{{editLift.ardPhoto}}"  ></span>
 					<div style="padding-left: 52px;">ARD Photo</div>
 				</div>
 				
@@ -388,7 +388,7 @@
 					
 				</div>
 				<div class="col-sm-3">
-					<span ng-hide="displayLopPhoto" ><img height="200px" width="200px" ng-src="data:image/JPEG;base64,{{editLift.lopphoto}}"  ></span>
+					<span ng-hide="displayLopPhoto" ><img height="200px" width="200px" ng-src="data:image/JPEG;base64,{{editLift.lopPhoto}}"  ></span>
 					<img ng-src="{{image_source3}}" height="200px" width="200px" ng-show="displayLopPhoto">
 					<div style="padding-left: 52px;">LOP Photo</div>
 				</div>
@@ -413,7 +413,7 @@
 					</div>
 				</div>
 				<div class="col-sm-3">
-					<span ng-hide="displayCopPhoto" ><img height="200px" width="200px" ng-src="data:image/JPEG;base64,{{editLift.copphoto}}"  ></span>
+					<span ng-hide="displayCopPhoto" ><img height="200px" width="200px" ng-src="data:image/JPEG;base64,{{editLift.copPhoto}}"  ></span>
 						<img ng-src="{{image_source4}}" height="200px" width="200px" ng-show="displayCopPhoto">
 					<div style="padding-left: 52px;">COP Photo</div>
 				</div>
