@@ -22,47 +22,47 @@
 				if(photoType==="Machine"){
 					$scope.image_source=event.target.result;
 					$scope.displayMachinePhoto=true;
-					$scope.addLift.machinePhoto=$scope.currentFile;
+					$scope.editLift.machinePhoto=$scope.currentFile;
 				}
 				if(photoType==="Panel"){
 					$scope.image_source1=event.target.result;
 					$scope.displayPanelPhoto=true;
-					$scope.addLift.panelPhoto=$scope.currentFile;
+					$scope.editLift.panelPhoto=$scope.currentFile;
 				}
 				if(photoType==="ARD"){
 					$scope.image_source2=event.target.result;
 					$scope.displayArdPhoto=true;
-					$scope.addLift.ardPhoto=$scope.currentFile;
+					$scope.editLift.ardPhoto=$scope.currentFile;
 				}
 				if(photoType==="LOP"){
 					$scope.image_source3=event.target.result;
 					$scope.displayLopPhoto=true;
-					$scope.addLift.lopPhoto=$scope.currentFile;
+					$scope.editLift.lopPhoto=$scope.currentFile;
 				}
 				if(photoType==="COP"){
 					$scope.image_source4=event.target.result;
 					$scope.displayCopPhoto=true;
-					$scope.addLift.copPhoto=$scope.currentFile;
+					$scope.editLift.copPhoto=$scope.currentFile;
 				}
 				if(photoType==="CarTop"){
 					$scope.image_source5=event.target.result;
 					$scope.displayCarTopPhoto=true;
-					$scope.addLift.cartopPhoto=$scope.currentFile;
+					$scope.editLift.cartopPhoto=$scope.currentFile;
 				}
 				if(photoType==="Header"){
 					$scope.image_source6=event.target.result;
 					$scope.displayHeaderPhoto=true;
-					$scope.addLift.autoDoorHeaderPhoto=$scope.currentFile;
+					$scope.editLift.autoDoorHeaderPhoto=$scope.currentFile;
 				}
 				if(photoType==="Wiring"){
 					$scope.image_source7=event.target.result;
 					$scope.displayWiringPhoto=true;
-					$scope.addLift.wiringPhoto=$scope.currentFile;
+					$scope.editLift.wiringPhoto=$scope.currentFile;
 				}
 				if(photoType==="Lobby"){
 					$scope.image_source8=event.target.result;
 					$scope.displayLobbyPhoto=true;
-					$scope.addLift.lobbyPhoto=$scope.currentFile;
+					$scope.editLift.lobbyPhoto=$scope.currentFile;
 				}
 				$scope.apply();
 			};
@@ -282,8 +282,8 @@
 				}
 			];
 			$scope.addLift={
-					//fyaTranId:'',
-					liftType:'',
+					fyaTranId:null,
+					liftType:0,
 					branchCustomerMapId :'',
 					liftNumber : '',
 					customerName:'',
@@ -298,7 +298,6 @@
 					longitude : '',
 					serviceStartDate : '',
 					serviceEndDate : '',
-					//warrantyPeriod:'',
 					serviceEndDateStr:'',
 					serviceStartDateStr:'',
 					dateOfInstallation : '',
@@ -308,10 +307,10 @@
 					amcStartDate : '',
 					amcEndDate:'',
 					amcType : 0,
-					amcAmount : 0,
+					amcAmount : '',
 
 					doorType : 0,
-					noOfStops : 0,
+					noOfStops :'',
 					engineType : 0,
 					machineMake : '',
 					machineCapacity : '',
@@ -336,9 +335,11 @@
 					activeFlag:'',
 					imei :'',
 					lmsEventFromContactNo:'',
+					liftCustomerMapId:null,
 					//status:'',
-					//photoType:'',
-					//totalLiftCountForCustomer:'',
+					isBlank:false,
+					photoType:'',
+					totalLiftCountForCustomer:null,
 					
 					machinePhoto : '',
 					panelPhoto : '',
@@ -413,12 +414,11 @@
 					pinCode:$scope.editLift.pinCode,
 					latitude : $scope.editLift.latitude,
 					longitude : $scope.editLift.longitude,
-					serviceStartDate : $scope.editLift.serviceStartDate,
-					serviceEndDate : $scope.editLift.serviceEndDate,
-					//warrantyPeriod:'',
-					dateOfInstallation: $scope.editLift.dateOfInstallation,
-					amcStartDate : $scope.editLift.amcStartDate,
-					amcEndDate:$scope.editLift.amcEndDate,
+					serviceStartDateStr : $scope.editLift.serviceStartDate,
+					serviceEndDateStr : $scope.editLift.serviceEndDate,
+					dateOfInstallationStr: $scope.editLift.dateOfInstallation,
+					amcStartDateStr : $scope.editLift.amcStartDate,
+					amcEndDateStr :$scope.editLift.amcEndDate,
 					amcType :$scope.editLift.amcType,
 					amcAmount : $scope.editLift.amcAmount,
 
@@ -455,23 +455,28 @@
 					simplexDuplex:$scope.selectedSimplexDuplex.selected.id,
 					doorType:$scope.selectedDoorType.selected.id,
 					
-					machinePhoto : '',
-					panelPhoto : '',
-					ardPhoto : '',
-					lopPhoto : '',
-					copPhoto : '',
-					cartopPhoto : '',
-					autoDoorHeaderPhoto : '',
-					wiringPhoto : '',
-					lobbyPhoto	 : '',
+					machinePhoto : $scope.editLift.machinePhoto.base64,
+					panelPhoto : $scope.editLift.panelPhoto.base64,
+					ardPhoto : $scope.editLift.ardPhoto.base64,
+					lopPhoto :$scope.editLift.lopPhoto.base64,
+					copPhoto : $scope.editLift.copPhoto.base64,
+					cartopPhoto :$scope.editLift.cartopPhoto.base64,
+					autoDoorHeaderPhoto :$scope.editLift.autoDoorHeaderPhoto.base64,
+					wiringPhoto :$scope.editLift.wiringPhoto.base64,
+					lobbyPhoto : $scope.editLift.lobbyPhoto.base64,
 					//status:'',
 					//activeFlag:
 					amcTypeStr:'',
-					dateOfInstallationStr:'',
-					serviceStartDateStr:'',
-					serviceEndDateStr:'',
-					amcStartDateStr:'',
-					amcEndDateStr:''
+					dateOfInstallation:'',
+					serviceStartDate:'',
+					serviceEndDate:'',
+					amcStartDate:'',
+					amcEndDate:'',
+						liftCustomerMapId:null,
+						//status:'',
+						isBlank:false,
+						photoType:'',
+						totalLiftCountForCustomer:null,
 					
 			}
 			/*parseBase64();

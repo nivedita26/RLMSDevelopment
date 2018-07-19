@@ -387,6 +387,51 @@
 	  	        		}else{
 	  	        			userDetailsObj["wiringShceme"] =" - ";
 	  	        		}
+	  	        		if(!!largeLoad[i].machinePhoto){
+	  	        			userDetailsObj["machinePhoto"] =largeLoad[i].machinePhoto;
+	  	        		}else{
+	  	        			userDetailsObj["machinePhoto"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].panelPhoto){
+	  	        			userDetailsObj["panelPhoto"] =largeLoad[i].panelPhoto;
+	  	        		}else{
+	  	        			userDetailsObj["panelPhoto"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].ardPhoto){
+	  	        			userDetailsObj["ardPhoto"] =largeLoad[i].ardPhoto;
+	  	        		}else{
+	  	        			userDetailsObj["ardPhoto"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].lopPhoto){
+	  	        			userDetailsObj["lopPhoto"] =largeLoad[i].lopPhoto;
+	  	        		}else{
+	  	        			userDetailsObj["lopPhoto"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].copPhoto){
+	  	        			userDetailsObj["copPhoto"] =largeLoad[i].copPhoto;
+	  	        		}else{
+	  	        			userDetailsObj["copPhoto"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].autoDoorHeaderPhoto){
+	  	        			userDetailsObj["autoDoorHeaderPhoto"] =largeLoad[i].autoDoorHeaderPhoto;
+	  	        		}else{
+	  	        			userDetailsObj["autoDoorHeaderPhoto"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].cartopPhoto){
+	  	        			userDetailsObj["cartopPhoto"] =largeLoad[i].cartopPhoto;
+	  	        		}else{
+	  	        			userDetailsObj["cartopPhoto"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].lobbyPhoto){
+	  	        			userDetailsObj["lobbyPhoto"] =largeLoad[i].lobbyPhoto;
+	  	        		}else{
+	  	        			userDetailsObj["lobbyPhoto"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].wiringPhoto){
+	  	        			userDetailsObj["wiringPhoto"] =largeLoad[i].wiringPhoto;
+	  	        		}else{
+	  	        			userDetailsObj["wiringPhoto"] =" - ";
+	  	        		}
 	  	        		userDetails.push(userDetailsObj);
 	  	        	  }
 	  	            $scope.setPagingData(userDetails, page, pageSize);
