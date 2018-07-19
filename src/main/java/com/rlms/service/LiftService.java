@@ -37,7 +37,7 @@ public interface LiftService {
 	
 	public List<LiftDtlsDto> getLiftCountForBranch(List<Integer> companyBranchIds, UserMetaInfo metaInfo);
 
-	public void updateLiftParams(RlmsLiftMaster liftMaster);
+	public void updateLiftParams(LiftDtlsDto  dtlsDto);
 	
 	public List<CustomerLiftDtls> getLiftDetailsList(UserDtlsDto dtlsDto);
 

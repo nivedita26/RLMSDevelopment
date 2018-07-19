@@ -334,6 +334,31 @@ public class LiftServiceImpl implements LiftService{
 			dto.setAlarmBattery(liftM.getAlarmBattery());
 			dto.setAmcAmount(liftM.getAmcAmount());
 			dto.setAmcStartDate(liftM.getAmcStartDate());
+			dto.setLatitude(liftM.getLatitude());
+			dto.setLongitude(liftM.getLongitude());
+			dto.setDoorType(liftM.getDoorType());
+			dto.setNoOfStops(liftM.getNoOfStops());
+			dto.setEngineType(liftM.getEngineType());
+			dto.setMachineMake(liftM.getMachineMake());
+			dto.setMachineCapacity(liftM.getMachineMake());
+			dto.setMachineCurrent(liftM.getMachineCurrent());
+			dto.setBreakVoltage(liftM.getBreakVoltage());
+			dto.setPanelPhoto(liftM.getPanelPhoto());
+			dto.setNoOfBatteries(liftM.getNoOfBatteries());
+			dto.setCopMake(liftM.getCOPMake());
+			dto.setLopMake(liftM.getLOPMake());
+			dto.setCollectiveType(liftM.getCollectiveType());
+			dto.setSimplexDuplex(liftM.getSimplexDuplex());
+			dto.setLopMake(liftM.getLOPMake());
+			dto.setCollectiveType(liftM.getCollectiveType());
+			dto.setSimplexDuplex(liftM.getSimplexDuplex());
+			dto.setAutoDoorMake(liftM.getAutoDoorMake());
+			dto.setWiringShceme(liftM.getWiringShceme());
+			dto.setFireMode(liftM.getFireMode());
+			dto.setIntercomm(liftM.getIntercomm());
+			dto.setLiftType(liftM.getLiftType());
+		
+			
 			/*if(null != liftM.getAmcStartDate()){
 				dto.setAmcStartDateStr(DateUtils.convertDateToStringWithoutTime(liftCustomerMap.getLiftMaster().get));
 				dto.setAmcEndDateStr(DateUtils.convertDateToStringWithoutTime(liftM.getAmcEndDate()));
@@ -353,9 +378,18 @@ public class LiftServiceImpl implements LiftService{
 				}
 			}*/
 			dto.setArd(liftM.getARD());
+			//photo
 			dto.setArdPhoto(liftM.getARDPhoto());
 			dto.setAutoDoorHeaderPhoto(liftM.getAutoDoorHeaderPhoto());
-			dto.setBatteryCapacity(liftM.getBatteryCapacity());
+			dto.setCartopPhoto(liftM.getCartopPhoto());
+			dto.setPanelPhoto(liftM.getPanelPhoto());
+			dto.setMachinePhoto(liftM.getMachinePhoto());
+			dto.setLobbyPhoto(liftM.getLobbyPhoto());
+			dto.setWiringPhoto(liftM.getWiringPhoto());
+            dto.	setCopPhoto(liftM.getCOPPhoto());	
+            dto.setLopPhoto(liftM.getLOPPhoto());
+            
+            dto.setBatteryCapacity(liftM.getBatteryCapacity());
 			dto.setBatteryMake(liftM.getBatteryMake());
 			dto.setBranchName(liftCustomerMap.getBranchCustomerMap().getCompanyBranchMapDtls().getRlmsBranchMaster().getBranchName());;
 			dto.setCustomerName(liftCustomerMap.getBranchCustomerMap().getCustomerMaster().getCustomerName());
@@ -629,7 +663,7 @@ public class LiftServiceImpl implements LiftService{
 		
 	}
 	@Transactional(propagation = Propagation.REQUIRED)
-		public void updateLiftParams(RlmsLiftMaster liftMaster){
+		public void updateLiftParams(LiftDtlsDto liftMaster){
 		
 			RlmsLiftMaster liftM = this.liftDao.getLiftById(liftMaster.getLiftId());
 			
@@ -661,15 +695,15 @@ public class LiftServiceImpl implements LiftService{
 				if(null != liftMaster.getNoOfBatteries()){
 					liftM.setNoOfBatteries(liftMaster.getNoOfBatteries());
 				}
-				if(null != liftMaster.getPincode()){
-					liftM.setPincode(liftMaster.getPincode());
+				if(null != liftMaster.getPinCode()){
+					liftM.setPincode(liftMaster.getPinCode());
 				}
 				if(null != liftMaster.getSimplexDuplex()){
 					liftM.setSimplexDuplex(liftMaster.getSimplexDuplex());
 				}
-				if(null != liftMaster.getStatus()){
-					liftM.setStatus(liftMaster.getStatus());
-				}
+			//	if(null != liftMaster.getS()){
+			//		liftM.setStatus(liftMaster.getStatus());
+			//	}
 				
 				if(null != liftMaster.getWiringShceme()){
 					liftM.setWiringShceme(liftMaster.getWiringShceme());
@@ -689,11 +723,11 @@ public class LiftServiceImpl implements LiftService{
 				if(null != liftMaster.getAmcStartDate()){
 					liftM.setAmcStartDate(liftMaster.getAmcStartDate());
 				}
-				if(null != liftMaster.getARD() && !liftMaster.getARD().isEmpty() ){
-					liftM.setARD(liftMaster.getARD());
+				if(null != liftMaster.getArd()&& !liftMaster.getArd().isEmpty() ){
+					liftM.setARD(liftMaster.getArd());
 				}
-				if(null != liftMaster.getARDPhoto()){
-					liftM.setARDPhoto(liftMaster.getARDPhoto());
+				if(null != liftMaster.getArdPhoto()){
+					liftM.setARDPhoto(liftMaster.getArdPhoto());
 				}
 				if(null != liftMaster.getArea() && !liftMaster.getArea().isEmpty()){
 					liftM.setArea(liftMaster.getArea());
@@ -720,11 +754,11 @@ public class LiftServiceImpl implements LiftService{
 				if(null != liftMaster.getCity() && !liftMaster.getCity().isEmpty()){
 					liftM.setCity(liftMaster.getCity());
 				}
-				if(null != liftMaster.getCOPMake() && !liftMaster.getCOPMake().isEmpty()){
-					liftM.setCOPMake(liftMaster.getCOPMake());
+				if(null != liftMaster.getCopMake() && !liftMaster.getCopMake().isEmpty()){
+					liftM.setCOPMake(liftMaster.getCopMake());
 				}
-				if(null != liftMaster.getCOPPhoto()){
-					liftM.setCOPPhoto(liftMaster.getCOPPhoto());
+				if(null != liftMaster.getCopPhoto()){
+					liftM.setCOPPhoto(liftMaster.getCopPhoto());
 				}
 				if(null != liftMaster.getDateOfInstallation()){
 					liftM.setDateOfInstallation(liftMaster.getDateOfInstallation());
@@ -746,11 +780,11 @@ public class LiftServiceImpl implements LiftService{
 				if(null != liftMaster.getLongitude() && !liftMaster.getLongitude().isEmpty()){
 					liftM.setLongitude(liftMaster.getLongitude());
 				}
-				if(null != liftMaster.getLOPMake() && !liftMaster.getLOPMake().isEmpty()){
-					liftM.setLOPMake(liftMaster.getLOPMake());
+				if(null != liftMaster.getLopMake() && !liftMaster.getLopMake().isEmpty()){
+					liftM.setLOPMake(liftMaster.getLopMake());
 				}
-				if(null != liftMaster.getLOPPhoto()){
-					liftM.setLOPPhoto(liftMaster.getLOPPhoto());
+				if(null != liftMaster.getLopPhoto()){
+					liftM.setLOPPhoto(liftMaster.getLopPhoto());
 				}
 				if(null != liftMaster.getMachineCapacity() && !liftMaster.getMachineCapacity().isEmpty()){
 					liftM.setMachineCapacity(liftMaster.getMachineCapacity());
@@ -764,7 +798,6 @@ public class LiftServiceImpl implements LiftService{
 				if(null != liftMaster.getMachinePhoto()){
 					liftM.setMachinePhoto(liftMaster.getMachinePhoto());
 				}
-				
 				if(null != liftMaster.getNoOfStops() && !liftMaster.getNoOfStops().isEmpty()){
 					liftM.setNoOfStops(liftMaster.getNoOfStops());
 				}
@@ -780,13 +813,14 @@ public class LiftServiceImpl implements LiftService{
 				if(null != liftMaster.getServiceStartDate()){
 					liftM.setServiceStartDate(liftMaster.getServiceStartDate());
 				}
-				
 				if(null != liftMaster.getWiringPhoto() ){
 					liftM.setWiringPhoto(liftMaster.getWiringPhoto());
 				}
-				
 				if(null != liftMaster.getImei() ){
 					liftM.setImei(liftMaster.getImei());
+				}
+				if(null != liftMaster.getLmsEventFromContactNo() ){
+					liftM.setLmsEventContactNumber(liftMaster.getLmsEventFromContactNo());
 				}
 				this.liftDao.mergeLiftM(liftM);
 				}
