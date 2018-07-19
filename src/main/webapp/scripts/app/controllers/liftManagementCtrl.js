@@ -517,11 +517,11 @@
 					
 						//$scope.selectedDoorType.id= $scope.editLift.doorType; 
 						//$scope.selectedDoorType.selected =$scope.editLift.doorType;
-						$rootScope.amcTypeArray=['Comprehensive','NonComprehensive','On Demand','Other'];
+						/*$rootScope.amcTypeArray=['Comprehensive','NonComprehensive','On Demand','Other'];
 						$rootScope.engineTypeArray=['Geared','Gearless'];
 						$rootScope.collectiveTypeArray=['Down Collective','Full Collective'];
 						$rootScope.simplexTypeArray=['Simplex','Duplex','Group'];
-						$rootScope.wiringTypeArray=['Pluggable','NonPluggable'];
+						$rootScope.wiringTypeArray=['Pluggable','NonPluggable'];*/
 						$rootScope.editLift.liftId=row.liftId;
 						$rootScope.editLift.address=row.Address.replace(/-/g, '');
 						$rootScope.editLift.city=row.City.replace(/-/g, '');
@@ -534,7 +534,7 @@
 						$rootScope.editLift.area=row.Area;
 						$rootScope.editLift.liftNumber=row.Lift_Number;
 						$rootScope.editLift.amcEndDate=row.Amc_End_Date;
-						$rootScope.selectedAmcType=row.amcType;
+						$rootScope.editLift.amcType=row.amcType;
 						$rootScope.editLift.amcAmount=row.Amc_Amount;
 						$rootScope.editLift.pinCode=row.PinCode;						
 						$rootScope.editLift.latitude=row.Latitude;
@@ -560,10 +560,14 @@
 						$rootScope.editLift.imei=row.imei;
 						$rootScope.editLift.liftType=row.LiftType;
 						$rootScope.editLift.lmsEventFromContactNo=row.lmsEventFromContactNo;
-						$rootScope.selectedEngineType=row.engineType;
-						$rootScope.selectedWiringType=row.wiringShceme;
-						$rootScope.selectedCollectiveType=row.collectiveType;
-						$rootScope.selectedSimplexType=row.simplexDuplex;
+						//$rootScope.selectedEngineType=row.engineType;
+						//$rootScope.selectedWiringType=row.wiringShceme;
+						//$rootScope.selectedCollectiveType=row.collectiveType;
+						//$rootScope.selectedSimplexType=row.simplexDuplex;
+						$rootScope.editLift.engineType=row.engineType;
+						$rootScope.editLift.wiringShceme=row.wiringShceme;
+						$rootScope.editLift.collectiveType=row.collectiveType;
+						$rootScope.editLift.simplexDuplex=row.simplexDuplex;
 						
 						$rootScope.editLift.machinePhoto=row.machinePhoto;
 						$rootScope.editLift.panelPhoto=row.panelPhoto;
