@@ -32,9 +32,9 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-sm-3 control-label " >Select Branch</label>
+					<label class="col-sm-3 control-label " ng-show="showBranch" >Select Branch</label>
 					<div class="col-sm-6">
-						  <ui-select ng-model="selectedBranch.selected" title="Choose a Branch" on-select="loadUsersData();" >
+						  <ui-select ng-model="selectedBranch.selected" title="Choose a Branch"  ng-show="showBranch">
 						    <ui-select-match placeholder="Select or search a branch in the list...">{{$select.selected.rlmsBranchMaster.branchName}}</ui-select-match>
 						    <ui-select-choices repeat="branchIterator in branches| filter: $select.search">
 						      <span ng-bind-html="branchIterator.rlmsBranchMaster.branchName | highlight: $select.search"></span>
