@@ -435,19 +435,19 @@
 			}else{
 				$scope.companyBranchMapIdForCustomer=$scope.selectedBranch.selected.companyBranchMapId;
 			}
-			/*var tempEventType;
+			var tempEventType;
 			if($scope.selectedEventType.selected.name =="ALL"){
-				tempEventType.push("-1");
+				tempEventType=="-1";
 			}else{
-				tempEventType.push($scope.selectedEventType.selected.name);
-			}*/
+				tempEventType=$scope.selectedEventType.selected.name;
+			}
 				
 	  		var data = {
 	  				//companyBranchMapId:$scope.companyBranchMapIdForCustomer,
 	  				//companyId:9,
 	  				//listOfUserRoleIds:tempListOfUserRoleIds,
 	  				//listOfEventTypeIds:$scope.selectedEventType.selected.id,
-	  				eventType:$scope.selectedEventType.selected.name,
+	  				eventType:tempEventType,
 	  				branchCustomerMapId:tempbranchCustomerMapIds,
 	  				//serviceCallType:1
 	  		};
