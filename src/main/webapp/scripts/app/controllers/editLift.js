@@ -405,10 +405,9 @@
 		$scope.submitEditLift = function(){
 			var liftData={};
 			liftData={
-					
-					
+									
 					liftNumber: "739",
-					address: "pune",
+					address: $rootScope.editLift.address,
 					customerName: "nivi",
 					branchName: "Karnataka",
 					companyName: null,
@@ -475,10 +474,6 @@
 					lmsEventFromContactNo: "9788989",
 					totalLiftCountForCustomer: null,
 					blank: false
-					
-					
-					
-					
 				/*	liftId:$scope.editLift.liftId,
 					address:$scope.editLift.address,
 					liftType:$scope.editLift.liftType,

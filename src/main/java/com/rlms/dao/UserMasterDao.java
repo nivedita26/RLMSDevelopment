@@ -11,7 +11,6 @@ import com.rlms.model.RlmsUsersMaster;
    public List<RlmsUsersMaster> getAllUsersForCompany(Integer companyId);
    public RlmsUsersMaster getUserByUserId(Integer userId);
    public RlmsUsersMaster getUserByUserIdAndPassword(UserDtlsDto userDtlsDto);
-
    public void saveUser(RlmsUsersMaster usermMaster);
    public void updateUser(RlmsUsersMaster usermMaster);
    public void mergerUser(RlmsUsersMaster usermMaster);
@@ -19,6 +18,6 @@ import com.rlms.model.RlmsUsersMaster;
    public RlmsUsersMaster getUserByEmailID(String emailId);
    public void deleteUser(UserDtlsDto dto, UserMetaInfo metaInfo);
    public void changeUserPassword(RlmsUsersMaster usersMaster);
+   public  RlmsUsersMaster getUserByMobileNumber(String ContactNumber);
    
-   
-}
+   }

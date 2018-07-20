@@ -332,9 +332,7 @@ public class RestControllerController  extends BaseController {
         	log.error(ExceptionUtils.getFullStackTrace(e));
         	reponseDto.setStatus(false);
         	reponseDto.setResponse(PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
-        
         }
- 
         return reponseDto;
     }
     
@@ -397,15 +395,12 @@ public class RestControllerController  extends BaseController {
     @RequestMapping(value = "/lift/updateLiftDetails", method = RequestMethod.POST)
     public @ResponseBody ResponseDto validateAndUpdateLiftDetails(@RequestBody LiftDtlsDto dto) throws RunTimeException, ValidationException {
 	 ResponseDto reponseDto = new ResponseDto();
-        
         try{
         	reponseDto.setResponse(this.liftService.updateLiftDetails(dto, null));
-        	
         }
         catch(Exception e){
         	throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
         }
- 
         return reponseDto;
   }
     
@@ -414,9 +409,7 @@ public class RestControllerController  extends BaseController {
     
     	ObjectMapper mapper = new ObjectMapper();
     	ResponseDto dto = new ResponseDto();
-    	
     	 try {
-    		 
     		 dto.setResponse(mapper.writeValueAsString(this.ComplaintsService.deleteComplaint(complaintsDto)));
     		 dto.setStatus(true);
     	 }catch(Exception e){
@@ -464,7 +457,6 @@ public class RestControllerController  extends BaseController {
         	reponseDto.setResponse(PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
         	log.error(ExceptionUtils.getFullStackTrace(e));
         }
- 
         return reponseDto;
     }
   

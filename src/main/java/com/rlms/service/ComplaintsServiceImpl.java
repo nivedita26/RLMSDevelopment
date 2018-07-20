@@ -227,13 +227,16 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 			RlmsComplaintTechMapDtls complaintTechMapDtls = this.complaintsDao.getComplTechMapObjByComplaintId(complaintMaster.getComplaintId());
 			if(null != complaintTechMapDtls){
 						if(complaintTechMapDtls.getStatus()==Status.RESOLVED.getStatusId()) {
-							dto.setResolvedDateStr(DateUtils.convertDateToStringWithTime(complaintTechMapDtls.getUpdatedDate()));
+							dto.setResolvedDateStr(DateUtils.convertDateTimestampToStringWithTime(complaintTechMapDtls.getUpdatedDate()));
+						}
+						else if(complaintTechMapDtls.getStatus()==Status.RESOLVED.getStatusId() ||complaintTechMapDtls.getStatus()==Status.INPROGESS.getStatusId() ) {
+						    dto.setLastVisitedDateStr(DateUtils.convertDateTimestampToStringWithTime(complaintTechMapDtls.getUpdatedDate()));
 						}
 				/////
 				String techDtls = complaintTechMapDtls.getUserRoles().getRlmsUserMaster().getFirstName() + " " + complaintTechMapDtls.getUserRoles().getRlmsUserMaster().getLastName() + " (" + complaintTechMapDtls.getUserRoles().getRlmsUserMaster().getContactNumber() + ")";			
 				dto.setTechnicianDtls(techDtls);
-				dto.setCallAssignedDateStr(DateUtils.convertDateToStringWithTime(complaintTechMapDtls.getAssignedDate()));
-			    dto.setLastVisitedDateStr(DateUtils.convertDateTimestampToStringWithTime(complaintTechMapDtls.getUpdatedDate()));
+			//	DateUtils.PparseDateStrictly("04/05/2003:10:15:16", "MM/dd/yyyy:hh:mm:ss");
+				dto.setCallAssignedDateStr(DateUtils.convertDateTimestampToStringWithTime(complaintTechMapDtls.getAssignedDate()));
 			}
 		}else{
 			dto.setTechnicianDtls("-");
@@ -641,8 +644,8 @@ private boolean isServiceCallToShow(Date regDate,Date serviceStartDate){
 		for (RlmsSiteVisitDtls rlmsSiteVisitDtls : listOfAllVisits) {
 			SiteVisitDtlsDto dto = new SiteVisitDtlsDto();
 			dto.setComplaintTechMapId(rlmsSiteVisitDtls.getComplaintTechMapDtls().getComplaintTechMapId());
-			dto.setFromDateDtr(DateUtils.convertDateToStringWithTime(rlmsSiteVisitDtls.getFromDate()));
-			dto.setToDateStr(DateUtils.convertDateToStringWithTime(rlmsSiteVisitDtls.getToDate()));
+			dto.setFromDateDtr(DateUtils.convertDateTimestampToStringWithTime(rlmsSiteVisitDtls.getFromDate()));
+			dto.setToDateStr(DateUtils.convertDateTimestampToStringWithTime(rlmsSiteVisitDtls.getToDate()));
 			String totalTime = DateUtils.convertTimeIntoDaysHrMin(DateUtils.getDateDiff(rlmsSiteVisitDtls.getFromDate(), rlmsSiteVisitDtls.getToDate(), TimeUnit.SECONDS), TimeUnit.SECONDS);
 			if(null != totalTime){
 				dto.setTotalTime(totalTime);
