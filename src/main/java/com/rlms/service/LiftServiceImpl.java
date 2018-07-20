@@ -7,13 +7,11 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.rlms.constants.AMCType;
 import com.rlms.constants.PhotoType;
 import com.rlms.constants.RLMSConstants;
@@ -30,7 +28,6 @@ import com.rlms.contract.UserDtlsDto;
 import com.rlms.contract.UserMetaInfo;
 import com.rlms.dao.BranchDao;
 import com.rlms.dao.CustomerDao;
-import com.rlms.dao.DashboardDao;
 import com.rlms.dao.FyaDao;
 import com.rlms.dao.LiftDao;
 import com.rlms.dao.UserMasterDao;
@@ -41,7 +38,6 @@ import com.rlms.model.RlmsLiftAmcDtls;
 import com.rlms.model.RlmsLiftCustomerMap;
 import com.rlms.model.RlmsLiftMaster;
 import com.rlms.model.RlmsUserRoles;
-import com.rlms.model.RlmsUsersMaster;
 import com.rlms.utils.DateUtils;
 import com.rlms.utils.PropertyUtils;
 
