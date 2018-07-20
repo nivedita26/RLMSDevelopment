@@ -60,7 +60,7 @@
 			<div class="form-group">
 			<label class="col-sm-3 control-label">Call Type</label>
 			<div class="col-sm-6">
-			   <ui-select ng-model="selectedCallType.selected" title="Choose a call type">
+			   <ui-select ng-model="selectedCallType.selected" title="Choose a Call Type">
 			    <ui-select-match placeholder="Select Call Type">{{$select.selected.name}}</ui-select-match>
 			    <ui-select-choices repeat="iterator in callType | filter: $select.search">
 			      <span ng-bind-html="iterator.name | highlight: $select.search"></span>
@@ -72,8 +72,8 @@
 			<div class="form-group">
   			<label class="col-sm-3 control-label">Call Title </label>  			
 				<div class="col-sm-6">
-			   	<ui-select ng-model="selectedComplaintTitle.selected" title="Choose a complaint title">
-			    <ui-select-match placeholder="Select Complaint Title">{{$select.selected.name}}</ui-select-match>
+			   	<ui-select ng-model="selectedComplaintTitle.selected" title="Choose a Call title">
+			    <ui-select-match placeholder="Select Call Title">{{$select.selected.name}}</ui-select-match>
 			    <ui-select-choices repeat="iterator in complaintTitle | filter: $select.search">
 			      <span ng-bind-html="iterator.name | highlight: $select.search"></span>
 			    </ui-select-choices>
@@ -89,7 +89,7 @@
 			<div class="form-group">
 				<label class="col-sm-3 control-label">Call Details</label>
 				<div class="col-sm-6">
-					<input name="complaintsRemark" type="text" placeholder="Complaint Remark" required ng-model="addComplaint.complaintsRemark" class="form-control">
+					<input name="complaintsRemark" type="text" placeholder="Call Details" required ng-model="addComplaint.complaintsRemark" class="form-control">
 					<span class="help-block"
 						ng-show="addComplaintForm.complaintsRemark.$error.required && addComplaintForm.complaintsRemark.$dirty">This
 						field is required</span>

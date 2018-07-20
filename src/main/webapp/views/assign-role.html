@@ -19,12 +19,11 @@
 				</div>
 				<!-- <button class="btn-sky btn" ng-click="proceedRole()">Proceed</button> -->
 			</div>
-			
 			<div ng-show="isRoleSelected">
 				<div class="form-group">
-					<label class="col-sm-3 control-label" ng-show="showCompany">Select Company</label>
-					<div class="col-sm-6" ng-show="showCompany">
-						  <ui-select ng-model="selectedCompany.selected" title="Choose a Company" on-select="loadBranchData();">
+					<label class="col-sm-3 control-label" ng-show="showCompany" >Select Company</label>
+					<div class="col-sm-6">
+						  <ui-select ng-model="selectedCompany.selected" title="Choose a Company" on-select="loadBranchData();" ng-show="showCompany">
 						    <ui-select-match placeholder="Select or search a company in the list...">{{$select.selected.companyName}}</ui-select-match>
 						    <ui-select-choices repeat="companyIterator in companies| filter: $select.search">
 						      <span ng-bind-html="companyIterator.companyName | highlight: $select.search"></span>
@@ -33,9 +32,9 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-sm-3 control-label " ng-show="showBranch">Select Branch</label>
+					<label class="col-sm-3 control-label " >Select Branch</label>
 					<div class="col-sm-6">
-						  <ui-select ng-model="selectedBranch.selected" title="Choose a Branch" ng-show="showBranch">
+						  <ui-select ng-model="selectedBranch.selected" title="Choose a Branch" on-select="loadUsersData();" >
 						    <ui-select-match placeholder="Select or search a branch in the list...">{{$select.selected.rlmsBranchMaster.branchName}}</ui-select-match>
 						    <ui-select-choices repeat="branchIterator in branches| filter: $select.search">
 						      <span ng-bind-html="branchIterator.rlmsBranchMaster.branchName | highlight: $select.search"></span>

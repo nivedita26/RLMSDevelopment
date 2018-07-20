@@ -75,7 +75,7 @@ angular
    	   	        label: 'LMS Alerts Report',
    	   	        url: '#/lms-alerts-report'
    	      },{
-   	   	        label: 'Detailed Call Report',
+   	   	        label: 'Call Report',
    	   	        url: '#/call-detail-report'
    	      },{
    	   	        label: 'Specific Call Report',
