@@ -7,7 +7,7 @@
 		$scope.alert = { type: 'success', msg: 'You successfully Assigned Role.',close:true };
 		$scope.showAlert = false;
 		$scope.showCompany = false;
-		//$scope.showBranch = false;
+		$scope.showBranch = false;
 		$scope.roles = [];
 		$scope.companies = [];
 		$scope.branches = [];
@@ -38,10 +38,14 @@
 			loadCompanyData();
 			//loadBranchData();
 			$scope.isRoleSelected = true;
-			/*if(selectedRole.selected=="COMPANY_OPERATOR"){
-				showCompany=false;
-				showBranch=false;
-			}*/
+			if($scope.selectedRole.selected.roleName=="COMPANY_OPERATOR"){
+				$scope.showCompany=false;
+				$scope.showBranch=false;
+			}
+			if($scope.selectedRole.selected.roleName==("BRANCH_ADMIN")&&("BRANCH_OPERATOR")&&("TECHNICIAN")){
+				//$scope.showCompany=false;
+				$scope.showBranch=true;
+			}
 		}
 	  	
 		function loadCompanyData(){
@@ -49,7 +53,6 @@
 			serviceApi.doPostWithoutData('/RLMS/admin/getAllApplicableCompanies')
 		    .then(function(response){
 		    		$scope.companies = response;
-		    		
 		    });
 		}
 		$scope.loadBranchData = function(){
@@ -85,23 +88,14 @@
 		    });
 		}	
 		if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 1) {
-		$scope.showCompany = true;
-		loadCompanyData();
-	} else {
-		$scope.showCompany = false;
-		//$scope.loadBranchData();
-	}
-		/*if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 2) {
-			$scope.showBranch = true;
-			$scope.loadBranchData();
-			
+			$scope.showCompany = true;
 		} else {
-			$scope.showBranch = false;
-		}*/
+			$scope.showCompany = false;
+		}
 		//Post call
 		$scope.submitAssignRole = function(){
 			$scope.assignRole.companyBranchMapId = $scope.selectedBranch.selected.companyBranchMapId;
-			//$scope.assignRole.companyId = $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyMaster.companyId;
+			$scope.assignRole.companyId = $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyMaster.companyId;
 			$scope.assignRole.spocRoleId = $scope.selectedRole.selected.spocRoleId;
 			$scope.assignRole.userId = $scope.selectedUser.selected.userId;
 			serviceApi.doPostWithData("/RLMS/admin/assignRole",$scope.assignRole)

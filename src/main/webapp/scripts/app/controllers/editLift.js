@@ -24,7 +24,7 @@
 				if(photoType==="Machine"){
 					$scope.image_source=event.target.result;
 					$scope.displayMachinePhoto=true;
-					$scope.editLift.machinePhoto=$scope.currentFile;
+					$scope.addLift.machinePhoto=$scope.currentFile;
 				}
 				if(photoType==="Panel"){
 					$scope.image_source1=event.target.result;
