@@ -94,7 +94,11 @@
 		}
 		//Post call
 		$scope.submitAssignRole = function(){
-			$scope.assignRole.companyBranchMapId = $scope.selectedBranch.selected.companyBranchMapId;
+			if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel < 3) {
+				$scope.assignRole.companyBranchMapId = $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls.companyBranchMapId;
+			}else{
+				$scope.assignRole.companyBranchMapId = $scope.selectedBranch.selected.companyBranchMapId;
+			}
 			$scope.assignRole.companyId = $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyMaster.companyId;
 			$scope.assignRole.spocRoleId = $scope.selectedRole.selected.spocRoleId;
 			$scope.assignRole.userId = $scope.selectedUser.selected.userId;

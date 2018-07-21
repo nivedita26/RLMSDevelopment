@@ -4,7 +4,7 @@
 	.controller('editLiftCtrl', ['$scope', '$filter','serviceApi','$route','$http','utility','$window','pinesNotifications','$rootScope','$modal', function($scope, $filter,serviceApi,$route,$http,utility,$window,pinesNotifications,$rootScope,$modal) {
 		//initialize add Branch
 		initAddLift();
-		$scope.alert = { type: 'success', msg: 'You successfully Added Lift.',close:true };
+		$scope.alert = { type: 'success', msg: 'You successfully Edited Lift.',close:true };
 		$scope.alert = { type: 'error', msg: '',close:false };
 		$scope.displayMachinePhoto=false;
 		$scope.displayPanelPhoto=false;
@@ -515,8 +515,8 @@
 				$scope.alert.msg = successMessage;
 				$scope.alert.type = "success";
 				initAddLift();
-				$scope.editLiftForm.$setPristine();
-				$scope.editLiftForm.$setUntouched();
+				//$scope.addLiftForm.$setPristine();
+				//$scope.addLiftForm.$setUntouched();
 			},function(error){
 				$scope.showAlert = true;
 				$scope.alert.msg = error.exceptionMessage;
