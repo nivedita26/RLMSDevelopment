@@ -14,6 +14,7 @@ import com.rlms.exception.ValidationException;
 import com.rlms.model.RlmsMemberMaster;
 import com.rlms.model.RlmsSpocRoleMaster;
 import com.rlms.model.RlmsUserRoles;
+import com.rlms.model.RlmsUsersMaster;
 import com.rlms.model.User;
 public interface UserService {
 	
@@ -70,6 +71,8 @@ public interface UserService {
 	public ResponseDto logout(UserDtlsDto userDto);
 	
 	public RlmsMemberMaster getMemberById(int id);
+	
+//	public RlmsUsersMaster getUserByMobileNumber(UserDtlsDto dtlsDto);
 
 	
 }

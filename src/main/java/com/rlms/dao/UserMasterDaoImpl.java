@@ -112,4 +112,14 @@ UserMasterDao{
 		         .add(Restrictions.eq("password", dtlsDto.getPassword()));
 		 return (RlmsUsersMaster)criteria.uniqueResult();
 	}
+
+	@Override
+	public RlmsUsersMaster getUserByMobileNumber(String mobileNumber) {
+
+		Session session = this.sessionFactory.getCurrentSession();
+		 Criteria criteria = session.createCriteria(RlmsUsersMaster.class)
+				 .add(Restrictions.eq("contactNumber",mobileNumber))
+		         .add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
+		 return (RlmsUsersMaster)criteria.uniqueResult();
+	}
 }

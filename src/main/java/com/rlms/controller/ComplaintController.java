@@ -41,7 +41,6 @@ public class ComplaintController extends BaseController{
 	@RequestMapping(value = "/getListOfComplaints", method = RequestMethod.POST)
 	 public  @ResponseBody List<ComplaintsDto> getListOfComplaints(@RequestBody ComplaintsDtlsDto dto) throws RunTimeException{
 		 List<ComplaintsDto> listOfComplaints = null;
-		 
 		 try{
 	        	logger.info("Method :: getListOfComplaints");
 	        	listOfComplaints = this.complaintsService.getListOfComplaintsBy(dto);

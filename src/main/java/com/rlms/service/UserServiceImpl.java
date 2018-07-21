@@ -239,8 +239,8 @@ public class UserServiceImpl implements UserService {
 	private RlmsUserRoles constructUserRole(UserRoleDtlsDTO userRoleDtlsDTO,
 			UserMetaInfo metaInfo) {
 
-		RlmsCompanyMaster companyMaster = this.companyService
-				.getCompanyById(userRoleDtlsDTO.getCompanyId());
+		/*RlmsCompanyMaster companyMaster = this.companyService
+				.getCompanyById(userRoleDtlsDTO.getCompanyId());*/
 
 		RlmsSpocRoleMaster spocRoleMaster = this.userRoleDao
 				.getSpocRoleById(userRoleDtlsDTO.getSpocRoleId());
@@ -251,17 +251,18 @@ public class UserServiceImpl implements UserService {
 		// RlmsCompanyRoleMap companyRoleMap =
 		// this.companyService.getCompanyRole(userRoleDtlsDTO.getCompanyId(),
 		// userRoleDtlsDTO.getSpocRoleId());
+		RlmsUserRoles userRole = new RlmsUserRoles();
 
 		RlmsCompanyBranchMapDtls companyBranchMapDtls = null;
 		if (null != userRoleDtlsDTO.getCompanyBranchMapId()) {
 			companyBranchMapDtls = this.companyService
 					.getCompanyBranchMapById(userRoleDtlsDTO
 							.getCompanyBranchMapId());
+			userRole.setRlmsCompanyMaster(companyBranchMapDtls.getRlmsCompanyMaster());
+
 		}
 
-		RlmsUserRoles userRole = new RlmsUserRoles();
 		userRole.setActiveFlag(RLMSConstants.INACTIVE.getId());
-		userRole.setRlmsCompanyMaster(companyMaster);
 		userRole.setRlmsSpocRoleMaster(spocRoleMaster);
 		// userRole.setRlmsCompanyRolMap(companyRoleMap);
 		userRole.setRlmsUserMaster(user);
@@ -359,7 +360,8 @@ public class UserServiceImpl implements UserService {
 		RlmsUserRoles userRoles = this.userRoleDao.getUserByUserName(dto
 				.getUserName());
 
-		if (null != userRoles && useRoleId.equals(userRoles.getUserRoleId())) {
+		//if (null != userRoles && useRoleId.equals(userRoles.getUserRoleId())) {
+		if (null != userRoles) {
 			throw new ValidationException(
 					ExceptionCode.VALIDATION_EXCEPTION.getExceptionCode(),
 					PropertyUtils
@@ -373,7 +375,6 @@ public class UserServiceImpl implements UserService {
 							.getPrpertyFromContext(RlmsErrorType.USER_ALREADY_REGISTERED_SYSTEM
 									.getMessage()));
 		}
-
 	}
 
 	private boolean isAlreadyHasActiveAccount(RlmsUserRoles userRole) {
@@ -403,20 +404,21 @@ public class UserServiceImpl implements UserService {
 			UserMetaInfo metaInfo) throws ValidationException {
 		boolean isValidUser = true;
 
-		RlmsUsersMaster user = this.userMasterDao.getUserByEmailID(userDto
-				.getEmailId());
+		RlmsUsersMaster user = this.userMasterDao.getUserByEmailID(userDto.getEmailId());
 		if (null != user) {
+			  
 			isValidUser = false;
 			throw new ValidationException(
 					ExceptionCode.VALIDATION_EXCEPTION.getExceptionCode(),
 					PropertyUtils
 							.getPrpertyFromContext(RlmsErrorType.USER_ALREADY_REGISTERED
 									.getMessage()));
-		} else {
-
+		}
+		
+	 
+		else {
 			RlmsCompanyMaster companyMaster = this.companyService
 					.getCompanyById(userDto.getCompanyId());
-
 			if (null == companyMaster) {
 				isValidUser = false;
 				throw new ValidationException(
@@ -426,6 +428,20 @@ public class UserServiceImpl implements UserService {
 										.getMessage()));
 			}
 		}
+		  if(user==null) {
+			  RlmsUsersMaster userMaster = userMasterDao.getUserByMobileNumber(userDto.getContactNumber());
+			  
+			  if(userMaster!=null) {
+				//  if( user.getContactNumber()==userDto.getContactNumber()) {
+              		isValidUser = false;
+          			throw new ValidationException(
+          					ExceptionCode.VALIDATION_EXCEPTION.getExceptionCode(),
+          					PropertyUtils
+          							.getPrpertyFromContext(RlmsErrorType.USER_MOBILE_NUMBER_ALREADY_REGISTERED
+          									.getMessage()));
+		       //}
+			  }
+			}
 		return isValidUser;
 	}
 
@@ -707,5 +723,6 @@ public class UserServiceImpl implements UserService {
 
 		return memberDao.getMemberById(id);
 	}
+
 
 }
