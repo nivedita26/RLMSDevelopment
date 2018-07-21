@@ -51,7 +51,8 @@ public enum RlmsErrorType {
 	USER_ALREADY_LOGGED_IN(48,"user_already_loggedin "),
 	USER_LOGOUT(49,"user_logout"),
 	USER_DELETED(50,"user_deleted_successfully"),
-	USER_PASSWORD_CHANGED(51,"user_password_changed_successfully");
+	USER_PASSWORD_CHANGED(51,"user_password_changed_successfully"),
+	USER_MOBILE_NUMBER_ALREADY_REGISTERED(52,"user_mobile_number_already_registered");
 	private Integer code;
 	private String message;
 	

@@ -403,12 +403,20 @@
 		$scope.submitEditLift = function(){
 			var liftData={};
 			liftData={
+<<<<<<< HEAD
+									
+					liftNumber: "739",
+					address: $rootScope.editLift.address,
+					customerName: "nivi",
+					branchName: "Karnataka",
+=======
 					
 					
 					liftNumber: $scope.editLift.liftNumber,
 					address:$scope.editLift.address,
 					customerName: '',
 					branchName: '',
+>>>>>>> 0959573ac22cc5ac88edf29d7a0b5e4b87455da5
 					companyName: null,
 					city: $scope.editLift.city,
 					area: $scope.editLift.area,
@@ -473,7 +481,83 @@
 					lmsEventFromContactNo: $scope.editLift.lmsEventFromContactNo,
 					totalLiftCountForCustomer: null,
 					blank: false
+<<<<<<< HEAD
+				/*	liftId:$scope.editLift.liftId,
+					address:$scope.editLift.address,
+					liftType:$scope.editLift.liftType,
+					liftNumber :$scope.editLift.liftNumber ,
+					city:$scope.editLift.city,
+					area:$scope.editLift.area,
+					pinCode:$scope.editLift.pinCode,
+					latitude : $scope.editLift.latitude,
+					longitude : $scope.editLift.longitude,
+					serviceStartDateStr : $scope.editLift.serviceStartDate,
+					serviceEndDateStr : $scope.editLift.serviceEndDate,
+					dateOfInstallationStr: $scope.editLift.dateOfInstallation,
+					amcStartDateStr : $scope.editLift.amcStartDate,
+					amcEndDateStr :$scope.editLift.amcEndDate,
+					amcType :$scope.editLift.amcType,
+					amcAmount : $scope.editLift.amcAmount,
+
+					doorType :$scope.editLift.doorType,
+					noOfStops : $scope.editLift.noOfStops,
+					engineType : $scope.editLift.engineType,
+					machineMake : $scope.editLift.machineMake,
+					machineCapacity : $scope.editLift.machineCapacity,
+					machineCurrent : $scope.editLift.machineCurrent,
+					breakVoltage : $scope.editLift.breakVoltage,
+					panelMake : $scope.editLift.panelMake,
+					ard : $scope.editLift.ard,
+					noOfBatteries :$scope.editLift.noOfBatteries,
+					batteryCapacity : $scope.editLift.batteryCapacity,
+					batteryMake : $scope.editLift.batteryMake,
+					copMake : $scope.editLift.copMake,
+					lopMake :$scope.editLift.lopMake,
+					collectiveType :$scope.editLift.collectiveType,
+					simplexDuplex : $scope.editLift.simplexDuplex,
+					autoDoorMake :$scope.editLift.autoDoorMake,
+					wiringShceme : $scope.editLift.wiringShceme,
+					fireMode :$scope.editLift.fireMode,
+					intercomm : $scope.editLift.intercomm,
+					alarm : $scope.editLift.alarm,
+					alarmBattery : $scope.editLift.alarmBattery,
+					accessControl :$scope.editLift.accessControl,
+					imei :$scope.editLift.imei,
+					liftType :$scope.editLift.liftType,
+					lmsEventFromContactNo:$scope.editLift.lmsEventFromContactNo,
+					amcType:$scope.selectedAMCType.selected.id,
+					engineType:$scope.selectedEngineMachineType.selected.id,
+					wiringShceme:$scope.selectedWiringScheme.selected.id,
+					collectiveType:$scope.selectedCollectiveType.selected.id,
+					simplexDuplex:$scope.selectedSimplexDuplex.selected.id,
+					doorType:$scope.selectedDoorType.selected.id,
+					
+					machinePhoto : $scope.editLift.machinePhoto.base64,
+					panelPhoto : $scope.editLift.panelPhoto.base64,
+					ardPhoto : $scope.editLift.ardPhoto.base64,
+					lopPhoto :$scope.editLift.lopPhoto.base64,
+					copPhoto : $scope.editLift.copPhoto.base64,
+					cartopPhoto :$scope.editLift.cartopPhoto.base64,
+					autoDoorHeaderPhoto :$scope.editLift.autoDoorHeaderPhoto.base64,
+					wiringPhoto :$scope.editLift.wiringPhoto.base64,
+					lobbyPhoto : $scope.editLift.    t            	! .base64,
+					//status:'',
+					//activeFlag:
+					amcTypeStr:'',
+					dateOfInstallation:'',
+					serviceStartDate:'',
+					serviceEndDate:'',
+					amcStartDate:'',
+					amcEndDate:'',
+						liftCustomerMapId:null,
+						//status:'',
+						isBlank:false,
+						photoType:'',
+						totalLiftCountForCustomer:0,
+					*/
+=======
 	
+>>>>>>> 0959573ac22cc5ac88edf29d7a0b5e4b87455da5
 			}
 			/*parseBase64();
 			//addLift.customerType = $scope.selectedCustomerType;
