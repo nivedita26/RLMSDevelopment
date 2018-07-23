@@ -517,6 +517,10 @@
 			}else{
 				$scope.addLift.fireMode = 0;
 			}
+			if($scope.selectedLmsAvailable.selected.name=="No"){
+				$scope.addLift.imei=="0";
+				$scope.addLift.lmsEventFromContactNo=="0";
+			}
 			//$scope.addLift.liftTypeName=$scope.addLift.liftTypeName;
 			$scope.addLift.branchCustomerMapId = $scope.selectedCustomer.selected.branchCustomerMapId
 			serviceApi.doPostWithData("/RLMS/admin/validateAndRegisterNewLift",$scope.addLift)
