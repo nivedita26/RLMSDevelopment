@@ -47,6 +47,7 @@
 									        startDate: moment().subtract(1, "days"),
 									        endDate: moment()
 									    };
+									
 									$scope.callType = [{
 										id: 1,
 										name:'Lift Installation call'
@@ -80,8 +81,8 @@
 									$scope.selectedTechnician = {};
 									$scope.dateRange={};
 									$scope.isAssigned=true;
-									var today = new Date().toISOString().slice(0, 10);
-									$scope.dateRange.date = {"startDate": today, "endDate": today};
+									//var today = new Date().toISOString().slice(0, 10);
+									//$scope.dateRange.date = {"startDate": today, "endDate": today};
 									$scope.status = [ {
 										id : 2,
 										name : 'Pending'
@@ -95,6 +96,7 @@
 									$scope.lifts = [];
 									$scope.showAdvanceFilter = false;
 									$scope.showTable = false;
+									
 								}
 								
 								function loadCompanyData() {
@@ -640,8 +642,8 @@
 										}
 										dataToSend["listOfLiftCustoMapId"] = tempLiftIds;
 										dataToSend["statusList"] = tempStatus;
-										dataToSend["fromDate"]=$scope.dateRange.date.startDate;
-										dataToSend["toDate"]=$scope.dateRange.date.endDate;
+										dataToSend["fromDate"]=$scope.date.startDate;
+										dataToSend["toDate"]=$scope.date.endDate;
 									}
 									return dataToSend;
 								}
@@ -728,11 +730,11 @@
 									columnDefs : [{
 										field : "complaintId",
 										displayName:"Call Id",
-										width : 120
+										width : 100
 									},{
 										field : "Call_Type",
 										displayName:"Call Type",
-										width : 120
+										width : 160
 									}, {
 										field : "LiftNumber",
 										displayName:"Lift Number",

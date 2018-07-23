@@ -27,7 +27,7 @@
 		    //$scope.companies = [];
 		    $scope.userList={};
 		}
-		//load company dropdown data
+		//load compay dropdown data
 		function loadCompayInfo(){
 			serviceApi.doPostWithoutData('/RLMS/admin/getAllApplicableCompanies')
 		    .then(function(response){
@@ -36,7 +36,7 @@
 		};
 		//Post call add branch
 		$scope.submitAddUser = function(){
-			$scope.addUser.companyId = $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyMaster.companyId;
+			$scope.addUser.companyId = $scope.selectedCompany.selected.companyId;
 			serviceApi.doPostWithData("/RLMS/admin/validateAndRegisterNewUser",$scope.addUser)
 			.then(function(response){
 				$scope.showAlert = true;

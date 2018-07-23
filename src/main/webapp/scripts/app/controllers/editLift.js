@@ -402,21 +402,16 @@
 		}*/
 		$scope.submitEditLift = function(){
 			var liftData={};
-			liftData={
-<<<<<<< HEAD
-									
+			liftData={									
 					liftNumber: "739",
 					address: $rootScope.editLift.address,
 					customerName: "nivi",
-					branchName: "Karnataka",
-=======
-					
+					branchName: "Karnataka",					
 					
 					liftNumber: $scope.editLift.liftNumber,
 					address:$scope.editLift.address,
 					customerName: '',
 					branchName: '',
->>>>>>> 0959573ac22cc5ac88edf29d7a0b5e4b87455da5
 					companyName: null,
 					city: $scope.editLift.city,
 					area: $scope.editLift.area,
@@ -481,7 +476,6 @@
 					lmsEventFromContactNo: $scope.editLift.lmsEventFromContactNo,
 					totalLiftCountForCustomer: null,
 					blank: false
-<<<<<<< HEAD
 				/*	liftId:$scope.editLift.liftId,
 					address:$scope.editLift.address,
 					liftType:$scope.editLift.liftType,
@@ -555,9 +549,6 @@
 						photoType:'',
 						totalLiftCountForCustomer:0,
 					*/
-=======
-	
->>>>>>> 0959573ac22cc5ac88edf29d7a0b5e4b87455da5
 			}
 			/*parseBase64();
 			//addLift.customerType = $scope.selectedCustomerType;

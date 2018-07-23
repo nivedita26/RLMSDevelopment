@@ -225,13 +225,13 @@
 				</div>
 				<div class="filter-section" ng-show="showAdvanceFilter">
 					<div class="form-group">
-						<label class="control-label" ng-show="showBranch">Select Date Range</label>
+						<label for="daterange2" class="control-label" ng-show="showBranch">Select Date Range</label>
 						<div class="select-container" >
 							<div class="input-group" >
 								<span class="input-group-addon">
 									<i class="glyphicon glyphicon-calendar"></i>
 								</span>
-								<input type="daterange.date" placeholder="Select Date" class="form-control" daterangepicker="" ng-model="date">
+								<input daterangepicker type="daterange2" id="daterange2"  placeholder="Select Date" class="form-control "  ng-model="date">
 								</div>
 							</div>
 							<label class="control-label" >Select Lifts </label>
