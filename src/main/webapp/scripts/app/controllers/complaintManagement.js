@@ -977,7 +977,7 @@
 										function(newVal, oldVal) {
 											if (newVal !== oldVal) {
 												$scope
-														.getPagedDataAsyncs(
+														.getPagedDataAsyncs (
 																$scope.pagingOptions.pageSize,
 																$scope.pagingOptions.currentPage,
 																$scope.filterOptions.filterText);
