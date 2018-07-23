@@ -325,7 +325,7 @@
 					name:'Duplex'
 				},
 				{
-					id:1,
+					id:2,
 					name:'Group'
 				}
 			];
