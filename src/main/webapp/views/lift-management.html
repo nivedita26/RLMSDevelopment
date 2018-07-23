@@ -19,15 +19,15 @@
 			</div>
 			<label class=" control-label" ng-show="showBranch">Select Branch</label>
 			<div class="select-container" ng-show="showBranch">
-				  <ui-select ng-model="selectedBranch.selected" title="Choose a Branch">
+				  <ui-select ng-model="selectedBranch.selected" title="Choose a Branch" on-select="loadCustomerInfo()">
 				    <ui-select-match placeholder="Select Branch">{{$select.selected.rlmsBranchMaster.branchName}}</ui-select-match>
 				    <ui-select-choices repeat="branchIterator in branches| filter: $select.search">
 				      <span ng-bind-html="branchIterator.rlmsBranchMaster.branchName | highlight: $select.search"></span>
 				    </ui-select-choices>
 				  </ui-select>
 			</div>
-			<button class="btn-sky btn" ng-click="loadCustomerInfo()">Proceed</button>
-			<button class="btn-sky btn margin-left-10" ng-click="resetCustomerList()">Reset</button>
+			<!-- <button class="btn-sky btn" ng-click="loadCustomerInfo()">Proceed</button>
+			<button class="btn-sky btn margin-left-10" ng-click="resetCustomerList()">Reset</button> -->
 		</div>
 		
 	</div>

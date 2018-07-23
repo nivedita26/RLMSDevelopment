@@ -170,9 +170,6 @@
 						id: 2,
 						name:'Configuration/Settings Call'
 					},{
-						id: 3,
-						name:'AMC Call'
-					},{
 						id: 4,
 						name:'Under Warranty Support Call'
 					},{
@@ -181,9 +178,6 @@
 					},{
 						id: 6,
 						name:'Operator Assigned/Generic Call'
-					},{
-						id: 7,
-						name:'User Raised Call Through App'
 					},{
 						id: 8,
 						name:'User Raised Call Through Telephone'

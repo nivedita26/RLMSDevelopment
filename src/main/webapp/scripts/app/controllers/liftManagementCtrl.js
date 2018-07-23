@@ -632,67 +632,9 @@
 						//var technicianArray=$rootScope.techniciansForEditComplaints;
 						
 						window.location.hash = "#/edit-lift";
-					//});
-					
-					
-						/*$rootScope.editLift.liftNumber=$rootScope.outData.liftNumber;
-						$rootScope.editLift.address=row.Address.replace(/-/g, '');
-						$rootScope.editLift.city=row.City.replace(/-/g, '');
-						$rootScope.editLift.customerName=row.Customer_Name.replace(/-/g, '');
-						$rootScope.editLift.branchName=row.Branch_Name.replace(/-/g, '');
-						$rootScope.editLift.serviceStartDate=row.Service_Start_Date;
-						$rootScope.editLift.serviceEndDate=row.Service_End_Date;
-						$rootScope.editLift.installationDate=row.Installation_Date;
-						$rootScope.editLift.amcStartDate=row.Amc_Start_Date;
-						$rootScope.editLift.amcType="NA";
-						$rootScope.editLift.area="NA";
-						$rootScope.editLift.pincode="NA";
-						
-						$rootScope.editLift.latitude="NA";
-						$rootScope.editLift.longitude="NA";
-						$rootScope.editLift.amcEndDate="NA";
-						$rootScope.editLift.amcAmount="NA";
-						$rootScope.editLift.noOfStops="NA";
-						$rootScope.editLift.machineMake="NA";
-						$rootScope.editLift.machineCurrent="NA";
-						$rootScope.editLift.machineCapacity="NA";
-						$rootScope.editLift.breakVoltage="NA";
-						$rootScope.editLift.panelMake="NA";
-						$rootScope.editLift.ard="NA";
-						$rootScope.editLift.noOfBatteries="NA";
-						$rootScope.editLift.batteryCapacity="NA";
-						$rootScope.editLift.batteryMake="NA";
-						$rootScope.editLift.copMake="NA";
-						$rootScope.editLift.lopMake="NA";
-						$rootScope.editLift.autoDoorMake="NA";
-						$rootScope.editLift.fireMode="NA";
-						$rootScope.editLift.intercomm="NA";
-						$rootScope.editLift.alarm="NA";
-						$rootScope.editLift.alarmBattery="NA";
-						$rootScope.editLift.accessControl="NA";
-						
-						$rootScope.editLift.machinePhoto="NA";
-						$rootScope.editLift.panelPhoto="NA";
-						$rootScope.editLift.ardPhoto="NA";
-						$rootScope.editLift.lopPhoto="NA";
-						$rootScope.editLift.copPhoto="NA";
-						$rootScope.editLift.cartopPhoto="NA";
-						$rootScope.editLift.autoDoorHeaderPhoto="NA";
-						$rootScope.editLift.wiringPhoto="NA";
-						$rootScope.editLift.lobbyPhoto="NA";*/
-						
-						
-						
-						
-					//	$rootScope.editLift.installationDate=row.Service_StartDate;
-						//$rootScope.editLift.installationDate=row.Service_StartDate;
-						//$rootScope.editLift.installationDate=row.Service_StartDate;
-						
-					//	$rootScope.selectedComplaintStatus=row.Status;
-						//$rootScope.editComplaint.complaintsStatus=row.Status.replace(/-/g, '');
-						
-						//window.location.hash = "#/edit-lift";
-					
+					//});	
+				
+								
 				};
 	}]);
 })();
