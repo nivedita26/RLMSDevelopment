@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 	angular.module('rlmsApp')
-	.controller('liftManagementCtrl', ['$scope', '$filter','serviceApi','$route','$http','utility','$rootScope', function($scope, $filter,serviceApi,$route,$http,utility,$rootScope) {
+	.controller('liftViewManagementCtrl', ['$scope', '$filter','serviceApi','$route','$http','utility','$rootScope', function($scope, $filter,serviceApi,$route,$http,utility,$rootScope) {
 		initCustomerList();
 		$scope.showCompany = false;
 		$scope.showBranch = false;
@@ -548,93 +548,103 @@
 					width: "140"
 				},{
 					cellTemplate :  
-			             '<button ng-click="$event.stopPropagation(); editLiftDetails(row.entity);" title="Edit" style="margin-top: 2px;height: 32px;width :32px;" class="btn-sky"><span class="glyphicon glyphicon-pencil"></span></button>',
+			             '<button ng-click="$event.stopPropagation(); viewLiftDetails(row.entity);" title="View" style="margin-top: 2px;height: 32px;width :32px;" class="btn-sky"><span class="glyphicon glyphicon-eye-open"></span></button>',
 					width : 35
 				}
 				]
 	  	    };
-	  	  $rootScope.editLift={};
-		  	$scope.selectedDoorType={};
-				//$rootScope.technicianDetails=[];
-			//	$rootScope.complaintStatusArray=['Pending','Assigned','Completed','In Progress'];
-				$scope.editLiftDetails=function(row){
-					
-					
-					//serviceApi.doPostWithData('/RLMS/admin/getLiftById',row.liftId)
-					//.then(function(data) {
-						
-						//$rootScope.editLift = data.response;
-					
-						//$scope.selectedDoorType.id= $scope.editLift.doorType; 
-						//$scope.selectedDoorType.selected =$scope.editLift.doorType;
-						/*$rootScope.amcTypeArray=['Comprehensive','NonComprehensive','On Demand','Other'];
-						$rootScope.engineTypeArray=['Geared','Gearless'];
-						$rootScope.collectiveTypeArray=['Down Collective','Full Collective'];
-						$rootScope.simplexTypeArray=['Simplex','Duplex','Group'];
-						$rootScope.wiringTypeArray=['Pluggable','NonPluggable'];*/
-						$rootScope.editLift.liftId=row.liftId;
-						$rootScope.editLift.address=row.Address.replace(/-/g, '');
-						$rootScope.editLift.city=row.City.replace(/-/g, '');
-						$rootScope.editLift.customerName=row.Customer_Name.replace(/-/g, '');
-						$rootScope.editLift.branchName=row.Branch_Name.replace(/-/g, '');
-						$rootScope.editLift.serviceStartDate=row.Service_Start_Date;
-						$rootScope.editLift.serviceEndDate=row.Service_End_Date;
-						$rootScope.editLift.dateOfInstallation=row.Installation_Date;
-						$rootScope.editLift.amcStartDate=row.Amc_Start_Date;
-						$rootScope.editLift.area=row.Area;
-						$rootScope.editLift.liftNumber=row.Lift_Number;
-						$rootScope.editLift.amcEndDate=row.Amc_End_Date;
-						$rootScope.editLift.amcType=row.amcType;
-						$rootScope.editLift.amcAmount=row.Amc_Amount;
-						$rootScope.editLift.pinCode=row.PinCode;						
-						$rootScope.editLift.latitude=row.Latitude;
-						$rootScope.editLift.longitude=row.Longitude;
-						$rootScope.editLift.noOfStops=row.NoOfStops;
-						$rootScope.editLift.machineMake=row.MachineMake;
-						$rootScope.editLift.machineCurrent=row.MachineCurrent;
-						$rootScope.editLift.machineCapacity=row.machineCapacity;
-						$rootScope.editLift.breakVoltage=row.BreakVoltage;
-						$rootScope.editLift.panelMake=row.PanelMake;
-						$rootScope.editLift.ard=row.ard;
-						$rootScope.editLift.noOfBatteries=row.noOfBatteries;
-						$rootScope.editLift.batteryCapacity=row.batteryCapacity;
-						$rootScope.editLift.batteryMake=row.batteryMake;
-						$rootScope.editLift.copMake=row.copMake;
-						$rootScope.editLift.lopMake=row.lopMake;
-						$rootScope.editLift.autoDoorMake=row.autoDoorMake;
-						$rootScope.editLift.fireMode=row.fireMode;
-						$rootScope.editLift.intercomm=row.intercomm;
-						$rootScope.editLift.alarm=row.alarm;
-						$rootScope.editLift.alarmBattery=row.alarmBattery;
-						$rootScope.editLift.accessControl=row.accessControl;
-						$rootScope.editLift.imei=row.imei;
-						$rootScope.editLift.liftType=row.LiftType;
-						$rootScope.editLift.lmsEventFromContactNo=row.lmsEventFromContactNo;
+	  
+	  	    $rootScope.viewLift={};
+			
+	  	    $scope.viewLiftDetails=function(row){
+	  	    	
+						$rootScope.viewLift.liftId=row.liftId;
+						$rootScope.viewLift.address=row.Address.replace(/-/g, '');
+						$rootScope.viewLift.city=row.City.replace(/-/g, '');
+						$rootScope.viewLift.customerName=row.Customer_Name.replace(/-/g, '');
+						$rootScope.viewLift.branchName=row.Branch_Name.replace(/-/g, '');
+						$rootScope.viewLift.serviceStartDate=row.Service_Start_Date;
+						$rootScope.viewLift.serviceEndDate=row.Service_End_Date;
+						$rootScope.viewLift.dateOfInstallation=row.Installation_Date;
+						$rootScope.viewLift.amcStartDate=row.Amc_Start_Date;
+						$rootScope.viewLift.area=row.Area;
+						$rootScope.viewLift.liftNumber=row.Lift_Number;
+						$rootScope.viewLift.amcEndDate=row.Amc_End_Date;
+						$rootScope.viewLift.amcType=row.amcType;
+						$rootScope.viewLift.amcAmount=row.Amc_Amount;
+						$rootScope.viewLift.pinCode=row.PinCode;						
+						$rootScope.viewLift.latitude=row.Latitude;
+						$rootScope.viewLift.longitude=row.Longitude;
+						$rootScope.viewLift.noOfStops=row.NoOfStops;
+						$rootScope.viewLift.machineMake=row.MachineMake;
+						$rootScope.viewLift.machineCurrent=row.MachineCurrent;
+						$rootScope.viewLift.machineCapacity=row.machineCapacity;
+						$rootScope.viewLift.breakVoltage=row.BreakVoltage;
+						$rootScope.viewLift.panelMake=row.PanelMake;
+						$rootScope.viewLift.ard=row.ard;
+						$rootScope.viewLift.noOfBatteries=row.noOfBatteries;
+						$rootScope.viewLift.batteryCapacity=row.batteryCapacity;
+						$rootScope.viewLift.batteryMake=row.batteryMake;
+						$rootScope.viewLift.copMake=row.copMake;
+						$rootScope.viewLift.lopMake=row.lopMake;
+						$rootScope.viewLift.autoDoorMake=row.autoDoorMake;
+						$rootScope.viewLift.fireMode=row.fireMode;
+						$rootScope.viewLift.intercomm=row.intercomm;
+						$rootScope.viewLift.alarm=row.alarm;
+						$rootScope.viewLift.alarmBattery=row.alarmBattery;
+						$rootScope.viewLift.accessControl=row.accessControl;
+						$rootScope.viewLift.imei=row.imei;
+						$rootScope.viewLift.liftType=row.LiftType;
+						$rootScope.viewLift.lmsEventFromContactNo=row.lmsEventFromContactNo;
 						//$rootScope.selectedEngineType=row.engineType;
 						//$rootScope.selectedWiringType=row.wiringShceme;
 						//$rootScope.selectedCollectiveType=row.collectiveType;
 						//$rootScope.selectedSimplexType=row.simplexDuplex;
-						$rootScope.editLift.engineType=row.engineType;
-						$rootScope.editLift.wiringShceme=row.wiringShceme;
-						$rootScope.editLift.collectiveType=row.collectiveType;
-						$rootScope.editLift.simplexDuplex=row.simplexDuplex;
+						/*$rootScope.viewLift.engineType=row.engineType;
+						$rootScope.viewLift.wiringShceme=row.wiringShceme;
+						$rootScope.viewLift.collectiveType=row.collectiveType;
+						$rootScope.viewLift.simplexDuplex=row.simplexDuplex;*/
 						
-						$rootScope.editLift.machinePhoto=row.machinePhoto;
-						$rootScope.editLift.panelPhoto=row.panelPhoto;
-						$rootScope.editLift.ardPhoto=row.ardPhoto;
-						$rootScope.editLift.lopPhoto=row.lopPhoto;
-						$rootScope.editLift.copPhoto=row.copPhoto;
-						$rootScope.editLift.cartopPhoto=row.cartopPhoto;
-						$rootScope.editLift.autoDoorHeaderPhoto=row.autoDoorHeaderPhoto;
-						$rootScope.editLift.wiringPhoto=row.wiringPhoto;
-						$rootScope.editLift.lobbyPhoto=row.lobbyPhoto;
+						$rootScope.viewLift.machinePhoto=row.machinePhoto;
+						$rootScope.viewLift.panelPhoto=row.panelPhoto;
+						$rootScope.viewLift.ardPhoto=row.ardPhoto;
+						$rootScope.viewLift.lopPhoto=row.lopPhoto;
+						$rootScope.viewLift.copPhoto=row.copPhoto;
+						$rootScope.viewLift.cartopPhoto=row.cartopPhoto;
+						$rootScope.viewLift.autoDoorHeaderPhoto=row.autoDoorHeaderPhoto;
+						$rootScope.viewLift.wiringPhoto=row.wiringPhoto;
+						$rootScope.viewLift.lobbyPhoto=row.lobbyPhoto;
 						
-						//var technicianArray=$rootScope.techniciansForEditComplaints;
+						if(row.simplexDuplex=="1"){
+			  	    		$rootScope.viewLift.simplexDuplex="Duplex";
+			  	    	}else if(row.simplexDuplex=="2"){
+			  	    		$rootScope.viewLift.simplexDuplex="Group";
+			  	    	}else{
+			  	    		$rootScope.viewLift.simplexDuplex="Simplex";
+			  	    	}
+						if(row.wiringShceme=="1"){
+			  	    		$rootScope.viewLift.wiringShceme="NonPluggable";
+			  	    	}else{
+			  	    		$rootScope.viewLift.wiringShceme="Pluggable";
+			  	    	}
+						if(row.doorType=="1"){
+			  	    		$rootScope.viewLift.doorType="Manual Door";
+			  	    	}else{
+			  	    		$rootScope.viewLift.doorType="Auto Door";
+			  	    	}
+						if(row.collectiveType=="1"){
+			  	    		$rootScope.viewLift.collectiveType="Full Collective";
+			  	    	}else{
+			  	    		$rootScope.viewLift.collectiveType="Down Collective";
+			  	    	}
+						if(row.engineType=="1"){
+			  	    		$rootScope.viewLift.engineType="Gearless";
+			  	    	}else{
+			  	    		$rootScope.viewLift.engineType="Geared";
+			  	    	}
 						
-						window.location.hash = "#/edit-lift";
-					//});	
-				
-								
+						window.location.hash = "#/view-lift";
+					
 				};
 	}]);
 })();

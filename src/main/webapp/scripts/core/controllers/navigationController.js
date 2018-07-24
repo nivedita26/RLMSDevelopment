@@ -51,6 +51,9 @@ angular
    	      children: [{
    	          label: 'Manage Operations',
    	          url: '#/complaint-management'
+   	      },{
+   	          label: 'View Lifts',
+   	          url: '#/lift-view-management'
    	      }
    	      ]
    	    },

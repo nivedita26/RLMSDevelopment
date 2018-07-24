@@ -9,7 +9,7 @@
 		  <legend>User Details</legend>
 		  <div class="form-group"><label class="col-sm-4 control-label">Select Company</label>
 				<div class="col-sm-6">
-					  <ui-select ng-model="selectedCompany.selected" title="Choose a Company">
+					  <ui-select ng-model="selectedCompany.selected" title="Choose a Company" >
 					    <ui-select-match placeholder="Select or search a company in the list...">{{$select.selected.companyName}}</ui-select-match>
 					    <ui-select-choices repeat="companyIterator in companies| filter: $select.search">
 					      <span ng-bind-html="companyIterator.companyName | highlight: $select.search"></span>

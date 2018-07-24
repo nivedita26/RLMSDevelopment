@@ -38,11 +38,19 @@
 			loadCompanyData();
 			//loadBranchData();
 			$scope.isRoleSelected = true;
-			if($scope.selectedRole.selected.roleName=="COMPANY_OPERATOR"){
+			if($scope.selectedRole.selected.roleName==="COMPANY_OPERATOR"){
 				$scope.showCompany=false;
 				$scope.showBranch=false;
 			}
-			if($scope.selectedRole.selected.roleName==("BRANCH_ADMIN")&&("BRANCH_OPERATOR")&&("TECHNICIAN")){
+			if($scope.selectedRole.selected.roleName===("BRANCH_ADMIN")){
+				//$scope.showCompany=false;
+				$scope.showBranch=true;
+			}
+			if($scope.selectedRole.selected.roleName===("BRANCH_OPERATOR")){
+				//$scope.showCompany=false;
+				$scope.showBranch=true;
+			}
+			if($scope.selectedRole.selected.roleName===("TECHNICIAN")){
 				//$scope.showCompany=false;
 				$scope.showBranch=true;
 			}
@@ -94,7 +102,11 @@
 		}
 		//Post call
 		$scope.submitAssignRole = function(){
-			$scope.assignRole.companyBranchMapId = $scope.selectedBranch.selected.companyBranchMapId;
+			if ($scope.selectedRole.selected.roleName===("COMPANY_OPERATOR")) {
+				$scope.assignRole.companyBranchMapId = $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls.companyBranchMapId;
+			}else{
+				$scope.assignRole.companyBranchMapId = $scope.selectedBranch.selected.companyBranchMapId;
+			}
 			$scope.assignRole.companyId = $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyMaster.companyId;
 			$scope.assignRole.spocRoleId = $scope.selectedRole.selected.spocRoleId;
 			$scope.assignRole.userId = $scope.selectedUser.selected.userId;
