@@ -297,6 +297,13 @@
 	  	      ]
 	  	    };
 	  	    
+	  	  function loadCompanyData(){
+				serviceApi.doPostWithoutData('/RLMS/admin/getAllApplicableCompanies')
+			    .then(function(response){
+			    		$scope.companies = response;
+			    });
+			}
+	  	  
 			$scope.loadBranchData = function(){
 				var companyData={};
 				if($scope.showCompany == true){
@@ -340,21 +347,26 @@
 			}
 	  	  $scope.loadLifts = function() {
 				
-	  		var dataToSend = {
+	  		/*var dataToSend = {
 	  				branchCompanyMapId : $scope.selectedBranch.selected.companyBranchMapId,
 					branchCustomerMapId : $scope.selectedCustomer.selected.branchCustomerMapId
-				}
-				serviceApi.doPostWithData('/RLMS/complaint/getAllApplicableLifts',dataToSend)
+				}*/
+	  		var branchData ={};
+  	    	if($scope.showBranch == true){
+  	    		branchData = {
+  	    			branchCompanyMapId : $scope.selectedBranch.selected!=null?$scope.selectedBranch.selected.companyBranchMapId:0,
+  	    					branchCustomerMapId : $scope.selectedCustomer.selected.branchCustomerMapId
+					}
+  	    	}else{
+  	    		branchData = {
+  	    			branchCompanyMapId : $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls.companyBranchMapId,
+  	    			branchCustomerMapId : $scope.selectedCustomer.selected.branchCustomerMapId
+					}
+  	    	}
+				serviceApi.doPostWithData('/RLMS/complaint/getAllApplicableLifts',branchData)
 						.then(function(liftData) {
 							$scope.lifts = liftData;
 							$scope.selectedLift.selected = undefined;
-						})
-				
-				serviceApi.doPostWithData('/RLMS/admin/getAllCustomersForBranch',dataToSend)
-						.then(function(data) {
-							$scope.customerSelected = true;
-							$scope.companyName = data.companyName;
-							$scope.branchName = data.branchName
 						})
 			}
 	  	  /*$scope.searchCustomer = function(query){
@@ -397,16 +409,19 @@
 			var tempStatus =[]
 			return data;
 	  	  }
-	  	  
+	  	  	if($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel ==1){
+	  	  		$scope.showCompany= true;
+	  	  		loadCompanyData();
+	  	  	}else{
+	  	  		$scope.showCompany= false;
+	  	  	}
+	  	
 		  	if($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel < 3){
 				$scope.showBranch= true;
 				$scope.loadBranchData();
-				$scope.loadCustomerData();
-
 			}else{
 				$scope.showBranch=false;
-				
-
+				$scope.loadCustomerData();
 			}
 		  	
 	}]);

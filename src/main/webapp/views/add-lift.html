@@ -60,7 +60,7 @@
 			<label class="col-sm-3 control-label">Area<sup class="red font-12">*</sup></label>
 			<div class="col-sm-6">
 				<input name="area" type="text"
-					placeholder=""
+					placeholder=""   onkeypress="return ((event.charCode > 64 && event.charCode < 91) ||(event.charCode > 96 && event.charCode < 123) || event.charCode == 8 || event.charCode == 32);"
 					ng-model="addLift.area" class="form-control" required>
 			</div>
 		</div>
@@ -75,7 +75,7 @@
 		<div class="form-group">
 			<label class="col-sm-3 control-label">Pincode </label>
 			<div class="col-sm-6">
-				<input name="pinCode" type="number" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : this.value.length<6"
+				<input name="pinCode" type="text" maxlength="6" onkeypress="return (event.charCode > 47 && event.charCode < 58 );"
 					ng-model="addLift.pinCode" class="form-control" required>
 			</div>
 		</div>
@@ -142,7 +142,7 @@
 		</div>
 		<div class="form-group">
 			<label for="amcAmount" class="col-md-3 control-label">Amc Amount</label>
-			<div class="col-md-6"><input ng-model="addLift.amcAmount" class="form-control"  type="number" name="amcAmount"></div>
+			<div class="col-md-6"><input ng-model="addLift.amcAmount" class="form-control" maxlength="45" onkeypress="return (event.charCode > 47 && event.charCode < 58 );"  type="text" name="amcAmount"></div>
 		</div>
 <!-- 		<div class="form-group">
 				<label class="col-sm-3 control-label">Select Customer Type</label>

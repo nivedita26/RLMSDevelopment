@@ -20,7 +20,7 @@
 			$rootScope.editMember.city=row.City;
 			$rootScope.editMember.pinCode=row.PinCode;
 			$rootScope.editMember.emailId=row.Email_Id.replace(/-/g, '');
-			$rootScope.editMember.contactnumber=row.Contact_Number.replace(/-/g, '');
+			$rootScope.editMember.contactnumber=row.Contact_Number;
 			window.location.hash = "#/edit-member";
 		};
 		
@@ -273,6 +273,7 @@
 				$scope.showBranch= true;
 			}else{
 				$scope.showBranch=false;
+				$scope.loadCustomerData();
 			}
 		  	
 	  	    $scope.$watch('pagingOptions', function(newVal, oldVal) {

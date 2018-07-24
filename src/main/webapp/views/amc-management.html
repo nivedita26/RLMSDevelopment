@@ -8,12 +8,22 @@
 	</div>
 	<div class="filter-section">
 		<div class="form-group margin-b10">
+		<fieldset>
 			<label class="control-label">  AMC Status  </label>
 			<div class="select-container">
 				  <ui-select multiple close-on-select="false" ng-model="selectedAmc.selected" title="Choose a AMC status">
 				    <ui-select-match placeholder="Select Amc Status">{{$select.selected[$index].name}}</ui-select-match>
 				    <ui-select-choices repeat="iterator in amcStatuses | filter: $select.search">
 				      <span ng-bind-html="iterator.name | highlight: $select.search"></span>
+				    </ui-select-choices>
+				  </ui-select>
+			</div>
+			<label class="control-label" ng-show="showCompany">Select Company</label>
+			<div class="select-container" ng-show="showCompany">
+				  <ui-select ng-model="selectedCompany.selected" title="Choose a Branch" on-select="loadCustomerData()">
+				    <ui-select-match placeholder="Select Branch">{{$select.selected.rlmsBranchMaster.branchName}}</ui-select-match>
+				    <ui-select-choices repeat="branchIterator in branches| filter: $select.search">
+				      <span ng-bind-html="branchIterator.rlmsBranchMaster.branchName | highlight: $select.search"></span>
 				    </ui-select-choices>
 				  </ui-select>
 			</div>
@@ -28,15 +38,13 @@
 			</div>
 			<label class="control-label">Select Customer</label>
 			<div class="select-container">
-				  <ui-select ng-model="selectedCustomer.selected" title="Choose a Customer" on-select="loadLifts();">
+				  <ui-select ng-model="selectedCustomer.selected" title="Choose a Customer" on-select="loadLifts()">
 				    <ui-select-match placeholder="Select Customer">{{$select.selected.firstName}}</ui-select-match>
 				    <ui-select-choices  repeat="customerIterator in cutomers| filter: $select.search">
 				      <span ng-bind-html="customerIterator.firstName | highlight: $select.search"></span>
 				    </ui-select-choices>
 				  </ui-select>
 			</div>
-			<br>
-			<br>
 			<label class="control-label">Select Lift</label>
 			<div class="select-container">
 				  <ui-select multiple ng-model="selectedLift.selected" close-on-select="false" title="Choose lifts">
@@ -46,6 +54,7 @@
 				    </ui-select-choices>
 				  </ui-select>
 			</div>	
+			</fieldset>
 		</div>
 		<div class="row">
 			<div class="col-lg-12 align-right">

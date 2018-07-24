@@ -98,6 +98,12 @@
   						companyId : $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyMaster.companyId
   					}
 	  	    	}
+	  	    	if($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 3){
+	  	    		var companyData={};
+	  	    		companyData={
+	  	    				branchCompanyMapId : $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls.companyBranchMapId
+	  	    		}
+	  	    	}
 	  	        serviceApi.doPostWithData('/RLMS/admin/getAllRegisteredUsers',companyData)
 	  	         .then(function(largeLoad) {
 	  	        	$scope.showTable= true;
@@ -173,6 +179,12 @@
 	  						companyId : $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyMaster.companyId
 	  					}
 		  	    	}
+		  	    	if($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 3){
+		  	    		var companyData={};
+		  	    		companyData={
+		  	    				branchCompanyMapId : $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls.companyBranchMapId
+		  	    		}
+		  	    	}
 	  	        	serviceApi.doPostWithData('/RLMS/admin/getAllRegisteredUsers',companyData).then(function(largeLoad) {
 	  	        		 $scope.showTable= true;
 	  	        	  var userDetails=[];
@@ -247,7 +259,9 @@
 		}else{
 			$scope.loadUsersInfo();
 		}
-
+	  	if($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 3){
+	  		$scope.loadUsersInfo();
+	  	}
 	  	    $scope.$watch('pagingOptions', function(newVal, oldVal) {
 	  	      if (newVal !== oldVal) {
 	  	        $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, $scope.filterOptions.filterText);

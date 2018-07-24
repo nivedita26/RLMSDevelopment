@@ -64,7 +64,7 @@
 			<div class="form-group">
 				<label class="col-sm-3 control-label">Pincode</label>
 				<div class="col-sm-6">
-					<input name="pinCode" type="number" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13 ) ? null : this.value.length<6"
+					<input name="pinCode" type="text"maxlength="6" onkeypress="return (event.charCode > 47 && event.charCode < 58 );"
 						ng-model="editCustomer.pinCode" placeholder="Pincode" class="form-control">
 				</div>
 			</div>
@@ -80,7 +80,7 @@
 			<div class="form-group">
 				<label class="col-sm-3 control-label">Contact Number<sup class="red font-12">*</sup></label>
 				<div class="col-sm-6">
-					<input name="cntNumber" type="text" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : this.value.length<10" placeholder="Required Field" required ng-model="editCustomer.cntNumber" class="form-control">
+					<input name="cntNumber" type="text" maxlength="10" onkeypress="return (event.charCode > 47 && event.charCode < 58 );" placeholder="Required Field" required ng-model="editCustomer.cntNumber" class="form-control">
 					<span class="help-block"
 						ng-show="addCustomerForm.cntNumber.$error.required && addCustomerForm.cntNumber.$dirty">This
 						field is required</span>
@@ -89,7 +89,7 @@
 			<div class="form-group">
 				<label class="col-sm-3 control-label">Total Number Of Lifts</label>
 				<div class="col-sm-6">
-					<input name="totalNumberOfLifts" type="number" placeholder="Total Number Of Lifts"  ng-model="editCustomer.totalNumberOfLifts" class="form-control">
+					<input name="totalNumberOfLifts" type="number"  onkeypress="return (event.charCode > 47 && event.charCode < 58 );" placeholder="Total Number Of Lifts"  ng-model="editCustomer.totalNumberOfLifts" class="form-control">
 					<span class="help-block"
 						ng-show="addCustomerForm.totalNumberOfLifts.$error.required && addCustomerForm.totalNumberOfLifts.$dirty">This
 						field is required</span>
@@ -134,7 +134,7 @@
 				<div class="form-group">
 					<label class="col-sm-3 control-label">Chairman Number</label>
 					<div class="col-sm-6">
-						<input name="chairmanNumber" type="text" placeholder="Chairman Number" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : this.value.length<10"ng-model="editCustomer.chairmanNumber" class="form-control">
+						<input name="chairmanNumber" type="text" placeholder="Chairman Number" maxlength="10" onkeypress="return (event.charCode > 47 && event.charCode < 58 );"ng-model="editCustomer.chairmanNumber" class="form-control">
 					</div>
 				</div>
 			</fieldset>
@@ -155,7 +155,7 @@
 				<div class="form-group">
 					<label class="col-sm-3 control-label">Secretary Number</label>
 					<div class="col-sm-6">
-						<input name="secretaryNumber" type="text" placeholder="secretary Number" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : this.value.length<10"ng-model="editCustomer.secretaryNumber" class="form-control">
+						<input name="secretaryNumber" type="text" placeholder="secretary Number" maxlength="10" onkeypress="return (event.charCode > 47 && event.charCode < 58 );"ng-model="editCustomer.secretaryNumber" class="form-control">
 					</div>
 				</div>
 			</fieldset>
@@ -176,7 +176,7 @@
 				<div class="form-group">
 					<label class="col-sm-3 control-label">Treasurer Number</label>
 					<div class="col-sm-6">
-						<input name="treasurerNumber" type="text" placeholder="treasurer Number" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : this.value.length<10" ng-model="editCustomer.treasurerNumber" class="form-control">
+						<input name="treasurerNumber" type="text" placeholder="treasurer Number" maxlength="10" onkeypress="return (event.charCode > 47 && event.charCode < 58 );" ng-model="editCustomer.treasurerNumber" class="form-control">
 					</div>
 				</div>
 			</fieldset>
@@ -197,7 +197,7 @@
 				<div class="form-group">
 					<label class="col-sm-3 control-label">Watchman Number</label>
 					<div class="col-sm-6">
-						<input name="watchmenNumber" type="text" placeholder="watchmen Number" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : this.value.length<10" ng-model="editCustomer.watchmenNumber" class="form-control">
+						<input name="watchmenNumber" type="text" placeholder="watchmen Number" maxlength="10" onkeypress="return (event.charCode > 47 && event.charCode < 58 );" ng-model="editCustomer.watchmenNumber" class="form-control">
 					</div>
 				</div>
 			</fieldset>

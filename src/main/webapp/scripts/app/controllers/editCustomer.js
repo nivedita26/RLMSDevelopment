@@ -21,7 +21,7 @@
 						address:'',
 						city:'',
 						area:'',
-						pinCode:'',
+						pinCode:0,
 						customerType:'',
 						emailID:'',
 						cntNumber:'',
@@ -33,10 +33,10 @@
 						totalNumberOfLifts:'',
 						branchCompanyMapId:'',
 						chairmanName :'',
-						chairmanNumber :'',
+						chairmanNumber :0,
 						chairmanEmail :'',
 						secretaryName :'',
-						secretaryNumber :'',
+						secretaryNumber :0,
 						secretaryEmail :'',
 						treasurerName :'',
 						treasurerNumber :'',
@@ -76,7 +76,7 @@
 				];
 				$scope.activeFlag=[
 					{
-						name:"InActive",
+						name:"Inactive",
 						id:0
 					},
 					{
@@ -84,11 +84,15 @@
 						id:1
 					}
 				];
+				
+				/*if($scope.editCustomer.activeFlag=="1"){
+					$scope.selectedStatus.selected.name=="Active"
+				}else{
+					$scope.selectedStatus.selected.name=="Inactive"
+				}*/
 			}
 			
-			if($scope.editCustomer.activeFlag=="1"){
-				
-			}
+			
 			//load compay dropdown data
 			function loadCompayInfo(){
 				serviceApi.doPostWithoutData('/RLMS/admin/getAllApplicableCompanies')

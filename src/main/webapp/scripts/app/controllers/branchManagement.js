@@ -5,12 +5,14 @@
 		$scope.goToAddBranch =function(){
 			window.location.hash = "#/add-branch";
 		};
+	
 		$scope.showTable = false;
 		loadCompanyData();
 		$scope.selectedCompany={};
 		$scope.selectedActiveFlag = {};
 		$scope.selectedStatus = {};
 		$scope.showCompany = false;
+		$scope.showBranch = false;
 		
 		function loadCompanyData(){
 			serviceApi.doPostWithoutData('/RLMS/admin/getAllApplicableCompanies')
@@ -142,9 +144,13 @@
 		  	 }
 		  	if($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 1){
 				$scope.showCompany= true;
-			}else{
+				$scope.showBranch = true;
+			}else if($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 2){
+				$scope.showCompany= false;
+				$scope.showBranch = true;
 				$scope.loadBranchInfo();
 			}
+		  	
 
 	  	    $scope.$watch('pagingOptions', function(newVal, oldVal) {
 	  	      if (newVal !== oldVal) {

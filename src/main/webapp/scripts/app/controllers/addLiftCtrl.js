@@ -213,6 +213,7 @@
 			$scope.showBranch= true;
 		}else{
 			$scope.showBranch=false;
+			$scope.loadCustomerData();
 		}
 	  	
 		function initAddLift(){

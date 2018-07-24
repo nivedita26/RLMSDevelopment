@@ -7,6 +7,17 @@
 		<form class="form-horizontal row-border" name="addAMCForm">
 		<fieldset>
 		  <legend>AMC Details</legend>
+		  <div class="form-group">
+				<label class="col-sm-3 control-label" ng-show="showCompany">Select Company</label>
+				<div class="col-sm-6" ng-show="showCompany">
+					  <ui-select ng-model="selectedCompany.selected" title="Choose a Company" on-select="loadBranchData()">
+					    <ui-select-match placeholder="Select or search a company in the list...">{{$select.selected.companyName}}</ui-select-match>
+					    <ui-select-choices repeat="companyIterator in companies| filter: $select.search">
+					      <span ng-bind-html="companyIterator.companyName | highlight: $select.search"></span>
+					    </ui-select-choices>
+					  </ui-select>
+				</div>
+				</div>
 		   	  	<div class="form-group " >
 					<label class="col-sm-3 control-label" ng-show="showBranch">Select Branch</label>
 					<div class="col-sm-6 select-container"  ng-show="showBranch">
@@ -53,7 +64,7 @@
 				</div>
 			<div class="form-group">
 				<label class="col-sm-3 control-label">Amount</label>
-					<div class="col-md-6"><input type="number" class="form-control datepicker" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : this.value.length<45" ng-model="addAMC.amcAmount"/></div>
+					<div class="col-md-6"><input type="number" class="form-control " maxlength="45" onkeypress="return (event.charCode > 47 && event.charCode < 58 );" ng-model="addAMC.amcAmount"/></div>
 			</div>
 			<!-- <div class="form-group">
 				<label class="col-sm-3 control-label">No Of Service Calls</label>

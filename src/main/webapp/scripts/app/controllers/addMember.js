@@ -7,6 +7,8 @@
 			$scope.alert = { type: 'success', msg: 'You successfully Added Member.',close:true };
 			//loadBranchListInfo();
 			$scope.showAlert = false;
+			$scope.showCompany = false;
+			$scope.showBranch = false;
 			$scope.companies = [];
 			$scope.branches = [];
 			function initAddMember(){
@@ -94,20 +96,22 @@
 			 //showCompnay Flag
 			if($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 1){
 				$scope.showCompany= true;
-				$scope.loadCompanyData();
+				$scope.showBranch=true;
+				loadCompayInfo();
 			}else{
 				$scope.showCompany= false;
 				$scope.loadBranchData();
 			}
 		  	
 		  	//showBranch Flag
-		  	if($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel < 3){
+		  	if($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 2){
 				$scope.showBranch= true;
 				$scope.showCompany=false
 				$scope.loadBranchData();
-				$scope.loadCustomerData();
+				//$scope.loadCustomerData();
 			}else{
-				$scope.showBranch=false;
+				//$scope.showBranch=false;
+				$scope.loadCustomerData();
 			}
 			//reset add branch
 			$scope.resetAddMember = function(){

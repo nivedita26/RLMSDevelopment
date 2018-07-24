@@ -333,7 +333,6 @@
 		  	        		
 		  	          if(!($scope.selectedCallType.selected)){
 		  	        		  
-		  	        		  
 		  	        		var detailsObj={};		  	        	
 		  	        		detailsObj["SrNo"] = i+1 + ".";
 	  	        		if(!!largeLoad[i].customerName){
