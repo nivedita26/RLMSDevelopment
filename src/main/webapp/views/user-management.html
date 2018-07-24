@@ -1,0 +1,39 @@
+<div class="rlms-wrapper">
+<div class="rlms-container user-management" ng-controller="userManagement">
+	<h1 class="rlms-heading">User Management</h1>
+	<div class="row">
+		<div class="col-lg-12 align-right">
+			<button class="btn-primary btn rlms-btn" ng-click="goToAddUser();">Add User</button>
+		</div>	
+	</div>
+	<div class="filter-section" ng-show="showCompany">
+		<div class="form-group">
+			<label class="col-sm-4 control-label">Select Company : </label>
+			<div class="col-sm-3">
+				  <ui-select ng-model="selectedCompany.selected" title="Choose a Company" on-select="loadBranchData();">
+				    <ui-select-match placeholder="Select company">{{$select.selected.companyName}}</ui-select-match>
+				    <ui-select-choices repeat="companyIterator in companies| filter: $select.search">
+				      <span ng-bind-html="companyIterator.companyName | highlight: $select.search"></span>
+				    </ui-select-choices>
+				  </ui-select>
+			</div>
+			<button class="btn-sky btn col-sm-offset-1" ng-click="loadUsersInfo()">Proceed</button>
+		</div>
+		
+	</div>
+	<div class="container-fluid" ng-show="showTable">
+	<alert ng-show="showAlert" type="{{alert.type}}"> <span
+				ng-bind-html="alert.msg | safe_html"></alert>
+	<h5 class="rlms-info"><span class="fa fa-info-circle"></span>List of registered Users</h5>
+		<div class="row">
+	      <div class="col-md-12">		
+               <div class="input-icon right mb10">
+                   <i class="fa fa-search"></i>
+                   <input type="text" ng-model="filterOptions.filterText" class="form-control" placeholder="Search Filter">
+               </div>
+               <div class ="data-table" style="min-height:300px;max-height:500px" ng-grid="gridOptions"></div>
+	        </div>
+	    </div>
+	</div>
+</div>
+</div>
