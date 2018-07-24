@@ -383,6 +383,7 @@
 	<script src="scripts/app/controllers/branchManagement.js"></script>
 	<script src="scripts/app/controllers/customerManagementCtrl.js"></script>
 	<script src="scripts/app/controllers/liftManagementCtrl.js"></script>
+	<script src="scripts/app/controllers/liftViewManagement.js"></script>
 	<script src="scripts/app/controllers/addLiftCtrl.js"></script>
 	<script src="scripts/app/controllers/workListCtrl.js"></script>
 	<script src="scripts/app/controllers/addCustomerCtrl.js"></script>

@@ -325,7 +325,7 @@
 					name:'Duplex'
 				},
 				{
-					id:1,
+					id:2,
 					name:'Group'
 				}
 			];
@@ -516,6 +516,10 @@
 				$scope.addLift.fireMode = 1;
 			}else{
 				$scope.addLift.fireMode = 0;
+			}
+			if($scope.selectedLmsAvailable.selected.name=="No"){
+				$scope.addLift.imei=="0";
+				$scope.addLift.lmsEventFromContactNo=="0";
 			}
 			//$scope.addLift.liftTypeName=$scope.addLift.liftTypeName;
 			$scope.addLift.branchCustomerMapId = $scope.selectedCustomer.selected.branchCustomerMapId

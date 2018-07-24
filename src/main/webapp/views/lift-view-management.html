@@ -1,10 +1,7 @@
 <div class="rlms-wrapper">
-<div class="rlms-container customer-management" ng-controller="liftManagementCtrl">
-	<h1 class="rlms-heading">Lift Management</h1>
+<div class="rlms-container customer-management" ng-controller="liftViewManagementCtrl">
+	<h1 class="rlms-heading">View Lifts </h1>
 	<div class="row">
-		<div class="col-lg-12 align-right">
-			<button class="btn-primary btn rlms-btn" ng-click="goToAddLift();">Add Lift</button>
-		</div>	
 	</div>
 	<div class="filter-section" ng-show="showBranch">
 		<div class="form-group">
@@ -19,7 +16,7 @@
 			</div>
 			<label class=" control-label" ng-show="showBranch">Select Branch</label>
 			<div class="select-container" ng-show="showBranch">
-				  <ui-select ng-model="selectedBranch.selected" title="Choose a Branch" on-select="loadCustomerInfo()">
+				  <ui-select ng-model="selectedBranch.selected" title="Choose a Branch"  on-select="loadCustomerInfo()">
 				    <ui-select-match placeholder="Select Branch">{{$select.selected.rlmsBranchMaster.branchName}}</ui-select-match>
 				    <ui-select-choices repeat="branchIterator in branches| filter: $select.search">
 				      <span ng-bind-html="branchIterator.rlmsBranchMaster.branchName | highlight: $select.search"></span>

@@ -57,15 +57,15 @@
 				$scope.alert.msg = successMessage;
 				$scope.alert.type = "success";
 				initEditMember();
-				$scope.editMemberForm.$setPristine();
-				$scope.editMemberForm.$setUntouched();
+				//$scope.addMemberForm.$setPristine();
+				//$scope.addMemberForm.$setUntouched();
 			},function(error){
 				$scope.showAlert = true;
 				$scope.alert.msg = error.exceptionMessage;
 				$scope.alert.type = "danger";
 			});
 		}
-		$scope.submitAddMember = function(){
+		/*$scope.submitAddMember = function(){
 			$scope.addMember.branchCustoMapId = $scope.selectedCustomer.selected.branchCustomerMapId;
 			serviceApi.doPostWithData("/RLMS/admin/validateAndRegisterNewMember",$scope.addMember)
 			.then(function(response){
@@ -75,14 +75,14 @@
 				$scope.alert.msg = successMessage;
 				$scope.alert.type = "success";
 				initEditMember();
-				$scope.editMemberForm.$setPristine();
-				$scope.editMemberForm.$setUntouched();
+				$scope.addMemberForm.$setPristine();
+				$scope.addMemberForm.$setUntouched();
 			},function(error){
 				$scope.showAlert = true;
 				$scope.alert.msg = error.exceptionMessage;
 				$scope.alert.type = "danger";
 			});
-		}
+		}*/
 		//reset add branch
 		$scope.resetEditMember = function(){
 			initEditMember();
