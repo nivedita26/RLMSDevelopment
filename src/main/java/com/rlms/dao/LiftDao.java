@@ -77,4 +77,6 @@ public interface LiftDao {
 	
 	public List<RlmsLiftCustomerMap> getliftCustomerMapDtlsByBranchCutomerId(ComplaintsDtlsDto complaintsDtlsDto);
 	
+	
+
 }

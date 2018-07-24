@@ -638,9 +638,11 @@ public class CustomerServiceImpl implements CustomerService{
 		RlmsMemberMaster memberMaster = this.customerDao.getMemberById(memberDtlsDto.getMemberId()) ;
 		if(memberMaster!=null) {
 			memberMaster.setActiveFlag(RLMSConstants.INACTIVE.getId());
+			customerDao.deleteMember(memberMaster);
+			RlmsCustomerMemberMap customerMemberMap = customerDao.getCustomerMemberMapByMemberId(memberMaster.getMemberId());
+			customerMemberMap.setActiveFlag(RLMSConstants.INACTIVE.getId());
+			customerDao.saveCustomerMemberMap(customerMemberMap);
 		}
-		customerDao.deleteMember(memberMaster);
-		
 		return  "Memeber deleted successfully";
 
 	}

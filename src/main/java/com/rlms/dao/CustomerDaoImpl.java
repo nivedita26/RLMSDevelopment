@@ -2,8 +2,6 @@ package com.rlms.dao;
 
 import java.util.List;
 
-
-
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -11,9 +9,7 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.rlms.constants.RLMSConstants;
 import com.rlms.model.RlmsBranchCustomerMap;
 import com.rlms.model.RlmsCustomerMaster;
@@ -191,5 +187,14 @@ public class CustomerDaoImpl implements CustomerDao{
 	public void deleteMember(RlmsMemberMaster memberMaster) {
 		this.sessionFactory.getCurrentSession().update(memberMaster);
 
+	}
+
+	@Override
+	public RlmsCustomerMemberMap getCustomerMemberMapByMemberId(int id) {
+		 Session session = this.sessionFactory.getCurrentSession();
+		 Criteria criteria = session.createCriteria(RlmsCustomerMemberMap.class)
+				 		.add(Restrictions.eq("rlmsMemberMaster.memberId", id));
+		 RlmsCustomerMemberMap  customerMemberMap = (RlmsCustomerMemberMap) criteria.uniqueResult();
+		 return customerMemberMap;
 	}
 }
