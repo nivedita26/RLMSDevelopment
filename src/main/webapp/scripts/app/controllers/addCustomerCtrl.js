@@ -104,7 +104,7 @@
 			
 			if($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 1){
 				$scope.showCompany= true;
-				loadCompanyData();
+				loadCompayInfo();
 			}else{
 				$scope.showCompany= false;
 				$scope.loadBranchData();

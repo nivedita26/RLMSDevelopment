@@ -54,13 +54,13 @@
 		</div>  -->
 		<div class="form-group">
 			<label for="address" class="col-md-3 control-label">Address </label>
-			<div class="col-md-6"><input ng-model="editLift.address" class="form-control" type="text" name="address" ></div>
+			<div class="col-md-6"><input ng-model="editLift.address" class="form-control" type="text" name="address"  ></div>
 		</div>
 		<div class="form-group">
 			<label class="col-sm-3 control-label">Area<sup class="red font-12">*</sup></label>
 			<div class="col-sm-6">
 				<input name="area" type="text"
-					placeholder=""
+					placeholder=""   onkeypress="return ((event.charCode > 64 && event.charCode < 91) ||(event.charCode > 96 && event.charCode < 123) || event.charCode == 8 || event.charCode == 32);"
 					ng-model="editLift.area" class="form-control" required>
 			</div>
 		</div>
@@ -68,13 +68,13 @@
 			<label class="col-sm-3 control-label">City<sup class="red font-12">*</sup></label>
 			<div class="col-sm-6">
 				<input name="city" type="text"
-					placeholder=""
+					placeholder=""   onkeypress="return ((event.charCode > 64 && event.charCode < 91) ||(event.charCode > 96 && event.charCode < 123) || event.charCode == 8 || event.charCode == 32);"
 					ng-model="editLift.city" class="form-control" required>
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-sm-3 control-label">Pincode </label>
-					<div class="col-md-6"><input ng-model="editLift.pinCode" class="form-control"  type="text" name="pinCode"></div>
+					<div class="col-md-6"><input ng-model="editLift.pinCode" class="form-control"  type="text" name="pinCode" maxlength="6" onkeypress="return (event.charCode > 47 && event.charCode < 58 );"></div>
 		</div>
 		<div class="form-group">
 			<label for="latitude" class="col-md-3 control-label">Latitude</label>
@@ -123,7 +123,7 @@
 				</div>
 		<div class="form-group">
 			<label class="col-md-3 control-label">AMC Amount</label>
-			<div class="col-md-6"><input ng-model="editLift.amcAmount" class="form-control"  type="text" name="amcAmount"></div>
+			<div class="col-md-6"><input ng-model="editLift.amcAmount" class="form-control"  maxlength="45" onkeypress="return (event.charCode > 47 && event.charCode < 58 );" type="text" name="amcAmount"></div>
 		</div>
 
 	</fieldset>
@@ -144,7 +144,7 @@
 		</div>
 		<div class="form-group">
 			<label for="noOfStops" class="col-md-3 control-label">No Of Stops</label>
-			<div class="col-md-6"><input ng-model="editLift.noOfStops" class="form-control"  type="text" name="noOfStops"></div>
+			<div class="col-md-6"><input ng-model="editLift.noOfStops" class="form-control"  type="text" name="noOfStops" onkeypress="return (event.charCode > 47 && event.charCode < 58 );"></div>
 		</div>
 		<div class="form-group">
 			<label for="engineType" class="col-md-3 control-label">Machine Type</label>
@@ -465,7 +465,7 @@
 				<div class="col-sm-3">
 					<span ng-hide="displayHeaderPhoto" ><img height="200px" width="200px" ng-src="data:image/JPEG;base64,{{editLift.autoDoorHeaderPhoto}}"  ></span>
 					<img ng-src="{{image_source6}}" height="200px" width="200px" ng-show="displayHeaderPhoto">
-					<div style="padding-left: 52px;">Cartop Photo</div>
+					<div style="padding-left: 52px;">Auto Door Header Photo</div>
 				</div>
 			</div>
 			<div class="form-group">

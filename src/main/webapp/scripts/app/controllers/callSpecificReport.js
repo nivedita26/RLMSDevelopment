@@ -269,19 +269,124 @@ $scope.loadCallID=function(){
 			  	    	
 		  	        	serviceApi.doPostWithData('/RLMS/report/callSpecificReport',dataToSend)
 		  	        	.then(function(largeLoad) {
-
 		  	        	  var details=[];
-		  	        	 
 		  	        	  for(var i=0;i<largeLoad.length;i++){
-		  	        		
+		  	        		  
+		  	        		if($scope.selectedLift.selected  && $scope.selectedLift.selected.length>0){	  
+		  	        			var tempLiftIds = [];
+		  	        			  for (var i = 0; i < $scope.selectedLift.selected.length; i++) {
+		  	        				  tempLiftIds.push($scope.selectedLift.selected[i].liftNumber);
+		  	        			  }
+		  	        			  for(var j=0; j<tempLiftIds.length;j++){
+		  	        				 for(var i=0;i<largeLoad.length;i++){
+		  	        				  if(tempLiftIds[j]==largeLoad[i].liftNumber){ 
+
+				  	        			  var detailsObj={};
+				  	        		detailsObj["SrNo"] =i+1 +".";
+				  	        		
+				  	        		if(!!largeLoad[i].customerName){
+				  	        			detailsObj["CustomerName"] =largeLoad[i].customerName;
+				  	        		}else{
+				  	        			detailsObj["CustomerName"] =" - ";
+				  	        		}
+				  	        		if(!!largeLoad[i].branchName){
+				  	        			detailsObj["BranchName"] =largeLoad[i].branchName;
+				  	        		}else{
+				  	        			detailsObj["BranchName"] =" - ";
+				  	        		}
+				  	        		if(!!largeLoad[i].liftNumber){
+				  	        			detailsObj["liftNumber"] =largeLoad[i].liftNumber;
+				  	        		}else{
+				  	        			detailsObj["liftNumber"] =" - ";
+				  	        		}
+				  	        		if(!!largeLoad[i].status){
+				  	        			detailsObj["Status"] =largeLoad[i].status;
+				  	        		}else{
+				  	        			detailsObj["Status"] =" - ";
+				  	        		}
+				  	        		if(!!largeLoad[i].callAssignedDateStr){
+				  	        			detailsObj["CallAssignedDate"] =largeLoad[i].callAssignedDateStr;
+				  	        		}else{
+				  	        			detailsObj["CallAssignedDate"] =" - ";
+				  	        		}
+				  	        		if(!!largeLoad[i].resolvedDateStr){
+				  	        			detailsObj["CallResolvedDate"] =largeLoad[i].resolvedDateStr;
+				  	        		}else{
+				  	        			detailsObj["CallResolvedDate"] =" - ";
+				  	        		}
+				  	        		if(!!largeLoad[i].remark){
+				  	        			detailsObj["Remark"] =largeLoad[i].remark;
+				  	        		}else{
+				  	        			detailsObj["Remark"] =" - ";
+				  	        		}
+				  	        		if(!!largeLoad[i].complaintNumber){
+				  	        			detailsObj["CallId"] =largeLoad[i].complaintNumber;
+				  	        		}else{
+				  	        			detailsObj["CallId"] =" - ";
+				  	        		}
+				  	        		if(!!largeLoad[i].customerAddress){
+				  	        			detailsObj["address"] =largeLoad[i].customerAddress;
+				  	        		}else{
+				  	        			detailsObj["address"] =" - ";
+				  	        		}
+				  	        		if(!!largeLoad[i].customerCity){
+				  	        			detailsObj["city"] =largeLoad[i].customerCity;
+				  	        		}else{
+				  	        			detailsObj["city"] =" - ";
+				  	        		}
+				  	        		if(!!largeLoad[i].registeredBy){
+				  	        			detailsObj["CallRegisteredBy"] =largeLoad[i].registeredBy;
+				  	        		}else{
+				  	        			detailsObj["CallRegisteredBy"] =" - ";
+				  	        		}
+				  	        		if(!!largeLoad[i].serviceCallTypeStr){
+				  	        			detailsObj["CallType"] =largeLoad[i].serviceCallTypeStr;
+				  	        		}else{
+				  	        			detailsObj["CallType"] =" - ";
+				  	        		}
+				  	        		if(!!largeLoad[i].title){
+				  	        			detailsObj["Title"] =largeLoad[i].title;
+				  	        		}else{
+				  	        			detailsObj["Title"] =" - ";
+				  	        		}
+				  	        		if(!!largeLoad[i].registrationDateStr){
+				  	        			detailsObj["RegistrationDate"] =largeLoad[i].registrationDateStr;
+				  	        		}else{
+				  	        			detailsObj["RegistrationDate"] =" - ";
+				  	        		}
+				  	        		if(largeLoad[i].siteVisitDetailsList){
+			  	        				if(!!largeLoad[i].siteVisitDetailsList.techName){
+			  	        					detailsObj["Technician"] =largeLoad[i].siteVisitDetailsList.techName;
+			  	        				}else{
+			  	        					detailsObj["Technician"] =" - ";
+			  	        				}
+				  	        				if(largeLoad[i].siteVisitDetailsList.listOFAllVisits){
+				  	        					for(j=0;j<=listOFAllVisits.length;j++){
+					  	        					if(!!largeLoad[i].siteVisitDetailsList.listOFAllVisits[j].fromDateDtr){
+				  	        						detailsObj["FromDate"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits[j].fromDateDtr;
+					  	        					}else{
+					  	        						detailsObj["FromDate"] =" - ";
+					  	        					}
+					  	        					if(!!largeLoad[i].siteVisitDetailsList.listOFAllVisits[j].toDateStr){
+					  	        						detailsObj["ToDate"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits[j].toDateStr;
+					  	        					}else{
+					  	        						detailsObj["ToDate"] =" - ";
+					  	        					}
+					  	        					if(!!largeLoad[i].siteVisitDetailsList.listOFAllVisits[i].remark){
+								  	        			detailsObj["Remark"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits[j].remark;
+								  	        		}else{
+								  	        			detailsObj["Remark"] =" - ";
+								  	        		}
+				  	        					}
+			  	        					}
+				  	        		}
+				  	        		details.push(detailsObj);
+				  	        	  
+		  	        				  }
+		  	        				 }
+		  	        			  }
+		  	        		}
 		  	        		  if((($scope.selectedCallID.selected) &&($scope.selectedCallID.selected.complaintNumber === largeLoad[i].complaintNumber)) ){
-			  	        	
-		  	        			/* if($scope.selectedLift.selected){
-		  			  	        	  var liftNum=[];
-		  			  	        	for (var j = 0; j < $scope.selectedLift.selected.length;j++) {
-		  			  	        		liftNum.push($scope.selectedLift.selected[j].liftNumber);
-		  			  				} 
-		  			  	        	}*/
 		  	        			  var detailsObj={};
 		  	        		detailsObj["SrNo"] =i+1 +".";
 		  	        		
@@ -363,24 +468,24 @@ $scope.loadCallID=function(){
 	  	        				}
 	  	        				if(largeLoad[i].siteVisitDetailsList.listOFAllVisits){
 	  	        					for(j=0;j<=listOFAllVisits.length;j++){
-	  	        					if(!!largeLoad[i].siteVisitDetailsList.listOFAllVisits[j].fromDateDtr){
-  	        						detailsObj["FromDate"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits[j].fromDateDtr;
-  	        					}else{
-  	        						detailsObj["FromDate"] =" - ";
-  	        					}
-  	        					if(!!largeLoad[i].siteVisitDetailsList.listOFAllVisits[j].toDateStr){
-  	        						detailsObj["ToDate"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits[j].toDateStr;
-  	        					}else{
-  	        						detailsObj["ToDate"] =" - ";
-  	        					}
-  	        					if(!!largeLoad[i].siteVisitDetailsList.listOFAllVisits[i].remark){
-			  	        			detailsObj["Remark"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits[j].remark;
-			  	        		}else{
-			  	        			detailsObj["Remark"] =" - ";
-			  	        		}
+		  	        					if(!!largeLoad[i].siteVisitDetailsList.listOFAllVisits[j].fromDateDtr){
+	  	        						detailsObj["FromDate"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits[j].fromDateDtr;
+		  	        					}else{
+		  	        						detailsObj["FromDate"] =" - ";
+		  	        					}
+		  	        					if(!!largeLoad[i].siteVisitDetailsList.listOFAllVisits[j].toDateStr){
+		  	        						detailsObj["ToDate"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits[j].toDateStr;
+		  	        					}else{
+		  	        						detailsObj["ToDate"] =" - ";
+		  	        					}
+		  	        					if(!!largeLoad[i].siteVisitDetailsList.listOFAllVisits[i].remark){
+					  	        			detailsObj["Remark"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits[j].remark;
+					  	        		}else{
+					  	        			detailsObj["Remark"] =" - ";
+					  	        		}
 	  	        					}
   	        					}
-	  	        		}
+		  	        		}
 		  	        		details.push(detailsObj);
 		  	        	  }
 		  	        		  if((!($scope.selectedCallID.selected))&& (!($scope.selectedLift.selected))){

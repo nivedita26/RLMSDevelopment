@@ -5,7 +5,7 @@
 		initAddAMC();
 			//loadCompayInfo();
 			$scope.alert = { type: 'success', msg: 'You successfully Added AMC details.',close:true };
-			//$scope.alert = { type: 'error', msg: '',close:false };
+			$scope.alert = { type: 'error', msg: '',close:false };
 			$scope.showAlert = false;
 			$scope.showCompany = false;
 			$scope.showBranch = false;
@@ -136,6 +136,13 @@
 		    	$scope.addAMC.amcEdDate=amcEndDate;
 			}
 			
+			 function loadCompanyData(){
+					serviceApi.doPostWithoutData('/RLMS/admin/getAllApplicableCompanies')
+				    .then(function(response){
+				    		$scope.companies = response;
+				    });
+				}
+			 
 			$scope.loadBranchData = function(){
 				var companyData={};
 				if($scope.showCompany == true){
@@ -239,12 +246,18 @@
 				 $window.history.back();
 			}
 			
+			if($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel ==1){
+	  	  		$scope.showCompany= true;
+	  	  		loadCompanyData();
+	  	  	}else{
+	  	  		$scope.showCompany= false;
+	  	  	}
 		  	
 		  	//showBranch Flag
 		  	if($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel < 3){
 				$scope.showBranch= true;
 				$scope.loadBranchData();
-				$scope.loadCustomerData();
+//			$scope.loadCustomerData();
 
 			}else{
 				$scope.showBranch=false;

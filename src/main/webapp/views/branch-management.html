@@ -1,14 +1,14 @@
 <div class="rlms-wrapper">
 <div class="rlms-container branch-management" ng-controller="branchManagement">
 	<h1 class="rlms-heading">Branch Management</h1>
-	<div class="row">
+	<div class="row" ng-show="showBranch">
 		<div class="col-lg-12 align-right">
 			<button class="btn-primary btn rlms-btn" ng-click="goToAddBranch();">Add Branch</button>
 		</div>	
 	</div>
 	<div class="filter-section" ng-show="showCompany">
 		<div class="form-group">
-			<label class="col-sm-4 control-label">Select Company : </label>
+			<label class="col-sm-4 control-label">Select Company</label>
 			<div class="col-sm-3">
 				  <ui-select ng-model="selectedCompany.selected" title="Choose a Company" on-select="loadBranchData();">
 				    <ui-select-match placeholder="Select company">{{$select.selected.companyName}}</ui-select-match>

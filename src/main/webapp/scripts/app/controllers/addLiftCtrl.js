@@ -213,6 +213,7 @@
 			$scope.showBranch= true;
 		}else{
 			$scope.showBranch=false;
+			$scope.loadCustomerData();
 		}
 	  	
 		function initAddLift(){
@@ -405,8 +406,8 @@
 				$scope.showIMEI=true;
 				$scope.showLmsCnt= true;
 			}else{
-				//$scope.addLift.imei=="0";
-				//$scope.addLift.lmsEventFromContactNo=="0";
+				$scope.addLift.imei=="0";
+				$scope.addLift.lmsEventFromContactNo=="0";
 				$scope.showIMEI=false;
 				$scope.showLmsCnt= false;
 			}

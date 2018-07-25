@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 	angular.module('rlmsApp')
-	.controller('addUserCtrl', ['$scope', '$filter','serviceApi','$route','$http','utility','$window','pinesNotifications', function($scope, $filter,serviceApi,$route,$http,utility,$window,pinesNotifications) {
+	.controller('addUserCtrl', ['$scope', '$filter','serviceApi','$route','$http','utility','$window','pinesNotifications','$rootScope', function($scope, $filter,serviceApi,$route,$http,utility,$window,pinesNotifications) {
 		//initialize add Branch
 		initAddUser();
 		loadCompayInfo();
@@ -11,6 +11,7 @@
 		}
 		$scope.alert = { type: 'success', msg: 'You successfully Added new user.',close:true };
 		$scope.showAlert = false;
+		$scope.showCompany=false;
 		function initAddUser(){
 			$scope.selectedCompany = {};
 			$scope.addUser={
@@ -34,9 +35,20 @@
 		    		$scope.companies = response;
 		    });
 		};
+		//Hide select company from company and branch admin
+		if($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel ==1){
+			$scope.showCompany=true;
+		}else{
+			$scope.showCompany=false;
+		}
+		
 		//Post call add branch
 		$scope.submitAddUser = function(){
-			$scope.addUser.companyId = $scope.selectedCompany.selected.companyId;
+			if($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel ==1){
+				$scope.addUser.companyId = $scope.selectedCompany.selected.companyId;
+			}else{
+				$scope.addUser.companyId = $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyMaster.companyId;
+			}
 			serviceApi.doPostWithData("/RLMS/admin/validateAndRegisterNewUser",$scope.addUser)
 			.then(function(response){
 				$scope.showAlert = true;

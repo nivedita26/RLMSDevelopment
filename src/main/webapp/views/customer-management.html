@@ -8,7 +8,7 @@
 	</div>
 	<div class="filter-section" ng-show="showBranch">
 		<div class="form-group">
-			<label class="control-label" ng-show="showCompany">Select Company : </label>
+			<label class="control-label" ng-show="showCompany">Select Company</label>
 			<div class="select-container" ng-show="showCompany">
 				  <ui-select ng-model="selectedCompany.selected" title="Choose a Company" on-select="loadBranchData();">
 				    <ui-select-match placeholder="Select company">{{$select.selected.companyName}}</ui-select-match>

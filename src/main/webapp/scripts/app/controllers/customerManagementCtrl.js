@@ -358,6 +358,7 @@
 				$scope.showBranch= true;
 			}else{
 				$scope.showBranch=false;
+				$scope.loadCustomerInfo();
 			}
 		  	
 	  	    $scope.$watch('pagingOptions', function(newVal, oldVal) {

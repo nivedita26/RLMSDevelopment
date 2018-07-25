@@ -49,14 +49,14 @@
 			<div class="form-group">
 				<label class="col-sm-4 control-label">Address </label>
 				<div class="col-sm-6">
-					<input name="address" type="text" placeholder="Address"
+					<input name="address" type="text" placeholder="Address" 
 						 ng-model="addCompany.address" class="form-control">
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="col-sm-4 control-label">Area </label>
 				<div class="col-sm-6">
-					<input name="area" type="text"
+					<input name="area" type="text" onkeypress="return ((event.charCode > 64 && event.charCode < 91) ||(event.charCode > 96 && event.charCode < 123) || event.charCode == 8 || event.charCode == 32);"
 						placeholder="Area"
 						ng-model="addCompany.area" class="form-control">
 				</div>
@@ -64,7 +64,7 @@
 			<div class="form-group">
 				<label class="col-sm-4 control-label">City </label>
 				<div class="col-sm-6">
-					<input name="city" type="text"
+					<input name="city" type="text" onkeypress="return ((event.charCode > 64 && event.charCode < 91) ||(event.charCode > 96 && event.charCode < 123) || event.charCode == 8 || event.charCode == 32);"
 						placeholder="City"
 						ng-model="addCompany.city" class="form-control">
 				</div>

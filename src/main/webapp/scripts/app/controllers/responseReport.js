@@ -154,7 +154,7 @@
 		  	        	  var details=[];
 		  	        	  for(var i=0;i<largeLoad.length;i++){
 		  	        		var detailsObj={};
-detailsObj["No"] = i+1 +".";
+		  	        		detailsObj["No"] = i+1 +".";
 	  	        			
 	  	        			if(!!largeLoad[i].customerName){
 		  	        			detailsObj["CustomerName"] =largeLoad[i].customerName;
@@ -222,7 +222,7 @@ detailsObj["No"] = i+1 +".";
 		  	        	  var details=[];
 		  	        	  for(var i=0;i<largeLoad.length;i++){
 		  	        		  
-		  	        		  if($scope.selectedLift.selected){	  
+		  	        		  if($scope.selectedLift.selected && $scope.selectedLift.selected.length>0){	  
 		  	        			  var tempLiftIds = [];
 		  	        			  for (var i = 0; i < $scope.selectedLift.selected.length; i++) {
 		  	        				  tempLiftIds.push($scope.selectedLift.selected[i].liftNumber);
