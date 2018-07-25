@@ -27,9 +27,18 @@ public class EventDtlsDto {
 	private String City;
 	private String lmsResponseContactNo;
 	private Integer activeFlag;
+	private Integer branchCompanyMapId;
 	
 	public String getCustomerName() {
 		return customerName;
+	}
+
+	public Integer getBranchCompanyMapId() {
+		return branchCompanyMapId;
+	}
+
+	public void setBranchCompanyMapId(Integer branchCompanyMapId) {
+		this.branchCompanyMapId = branchCompanyMapId;
 	}
 
 	public void setCustomerName(String customerName) {

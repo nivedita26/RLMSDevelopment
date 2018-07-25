@@ -126,17 +126,19 @@ public class DashBoardController extends BaseController {
 		List<AMCDetailsDto> listOFAmcDtls = null;
 		List<RlmsCompanyBranchMapDtls> listOfAllBranches = null;
 		List<Integer> companyBranchIds = new ArrayList<>();
-
 		try {
 			logger.info("Method :: getAllBranchesForCompany");
+			if(amcDetailsDto.getBranchCompanyMapId()!=null) {
+				companyBranchIds.add(amcDetailsDto.getBranchCompanyMapId());
+			}
+			else {
 			listOfAllBranches = this.companyService.getAllBranches(amcDetailsDto.getCompanyId());
-
 			if (listOfAllBranches != null && !listOfAllBranches.isEmpty()) {
-
 				for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
 					companyBranchIds.add(companyBranchMap.getCompanyBranchMapId());
-				}
-
+				 }
+			 }
+		 }
 				List<CustomerDtlsDto> allCustomersForBranch = dashboardService
 						.getAllCustomersForBranch(companyBranchIds);
 
@@ -180,17 +182,16 @@ public class DashBoardController extends BaseController {
 										amcStatusCount.setNotUnderWarranty(statusCount.getStatusCount());
 									}
 								}
-							
 								amcStatusCount.setBranchName(customerDtlsDto.getBranchName());
 								amcStatusCount.setCustomerName(customerDtlsDto.getCustomerName());
 								amcStatusCount.setCity(customerDtlsDto.getCity());
 								amcStatusCount.setTotalLiftCount(list.size());
 								amcStatusDetailsCountList.add(amcStatusCount);
-						}
+							}
 						}
 					}
 				}
-			}
+			//}
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error(ExceptionUtils.getFullStackTrace(e));
@@ -229,9 +230,15 @@ public class DashBoardController extends BaseController {
 		List<TechnicianCount> technicianCounts = null;
 		List<RlmsCompanyBranchMapDtls> listOfAllBranches = null;
 		List<Integer> companyBranchMapIds = new ArrayList<>();
+		
+		if(dto.getBranchCompanyMapId()!=null) {
+			companyBranchMapIds.add(dto.getBranchCompanyMapId());
+		}
+		else {
 		listOfAllBranches = this.companyService.getAllBranches(dto.getCompanyId());
 		for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
 			companyBranchMapIds.add(companyBranchMap.getCompanyBranchMapId());
+		}
 		}
 		try {
 			logger.info("Method :: getListOfComplaints");
@@ -282,9 +289,18 @@ public class DashBoardController extends BaseController {
 		List<RlmsCompanyBranchMapDtls> listOfAllBranches = null;
 		List<Integer> companyBranchMapIds = new ArrayList<>();
 		List<Integer> branchCustomerMapIds = new ArrayList<>();
+		/*listOfAllBranches = this.companyService.getAllBranches(dto.getCompanyId());
+		for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
+			companyBranchMapIds.add(companyBranchMap.getCompanyBranchMapId());
+		}*/
+		if(dto.getBranchCompanyMapId()!=null) {
+			companyBranchMapIds.add(dto.getBranchCompanyMapId());
+		}
+		else {
 		listOfAllBranches = this.companyService.getAllBranches(dto.getCompanyId());
 		for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
 			companyBranchMapIds.add(companyBranchMap.getCompanyBranchMapId());
+		}
 		}
 		List<CustomerDtlsDto> allCustomersForBranch = dashboardService.getAllCustomersForBranch(companyBranchMapIds);
 		List<Integer> liftCustomerMapIds = new ArrayList<>();
@@ -314,9 +330,18 @@ public class DashBoardController extends BaseController {
 		List<RlmsCompanyBranchMapDtls> listOfAllBranches = null;
 		List<Integer> companyBranchMapIds = new ArrayList<>();
 		List<Integer> branchCustomerMapIds = new ArrayList<>();
+	/*	listOfAllBranches = this.companyService.getAllBranches(dto.getCompanyId());
+		for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
+			companyBranchMapIds.add(companyBranchMap.getCompanyBranchMapId());
+		}*/
+		if(dto.getBranchCompanyMapId()!=null) {
+			companyBranchMapIds.add(dto.getBranchCompanyMapId());
+		}
+		else {
 		listOfAllBranches = this.companyService.getAllBranches(dto.getCompanyId());
 		for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
 			companyBranchMapIds.add(companyBranchMap.getCompanyBranchMapId());
+		}
 		}
 		List<CustomerDtlsDto> allCustomersForBranch = dashboardService.getAllCustomersForBranch(companyBranchMapIds);
 		List<Integer> liftCustomerMapIds = new ArrayList<>();
@@ -346,9 +371,18 @@ public class DashBoardController extends BaseController {
 		List<RlmsCompanyBranchMapDtls> listOfAllBranches = null;
 		List<Integer> companyBranchMapIds = new ArrayList<>();
 		List<Integer> branchCustomerMapIds = new ArrayList<>();
+		/*listOfAllBranches = this.companyService.getAllBranches(dto.getCompanyId());
+		for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
+			companyBranchMapIds.add(companyBranchMap.getCompanyBranchMapId());
+		}*/
+		if(dto.getBranchCompanyMapId()!=null) {
+			companyBranchMapIds.add(dto.getBranchCompanyMapId());
+		}
+		else {
 		listOfAllBranches = this.companyService.getAllBranches(dto.getCompanyId());
 		for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
 			companyBranchMapIds.add(companyBranchMap.getCompanyBranchMapId());
+		}
 		}
 		List<CustomerDtlsDto> allCustomersForBranch = dashboardService.getAllCustomersForBranch(companyBranchMapIds);
 		List<Integer> liftCustomerMapIds = new ArrayList<>();
@@ -379,9 +413,18 @@ public class DashBoardController extends BaseController {
 		List<RlmsCompanyBranchMapDtls> listOfAllBranches = null;
 		List<Integer> companyBranchMapIds = new ArrayList<>();
 		List<Integer> branchCustomerMapIds = new ArrayList<>();
+		/*listOfAllBranches = this.companyService.getAllBranches(dto.getCompanyId());
+		for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
+			companyBranchMapIds.add(companyBranchMap.getCompanyBranchMapId());
+		}*/
+		if(dto.getBranchCompanyMapId()!=null) {
+			companyBranchMapIds.add(dto.getBranchCompanyMapId());
+		}
+		else {
 		listOfAllBranches = this.companyService.getAllBranches(dto.getCompanyId());
 		for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
 			companyBranchMapIds.add(companyBranchMap.getCompanyBranchMapId());
+		}
 		}
 		List<CustomerDtlsDto> allCustomersForBranch = dashboardService.getAllCustomersForBranch(companyBranchMapIds);
 		List<Integer> liftCustomerMapIds = new ArrayList<>();
@@ -515,10 +558,20 @@ public class DashBoardController extends BaseController {
 
 		try {
 			logger.info("Method :: getAllBranchesForCompany");
+			if(liftDtlsDto.getBranchCompanyMapId()!=null) {
+				companyBranchIds.add(liftDtlsDto.getBranchCompanyMapId());
+			}
+			else {
 			listOfAllBranches = this.companyService.getAllBranches(liftDtlsDto.getCompanyId());
 			for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
 				companyBranchIds.add(companyBranchMap.getCompanyBranchMapId());
 			}
+			}
+		/*	
+			listOfAllBranches = this.companyService.getAllBranches(liftDtlsDto.getCompanyId());
+			for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
+				companyBranchIds.add(companyBranchMap.getCompanyBranchMapId());
+			}*/
 			listOfLifts = liftService.getLiftStatusForBranch(companyBranchIds, this.getMetaInfo());
 
 		} catch (Exception e) {
@@ -541,9 +594,20 @@ public class DashBoardController extends BaseController {
 
 		try {
 			logger.info("Method :: getAllBranchesForCompany");
+			
+			
+	/*		listOfAllBranches = this.companyService.getAllBranches(liftDtlsDto.getCompanyId());
+			for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
+				companyBranchIds.add(companyBranchMap.getCompanyBranchMapId());
+			}*/
+			if(liftDtlsDto.getBranchCompanyMapId()!=null) {
+				companyBranchIds.add(liftDtlsDto.getBranchCompanyMapId());
+			}
+			else {
 			listOfAllBranches = this.companyService.getAllBranches(liftDtlsDto.getCompanyId());
 			for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
 				companyBranchIds.add(companyBranchMap.getCompanyBranchMapId());
+			}
 			}
 			listOfLifts = liftService.getLiftCountForBranch(companyBranchIds, this.getMetaInfo());
 
@@ -567,9 +631,18 @@ public class DashBoardController extends BaseController {
 
 		try {
 			logger.info("Method :: getAllBranchesForCompany");
+		/*	listOfAllBranches = this.companyService.getAllBranches(liftDtlsDto.getCompanyId());
+			for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
+				companyBranchIds.add(companyBranchMap.getCompanyBranchMapId());
+			}*/
+			if(liftDtlsDto.getBranchCompanyMapId()!=null) {
+				companyBranchIds.add(liftDtlsDto.getBranchCompanyMapId());
+			}
+			else {
 			listOfAllBranches = this.companyService.getAllBranches(liftDtlsDto.getCompanyId());
 			for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
 				companyBranchIds.add(companyBranchMap.getCompanyBranchMapId());
+			}
 			}
 			listOfLifts = liftService.getLiftStatusForBranch(companyBranchIds, this.getMetaInfo());
 
@@ -619,6 +692,35 @@ public class DashBoardController extends BaseController {
 		int inactiveCount = 0;
 		try {
 			logger.info("Method :: getAllBranchesForCompany");
+			if(customerDtlsDto.getBranchCompanyMapId()!=null) {
+				List<Integer> companyBranchIds = new ArrayList<>();
+				activeCount = 0; 
+				inactiveCount = 0;
+				companyBranchIds.add(customerDtlsDto.getBranchCompanyMapId());
+				listOfBranchCustomersMap = this.customerService
+						.getAllApplicableCustomersCountForDashboard(companyBranchIds, this.getMetaInfo());
+				if (listOfBranchCustomersMap != null && !listOfBranchCustomersMap.isEmpty()) {
+					for (RlmsBranchCustomerMap branchCustomerMap : listOfBranchCustomersMap) {
+
+						if (branchCustomerMap.getCustomerMaster().getActiveFlag() == 1) {
+							activeCount = activeCount + 1;
+						} else {
+							inactiveCount = inactiveCount + 1;
+						}
+					}
+					CustomerCountDtls countDtls = new CustomerCountDtls();
+					//countDtls.setBranchName(companyBranchMap.getRlmsBranchMaster().getBranchName());
+				//	countDtls.setCity(companyBranchMap.getRlmsBranchMaster().getCity());
+					countDtls.setCustomerCount(listOfBranchCustomersMap.size());
+					countDtls.setActiveFlagCount(activeCount);
+					countDtls.setInactiveFlagCount(inactiveCount);
+					listOfCustomersCount.add(countDtls);
+				}
+			}
+			else {
+			
+			
+			
 			listOfAllBranches = this.companyService.getAllBranches(customerDtlsDto.getCompanyId());
 			for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
 				activeCount = 0; 
@@ -644,6 +746,7 @@ public class DashBoardController extends BaseController {
 					countDtls.setInactiveFlagCount(inactiveCount);
 					listOfCustomersCount.add(countDtls);
 				}
+			}
 			}
 		} catch (Exception e) {
 			logger.error(ExceptionUtils.getFullStackTrace(e));
@@ -802,10 +905,17 @@ public class DashBoardController extends BaseController {
 		List<Integer> companyBranchIds = new ArrayList<>();
 		try {
 			logger.info("Method :: getAllBranchesForCompany");
+			
+			if(dto.getBranchCompanyMapId()!=null) {
+				companyBranchIds.add(dto.getBranchCompanyMapId());
+			}
+			else {
 			listOfAllBranches = this.companyService.getAllBranches(dto.getCompanyId());
 			for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
 				companyBranchIds.add(companyBranchMap.getCompanyBranchMapId());
 			}
+			}
+			
 			List<CustomerDtlsDto> allCustomersForBranch = dashboardService.getAllCustomersForBranch(companyBranchIds);
 			List<Integer> liftCustomerMapIds = new ArrayList<>();
 			for (CustomerDtlsDto customerDtlsDto : allCustomersForBranch) {

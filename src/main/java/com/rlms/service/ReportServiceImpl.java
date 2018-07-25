@@ -179,7 +179,9 @@ public class ReportServiceImpl implements ReportService {
 			Date tempWarrantyStartDate = listOFAMCs.get(listOFAMCs.size() - 1).getLiftCustomerMap().getLiftMaster().getServiceStartDate();
 			Date tempWarrantyEndDate = listOFAMCs.get(listOFAMCs.size() - 1).getLiftCustomerMap().getLiftMaster().getServiceEndDate();
 
-			dto.setStatus(this.calculateAMCStatus(tempStartDate, tempEndDate, tempDateOfInstallation,tempWarrantyStartDate,tempWarrantyEndDate).getStatusMsg());
+		//	dto.setStatus(this.calculateAMCStatus(tempStartDate, tempEndDate, tempDateOfInstallation,tempWarrantyStartDate,tempWarrantyEndDate).getStatusMsg());
+			dto.setStatus(Status.getStringFromID(liftAmcDtls.getStatus()));
+
 			dto.setAmcAmount(liftAmcDtls.getAmcAmount());
 			
 			if(i > 0 ){
@@ -623,7 +625,7 @@ public class ReportServiceImpl implements ReportService {
                   	  if(listOfAllVisits!=null && !listOfAllVisits.isEmpty()) {
                   		complaintsDto.setTotalAttempts(listOfAllVisits.size());
                   	  }
-                  	  complaintsDto.setLastVisitedDate(complaintTechMapDtls.getUpdatedDate());
+                  	  complaintsDto.setLastVisitedDateStr(DateUtils.convertDateTimestampToStringWithTime(complaintTechMapDtls.getUpdatedDate()));
                 }
                 	complaintsDto.setToDateStr(DateUtils.convertDateTimestampToStringWithTime(complaintTechMapDtls.getUpdatedDate()));
     	            complaintsDto.setFromDateStr(DateUtils.convertDateTimestampToStringWithTime(complaintTechMapDtls.getAssignedDate()));

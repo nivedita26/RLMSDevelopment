@@ -64,5 +64,40 @@ public enum RLMSCallType {
 		}	
 			return "";
 		}
+	  
+	  public static int getIdFromString(String callType){
+			if(callType == RLMSCallType.AMC_CALL.getType()){
+				return RLMSCallType.AMC_CALL.getId();
+			}
+			else	if(callType == RLMSCallType.CONFIGURATION_CALL.getType()){
+					return RLMSCallType.CONFIGURATION_CALL.getId();
+			}
+			else	if(callType == RLMSCallType.LIFT_INSTALLATION_CALL.getType()){
+				return RLMSCallType.LIFT_INSTALLATION_CALL.getId();
+		}
+			else	if(callType == RLMSCallType.LMS_ALERT_CALL.getType()){
+				return RLMSCallType.LMS_ALERT_CALL.getId();
+		}
+			else	if(callType == RLMSCallType.OPERATOR_ASSIGNED_CALL.getType()){
+				return RLMSCallType.OPERATOR_ASSIGNED_CALL.getId();
+		}
+
+			else	if(callType == RLMSCallType.REASSIGNING_CALL.getType()){
+				return RLMSCallType.REASSIGNING_CALL.getId();
+		}
+			else	if(callType == RLMSCallType.UNDER_WARRANTY_SUPPORT_CALL.getType()){
+				return RLMSCallType.UNDER_WARRANTY_SUPPORT_CALL.getId();
+		}
+			else	if(callType == RLMSCallType.USER_RAIGED_CALL_THROUGH_APP.getType()){
+				return RLMSCallType.USER_RAIGED_CALL_THROUGH_APP.getId();
+		}
+			else	if(callType == RLMSCallType.USER_RAISED_CALL_THROUGH_TELEPHONE.getType()){
+				return RLMSCallType.USER_RAISED_CALL_THROUGH_TELEPHONE.getId();
+		}	
+			return 0;
+		}
+	  
+	  
+	  
 }
 

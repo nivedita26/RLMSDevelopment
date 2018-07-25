@@ -333,7 +333,14 @@ public class UserServiceImpl implements UserService {
 				.decrypt(userRoleIdbyte));
 		RlmsUserRoles userRole = this.userRoleDao
 				.getUserRoleToRegister(userroleId);
-		this.validateUserAccount(dto, userroleId, userRole);
+		String msg = this.validateUserAccount(dto, userroleId, userRole);
+	
+		if(msg!="success") {
+			return msg;
+		}
+		
+		else {
+		
 		if (null != userRole) {
 			RlmsUsersMaster userMaster = userRole.getRlmsUserMaster();
 			userMaster.setUsername(dto.getUserName());
@@ -352,29 +359,32 @@ public class UserServiceImpl implements UserService {
 					.getPrpertyFromContext(RlmsErrorType.REGISTRATION_ID_INCORRECT
 							.getMessage());
 		}
+		}
 		return statusMessage;
 	}
 
-	private void validateUserAccount(RegisterDto dto, Integer useRoleId,
+	private String  validateUserAccount(RegisterDto dto, Integer useRoleId,
 			RlmsUserRoles givenRoleObj) throws ValidationException {
 		RlmsUserRoles userRoles = this.userRoleDao.getUserByUserName(dto
 				.getUserName());
 
 		//if (null != userRoles && useRoleId.equals(userRoles.getUserRoleId())) {
 		if (null != userRoles) {
-			throw new ValidationException(
-					ExceptionCode.VALIDATION_EXCEPTION.getExceptionCode(),
-					PropertyUtils
+			//throw new ValidationException(
+				//	ExceptionCode.VALIDATION_EXCEPTION.getExceptionCode(),
+			//
+			return PropertyUtils
 							.getPrpertyFromContext(RlmsErrorType.USERNAME_ALREADY_USED
-									.getMessage()));
+									.getMessage());
 		} else if (this.isAlreadyHasActiveAccount(givenRoleObj)) {
 
-			throw new ValidationException(
-					ExceptionCode.VALIDATION_EXCEPTION.getExceptionCode(),
-					PropertyUtils
+		//throw new ValidationException(
+				//	ExceptionCode.VALIDATION_EXCEPTION.getExceptionCode(),
+					return PropertyUtils
 							.getPrpertyFromContext(RlmsErrorType.USER_ALREADY_REGISTERED_SYSTEM
-									.getMessage()));
+									.getMessage());
 		}
+		return "success";
 	}
 
 	private boolean isAlreadyHasActiveAccount(RlmsUserRoles userRole) {
@@ -458,6 +468,7 @@ public class UserServiceImpl implements UserService {
 		user.setCity(dto.getCity());
 		user.setArea(dto.getArea());
 		user.setPincode(dto.getPinCode());
+		user.setIsLoggedIn(false);
 		user.setCreatedBy(metaInfo.getUserId());
 		user.setCreatedDate(new Date());
 		user.setUpdatedBy(metaInfo.getUserId());
@@ -653,24 +664,13 @@ public class UserServiceImpl implements UserService {
 		if (null == userRole) {
 			dto.setMsg("invalid user login credentials");
 		    return dto;
-		/*	throw new ValidationException(
-					ExceptionCode.VALIDATION_EXCEPTION.getExceptionCode(),
-				PropertyUtils
-							.getPrpertyFromContext(RlmsErrorType.INVALID_USER_LOGIN_CREDENTIALS
-									.getMessage()));*/
 		}
-		else {
+		/*else {
 			if(userRole.getRlmsUserMaster().getIsLoggedIn()) {
-		/*	throw new ValidationException(
-				ExceptionCode.VALIDATION_EXCEPTION.getExceptionCode(),
-				PropertyUtils
-						.getPrpertyFromContext(RlmsErrorType.USER_ALREADY_LOGGED_IN
-								.getMessage()));*/
-				
 				dto.setMsg("user already loggedin");
 				return dto;
 			}
-		}
+		}*/
 		this.registerUserDevice(dtlsDto, userRole, metaInfo);
 		return this.constructMemberDltsSto(userRole);
 	}

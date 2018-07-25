@@ -222,6 +222,7 @@ public class DashboardDaoImpl implements DashboardDao {
 			Criteria criteria = session.createCriteria(RlmsEventDtls.class).add(
 					Restrictions.in("rlmsLiftCustomerMap.liftCustomerMapId", liftCustMapIds));
 			if(eventType!=null&&eventType=="-1") {
+				criteria.add(Restrictions.ne("eventType", "RES"));
 				eventDtls = criteria.list();
 			}
 			else if(eventType!=null&&eventType!="-1") {

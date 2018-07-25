@@ -12,8 +12,6 @@ public enum RlmsErrorType {
 	ROLE_SUCCESSFULLY_ASSIGNED(7,"role_successfully_assigned"),
 	ROLE_ALREADY_GIVEN(8,"role_already_given"),
 	USER_REG_SUCCESFUL(9,"user_reg_succesful"),
-	
-
 	CUSTOMER_REG_SUCCESFUL(9,"customer_reg_succesful"),
 	REGISTRATION_ID_INCORRECT(10,"registration_id_incorrect"),
 	PUSH_NOTIFICATION_FAILED(11,"push_notification_failed"),

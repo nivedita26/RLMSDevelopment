@@ -132,10 +132,10 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 			isValidaDetails = false;
 			throw new ValidationException(ExceptionCode.VALIDATION_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.COMPLAINT_REMARK_BLANK.getMessage()));
 		}
-		if(null == dto.getComplaintsTitle()){
+	/*	if(null == dto.getComplaintsTitle()){
 			isValidaDetails = false;
 			throw new ValidationException(ExceptionCode.VALIDATION_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.COMPLAINT_TITLE_BLANK.getMessage()));
-		}
+		}*/
 		
 		if(null == dto.getLiftCustomerMapId()){
 			isValidaDetails = false;
@@ -155,13 +155,17 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 		complaintMaster.setRegistrationType(dto.getRegistrationType());
 		complaintMaster.setRemark(dto.getComplaintsRemark());
 		complaintMaster.setStatus(Status.PENDING.getStatusId());
-		if(dto.getCallType()!=RLMSCallType.USER_RAIGED_CALL_THROUGH_APP.getId()) {
-			complaintMaster.setCallType(dto.getCallType());
-		}else {
+	
+		if(dto.getCallType()==null) {
 			complaintMaster.setCallType(RLMSCallType.USER_RAIGED_CALL_THROUGH_APP.getId());
 		}
+	   else {
+			complaintMaster.setCallType(RLMSCallType.getIdFromString(RLMSCallType.getStringFromID(dto.getCallType())));
+		}
 			//complaintMaster.setCallType(dto.getCallType());
+		if(dto.getComplaintsTitle()!=null) {
 		    complaintMaster.setTitle(dto.getComplaintsTitle());
+		}
 				
 		if(RLMSConstants.COMPLAINT_REG_TYPE_ADMIN.getId() == dto.getRegistrationType()){
 				complaintMaster.setCreatedBy(metaInfo.getUserId());				
@@ -572,11 +576,13 @@ private boolean isServiceCallToShow(Date regDate,Date serviceStartDate){
 			statusId = Status.RESOLVED.getStatusId();
 			complaintMaster.setActualServiceEndDate(new Date());
 		}
+		complaintMaster.setUpdatedDate(new Date());
 		complaintMaster.setStatus(statusId);
 		this.complaintsDao.mergeComplaintM(complaintMaster);
 		RlmsComplaintTechMapDtls complaintTechMapDtls = complaintsDao.getComplTechMapObjByComplaintId(dto.getComplaintId());
 		if(complaintTechMapDtls!=null) {
 			complaintTechMapDtls.setStatus(statusId);
+			complaintTechMapDtls.setUpdatedDate(new Date());
 			complaintsDao.updateComplaints(complaintTechMapDtls);
 		}
 		String resultMessage = PropertyUtils.getPrpertyFromContext(RlmsErrorType.STATUS_UPDATED.getMessage()) + " " + dto.getStatus() + " " + PropertyUtils.getPrpertyFromContext(RlmsErrorType.SUCCESSFULLY.getMessage());

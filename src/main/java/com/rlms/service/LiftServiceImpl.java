@@ -7,11 +7,13 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.rlms.constants.AMCType;
 import com.rlms.constants.PhotoType;
 import com.rlms.constants.RLMSConstants;
@@ -527,9 +529,11 @@ public class LiftServiceImpl implements LiftService{
 		return dto;
 	}
 	
-	@Transactional(propagation = Propagation.REQUIRED)
+	/*@Transactional(propagation = Propagation.REQUIRED)
 	public String updateLiftDetails(LiftDtlsDto dto, UserMetaInfo userMetaInfo){
 		RlmsLiftCustomerMap liftCustomerMap = this.liftDao.getLiftCustomerMapById(dto.getLiftCustomerMapId());
+		
+		if(liftCustomerMap!=null) {
 		RlmsLiftMaster liftMaster = liftCustomerMap.getLiftMaster();
 		if(!StringUtils.isEmpty(dto.getArea())){
 			liftMaster.setArea(dto.getArea());			
@@ -579,8 +583,10 @@ public class LiftServiceImpl implements LiftService{
 			liftMaster.setLOPMake(dto.getLopMake());
 		}
 		this.liftDao.mergeLiftM(liftMaster);
-		return PropertyUtils.getPrpertyFromContext(RlmsErrorType.PHOTO_UPDATED.getMessage());	
-	}
+		return "lift updated successfully";	
+		}
+		return "lift details is not updated";	
+	}*/
 	@Transactional(propagation = Propagation.REQUIRED)
 	public List<LiftDtlsDto> getLiftStatusForBranch(List<Integer> companyBranchIds, UserMetaInfo metaInfo){
 		List<RlmsLiftCustomerMap> listOFAllLifts = this.liftDao.getAllLiftsStatusForBranchs(companyBranchIds);
@@ -824,7 +830,8 @@ public class LiftServiceImpl implements LiftService{
 				}
 		}
 	@Override
-	public List<CustomerLiftDtls> getLiftDetailsList(UserDtlsDto dtlsDto) {
+	public ResponseDto  getLiftDetailsList(UserDtlsDto dtlsDto) {
+		ResponseDto responseDto = new ResponseDto();
       List<Integer> branchCompanyMapId= new ArrayList<>();
     //List<Integer> branchCustomerMapIDs = new ArrayList<>();
       List<CustomerLiftDtls> liftDtlsDtoList = new ArrayList<>();
@@ -854,7 +861,174 @@ public class LiftServiceImpl implements LiftService{
 				    liftDtlsDtoList.add(CustomerLiftDtlsDto);
 				}
 			}
+			responseDto.setStatus(true);
+			responseDto.setResponse(liftDtlsDtoList);
+			return responseDto;
 		}
-		return liftDtlsDtoList;
+		responseDto.setStatus(false);
+       responseDto.setResponse("invalid userId");
+		return responseDto;
+	}
+	@Transactional(propagation = Propagation.REQUIRED)
+	public List<LiftDtlsDto> getAllLiftsForTechnician(Integer userRoleId){
+		List<LiftDtlsDto> listOfDtos = new ArrayList<LiftDtlsDto>();
+		RlmsUserRoles userRole = this.userRoleDao.getUserRole(userRoleId);
+		List<RlmsLiftCustomerMap> listOfLifts = this.getAllLiftsForBranch(userRole.getRlmsCompanyBranchMapDtls().getCompanyBranchMapId());
+		for (RlmsLiftCustomerMap rlmsLiftCustomerMap : listOfLifts) {
+			LiftDtlsDto dto = new LiftDtlsDto();
+			dto.setLiftId(rlmsLiftCustomerMap.getLiftMaster().getLiftId());
+			dto.setLiftNumber(rlmsLiftCustomerMap.getLiftMaster().getLiftNumber());
+			dto.setLiftCustomerMapId(rlmsLiftCustomerMap.getLiftCustomerMapId());
+			listOfDtos.add(dto);
+		}
+		return listOfDtos;
+	}
+	@Transactional(propagation = Propagation.REQUIRED)
+	public String updateLiftDetails(LiftDtlsDto dto, UserMetaInfo userMetaInfo){
+		RlmsLiftCustomerMap liftCustomerMap = this.liftDao.getLiftCustomerMapById(dto.getLiftCustomerMapId());
+		RlmsLiftMaster liftMaster = liftCustomerMap.getLiftMaster();
+		
+		if(null != dto.getAccessControl() && !dto.getAccessControl().isEmpty()){
+			liftMaster.setAccessControl(dto.getAccessControl());
+		}
+	/*	if(null != dto.getAddress() && !dto.getAddress().isEmpty()){
+			liftMaster.setAddress(dto.getAddress());
+		}*/
+		if(null != dto.getAlarm()){
+			liftMaster.setAlarm(dto.getAlarm());
+		}
+/*		if(null != dto.getAmcType()){
+			liftMaster.setAmcType(dto.getAmcType());
+		}*/
+		if(null != dto.getCollectiveType()){
+			liftMaster.setCollectiveType(dto.getCollectiveType());
+		}
+		if(null != dto.getEngineType()){
+			liftMaster.setEngineType(dto.getEngineType());
+		}
+		if(null != dto.getFireMode()){
+			liftMaster.setFireMode(dto.getFireMode());
+		}
+		if(null != dto.getLiftType()){
+			liftMaster.setLiftType(dto.getLiftType());
+		}
+		if(null != dto.getNoOfBatteries()){
+			liftMaster.setNoOfBatteries(dto.getNoOfBatteries());
+		}
+		if(null != dto.getSimplexDuplex()){
+			liftMaster.setSimplexDuplex(dto.getSimplexDuplex());
+		}
+		if(null != dto.getWiringShceme()){
+			liftMaster.setWiringShceme(dto.getWiringShceme());
+		}
+	/*	if(null != dto.getAmcEndDate()){
+			liftMaster.setAmcEndDate(dto.getAmcEndDate());
+		}
+		if(null != dto.getAmcStartDate()){
+			liftMaster.setAmcStartDate(dto.getAmcStartDate());
+		}*/
+	/*	if(null != dto.getArdPhoto()){
+			liftMaster.setARDPhoto(dto.getArdPhoto());
+		}
+		if(null != dto.getAutoDoorHeaderPhoto()){
+			liftMaster.setAutoDoorHeaderPhoto(dto.getAutoDoorHeaderPhoto());
+		}*/
+		if(null != dto.getAutoDoorMake() && !dto.getAutoDoorMake().isEmpty()){
+			liftMaster.setAutoDoorMake(dto.getAutoDoorMake());
+		}
+		
+		if(null != dto.getBatteryCapacity() && !dto.getBatteryCapacity().isEmpty()){
+			liftMaster.setBatteryCapacity(dto.getBatteryCapacity());
+		}
+		/*if(null != dto.getBatteryCapacity && !dto.getBatteryCapacity.isEmpty()){
+			liftMaster.setBatteryCapacity(dto.getBatteryCapacity());
+		}*/
+		if(null != dto.getBatteryMake() && !dto.getBatteryMake().isEmpty()){
+			liftMaster.setBatteryMake(dto.getBatteryMake());
+		}
+	/*	if(null != dto.getCartopPhoto()){
+			liftMaster.setCartopPhoto(dto.getCartopPhoto());
+		}
+		if(null != dto.getCopPhoto()){
+			liftMaster.setCOPPhoto(dto.getCopPhoto());
+		}*/
+		/*if(null != dto.getDateOfInstallation()){
+			liftMaster.setDateOfInstallation(dto.getDateOfInstallation());
+		}*/
+		if(null != dto.getIntercomm() && !dto.getIntercomm().isEmpty()){
+			liftMaster.setIntercomm(dto.getIntercomm());
+		}
+/*		if(null != dto.getLiftImei() && !dto.getLiftImei().isEmpty()){
+			liftMaster.setLiftImei(dto.getLiftImei());
+		}*/
+	/*	if(null != dto.getLiftNumber() && !dto.getLiftNumber().isEmpty()){
+			liftMaster.setLiftNumber(dto.getLiftNumber());
+		}*/
+	/*	if(null != dto.getLobbyPhoto()){
+			liftMaster.setLobbyPhoto(dto.getLobbyPhoto());
+		}
+		if(null != dto.getLopPhoto()){
+			liftMaster.setLOPPhoto(dto.getLopPhoto());
+		}
+		if(null != dto.getPanelPhoto()){
+			liftMaster.setPanelPhoto(dto.getPanelPhoto());
+		}*/
+		/*if(null != dto.getServiceEndDate()){
+			liftMaster.setServiceEndDate(dto.getServiceEndDate());
+		}
+		if(null != dto.getServiceStartDate()){
+			liftMaster.setServiceStartDate(dto.getServiceStartDate());
+		}
+		*/
+		/*if(!StringUtils.isEmpty(dto.getArea())){
+			liftMaster.setArea(dto.getArea());			
+		}if(!StringUtils.isEmpty(dto.getCity())){
+			liftMaster.setCity(dto.getCity());
+		}if(dto.getPinCode()!=null){
+			liftMaster.setPincode(dto.getPinCode());
+		}*/
+/*		if(!StringUtils.isEmpty(dto.getAmcAmount())){
+			liftMaster.setAmcAmount(dto.getAmcAmount());
+		}
+		if(!StringUtils.isEmpty(dto.getLatitude())){
+			liftMaster.setLatitude(dto.getLatitude());
+		}
+		
+		if(!StringUtils.isEmpty(dto.getLongitude())){
+			liftMaster.setLongitude(dto.getLongitude());
+		}*/
+		if(dto.getDoorType()!=null){
+			liftMaster.setDoorType(dto.getDoorType());
+		}
+		if(!StringUtils.isEmpty(dto.getNoOfStops())){
+			liftMaster.setNoOfStops(dto.getNoOfStops());
+		}
+		if(!StringUtils.isEmpty(dto.getMachineCapacity())){
+			liftMaster.setMachineCapacity(dto.getMachineCapacity());
+		}
+		if(!StringUtils.isEmpty(dto.getMachineCurrent())){
+			liftMaster.setMachineCurrent(dto.getMachineCurrent());
+		}
+		if(!StringUtils.isEmpty(dto.getMachineMake())){
+			liftMaster.setMachineMake(dto.getMachineMake());
+		}
+			
+		if(!StringUtils.isEmpty(dto.getBreakVoltage())){
+			liftMaster.setBreakVoltage(dto.getBreakVoltage());
+		}
+		if(!StringUtils.isEmpty(dto.getPanelMake())){
+			liftMaster.setPanelMake(dto.getPanelMake());
+		}
+		if(!StringUtils.isEmpty(dto.getArd())){
+			liftMaster.setARD(dto.getArd());
+		}
+		if(!StringUtils.isEmpty(dto.getCopMake())){
+			liftMaster.setCOPMake(dto.getCopMake());
+		}
+		if(!StringUtils.isEmpty(dto.getLopMake())){
+			liftMaster.setLOPMake(dto.getLopMake());
+		}
+		this.liftDao.mergeLiftM(liftMaster);
+		return PropertyUtils.getPrpertyFromContext(RlmsErrorType.PHOTO_UPDATED.getMessage());	
 	}
 }

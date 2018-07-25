@@ -3,13 +3,11 @@ package com.rlms.service;
 import java.text.ParseException;
 import java.util.List;
 import com.rlms.contract.CustomerDtlsDto;
-import com.rlms.contract.CustomerLiftDtls;
 import com.rlms.contract.LiftDtlsDto;
 import com.rlms.contract.ResponseDto;
 import com.rlms.contract.UserDtlsDto;
 import com.rlms.contract.UserMetaInfo;
 import com.rlms.model.RlmsLiftCustomerMap;
-import com.rlms.model.RlmsLiftMaster;
 
 public interface LiftService {
 
@@ -39,6 +37,7 @@ public interface LiftService {
 
 	public void updateLiftParams(LiftDtlsDto  dtlsDto);
 	
-	public List<CustomerLiftDtls> getLiftDetailsList(UserDtlsDto dtlsDto);
+	public ResponseDto  getLiftDetailsList(UserDtlsDto dtlsDto);
 
+	public List<LiftDtlsDto> getAllLiftsForTechnician(Integer userRoleId);
 }

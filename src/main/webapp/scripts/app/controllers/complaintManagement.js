@@ -1222,7 +1222,7 @@
 							
 								
 								$scope.loadMap =function(){
-									//alert("loadmap");
+									alert("loadmap");
 									var bounds = new google.maps.LatLngBounds();
 									//if($scope.technicians[0].liftLatitude!=null &&$scope.technicians[0].liftLongitude!=null){
 									//var lift = {lat: $scope.technicians[0].liftLatitude, lng: $scope.technicians[0].liftLongitude};
@@ -1318,6 +1318,7 @@
 									}
 								}
 									//////
+									alert("bound");
 									$scope.map.fitBounds(bounds);
 								}
 								$scope.submitAssign = function() {

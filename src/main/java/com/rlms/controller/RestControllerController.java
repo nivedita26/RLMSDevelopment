@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,9 +33,12 @@ import com.rlms.contract.ResponseDto;
 import com.rlms.contract.SiteVisitDtlsDto;
 import com.rlms.contract.UserDtlsDto;
 import com.rlms.contract.UserMetaInfo;
+import com.rlms.dao.LiftDao;
 import com.rlms.exception.ExceptionCode;
 import com.rlms.exception.RunTimeException;
 import com.rlms.exception.ValidationException;
+import com.rlms.model.RlmsLiftCustomerMap;
+import com.rlms.model.RlmsLiftMaster;
 import com.rlms.model.RlmsUserRoles;
 import com.rlms.model.RlmsUsersMaster;
 import com.rlms.service.ComplaintsService;
@@ -43,6 +49,7 @@ import com.rlms.service.RlmsLiftEventService;
 import com.rlms.service.UserService;
 import com.rlms.utils.DateUtils;
 import com.rlms.utils.PropertyUtils;
+import com.sun.mail.iap.Response;
 
 @RestController
 @RequestMapping(value="/API")
@@ -63,6 +70,9 @@ public class RestControllerController  extends BaseController {
 	
 	@Autowired
 	DashboardService dashboardService;
+	
+	@Autowired
+	LiftDao liftDao;
 	
 	@Autowired
 	RlmsLiftEventService rlmsLiftEventService;
@@ -396,6 +406,7 @@ public class RestControllerController  extends BaseController {
     public @ResponseBody ResponseDto validateAndUpdateLiftDetails(@RequestBody LiftDtlsDto dto) throws RunTimeException, ValidationException {
 	 ResponseDto reponseDto = new ResponseDto();
         try{
+        	reponseDto.setStatus(true);
         	reponseDto.setResponse(this.liftService.updateLiftDetails(dto, null));
         }
         catch(Exception e){
@@ -451,7 +462,6 @@ public class RestControllerController  extends BaseController {
         	metaInfo.setUserRole(userRoles);
         	reponseDto.setResponse(this.userService.updateTechnicianLocation(userDtlsDto, metaInfo));
         	reponseDto.setStatus(true);
-        	
         }catch(Exception e){
         	reponseDto.setStatus(false);
         	reponseDto.setResponse(PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
@@ -471,9 +481,29 @@ public class RestControllerController  extends BaseController {
     	
 		return  userService.logout(userDtlsDto);
     }
-    @RequestMapping(value="/getCustomerListForTechnician", method = RequestMethod.POST)
+   /* @RequestMapping(value="/getCustomerListForTechnician", method = RequestMethod.POST)
     public List<CustomerLiftDtls> getCustomerListForTechnician(@RequestBody UserDtlsDto dtlsDto){
     	
     	return   liftService.getLiftDetailsList(dtlsDto);
+    }*/
+    @RequestMapping(value="/getCustomerListForTechnician", method = RequestMethod.POST)
+    public ResponseDto  getCustomerListForTechnician(@RequestBody UserDtlsDto dtlsDto){
+    	
+    	return   liftService.getLiftDetailsList(dtlsDto);
+    }
+    @RequestMapping(value = "/lift/getApplicableLifts", method = RequestMethod.POST)
+    public @ResponseBody ResponseDto getAllLiftsForTechnician(@RequestBody UserDtlsDto dto){
+    	ObjectMapper mapper = new ObjectMapper();
+    	ResponseDto reponseDto = new ResponseDto();
+    	try{
+    	 List<LiftDtlsDto> listOfApplicableLift = this.liftService.getAllLiftsForTechnician(dto.getUserRoleId());
+    	 reponseDto.setStatus(true);
+    	 reponseDto.setResponse(mapper.writeValueAsString(listOfApplicableLift));
+    	}catch(Exception e){
+        	log.error(ExceptionUtils.getFullStackTrace(e));
+        	reponseDto.setStatus(false);
+        	reponseDto.setResponse(PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
+        }
+    	return reponseDto;
     }
 }
