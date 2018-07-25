@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 	angular.module('rlmsApp')
-	.controller('addCompanyCtrl', ['$scope', '$filter','serviceApi','$route','utility','pinesNotifications','$timeout','$window', function($scope, $filter,serviceApi,$route,utility,pinesNotifications,$timeout,$window) {
+	.controller('addCompanyCtrl', ['$scope', '$filter','serviceApi','$route','utility','pinesNotifications','$timeout','$window','$rootScope', function($scope, $filter,serviceApi,$route,utility,pinesNotifications,$timeout,$window,$rootScope) {
 		initAddCompany();
 		$scope.alert = { type: 'success', msg: 'You successfully Added Company.',close:true };
 		$scope.addUserAlert = { type: 'success', msg: 'You successfully Added User.',close:true };
@@ -82,7 +82,11 @@
 		    });
 		};
 		$scope.submitAddUser = function(){
-			$scope.addUser.companyId = $scope.selectedCompany.selected.companyId;
+			if($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel ==1){
+				$scope.addUser.companyId = $scope.selectedCompany.selected.companyId;
+			}else{
+				$scope.addUser.companyId = $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyMaster.companyId;
+			}
 			serviceApi.doPostWithData("/RLMS/admin/validateAndRegisterNewUser",$scope.addUser)
 			.then(function(response){
 				$scope.showAlert = true;
