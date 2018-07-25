@@ -916,13 +916,6 @@ public class DashBoardController extends BaseController {
 			}
 			}
 			
-			
-			
-			
-		/*	listOfAllBranches = this.companyService.getAllBranches(dto.getCompanyId());
-			for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
-				companyBranchIds.add(companyBranchMap.getCompanyBranchMapId());
-			}*/
 			List<CustomerDtlsDto> allCustomersForBranch = dashboardService.getAllCustomersForBranch(companyBranchIds);
 			List<Integer> liftCustomerMapIds = new ArrayList<>();
 			for (CustomerDtlsDto customerDtlsDto : allCustomersForBranch) {
