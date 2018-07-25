@@ -7,6 +7,15 @@ public class AMCStatusCount {
 	private int statusId;
 	private BigInteger statusCount;
 	private int totalLiftCount;
+	private String BranchName;
+	private String CustomerName;
+	private String City;
+	private BigInteger underWarrantyCount;
+	private BigInteger renewalDueCount;
+    private BigInteger amcPendingCount;
+    private BigInteger underAMCCount;
+	private BigInteger  notUnderAMCCount;
+	private BigInteger  notUnderWarranty;
 	
 	public int getTotalLiftCount() {
 		return totalLiftCount;
@@ -16,13 +25,6 @@ public class AMCStatusCount {
 		this.totalLiftCount = totalLiftCount;
 	}
 
-	private String BranchName;
-	private String CustomerName;
-	private String City;
-	private BigInteger underWarrantyCount;
-	private BigInteger renewalDueCount;
-    private BigInteger amcPendingCount;
-    private BigInteger underAMCCount;
 	public BigInteger getNotUnderWarranty() {
 		return notUnderWarranty;
 	}
@@ -31,10 +33,6 @@ public class AMCStatusCount {
 		this.notUnderWarranty = notUnderWarranty;
 	}
 
-	private BigInteger  notUnderAMCCount;
-	private BigInteger  notUnderWarranty;
-
-	
 	
 	public BigInteger getUnderWarrantyCount() {
 		return underWarrantyCount;
@@ -99,8 +97,7 @@ public class AMCStatusCount {
 	public void setCity(String city) {
 		City = city;
 	}
-
-
+	
 	public int getStatusId() {
 		return statusId;
 	}
@@ -116,5 +113,4 @@ public class AMCStatusCount {
 	public void setStatusCount(BigInteger statusCount) {
 		this.statusCount = statusCount;
 	}
-	
 }

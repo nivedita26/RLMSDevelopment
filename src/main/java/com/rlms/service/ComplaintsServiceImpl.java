@@ -582,6 +582,7 @@ private boolean isServiceCallToShow(Date regDate,Date serviceStartDate){
 		RlmsComplaintTechMapDtls complaintTechMapDtls = complaintsDao.getComplTechMapObjByComplaintId(dto.getComplaintId());
 		if(complaintTechMapDtls!=null) {
 			complaintTechMapDtls.setStatus(statusId);
+			complaintTechMapDtls.setUpdatedDate(new Date());
 			complaintsDao.updateComplaints(complaintTechMapDtls);
 		}
 		String resultMessage = PropertyUtils.getPrpertyFromContext(RlmsErrorType.STATUS_UPDATED.getMessage()) + " " + dto.getStatus() + " " + PropertyUtils.getPrpertyFromContext(RlmsErrorType.SUCCESSFULLY.getMessage());
