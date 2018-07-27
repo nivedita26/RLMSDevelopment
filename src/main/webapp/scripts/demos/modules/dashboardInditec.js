@@ -14,9 +14,9 @@ angular.module('theme.demos.dashboard.indi', [
       currentPage: 1
     };
     
-    $scope.showCompanies=true;
+    $scope.showCompanies=false;
     $scope.showAmc=true;
-    $scope.showBranches=true;
+    $scope.showBranches=false;
     
     $rootScope.showDasboardForInditech=false;
     $rootScope.showDasboardForOthers=false;
@@ -33,17 +33,25 @@ angular.module('theme.demos.dashboard.indi', [
 		  url: '/RLMS/getLoggedInUser'
 		}).then(function successCallback(response) {
 			$rootScope.loggedInUserInfoForDashboard=response;
-			if($rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsSpocRoleMaster.roleLevel == 1 || $rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsSpocRoleMaster.roleLevel == 2){
+			if($rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsSpocRoleMaster.roleLevel < 4 ){
 				$rootScope.showDasboardForInditech= true;
 				$rootScope.showDasboardForOthers=false;
 			}else{
 				$rootScope.showDasboardForOthers=true;
 				$rootScope.showDasboardForInditech=false;
 			}
-			if($rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsSpocRoleMaster.roleLevel == 2){
-				$scope.showCompanies= false;
-				//$scope.showAmc=true;
+			if($rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsSpocRoleMaster.roleLevel == 1){
+				$scope.showCompanies= true;
+				$scope.showBranches=true;
 			}else{
+				$scope.showCompanies= false;
+			}
+			
+			if($rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsSpocRoleMaster.roleLevel == 2){
+				//$scope.showCompanies= false;
+				$scope.showBranches=true;
+			}else{
+				//$scope.showCompanies= false;
 				$scope.showBranches=false;
 			}
 /*			 $scope.loggedInuserDetails.userName.firstName=$rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsUserMaster.firstName
@@ -980,6 +988,7 @@ angular.module('theme.demos.dashboard.indi', [
       var dataToSend = {
         statusList: [],
         companyId: $rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsCompanyMaster.companyId
+       
       };
       dataToSend["statusList"] = complaintStatus;
       return dataToSend;

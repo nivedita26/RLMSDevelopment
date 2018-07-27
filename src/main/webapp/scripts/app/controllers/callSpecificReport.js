@@ -85,7 +85,7 @@
 		$scope.loadLifts = function() {
 			
   		var dataToSend = {
-  				branchCompanyMapId : $scope.selectedBranch.selected.companyBranchMapId,
+  				//branchCompanyMapId : $scope.selectedBranch.selected.companyBranchMapId,
 				branchCustomerMapId : $scope.selectedCustomer.selected.branchCustomerMapId
 			}
 			serviceApi.doPostWithData('/RLMS/complaint/getAllApplicableLifts',dataToSend)
