@@ -504,18 +504,7 @@ public class DashboardServiceImpl implements DashboardService {
 			List<Integer> companyBranchMapIds) {
 		List<UserRoleDtlsDTO> listOFUserAdtls = new ArrayList<UserRoleDtlsDTO>();
 		List<TechnicianCount> listOfTechniciansCount = this.getListOfTechniciansForBranchByCompanybranchMappingId(companyBranchMapIds);
-	/*	for (RlmsUserRoles rlmsUserRoles : listOfAllTechnicians) {
-			UserRoleDtlsDTO dto = new UserRoleDtlsDTO();
-			dto.setUserId(rlmsUserRoles.getRlmsUserMaster().getUserId());
-			dto.setCompanyBranchMapId(rlmsUserRoles.getRlmsCompanyBranchMapDtls().getCompanyBranchMapId());
-			dto.setCompanyName(rlmsUserRoles.getRlmsCompanyMaster().getCompanyName());
-			dto.setCity(rlmsUserRoles.getRlmsUserMaster().getCity());
-			dto.setName(rlmsUserRoles.getRlmsUserMaster().getFirstName() + " " + rlmsUserRoles.getRlmsUserMaster().getLastName());
-			dto.setContactNumber(rlmsUserRoles.getRlmsUserMaster().getContactNumber());
-			dto.setUserRoleId(rlmsUserRoles.getUserRoleId());
-			dto.setActiveFlag(rlmsUserRoles.getActiveFlag());
-	        listOFUserAdtls.add(dto);
-		}*/
+
 		return listOfTechniciansCount;
 	}
 	public List<RlmsUserRoles> getListOfTechniciansBy(

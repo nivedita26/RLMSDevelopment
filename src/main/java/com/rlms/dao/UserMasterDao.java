@@ -19,5 +19,4 @@ import com.rlms.model.RlmsUsersMaster;
    public void deleteUser(UserDtlsDto dto, UserMetaInfo metaInfo);
    public void changeUserPassword(RlmsUsersMaster usersMaster);
    public  RlmsUsersMaster getUserByMobileNumber(String ContactNumber);
-   
    }

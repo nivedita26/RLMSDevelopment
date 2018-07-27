@@ -17,8 +17,14 @@ public class BranchDtlsDto {
 	private String area;
 	private Integer pinCode;
 	private Integer activeFlag;
-	
-	
+	private String  companyBranchMapId;
+
+	public String getCompanyBranchMapId() {
+		return companyBranchMapId;
+	}
+	public void setCompanyBranchMapId(String companyBranchMapId) {
+		this.companyBranchMapId = companyBranchMapId;
+	}
 	public Integer getActiveFlag() {
 		return activeFlag;
 	}

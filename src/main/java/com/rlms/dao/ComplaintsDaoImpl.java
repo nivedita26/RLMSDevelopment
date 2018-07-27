@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.rlms.constants.RLMSConstants;
+import com.rlms.constants.Status;
 import com.rlms.contract.ComplaintsDtlsDto;
 import com.rlms.contract.SiteVisitReportDto;
 import com.rlms.contract.TechnicianWiseReportDTO;
@@ -196,10 +197,11 @@ public class ComplaintsDaoImpl implements ComplaintsDao{
 				 }
 			//	 criteria.add(Restrictions.eq("ccm.callType", 2));
 				 
+				 criteria.add(Restrictions.ne("status", Status.ASSIGNED.getStatusId()));
+				 
 				 criteria.add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
 				 
 				 criteria.addOrder(Order.desc("ccm.complaintId"));
-
 				 
 		 List<RlmsComplaintTechMapDtls> listOfAllcomplaints = criteria.list();
 		 return listOfAllcomplaints;
@@ -285,5 +287,15 @@ public class ComplaintsDaoImpl implements ComplaintsDao{
 		 Criteria criteria = session.createCriteria(RlmsComplaintMaster.class)
 				 .add(Restrictions.eq("complaintId", complaintId));
        	 return  (RlmsComplaintMaster) criteria.uniqueResult();
+	}
+
+	@Override
+	public RlmsComplaintMaster getComplaintByLiftCustoMapIdAndCallType(ComplaintsDtlsDto complaintsDtlsDto) {
+		Session session = this.sessionFactory.getCurrentSession();
+		 Criteria criteria = session.createCriteria(RlmsComplaintMaster.class)
+				 .add(Restrictions.eq("liftCustomerMap.liftCustomerMapId", complaintsDtlsDto.getLiftCustomerMapId()))
+				.add(Restrictions.eq("callType",complaintsDtlsDto.getCallType()));	 
+      	 return  (RlmsComplaintMaster) criteria.uniqueResult();
+		
 	}
 }

@@ -31,5 +31,6 @@ public interface ComplaintsDao {
 	public void deleteComplaintsTechMap(Integer complaintsTechMapId);
 	public List<RlmsComplaintMaster>complaintMastersList (List<Integer> liftCustomerMapId,ComplaintsDtlsDto complaintsDtlsDto);
 	public RlmsComplaintMaster getComplaintMasterByComplaintId(int complaintId);
- 
+    public RlmsComplaintMaster getComplaintByLiftCustoMapIdAndCallType(ComplaintsDtlsDto complaintsDtlsDto );
+	
 }

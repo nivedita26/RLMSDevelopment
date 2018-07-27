@@ -447,8 +447,6 @@ public class DashBoardController extends BaseController {
 		}
 		return listOfComplaintsCount;
 	}
-	
-	
 	@RequestMapping(value = "/getListOfComplaintsForSiteVisited", method = RequestMethod.POST)
 	public @ResponseBody List<ComplaintsDto> getListOfComplaintsForSiteVisited(@RequestBody ComplaintsDtlsDto dto)
 			throws RunTimeException {
@@ -718,9 +716,6 @@ public class DashBoardController extends BaseController {
 				}
 			}
 			else {
-			
-			
-			
 			listOfAllBranches = this.companyService.getAllBranches(customerDtlsDto.getCompanyId());
 			for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
 				activeCount = 0; 

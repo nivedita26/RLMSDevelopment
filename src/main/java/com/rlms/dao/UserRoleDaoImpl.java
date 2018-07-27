@@ -1,7 +1,9 @@
 package com.rlms.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.rlms.constants.RLMSConstants;
+import com.rlms.constants.SpocRoleConstants;
 import com.rlms.contract.UserDtlsDto;
 import com.rlms.contract.UserMetaInfo;
 import com.rlms.model.RlmsSpocRoleMaster;
@@ -226,6 +229,23 @@ UserRoleDao{
 		 	     .add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
 		 
 		 RlmsUserRoles userRole = (RlmsUserRoles) criteria.uniqueResult();
+		 return userRole;
+	}
+
+	@Override
+	public List<RlmsUserRoles> getUsersForBranch(int id) {
+	List<Integer> roleIdList = new ArrayList<>();
+	roleIdList.add(SpocRoleConstants.TECHNICIAN.getSpocRoleId());
+	roleIdList.add(SpocRoleConstants.BRANCH_OPERATOR.getSpocRoleId());
+		Session session = this.sessionFactory.getCurrentSession();
+		 Criteria criteria = session.createCriteria(RlmsUserRoles.class)
+		 		 .createAlias("rlmsSpocRoleMaster", "sm")
+				 .add(Restrictions.eq("rlmsCompanyMaster.companyId", id))
+		 	     .add(Restrictions.in("sm.spocRoleId",roleIdList))
+		 	     .add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
+		 
+		 @SuppressWarnings("unchecked")
+		List<RlmsUserRoles> userRole = (List<RlmsUserRoles>) criteria.list();
 		 return userRole;
 	}
 	
