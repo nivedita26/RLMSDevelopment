@@ -263,13 +263,64 @@ $scope.loadCallID=function(){
 		  	        } else {
 		  	        	
 		  	        	var dataToSend = constructDataToSend();
-			  	    	
+//			  	    /	$scope.callDetail=[];
+			  	    	/*$scope.callDetail=[{"complaintNumber": "85",
+			  	                "serviceCallTypeStr": "Under Warranty Support call",
+			  	                "title": "Door open close issue",
+			  	                "registrationDateStr": "16-Jul-2018 12:00:00 AM",
+			  	                "liftNumber": "S12",
+			  	                "customerName": "Ram",
+			  	                "customerAddress": "nanded city",
+			  	                "customerCity": "Pune",
+			  	                "branchName": "Nanded city",
+			  	                "status": "Resolved",
+			  	                "siteVisitDetailsList": {
+			  	                                "companyBranchMapId": null,
+			  	                                "listOfUserRoleIds": null,
+			  	                                "listOfStatusIds": null,
+			  	                                "fromDate": null,
+			  	                                "toDate": null,
+			  	                                "listOfBranchCustoMapIds": null,
+			  	                                "techName": "Harish Jagtap",
+			  	                                "techNumber": "8669028112",
+			  	                                "complNumber": "85",
+			  	                                "customerName": "Ram",
+			  	                                "complaintRegDate": "16-Jul-2018 12:00:00 AM",
+			  	                                "complaintStatus": "Resolved",
+			  	                                "complaintResolveDate": "17-Jul-2018 07:25:14 PM",
+			  	                                "totalComplaintAssigned": null,
+			  	                                "totalComplResolved": null,
+			  	                                "totalComplaintPending": null,
+			  	                                "totalTimeTaken": "7 hours 41 mins",
+			  	                                "totalNoOfVisits": 1,
+			  	                                "userRating": null,
+			  	                                "listOFAllVisits": [{
+			  	                                                "userRoleId": null,
+			  	                                                "complaintTechMapId": null,
+			  	                                                "fromDate": null,
+			  	                                                "toDate": null,
+			  	                                                "fromDateDtr": "16-Jul-2018 09:54:00 AM",
+			  	                                                "toDateStr": "16-Jul-2018 05:35:00 PM",
+			  	                                                "totalTime": "7 hours 41 mins",
+			  	                                                "remark": "issue not yet resolved"
+			  	                                }],
+			  	                                "serviceCallType": null,
+			  	                                "address": "S B Road",
+			  	                                "city": "Pune",
+			  	                                "sericeDate": null,
+			  	                                "message": "Door open close issue",
+			  	                                "liftNumber": "S12"
+			  	                },
+			  	                "registeredBy": "Ram Dahapute(COMPANY ADMIN)",
+			  	               "callAssignedDateStr": "17-Jul-2018 07:25:14 PM"
+			  	            	   }
+			  	    	]*/
 		  	        	serviceApi.doPostWithData('/RLMS/report/callSpecificReport',dataToSend)
 		  	        	.then(function(largeLoad) {
 		  	        	  var details=[];
 		  	        	  for(var i=0;i<largeLoad.length;i++){
 		  	        		  
-		  	        		if($scope.selectedLift.selected  && $scope.selectedLift.selected.length>0){	  
+		  	        		if(($scope.selectedLift.selected  && $scope.selectedLift.selected.length>0)){	  
 		  	        			var tempLiftIds = [];
 		  	        			  for (var i = 0; i < $scope.selectedLift.selected.length; i++) {
 		  	        				  tempLiftIds.push($scope.selectedLift.selected[i].liftNumber);
@@ -358,7 +409,7 @@ $scope.loadCallID=function(){
 			  	        					detailsObj["Technician"] =" - ";
 			  	        				}
 				  	        				if(largeLoad[i].siteVisitDetailsList.listOFAllVisits){
-				  	        					for(j=0;j<=listOFAllVisits.length;j++){
+				  	        					for(j=0; j<largeLoad[i].siteVisitDetailsList.listOFAllVisits.length; j++){
 					  	        					if(!!largeLoad[i].siteVisitDetailsList.listOFAllVisits[j].fromDateDtr){
 				  	        						detailsObj["FromDate"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits[j].fromDateDtr;
 					  	        					}else{
@@ -369,7 +420,7 @@ $scope.loadCallID=function(){
 					  	        					}else{
 					  	        						detailsObj["ToDate"] =" - ";
 					  	        					}
-					  	        					if(!!largeLoad[i].siteVisitDetailsList.listOFAllVisits[i].remark){
+					  	        					if(!!largeLoad[i].siteVisitDetailsList.listOFAllVisits[j].remark){
 								  	        			detailsObj["Remark"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits[j].remark;
 								  	        		}else{
 								  	        			detailsObj["Remark"] =" - ";
