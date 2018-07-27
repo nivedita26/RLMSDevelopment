@@ -119,10 +119,10 @@
                 <th>Service Date</th>
                 <th></th>
             </tr>
-            <tbody ng-repeat="m in callTypesArray">
+         <tbody ng-repeat="m in callTypesArray">
                 <tr>
                     <td>{{m.title}}</td>
-                    <td>{{m.serviceDate}}</td>
+                    <td>{{m.serviceDate | date:'yyyy-MM-dd'}}</td>
                     <td><input type="button" ng-click="Remove($index)" value="Remove" /></td>
                 </tr>
             </tbody>
@@ -133,7 +133,7 @@
                     <td><input type="button" ng-click="submitAdd()" value="Add" /></td>
                 </tr>
             </tfoot>
-        </table>
+           </table>
 	    </div>
 	    <div class="modal-footer">
 	        <button class="btn btn-primary" ng-click="cancelAssign()">Done</button>

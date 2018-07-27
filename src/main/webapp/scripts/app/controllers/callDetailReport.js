@@ -140,6 +140,7 @@
 			//loadDefaultComplaintData();
 		} else {
 			$scope.showBranch = false;
+			$scope.loadCustomerData();
 		}
 		
 		/*if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 3) {
@@ -193,6 +194,11 @@
 		  	        			detailsObj["Customer"] =largeLoad[i].customerName;
 		  	        		}else{
 		  	        			detailsObj["Customer"] =" - ";
+		  	        		}
+		  	        		if(!!largeLoad[i].complaintNumber){
+		  	        			detailsObj["CallID"] =largeLoad[i].complaintNumber;
+		  	        		}else{
+		  	        			detailsObj["CallID"] =" - ";
 		  	        		}
 		  	        		if(!!largeLoad[i].serviceCallTypeStr){
 		  	        			detailsObj["CallType"] =largeLoad[i].serviceCallTypeStr;
@@ -263,15 +269,22 @@
 		  	        	serviceApi.doPostWithData('/RLMS/report/callDetailsReport',dataToSend)
 		  	        	.then(function(largeLoad) {
 		  	        	  var details=[];
+		  	        	  var j=0;
 		  	        	  for(var i=0;i<largeLoad.length;i++){
-		  	        		  
 		  	        		if(($scope.selectedCallType.selected) && ($scope.selectedCallType.selected.id ===largeLoad[i].serviceCallType)){
-			  	        		var detailsObj={};		  	        	
-			  	        		detailsObj["SrNo"] = i+1 + ".";
+		  	        			//for(var j=0;j<largeLoad.length;j++){
+			  	        		var detailsObj={};
+			  	        		j=j+1;
+			  	        		detailsObj["SrNo"] =j + ".";
 		  	        		if(!!largeLoad[i].customerName){
 		  	        			detailsObj["Customer"] =largeLoad[i].customerName;
 		  	        		}else{
 		  	        			detailsObj["Customer"] =" - ";
+		  	        		}
+		  	        		if(!!largeLoad[i].complaintNumber){
+		  	        			detailsObj["CallID"] =largeLoad[i].complaintNumber;
+		  	        		}else{
+		  	        			detailsObj["CallID"] =" - ";
 		  	        		}
 		  	        		if(!!largeLoad[i].serviceCallTypeStr){
 		  	        			detailsObj["CallType"] =largeLoad[i].serviceCallTypeStr;
@@ -330,6 +343,7 @@
 		  	        		}
 		  	        		details.push(detailsObj);
 		  	        	  }
+		  	        	 // }
 		  	        		
 		  	          if(!($scope.selectedCallType.selected)){
 		  	        		  
@@ -339,6 +353,11 @@
 	  	        			detailsObj["Customer"] =largeLoad[i].customerName;
 	  	        		}else{
 	  	        			detailsObj["Customer"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].complaintNumber){
+	  	        			detailsObj["CallID"] =largeLoad[i].complaintNumber;
+	  	        		}else{
+	  	        			detailsObj["CallID"] =" - ";
 	  	        		}
 	  	        		if(!!largeLoad[i].serviceCallTypeStr){
 	  	        			detailsObj["CallType"] =largeLoad[i].serviceCallTypeStr;
@@ -398,6 +417,7 @@
 	  	        		details.push(detailsObj);
 		  	        	  }
 		  	        	  }
+		  	        	 
 		  	            $scope.setPagingData(details, page, pageSize);
 		  	          });
 		  	          
@@ -430,6 +450,10 @@
 		  	      columnDefs : [{
 						field : "SrNo",
 						displayName:"Sr No.",
+						width : 100
+			  	  },{
+						field : "CallID",
+						displayName:"Call ID",
 						width : 100
 			  	  },{
 						field : "CallType",
