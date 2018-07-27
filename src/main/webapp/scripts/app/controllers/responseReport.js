@@ -98,16 +98,8 @@
 		$scope.loadLifts = function() {
 			
   		var dataToSend = {
-  				var branchData ={};
-  	  	    	if($scope.showBranch == true){
-  	  	    		branchData = {
-  	  	    			branchCompanyMapId : $scope.selectedBranch.selected!=null?$scope.selectedBranch.selected.companyBranchMapId:0
-  						}
-  	  	    	}else{
-  	  	    		branchData = {
-  	  	    			branchCompanyMapId : $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls.companyBranchMapId
-  						}
-  	  	    	}
+  				
+  				branchCompanyMapId : $scope.selectedBranch.selected.companyBranchMapId,
 				branchCustomerMapId : $scope.selectedCustomer.selected.branchCustomerMapId,
 			}
 			serviceApi.doPostWithData('/RLMS/complaint/getAllApplicableLifts',dataToSend)
