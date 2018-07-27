@@ -239,7 +239,7 @@ public class CustomerServiceImpl implements CustomerService{
 	@Transactional(propagation = Propagation.REQUIRED)
 	public String validateAndRegisterNewMember(MemberDtlsDto memberDtlsDto, UserMetaInfo metaInfo) throws ValidationException{
 		String statusMessage = "";
-		//if(this.validateMemberDtls(memberDtlsDto)){
+		if(this.validateMemberDtls(memberDtlsDto)){
 		    //   	RlmsMemberMaster memberMaster =this.customerDao.getMemberById(memberDtlsDto.getMemberId());
 		      // 	if(memberMaster!=null) {
 		           	RlmsMemberMaster memberMaster = new RlmsMemberMaster();
@@ -250,7 +250,7 @@ public class CustomerServiceImpl implements CustomerService{
 		       		this.customerDao.saveCustomerMemberMap(customerMemberMap);
 		       		statusMessage = PropertyUtils.getPrpertyFromContext(RlmsErrorType.MEMBER_REG_SUCCESSFUL.getMessage());
 		  //     	}
-	//	}
+		}
 		return statusMessage;
 	}
 	@Transactional(propagation = Propagation.REQUIRED)
@@ -288,7 +288,6 @@ public class CustomerServiceImpl implements CustomerService{
 	}
 	
 	private RlmsMemberMaster constructMemberMaster(MemberDtlsDto memberDtlsDto,RlmsMemberMaster memberMaster, UserMetaInfo metaInfo){
-	
     	memberMaster.setAddress(memberDtlsDto.getAddress());
 		memberMaster.setContactNumber(memberDtlsDto.getContactNumber());
 		memberMaster.setEmailId(memberDtlsDto.getEmailId());

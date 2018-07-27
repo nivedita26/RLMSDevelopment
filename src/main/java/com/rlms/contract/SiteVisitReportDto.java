@@ -11,7 +11,6 @@ public class SiteVisitReportDto {
 	private Date fromDate;
 	private Date toDate;
 	private List<Integer> listOfBranchCustoMapIds;
-	
 	private String techName;
 	private String techNumber;
 	private String complNumber;
@@ -24,6 +23,7 @@ public class SiteVisitReportDto {
 	private Integer totalComplResolved;
 	private Integer totalComplaintPending;
 	private String totalTimeTaken;
+	private Long  totalVisitTimeTaken;
 	private Integer totalNoOfVisits;
 	private Integer userRating;
 	private List<SiteVisitDtlsDto> listOFAllVisits;
@@ -33,7 +33,14 @@ public class SiteVisitReportDto {
 	private String sericeDate;
 	private String message;
 	
+
 	
+	public Long getTotalVisitTimeTaken() {
+		return totalVisitTimeTaken;
+	}
+	public void setTotalVisitTimeTaken(Long totalVisitTimeTaken) {
+		this.totalVisitTimeTaken = totalVisitTimeTaken;
+	}
 	public Integer getCompanyBranchMapId() {
 		return companyBranchMapId;
 	}

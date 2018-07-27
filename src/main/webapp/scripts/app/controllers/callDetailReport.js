@@ -269,10 +269,12 @@
 		  	        	serviceApi.doPostWithData('/RLMS/report/callDetailsReport',dataToSend)
 		  	        	.then(function(largeLoad) {
 		  	        	  var details=[];
+
 		  	        	  var j=0;
+
 		  	        	  for(var i=0;i<largeLoad.length;i++){
 		  	        		if(($scope.selectedCallType.selected) && ($scope.selectedCallType.selected.id ===largeLoad[i].serviceCallType)){
-		  	        			//for(var j=0;j<largeLoad.length;j++){
+
 			  	        		var detailsObj={};
 			  	        		j=j+1;
 			  	        		detailsObj["SrNo"] =j + ".";

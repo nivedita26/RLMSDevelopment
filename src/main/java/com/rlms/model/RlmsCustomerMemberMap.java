@@ -26,8 +26,6 @@ public class RlmsCustomerMemberMap {
 	private Date updatedDate;
 	private Integer updatedBy;
 	
-	
-	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "custo_member_map_id", unique = true, nullable = false)

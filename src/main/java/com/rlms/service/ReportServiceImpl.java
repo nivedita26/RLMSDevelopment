@@ -397,6 +397,7 @@ public class ReportServiceImpl implements ReportService {
 				complaintwiseSiteVisitReport.setTotalNoOfVisits(listOfAllVisits.size());
 			}
 			Long totalTimeForComplaint = 0L;
+		//	Long totalVisitTimeForComplaint = 0L;
 			for (RlmsSiteVisitDtls rlmsSiteVisitDtls : listOfAllVisits) {
 				SiteVisitDtlsDto siteVisitDto = new SiteVisitDtlsDto();
 				siteVisitDto.setFromDateDtr(DateUtils.convertDateTimestampToStringWithTime(rlmsSiteVisitDtls.getFromDate()));
@@ -410,9 +411,11 @@ public class ReportServiceImpl implements ReportService {
 				listOfAllVisists.add(siteVisitDto);
 			}
 			if(null != totalTimeForComplaint){
+			//	totalVisitTimeForComplaint = totalVisitTimeForComplaint+totalTimeForComplaint;
 				complaintwiseSiteVisitReport.setTotalTimeTaken(DateUtils.convertTimeIntoDaysHrMin(totalTimeForComplaint, TimeUnit.SECONDS));
 			}
 			complaintwiseSiteVisitReport.setListOFAllVisits(listOfAllVisists);
+		//	complaintwiseSiteVisitReport.setTotalVisitTimeTaken(totalVisitTimeForComplaint);
 			complaintwiseSiteVisitReport.setUserRating(rlmsComplaintTechMapDtls.getUserRating());
 			listOfAllComplaints.add(complaintwiseSiteVisitReport);
 		}

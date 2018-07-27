@@ -105,11 +105,8 @@ $scope.loadCallID=function(){
 		serviceApi.doPostWithData('/RLMS/report/callSpecificReport',dataToSend)
 				.then(function(callData) {
 					$scope.callID = callData;			
-					
 				})
-	
-}
-		
+	}
 		if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 1) {
 			$scope.showCompany = true;
 			loadCompanyData();

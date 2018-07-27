@@ -51,6 +51,7 @@
 			}
 			serviceApi.doPostWithData("/RLMS/admin/validateAndRegisterNewUser",$scope.addUser)
 			.then(function(response){
+				if(response.status){
 				$scope.showAlert = true;
 				var key = Object.keys(response);
 				var successMessage = response[key[0]];
@@ -60,7 +61,12 @@
 				initAddUser();
 				$scope.addUserForm.$setPristine();
 				$scope.addUserForm.$setUntouched();
-				
+			}
+			else{
+				$scope.showAlert = true;
+				$scope.alert.msg = response.response;
+				$scope.alert.type = "danger";
+			}
 			},function(error){
 				$scope.showAlert = true;
 				$scope.alert.msg = error.exceptionMessage;

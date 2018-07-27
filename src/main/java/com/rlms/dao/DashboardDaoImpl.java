@@ -138,8 +138,6 @@ public class DashboardDaoImpl implements DashboardDao {
 		String sql ="select active_flag,count(*) from rlms_user_roles where company_branch_map_id in ("+commpBranchMapId+") and spoc_role_id="+spocRoleId+" group by active_flag";
     	SQLQuery query = session.createSQLQuery(sql);
 		
-		//List<Object[]>techniciansCount = query.list();
-		
 		return query.list();
 	}
 	@SuppressWarnings("unchecked")
@@ -155,20 +153,9 @@ public class DashboardDaoImpl implements DashboardDao {
 				str = str.concat("," + mapId);
 			}
 		}
-	  String sql ="select company_branch_map_id,count(*) from rlms_user_roles where company_branch_map_id in ("+ str+") and spoc_role_id="+ spocRoleId+" and active_flag=1 group by company_branch_map_id ";
+	  String sql ="select company_branch_map_id,count(*) from rlms_user_roles where company_branch_map_id in ("+ str+") and spoc_role_id="+ spocRoleId+"  group by company_branch_map_id ";
     	SQLQuery query = session.createSQLQuery(sql);
-		//query.addEntity(RlmsUserRoles.class);
-		 //query.executeUpdate();
 		List<Object[]>techniciansCount = query.list();
-		
-		/*for (Object[] objects : techniciansCount) {
-			int count =(Integer) objects[0];
-			BigInteger mapId = (BigInteger) objects[1];
-			System.out.println("count"+count);
-			System.out.println("long"+mapId);
-		}*/
-		
-		
 		return techniciansCount;
 	}
 	
