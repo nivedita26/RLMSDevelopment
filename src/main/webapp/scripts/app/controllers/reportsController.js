@@ -150,7 +150,7 @@
 	  		var tempStatus = [];
 	  		if($scope.selectedStatus.selected){
 	  			if($scope.selectedStatus.selected.length===0){
-	  				alert("Please select status");
+	  				//alert("Please select status");
 	  			}else{
 	  				if($scope.selectedStatus.selected.length){
 	  					for (var j = 0; j < $scope.selectedStatus.selected.length; j++) {
@@ -158,8 +158,6 @@
 	  					}
 	  				}
 	  			}
-	  		}else{
-	  			alert("Please select status");
 	  		}
 	  		
 			

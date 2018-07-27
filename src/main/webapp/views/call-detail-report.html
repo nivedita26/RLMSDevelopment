@@ -12,8 +12,8 @@
 				    </ui-select-choices>
 				  </ui-select>
 			</div>
-			<label class="control-label" >Select Branch</label>
-			<div class="select-container" >
+			<label class="control-label" ng-show="showBranch" >Select Branch</label>
+			<div class="select-container" ng-show="showBranch">
 				  <ui-select ng-model="selectedBranch.selected" title="Choose a Branch" on-select="loadCustomerData()">
 				    <ui-select-match placeholder="Select Branch">{{$select.selected.rlmsBranchMaster.branchName}}</ui-select-match>
 				    <ui-select-choices repeat="branchIterator in branches| filter: $select.search">

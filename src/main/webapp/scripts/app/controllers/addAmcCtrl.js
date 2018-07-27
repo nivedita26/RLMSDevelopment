@@ -12,18 +12,26 @@
 			$scope.companies = [];
 			$scope.newCallTypes={};
 			$scope.callTypesArray = [];
-
-			                $scope.Add = function () {
-			                    //Add the new item to the Array.
-			                    var customer = {};
-			                    customer.title = $scope.newCallTypes.title;
-			                    customer.serviceDate = $scope.newCallTypes.serviceDate;
-			                    $scope.callTypesArray.push(customer);
-
-			                    //Clear the TextBoxes.
-			                    $scope.newCallTypes.title = "";
-			                    $scope.newCallTypes.serviceDate = "";
-			                };
+		 
+			               
+							   $scope.Add = function () {
+					        	var date = new Date();
+					        	
+					            //Add the new item to the Array.
+					        	date=$scope.newCallTypes.serviceDate;
+					            var customer = {
+					            		title:'',
+					            		serviceDate:''
+					            };
+					            customer.title = $scope.newCallTypes.title;
+					            customer.serviceDate =date;
+					            $scope.callTypesArray.push(customer);
+					            
+					            //Clear the TextBoxes.
+					            $scope.newCallTypes.title = "";
+					            $scope.newCallTypes.serviceDate = "";
+					    	
+							   };
 			                
 			                $scope.submitAdd=function(){
 			                	if(($scope.newCallTypes.title &&$scope.newCallTypes.serviceDate)){

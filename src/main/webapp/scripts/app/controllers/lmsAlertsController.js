@@ -225,6 +225,7 @@
 			  	    	
 		  	        	serviceApi.doPostWithData('/RLMS/report/getListOfEvents',dataToSend).then(function(largeLoad) {
 		  	        	  var details=[];
+		  	        	  var k=0;
 		  	        	  for(var i=0;i<largeLoad.length;i++){
 		  	        		
 		  	        		if($scope.selectedLift.selected  && $scope.selectedLift.selected.length>0){	  
@@ -236,8 +237,8 @@
 		  	        				 for(var i=0;i<largeLoad.length;i++){
 		  	        				  if(tempLiftIds[j]==largeLoad[i].liftNumber){ 
 			  	        	var detailsObj={};
-	  	        			
-			  	        	detailsObj["No"] = i+1 +".";
+	  	        			k=k+1;
+			  	        	detailsObj["No"] = k +".";
 	  	        			
 	  	        			if(!!largeLoad[i].customerName){
 		  	        			detailsObj["CustomerName"] =largeLoad[i].customerName;

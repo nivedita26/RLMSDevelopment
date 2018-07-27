@@ -63,7 +63,7 @@
 		}
 		
 		if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 3) {
-			$scope.loadCustomerData();
+			//$scope.loadCustomerData();
 		}
 		
 		function loadCompanyData() {
@@ -98,7 +98,16 @@
 		$scope.loadLifts = function() {
 			
   		var dataToSend = {
-  				branchCompanyMapId : $scope.selectedBranch.selected.companyBranchMapId,
+  				var branchData ={};
+  	  	    	if($scope.showBranch == true){
+  	  	    		branchData = {
+  	  	    			branchCompanyMapId : $scope.selectedBranch.selected!=null?$scope.selectedBranch.selected.companyBranchMapId:0
+  						}
+  	  	    	}else{
+  	  	    		branchData = {
+  	  	    			branchCompanyMapId : $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls.companyBranchMapId
+  						}
+  	  	    	}
 				branchCustomerMapId : $scope.selectedCustomer.selected.branchCustomerMapId,
 			}
 			serviceApi.doPostWithData('/RLMS/complaint/getAllApplicableLifts',dataToSend)
@@ -220,9 +229,11 @@
 		  	        	serviceApi.doPostWithData('/RLMS/report/getListOfEvents',dataToSend)
 		  	        	.then(function(largeLoad) {
 		  	        	  var details=[];
+		  	        	  var k=0;
 		  	        	  for(var i=0;i<largeLoad.length;i++){
 		  	        		  
 		  	        		  if($scope.selectedLift.selected && $scope.selectedLift.selected.length>0){	  
+		  	        			  
 		  	        			  var tempLiftIds = [];
 		  	        			  for (var i = 0; i < $scope.selectedLift.selected.length; i++) {
 		  	        				  tempLiftIds.push($scope.selectedLift.selected[i].liftNumber);
@@ -230,9 +241,10 @@
 		  	        			  for(var j=0; j<tempLiftIds.length;j++){
 		  	        				 for(var i=0;i<largeLoad.length;i++){
 		  	        				  if(tempLiftIds[j]==largeLoad[i].liftNumber){
+		  	        					  k=k+1
 		  	        					var detailsObj={};
 		  		  	        			
-		  				  	        	detailsObj["No"] = i+1 +".";
+		  				  	        	detailsObj["No"] = k +".";
 		  		  	        			
 		  		  	        			if(!!largeLoad[i].customerName){
 		  			  	        			detailsObj["CustomerName"] =largeLoad[i].customerName;

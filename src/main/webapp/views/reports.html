@@ -37,8 +37,8 @@
 			</div>
 			<label class="control-label">Select Status</label>
 			<div class="select-container ">
-			   <ui-select multiple ng-model="selectedStatus.selected" close-on-select="false"  title="Choose a status">
-			    <ui-select-match placeholder="Select status from the list...">{{$select.selected[$index].name}}</ui-select-match>
+			   <ui-select  ng-model="selectedStatus.selected" close-on-select="false"  title="Choose a status">
+			    <ui-select-match placeholder="Select status from the list...">{{$select.selected.name}}</ui-select-match>
 			    <ui-select-choices repeat="iterator in status | filter: $select.search">
 			      <span ng-bind-html="iterator.name | highlight: $select.search"></span>
 			    </ui-select-choices>
