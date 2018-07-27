@@ -286,4 +286,14 @@ public class ComplaintsDaoImpl implements ComplaintsDao{
 				 .add(Restrictions.eq("complaintId", complaintId));
        	 return  (RlmsComplaintMaster) criteria.uniqueResult();
 	}
+
+	@Override
+	public RlmsComplaintMaster getComplaintByLiftCustoMapIdAndCallType(ComplaintsDtlsDto complaintsDtlsDto) {
+		Session session = this.sessionFactory.getCurrentSession();
+		 Criteria criteria = session.createCriteria(RlmsComplaintMaster.class)
+				 .add(Restrictions.eq("liftCustomerMap.liftCustomerMapId", complaintsDtlsDto.getLiftCustomerMapId()))
+				.add(Restrictions.eq("callType",complaintsDtlsDto.getCallType()));	 
+      	 return  (RlmsComplaintMaster) criteria.uniqueResult();
+		
+	}
 }

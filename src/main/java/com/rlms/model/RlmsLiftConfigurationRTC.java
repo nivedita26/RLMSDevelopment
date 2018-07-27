@@ -131,8 +131,4 @@ public class RlmsLiftConfigurationRTC {
 		this.c4 = c4;
 	}
 	
-	
-	
-	
-	
 }

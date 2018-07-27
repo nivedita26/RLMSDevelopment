@@ -53,8 +53,6 @@
 			                        $scope.callTypesArray.splice(index, 1);
 			                    }
 			                }
-			                
-
 			function initAddAMC() {
 				$scope.customerSelected = false;
 				$scope.selectedCompany={};
@@ -135,14 +133,12 @@
 				amcEndDate=amcEndDate.toISOString().slice(0, 10);
 		    	$scope.addAMC.amcEdDate=amcEndDate;
 			}
-			
 			 function loadCompanyData(){
 					serviceApi.doPostWithoutData('/RLMS/admin/getAllApplicableCompanies')
 				    .then(function(response){
 				    		$scope.companies = response;
 				    });
 				}
-			 
 			$scope.loadBranchData = function(){
 				var companyData={};
 				if($scope.showCompany == true){

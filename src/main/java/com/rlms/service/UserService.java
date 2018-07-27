@@ -72,7 +72,8 @@ public interface UserService {
 	
 	public RlmsMemberMaster getMemberById(int id);
 	
+	public List<UserDtlsDto> getUsersForBranch(int id);
+	
 //	public RlmsUsersMaster getUserByMobileNumber(UserDtlsDto dtlsDto);
-
 	
 }

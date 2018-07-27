@@ -196,11 +196,12 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
-	public List<UserDtlsDto> getAllRegisteredUsers(Integer compamyId,
+	public List<UserDtlsDto> getAllRegisteredUsers(Integer companyId,
 			UserMetaInfo metaInfo) {
+		
 		List<UserDtlsDto> listOfUserDtls = new ArrayList<UserDtlsDto>();
 		List<RlmsUsersMaster> listOfAllUsers = this.userMasterDao
-				.getAllUsersForCompany(compamyId);
+				.getAllUsersForCompany(companyId);
 
 		for (RlmsUsersMaster rlmsUsersMaster : listOfAllUsers) {
 			UserDtlsDto dto = new UserDtlsDto();
@@ -724,5 +725,38 @@ public class UserServiceImpl implements UserService {
 		return memberDao.getMemberById(id);
 	}
 
+	@Transactional(propagation = Propagation.REQUIRED)
+	@Override
+	public List<UserDtlsDto>  getUsersForBranch(int id) {
+    
+		List<UserDtlsDto> dtlsDtoList = new ArrayList<>();
+		List<RlmsUserRoles> rlmsUserRolesList =userRoleDao.getUsersForBranch(id);
+		if(rlmsUserRolesList!=null && !rlmsUserRolesList.isEmpty()) {
+		for (RlmsUserRoles  rlmsUserRoles : rlmsUserRolesList) {
+			UserDtlsDto dto = new UserDtlsDto();
+			dto.setUserId(rlmsUserRoles.getRlmsUserMaster().getUserId());
+			dto.setAddress(rlmsUserRoles.getRlmsUserMaster().getAddress());
+			dto.setCompanyName(rlmsUserRoles.getRlmsUserMaster().getRlmsCompanyMaster()
+					.getCompanyName());
+			dto.setContactNumber(rlmsUserRoles.getRlmsUserMaster().getContactNumber());
+			dto.setEmailId(rlmsUserRoles.getRlmsUserMaster().getEmailId());
+			dto.setUserName(rlmsUserRoles.getRlmsUserMaster().getFirstName() + " "
+					+ rlmsUserRoles.getRlmsUserMaster().getLastName());
+			dto.setCity(rlmsUserRoles.getRlmsUserMaster().getCity());
+			dto.setArea(rlmsUserRoles.getRlmsUserMaster().getArea());
+			dto.setPinCode(rlmsUserRoles.getRlmsUserMaster().getPincode());
+			dto.setUserRoleName(rlmsUserRoles.getRole());
+				if (null != rlmsUserRoles.getRlmsCompanyBranchMapDtls()) {
+					dto.setBranchName(rlmsUserRoles.getRlmsCompanyBranchMapDtls()
+							.getRlmsBranchMaster().getBranchName());
+				} else {
+					dto.setBranchName(RLMSConstants.NA.getName());
+				}
+			    dtlsDtoList.add(dto);
+			} 
+		}
+		return null;
+	}
+	
 
 }

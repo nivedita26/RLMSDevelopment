@@ -128,6 +128,12 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 	}
 	private boolean validateComplaintDetails(ComplaintsDtlsDto dto) throws ValidationException{
 		boolean isValidaDetails = true;
+	/*	RlmsComplaintMaster complaintMaster = complaintsDao.getComplaintByLiftCustoMapIdAndCallType(dto);
+		if(complaintMaster!=null && complaintMaster.getCallType()!=RLMSCallType.AMC_CALL.getId()) {
+			isValidaDetails = false;
+			throw new ValidationException(ExceptionCode.VALIDATION_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.COMPLAINT_REMARK_BLANK.getMessage()));
+		}*/
+		
 		if(null == dto.getComplaintsRemark()){
 			isValidaDetails = false;
 			throw new ValidationException(ExceptionCode.VALIDATION_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.COMPLAINT_REMARK_BLANK.getMessage()));
@@ -601,12 +607,12 @@ private boolean isServiceCallToShow(Date regDate,Date serviceStartDate){
 		if(visitDtls.getComplaintTechMapDtls().getStatus()==Status.ASSIGNED.getStatusId()) {
 		     RlmsComplaintTechMapDtls complaintTechMapDtls = visitDtls.getComplaintTechMapDtls();
 			complaintTechMapDtls.setStatus(Status.INPROGESS.getStatusId());
+			complaintTechMapDtls.setUpdatedDate(new Date());
 			complaintsDao.updateComplaints(complaintTechMapDtls);
-			
-			
 			RlmsComplaintMaster complaintMaster = visitDtls.getComplaintTechMapDtls().getComplaintMaster();
 			if(complaintMaster.getStatus()==Status.ASSIGNED.getStatusId()) {
 				complaintMaster.setStatus(Status.INPROGESS.getStatusId());
+				complaintMaster.setUpdatedDate(new Date());
 				complaintsDao.updateComplaintsMatser(complaintMaster);
 			}
 		}

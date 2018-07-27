@@ -9,6 +9,7 @@ import com.rlms.model.RlmsCompanyRoleMap;
 import com.rlms.model.RlmsSpocRoleMaster;
 import com.rlms.model.RlmsUserApplicationMapDtls;
 import com.rlms.model.RlmsUserRoles;
+import com.rlms.model.RlmsUsersMaster;
 
 
 
@@ -36,4 +37,8 @@ public interface UserRoleDao{
 	public List<RlmsUserRoles> getAllUserWithRoleForBranch(Integer commpBranchMapId, Integer companyId, Integer spocRoleId);
 	public RlmsUserRoles getUserIFRoleisAssigned(Integer userID);
 	public RlmsUserRoles getUserWithRoleForCompany(Integer companyId, Integer spocRoleId);
+	
+	public List<RlmsUserRoles>  getUsersForBranch(int id);
+
+	
 }
