@@ -506,4 +506,31 @@ public class RestControllerController  extends BaseController {
         }
     	return reponseDto;
     }
+    @RequestMapping(value = "/forgotPassword", method = RequestMethod.POST)
+    public @ResponseBody ResponseDto forgotPassword(@RequestBody UserDtlsDto dto){
+    	ResponseDto reponseDto = new ResponseDto();
+    	try{
+    	  reponseDto.setStatus(true);
+    	 reponseDto.setResponse(userService.forgotPassword(dto));
+    	}catch(Exception e){
+        	log.error(ExceptionUtils.getFullStackTrace(e));
+        	reponseDto.setStatus(false);
+        	reponseDto.setResponse(PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
+        }
+    	return reponseDto;
+    }
+    @RequestMapping(value = "/resetPassword", method = RequestMethod.POST)
+    public @ResponseBody ResponseDto resetPassword(@RequestBody UserDtlsDto dto){
+    	ResponseDto responseDto = new ResponseDto();
+    	try{
+         // reponseDto.setStatus(true);
+    	 //reponseDto.setResponse(userService.changePassword(dto));
+    		responseDto=userService.changePassword(dto);
+    	}catch(Exception e){
+        	log.error(ExceptionUtils.getFullStackTrace(e));
+        	responseDto.setStatus(false);
+        	responseDto.setResponse(PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
+        }
+    	return responseDto;
+    }
 }

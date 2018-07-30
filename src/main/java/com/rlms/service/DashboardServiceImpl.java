@@ -854,6 +854,20 @@ List<Object[]> complaintCount = dashboardDao.getTodaysComplaintsStatusCount(dto.
 	}
 return complaintsCountsList;
 }
+@Override
+@Transactional(propagation = Propagation.REQUIRED)
+public List<ComplaintsCount> getListOfTodaysTotalComplaintsCountByStatus(ComplaintsDtlsDto dto) {
+List<ComplaintsCount> complaintsCountsList =  new ArrayList<>();
+List<Object[]> complaintCount = dashboardDao.getTodaysTotalComplaintsStatusCount(dto.getListOfLiftCustoMapId());
+	for (Object[] objects : complaintCount) {
+		ComplaintsCount complaintsCount = new ComplaintsCount();
+		complaintsCount.setCallType(RLMSCallType.getStringFromID((Integer)objects[0]));
+		complaintsCount.setCallStatus(Status.getStringFromID((Integer)objects[1]));
+		complaintsCount.setTodaysCallStatusCount((BigInteger)objects[2]);
+		complaintsCountsList.add(complaintsCount);
+	}
+return complaintsCountsList;
+}
 
 @Override
 public List<RlmsEventDtls> getUnidentifiedEventCountDetails() {

@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.rlms.constants.RLMSConstants;
+import com.rlms.constants.Status;
 import com.rlms.model.RlmsCompanyBranchMapDtls;
 import com.rlms.model.RlmsComplaintMaster;
 import com.rlms.model.RlmsComplaintTechMapDtls;
@@ -350,6 +351,23 @@ public List<Object[]> getTodaysComplaintsStatusCount(List<Integer> liftCustomerM
 	//String sql = "SELECT status,count(*) FROM rlms_complaint_master where lift_customer_map_id in("+str+") group by status";	
 	String sql ="SELECT call_type,status,count(*) FROM rlms_complaint_master where (DATE(registration_date)=CURDATE()) and lift_customer_map_id in ("+str+") group by status,call_type";
    SQLQuery query = session.createSQLQuery(sql);
+	 	@SuppressWarnings("unchecked")
+		List<Object[]>complaintCount = query.list();
+		return complaintCount;
+	}
+@Override
+public List<Object[]> getTodaysTotalComplaintsStatusCount(List<Integer> liftCustomerMapIds) {
+	String str = "";
+	for (Integer mapId : liftCustomerMapIds) {
+		if (StringUtils.isEmpty(str)) {
+			str = str.concat(String.valueOf(mapId));
+		} else {
+			str = str.concat("," + mapId);
+		}
+	}
+	Session session = this.sessionFactory.getCurrentSession();
+	String sql ="SELECT call_type,status,count(*) FROM rlms_complaint_master where (DATE(updated_date)=CURDATE()) and status in("+Status.ASSIGNED.getStatusId()+","+Status.RESOLVED.getStatusId()+") and lift_customer_map_id in ("+str+") group by status,call_type";
+	SQLQuery query = session.createSQLQuery(sql);
 	 	@SuppressWarnings("unchecked")
 		List<Object[]>complaintCount = query.list();
 		return complaintCount;

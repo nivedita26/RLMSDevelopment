@@ -89,9 +89,8 @@ public class LiftServiceImpl implements LiftService{
 	@Transactional(propagation = Propagation.REQUIRED)
 	public ResponseDto validateAndAddNewLiftDtls(LiftDtlsDto dto, UserMetaInfo metaInfo) throws ParseException{
 		ResponseDto ResponseDto = new ResponseDto();
-		
- 	   RlmsLiftMaster liftMaster = liftDao.getLiftByLiftNumber(dto.getLiftNumber());
-	   if(liftMaster==null) {
+ 	   	RlmsLiftMaster liftMaster = liftDao.getLiftByLiftNumber(dto.getLiftNumber());
+ 	   	if(liftMaster==null) {
 		RlmsLiftMaster liftM = this.constructLiftMaster(dto, metaInfo);
 		Integer liftId = this.liftDao.saveLiftM(liftM);
 		liftM.setLiftId(liftId);
@@ -113,7 +112,6 @@ public class LiftServiceImpl implements LiftService{
 		   if(liftCustomerMap.getBranchCustomerMap().getBranchCustoMapId()==dto.getBranchCustomerMapId()) {
 				ResponseDto.setResponse("Customer have already registered same lift number ");
 		   }
-		   
 	   }
 	//	ResponseDto.setResponse("Duplicate lift number");
 		return ResponseDto;
@@ -891,15 +889,15 @@ public class LiftServiceImpl implements LiftService{
 		if(null != dto.getAccessControl() && !dto.getAccessControl().isEmpty()){
 			liftMaster.setAccessControl(dto.getAccessControl());
 		}
-	/*	if(null != dto.getAddress() && !dto.getAddress().isEmpty()){
+		if(null != dto.getAddress() && !dto.getAddress().isEmpty()){
 			liftMaster.setAddress(dto.getAddress());
-		}*/
+		}
 		if(null != dto.getAlarm()){
 			liftMaster.setAlarm(dto.getAlarm());
 		}
-/*		if(null != dto.getAmcType()){
+		if(null != dto.getAmcType()){
 			liftMaster.setAmcType(dto.getAmcType());
-		}*/
+		}
 		if(null != dto.getCollectiveType()){
 			liftMaster.setCollectiveType(dto.getCollectiveType());
 		}
@@ -921,18 +919,18 @@ public class LiftServiceImpl implements LiftService{
 		if(null != dto.getWiringShceme()){
 			liftMaster.setWiringShceme(dto.getWiringShceme());
 		}
-	/*	if(null != dto.getAmcEndDate()){
+		if(null != dto.getAmcEndDate()){
 			liftMaster.setAmcEndDate(dto.getAmcEndDate());
 		}
 		if(null != dto.getAmcStartDate()){
 			liftMaster.setAmcStartDate(dto.getAmcStartDate());
-		}*/
-	/*	if(null != dto.getArdPhoto()){
+		}
+		if(null != dto.getArdPhoto()){
 			liftMaster.setARDPhoto(dto.getArdPhoto());
 		}
 		if(null != dto.getAutoDoorHeaderPhoto()){
 			liftMaster.setAutoDoorHeaderPhoto(dto.getAutoDoorHeaderPhoto());
-		}*/
+		}
 		if(null != dto.getAutoDoorMake() && !dto.getAutoDoorMake().isEmpty()){
 			liftMaster.setAutoDoorMake(dto.getAutoDoorMake());
 		}
@@ -940,31 +938,29 @@ public class LiftServiceImpl implements LiftService{
 		if(null != dto.getBatteryCapacity() && !dto.getBatteryCapacity().isEmpty()){
 			liftMaster.setBatteryCapacity(dto.getBatteryCapacity());
 		}
-		/*if(null != dto.getBatteryCapacity && !dto.getBatteryCapacity.isEmpty()){
-			liftMaster.setBatteryCapacity(dto.getBatteryCapacity());
-		}*/
+	
 		if(null != dto.getBatteryMake() && !dto.getBatteryMake().isEmpty()){
 			liftMaster.setBatteryMake(dto.getBatteryMake());
 		}
-	/*	if(null != dto.getCartopPhoto()){
+		if(null != dto.getCartopPhoto()){
 			liftMaster.setCartopPhoto(dto.getCartopPhoto());
 		}
 		if(null != dto.getCopPhoto()){
 			liftMaster.setCOPPhoto(dto.getCopPhoto());
-		}*/
-		/*if(null != dto.getDateOfInstallation()){
+		}
+		if(null != dto.getDateOfInstallation()){
 			liftMaster.setDateOfInstallation(dto.getDateOfInstallation());
-		}*/
+		}
 		if(null != dto.getIntercomm() && !dto.getIntercomm().isEmpty()){
 			liftMaster.setIntercomm(dto.getIntercomm());
 		}
-/*		if(null != dto.getLiftImei() && !dto.getLiftImei().isEmpty()){
+	/*	if(null != dto.getLiftImei() && !dto.getLiftImei().isEmpty()){
 			liftMaster.setLiftImei(dto.getLiftImei());
-		}*/
-	/*	if(null != dto.getLiftNumber() && !dto.getLiftNumber().isEmpty()){
+		}
+*/		if(null != dto.getLiftNumber() && !dto.getLiftNumber().isEmpty()){
 			liftMaster.setLiftNumber(dto.getLiftNumber());
-		}*/
-	/*	if(null != dto.getLobbyPhoto()){
+		}
+		if(null != dto.getLobbyPhoto()){
 			liftMaster.setLobbyPhoto(dto.getLobbyPhoto());
 		}
 		if(null != dto.getLopPhoto()){
@@ -972,22 +968,22 @@ public class LiftServiceImpl implements LiftService{
 		}
 		if(null != dto.getPanelPhoto()){
 			liftMaster.setPanelPhoto(dto.getPanelPhoto());
-		}*/
-		/*if(null != dto.getServiceEndDate()){
+		}
+		if(null != dto.getServiceEndDate()){
 			liftMaster.setServiceEndDate(dto.getServiceEndDate());
 		}
 		if(null != dto.getServiceStartDate()){
 			liftMaster.setServiceStartDate(dto.getServiceStartDate());
 		}
-		*/
-		/*if(!StringUtils.isEmpty(dto.getArea())){
+		
+		if(!StringUtils.isEmpty(dto.getArea())){
 			liftMaster.setArea(dto.getArea());			
 		}if(!StringUtils.isEmpty(dto.getCity())){
 			liftMaster.setCity(dto.getCity());
 		}if(dto.getPinCode()!=null){
 			liftMaster.setPincode(dto.getPinCode());
-		}*/
-/*		if(!StringUtils.isEmpty(dto.getAmcAmount())){
+		}
+		if(!StringUtils.isEmpty(dto.getAmcAmount())){
 			liftMaster.setAmcAmount(dto.getAmcAmount());
 		}
 		if(!StringUtils.isEmpty(dto.getLatitude())){
@@ -996,7 +992,7 @@ public class LiftServiceImpl implements LiftService{
 		
 		if(!StringUtils.isEmpty(dto.getLongitude())){
 			liftMaster.setLongitude(dto.getLongitude());
-		}*/
+		}
 		if(dto.getDoorType()!=null){
 			liftMaster.setDoorType(dto.getDoorType());
 		}

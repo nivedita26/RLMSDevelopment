@@ -447,6 +447,48 @@ public class DashBoardController extends BaseController {
 		}
 		return listOfComplaintsCount;
 	}
+	
+	@RequestMapping(value = "/getListOfTodaysTotalComplaintsCountByStatus", method = RequestMethod.POST)
+	public @ResponseBody List<ComplaintsCount> getListOfTodaysTotalComplaintsCountByStatus(@RequestBody ComplaintsDtlsDto dto)
+			throws RunTimeException {
+		List<ComplaintsCount> listOfComplaintsCount = null;
+		List<RlmsCompanyBranchMapDtls> listOfAllBranches = null;
+		List<Integer> companyBranchMapIds = new ArrayList<>();
+		List<Integer> branchCustomerMapIds = new ArrayList<>();
+		/*listOfAllBranches = this.companyService.getAllBranches(dto.getCompanyId());
+		for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
+			companyBranchMapIds.add(companyBranchMap.getCompanyBranchMapId());
+		}*/
+		if(dto.getBranchCompanyMapId()!=null) {
+			companyBranchMapIds.add(dto.getBranchCompanyMapId());
+		}
+		else {
+		listOfAllBranches = this.companyService.getAllBranches(dto.getCompanyId());
+		for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
+			companyBranchMapIds.add(companyBranchMap.getCompanyBranchMapId());
+		}
+		}
+		List<CustomerDtlsDto> allCustomersForBranch = dashboardService.getAllCustomersForBranch(companyBranchMapIds);
+		List<Integer> liftCustomerMapIds = new ArrayList<>();
+		for (CustomerDtlsDto customerDtlsDto : allCustomersForBranch) {
+			LiftDtlsDto dtoToGetLifts = new LiftDtlsDto();
+			dtoToGetLifts.setBranchCustomerMapId(customerDtlsDto.getBranchCustomerMapId());
+			List<RlmsLiftCustomerMap> list = dashboardService.getAllLiftsForBranchsOrCustomer(dtoToGetLifts);
+			for (RlmsLiftCustomerMap rlmsLiftCustomerMap : list) {
+				liftCustomerMapIds.add(rlmsLiftCustomerMap.getLiftCustomerMapId());
+			}
+		}
+		dto.setListOfLiftCustoMapId(liftCustomerMapIds);
+		try {
+			logger.info("Method :: getListOfComplaints");
+			listOfComplaintsCount = this.dashboardService.getListOfTodaysTotalComplaintsCountByStatus(dto);
+		} catch (Exception e) {
+			logger.error(ExceptionUtils.getFullStackTrace(e));
+			throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(),
+					PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
+		}
+		return listOfComplaintsCount;
+	}
 	@RequestMapping(value = "/getListOfComplaintsForSiteVisited", method = RequestMethod.POST)
 	public @ResponseBody List<ComplaintsDto> getListOfComplaintsForSiteVisited(@RequestBody ComplaintsDtlsDto dto)
 			throws RunTimeException {

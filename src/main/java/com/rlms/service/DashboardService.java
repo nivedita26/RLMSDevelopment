@@ -58,5 +58,6 @@ public interface DashboardService {
     public List<EventCountDtls> getEventCountDetails(List<Integer> companyBranchIds,
 			UserMetaInfo metaInfo);
     public List<RlmsEventDtls> getUnidentifiedEventCountDetails();
+    List<ComplaintsCount> getListOfTodaysTotalComplaintsCountByStatus(ComplaintsDtlsDto dto);
 }
 	

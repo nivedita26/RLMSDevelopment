@@ -64,7 +64,7 @@ public interface UserService {
 	public String updateTechnicianLocation(UserDtlsDto userDtlsDto,
 			UserMetaInfo metaInfo);
 	
-	public String changePassword(UserDtlsDto userDto);
+	public ResponseDto changePassword(UserDtlsDto userDto);
 	
 	public UserDtlsDto getTechnicianRoleObjByUserNameAndPassword(UserDtlsDto dtlsDto, UserMetaInfo metaInfo) throws ValidationException;
 	
@@ -73,6 +73,8 @@ public interface UserService {
 	public RlmsMemberMaster getMemberById(int id);
 	
 	public List<UserDtlsDto> getUsersForBranch(int id);
+	
+	public String  forgotPassword(UserDtlsDto dto);
 	
 //	public RlmsUsersMaster getUserByMobileNumber(UserDtlsDto dtlsDto);
 	

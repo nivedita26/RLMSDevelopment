@@ -119,8 +119,7 @@
         class="org.springframework.orm.hibernate4.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory" />
     </bean>
-	
-	
+    
  <bean id="PropertyUtils" class="com.rlms.utils.PropertyUtils">
 	 <property name="locations">
 	   <list>

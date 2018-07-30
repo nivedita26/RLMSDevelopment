@@ -3,6 +3,8 @@ package com.rlms.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -150,7 +152,6 @@ public class AdminController extends BaseController{
 	    }
 	 @RequestMapping(value = "/assignRole", method = RequestMethod.POST)
 	    public @ResponseBody ResponseDto assignRole(@RequestBody UserRoleDtlsDTO userRoleDtlsDTO) throws RunTimeException, ValidationException {
-	        
 		 	ResponseDto reponseDto = new ResponseDto();
 	        try{
 	        	logger.info("Method :: assignRole");

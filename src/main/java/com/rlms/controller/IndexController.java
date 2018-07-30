@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.rlms.constants.SpocRoleConstants;
+import com.rlms.contract.ResponseDto;
 import com.rlms.contract.UserDtlsDto;
 import com.rlms.contract.UserMetaInfo;
 import com.rlms.model.RlmsUserRoles;
@@ -19,12 +20,12 @@ public class IndexController extends BaseController{
 	UserService userService;
 	@RequestMapping(value="index",method = RequestMethod.GET)
 	    public  String getIndexPage() {
-		  RlmsUserRoles userrole = this.getLoggedInUser();
-		  if(userrole.getRlmsSpocRoleMaster().getSpocRoleId()==SpocRoleConstants.TECHNICIAN.getSpocRoleId()) {
-			  System.out.println("user role"+userrole.getRole());
+		UserMetaInfo  userrole = this.getMetaInfo();
+		  if(userrole.getUserRole().equals(SpocRoleConstants.TECHNICIAN.getSpocRoleName())) {
+			  //System.out.println("user role"+userrole.getRole());
 			  return  "login.jsp";
 		  }
-		  System.out.println(userrole.getUsername());
+	//	  System.out.println(userrole.getUsername());
 	      return "index.jsp";
 	    }
 	  
@@ -42,11 +43,12 @@ public class IndexController extends BaseController{
 
 	  @RequestMapping(value="getLoggedInUser",method = RequestMethod.POST)
 	  public @ResponseBody UserMetaInfo getMetaInfoObj(){
+		
 		  return this.getMetaInfo();
 	  }
 	  
 	  @RequestMapping(value="changePassword",method = RequestMethod.POST)
-	  public @ResponseBody String changePassword(UserDtlsDto userDto){
+	  public @ResponseBody ResponseDto changePassword(UserDtlsDto userDto){
 		  
 		  return userService.changePassword(userDto);
 	  }

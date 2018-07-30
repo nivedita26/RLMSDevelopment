@@ -34,11 +34,12 @@ UserMasterDao{
 		this.sessionFactory = sessionFactory;
 	}
 
-	public RlmsUsersMaster getUserByEmailID(String emailId)
+	public RlmsUsersMaster getUserByEmailIdAndUserId(UserDtlsDto dtlsDto)
 	{
 		 Session session = this.sessionFactory.getCurrentSession();
 		 Criteria criteria = session.createCriteria(RlmsUsersMaster.class)
-				 .add(Restrictions.eq("emailId", emailId))
+				 .add(Restrictions.eq("userId", dtlsDto.getUserId()))
+				 .add(Restrictions.eq("emailId", dtlsDto.getEmailId()))
 				 .add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
 		 
 		 return (RlmsUsersMaster)criteria.uniqueResult();
@@ -99,17 +100,13 @@ UserMasterDao{
 		q.setParameter("updatedBy", metaInfo.getUserId());
 		q.executeUpdate();
 	}
-	@Override
-	public void changeUserPassword(RlmsUsersMaster rlmsUsersMaster) {
-		this.sessionFactory.getCurrentSession().update(rlmsUsersMaster);
-	}
-
+	
 	@Override
 	public RlmsUsersMaster getUserByUserIdAndPassword(UserDtlsDto dtlsDto) {
 		 Session session = this.sessionFactory.getCurrentSession();
 		 Criteria criteria = session.createCriteria(RlmsUsersMaster.class)
 				 .add(Restrictions.eq("userId", dtlsDto.getUserId()))
-		         .add(Restrictions.eq("password", dtlsDto.getPassword()));
+		         .add(Restrictions.eq("password", dtlsDto.getOldPassword()));
 		 return (RlmsUsersMaster)criteria.uniqueResult();
 	}
 
@@ -120,6 +117,14 @@ UserMasterDao{
 		 Criteria criteria = session.createCriteria(RlmsUsersMaster.class)
 				 .add(Restrictions.eq("contactNumber",mobileNumber))
 		         .add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
+		 return (RlmsUsersMaster)criteria.uniqueResult();
+	}
+
+	@Override
+	public RlmsUsersMaster getUserByMailId(String mailId) {
+		Session session = this.sessionFactory.getCurrentSession();
+		 Criteria criteria = session.createCriteria(RlmsUsersMaster.class)
+				 .add(Restrictions.eq("emailId",mailId));
 		 return (RlmsUsersMaster)criteria.uniqueResult();
 	}
 }

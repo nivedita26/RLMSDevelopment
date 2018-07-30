@@ -86,7 +86,7 @@ public void setSiteVisitDetailsList(SiteVisitReportDto siteVisitDetailsList) {
 	public void setCallAssignedDateStr(String callAssignedDateStr) {
 		CallAssignedDateStr = callAssignedDateStr;
 	}
-	private int  totalDaysRequiredToResolveComplaint;
+	private String  totalDaysForComplaint;
 	private Date lastVisitedDate;
 	private String lastVisitedDateStr;
 
@@ -134,11 +134,12 @@ public void setSiteVisitDetailsList(SiteVisitReportDto siteVisitDetailsList) {
 	public void setLastVisitedDate(Date lastVisitedDate) {
 		this.lastVisitedDate = lastVisitedDate;
 	}
-	public int getTotalDaysRequiredToResolveComplaint() {
-		return totalDaysRequiredToResolveComplaint;
+	
+	public String getTotalDaysForComplaint() {
+		return totalDaysForComplaint;
 	}
-	public void setTotalDaysRequiredToResolveComplaint(int totalDaysRequiredToResolveComplaint) {
-		this.totalDaysRequiredToResolveComplaint = totalDaysRequiredToResolveComplaint;
+	public void setTotalDaysForComplaint(String totalDaysForComplaint) {
+		this.totalDaysForComplaint = totalDaysForComplaint;
 	}
 	public Date getCallAssignedDate() {
 		return CallAssignedDate;
