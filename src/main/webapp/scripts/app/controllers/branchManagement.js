@@ -21,9 +21,16 @@
 		    });
 		}
 		$rootScope.editBranch={};
-	//	$rootScope.status={};
-	//	$rootScope.status.statusId="1";
-		//$rootScope.status.activeFlags=[{id:1,name:'Active'},{id:0,name:'Inactive'}];
+		$rootScope.activeFlags=[
+			{	
+				id:1,
+				name:'Active'
+			},
+			{	
+				id:0,
+				name:'Inactive'
+			}
+		];
 		$scope.editBranchDetails=function(row){
 			$rootScope.editBranch.branchId=row.Branch_Id;
 			$rootScope.editBranch.branchName=row.Branch_Name;
@@ -31,9 +38,7 @@
 			$rootScope.editBranch.area=row.Area;
 			$rootScope.editBranch.city=row.City;
 			$rootScope.editBranch.pinCode=row.PinCode;
-			//$rootScope.editBranch.activeFlag=row.Status;
 			$rootScope.editBranch.activeFlag=row.Active_Flag;
-			//$rootScope.selectedActiveFlag=row.Status;
 			window.location.hash = "#/edit-branch";
 		};
 				

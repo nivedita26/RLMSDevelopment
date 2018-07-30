@@ -201,7 +201,7 @@
 						name:"Dumb Waiter"
 					}
 			];
-			//AMC Type
+/*			//AMC Type
 			$scope.AMCType=[
 				{
 					id:42,
@@ -278,7 +278,7 @@
 					id:1,
 					name:'NonPluggable'
 				}
-			];
+			];*/
 			$scope.addLift={
 					fyaTranId:null,
 					liftType:0,
@@ -405,9 +405,8 @@
 			liftData={									
 					liftNumber: "739",
 					address: $rootScope.editLift.address,
-					customerName: "nivi",
-					branchName: "Karnataka",					
-					
+					customerName: '',
+					branchName: '',					
 					liftNumber: $scope.editLift.liftNumber,
 					address:$scope.editLift.address,
 					customerName: '',
@@ -422,22 +421,25 @@
 					liftId:$scope.editLift.liftId,
 					latitude:$scope.editLift.latitude,
 					longitude: $scope.editLift.longitude,
-					serviceStartDate: '',
-					serviceStartDateStr:$scope.editLift.serviceStartDate,
-					serviceEndDate:'',
-					serviceEndDateStr: $scope.editLift.serviceEndDate,
-					dateOfInstallation:'',
-					dateOfInstallationStr: $scope.editLift.dateOfInstallation,
-					amcStartDate: '',
-					amcEndDate: null,
-					amcStartDateStr: $scope.editLift.amcStartDate,
-					amcEndDateStr: $scope.editLift.amcEndDate,
-					amcType: $scope.selectedAMCType.selected.id,
-					amcTypeStr:  $scope.selectedAMCType.selected.name,
+					serviceStartDate: $scope.editLift.serviceStartDate,
+					serviceStartDateStr:null,
+					serviceEndDate:$scope.editLift.serviceEndDate,
+					serviceEndDateStr: null,
+					dateOfInstallation:$scope.editLift.dateOfInstallation,
+					dateOfInstallationStr: null,
+					amcStartDate: $scope.editLift.amcStartDate,
+					amcEndDate: $scope.editLift.amcEndDate,
+					amcStartDateStr: null,
+					amcEndDateStr: null,
+					amcType: $scope.editLift.amcType,
+					//amcType: $scope.selectedAMCType.selected.id,
+					//amcTypeStr:  $scope.selectedAMCType.selected.name,
+					amcTypeStr:  $scope.editLift.amcTypeStr,
 					amcAmount: $scope.editLift.amcAmount,
-					doorType: $scope.selectedDoorType.selected.id,
+					//doorType: $scope.selectedDoorType.selected.id,
+					doorType: $scope.editLift.doorType,
 					noOfStops: $scope.editLift.noOfStops,
-					engineType: $scope.selectedEngineMachineType.selected.id,
+					engineType: $scope.editLift.engineType,
 					machineMake: $scope.editLift.machineMake,
 					machineCapacity:$scope.editLift.machineCapacity,
 					machineCurrent:$scope.editLift.machineCurrent,
@@ -454,12 +456,14 @@
 					copPhoto: $scope.editLift.copPhoto.base64,
 					lopMake:$scope.editLift.lopMake,
 					lopPhoto:$scope.editLift.lopPhoto.base64,
-					collectiveType: $scope.selectedCollectiveType.selected.id,
-					simplexDuplex: $scope.selectedSimplexDuplex.selected.id,
+					//collectiveType: $scope.selectedCollectiveType.selected.id,
+					collectiveType: $scope.editLift.collectiveType,
+					//simplexDuplex: $scope.selectedSimplexDuplex.selected.id,
+					simplexDuplex: $scope.editLift.simplexDuplex,
 					cartopPhoto: $scope.editLift.cartopPhoto.base64,
 					autoDoorMake: $scope.editLift.autoDoorMake,
 					autoDoorHeaderPhoto: $scope.editLift.autoDoorHeaderPhoto.base64,
-					wiringShceme: $scope.selectedWiringScheme.selected.id,
+					wiringShceme: $scope.editLift.wiringShceme,
 					wiringPhoto: $scope.editLift.wiringPhoto.base64,
 					fireMode: $scope.editLift.fireMode,
 					intercomm: $scope.editLift.intercomm,

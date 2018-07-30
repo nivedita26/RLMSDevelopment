@@ -8,6 +8,85 @@
 		$scope.goToAddLift =function(){
 			window.location.hash = "#/add-lift";
 		};
+		//AMC Type
+		$rootScope.AMCType=[
+			{
+				id:42,
+				name:'Comprehensive'
+			},
+			{
+				id:43,
+				name:'NonComprehensive'
+			},
+			{
+				id:44,
+				name:'On Demand'
+			},
+			{
+				id:45,
+				name:'Other'
+			},
+		];
+		//Door Type
+		$rootScope.DoorType=[
+			{
+				id:0,
+				name:'Auto Door'
+			},
+			{
+				id:1,
+				name:'Manual Door'
+			}
+		];
+		//Engine-Machine Type
+		$rootScope.EngineMachineTypes=[
+			{
+				id:0,
+				name:'Geared'
+			},
+			{
+				id:1,
+				name:'Gearless'
+			}
+		];
+		//Collective Type
+		$rootScope.CollectiveType=[
+			{
+				id:0,
+				name:'Down Collective'
+			},
+			{
+				id:1,
+				name:'Full Collective'
+			}
+		];
+		//SimplexDuplex - Group
+		$rootScope.SimplexDuplex=[
+			{
+				id:0,
+				name:'Simplex'
+			},
+			{
+				id:1,
+				name:'Duplex'
+			},
+			{
+				id:1,
+				name:'Group'
+			}
+		];
+		//WiringScheme
+		$rootScope.WiringSchemes=[
+			{
+				id:0,
+				name:'Pluggable'
+			},
+			{
+				id:1,
+				name:'NonPluggable'
+			}
+		];
+		
 		function initCustomerList(){
 			 $scope.selectedCompany={};
 			 $scope.selectedBranch = {};
@@ -139,10 +218,15 @@
 	  	        		}else{
 	  	        			userDetailsObj["Amc_End_Date"] =" - ";
 	  	        		}
-	  	        		if(!!largeLoad[i].amcTypeStr){
-	  	        			userDetailsObj["amcType"] =largeLoad[i].amcTypeStr;
+	  	        		if(!!largeLoad[i].amcType){
+	  	        			userDetailsObj["amcType"] =largeLoad[i].amcType;
 	  	        		}else{
 	  	        			userDetailsObj["amcType"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].amcTypeStr){
+	  	        			userDetailsObj["amcTypeStr"] =largeLoad[i].amcTypeStr;
+	  	        		}else{
+	  	        			userDetailsObj["amcTypeStr"] =" - ";
 	  	        		}
 	  	        		if(!!largeLoad[i].liftId){
 	  	        			userDetailsObj["liftId"] =largeLoad[i].liftId;
@@ -232,10 +316,15 @@
 	  	        		}else{
 	  	        			userDetailsObj["Amc_End_Date"] =" - ";
 	  	        		}
-	  	        		if(!!largeLoad[i].amcTypeStr){
-	  	        			userDetailsObj["amcType"] =largeLoad[i].amcTypeStr;
+	  	        		if(!!largeLoad[i].amcType){
+	  	        			userDetailsObj["amcType"] =largeLoad[i].amcType;
 	  	        		}else{
 	  	        			userDetailsObj["amcType"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].amcTypeStr){
+	  	        			userDetailsObj["amcTypeStr"] =largeLoad[i].amcTypeStr;
+	  	        		}else{
+	  	        			userDetailsObj["amcTypeStr"] =" - ";
 	  	        		}
 	  	        		if(!!largeLoad[i].amcAmount){
 	  	        			userDetailsObj["Amc_Amount"] =largeLoad[i].amcAmount;
@@ -367,27 +456,27 @@
 	  	        		}else{
 	  	        			userDetailsObj["alarm"] =" - ";
 	  	        		}
-	  	        		if(!!largeLoad[i].doorType){
+	  	        		if(largeLoad[i].doorType=="0"||largeLoad[i].doorType=="1"){
 	  	        			userDetailsObj["doorType"] =largeLoad[i].doorType;
 	  	        		}else{
 	  	        			userDetailsObj["doorType"] =" - ";
 	  	        		}
-	  	        		if(!!largeLoad[i].engineType){
+	  	        		if(largeLoad[i].engineType=="0"||largeLoad[i].engineType=="1"){
 	  	        			userDetailsObj["engineType"] =largeLoad[i].engineType;
 	  	        		}else{
 	  	        			userDetailsObj["engineType"] =" - ";
 	  	        		}
-	  	        		if(!!largeLoad[i].collectiveType){
+	  	        		if(largeLoad[i].collectiveType=="0"||largeLoad[i].collectiveType=="1"){
 	  	        			userDetailsObj["collectiveType"] =largeLoad[i].collectiveType;
 	  	        		}else{
 	  	        			userDetailsObj["collectiveType"] =" - ";
 	  	        		}
-	  	        		if(!!largeLoad[i].simplexDuplex){
+	  	        		if(largeLoad[i].simplexDuplex=="0"||largeLoad[i].simplexDuplex=="1"){
 	  	        			userDetailsObj["simplexDuplex"] =largeLoad[i].simplexDuplex;
 	  	        		}else{
 	  	        			userDetailsObj["simplexDuplex"] =" - ";
 	  	        		}
-	  	        		if(!!largeLoad[i].wiringShceme){
+	  	        		if(largeLoad[i].wiringShceme=="0"||largeLoad[i].wiringShceme=="1"){
 	  	        			userDetailsObj["wiringShceme"] =largeLoad[i].wiringShceme;
 	  	        		}else{
 	  	        			userDetailsObj["wiringShceme"] =" - ";
@@ -544,7 +633,7 @@
 					width: "140"
 				},
 				{
-					field : "amcType",
+					field : "amcTypeStr",
 					displayName:"AMC Type",
 					width: "140"
 				},{
@@ -611,10 +700,7 @@
 						$rootScope.editLift.imei=row.imei;
 						$rootScope.editLift.liftType=row.LiftType;
 						$rootScope.editLift.lmsEventFromContactNo=row.lmsEventFromContactNo;
-						//$rootScope.selectedEngineType=row.engineType;
-						//$rootScope.selectedWiringType=row.wiringShceme;
-						//$rootScope.selectedCollectiveType=row.collectiveType;
-						//$rootScope.selectedSimplexType=row.simplexDuplex;
+						$rootScope.editLift.doorType=row.doorType;
 						$rootScope.editLift.engineType=row.engineType;
 						$rootScope.editLift.wiringShceme=row.wiringShceme;
 						$rootScope.editLift.collectiveType=row.collectiveType;

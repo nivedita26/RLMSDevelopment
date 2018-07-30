@@ -23,7 +23,7 @@
 					pinCode:'',
 					activeFlag:''
 			};	
-			$scope.activeFlag=[
+			/*$scope.activeFlag=[
 				{
 					
 					name:'InActive',
@@ -34,7 +34,7 @@
 					name:'Active',
 					id:1
 				}
-			];
+			];*/
 			 $scope.branchList={};
 		   
 		}
@@ -47,9 +47,6 @@
 		    });
 		};
 		
-		/*if($scope.editBranch.activeFlag== "1"){
-			var statusFlag="Active";
-		}*/
 		//Post call add branch
 		$scope.submitEditBranch = function(){
 			var branchData = {};
@@ -59,11 +56,10 @@
 					branchName:$scope.editBranch.branchName,
 					branchAddress:$scope.editBranch.branchAddress,
 					area:$scope.editBranch.area,
-					activeFlag:$scope.selectedStatus.selected.id,
+					activeFlag:$scope.editBranch.activeFlag,
 					city:$scope.editBranch.city,
 					pinCode:$scope.editBranch.pinCode
 					
-					//activeFlag:$scope.editBranch.activeFlag
 					};
 			serviceApi.doPostWithData("/RLMS/admin/editBranchInCompany",branchData)
 			.then(function(response){

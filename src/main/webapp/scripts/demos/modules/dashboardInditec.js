@@ -14,9 +14,9 @@ angular.module('theme.demos.dashboard.indi', [
       currentPage: 1
     };
     
-    $scope.showCompanies=true;
+    $scope.showCompanies=false;
     $scope.showAmc=true;
-    $scope.showBranches=true;
+    $scope.showBranches=false;
     
     $rootScope.showDasboardForInditech=false;
     $rootScope.showDasboardForOthers=false;
@@ -33,17 +33,25 @@ angular.module('theme.demos.dashboard.indi', [
 		  url: '/RLMS/getLoggedInUser'
 		}).then(function successCallback(response) {
 			$rootScope.loggedInUserInfoForDashboard=response;
-			if($rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsSpocRoleMaster.roleLevel == 1 || $rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsSpocRoleMaster.roleLevel == 2){
+			if($rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsSpocRoleMaster.roleLevel < 4 ){
 				$rootScope.showDasboardForInditech= true;
 				$rootScope.showDasboardForOthers=false;
 			}else{
-				$rootScope.showDasboardForOthers=true;
+				//$rootScope.showDasboardForOthers=true;
 				$rootScope.showDasboardForInditech=false;
 			}
-			if($rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsSpocRoleMaster.roleLevel == 2){
-				$scope.showCompanies= false;
-				//$scope.showAmc=true;
+			if($rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsSpocRoleMaster.roleLevel == 1){
+				$scope.showCompanies= true;
+				$scope.showBranches=true;
 			}else{
+				$scope.showCompanies= false;
+			}
+			
+			if($rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsSpocRoleMaster.roleLevel == 2){
+				//$scope.showCompanies= false;
+				$scope.showBranches=true;
+			}else{
+				//$scope.showCompanies= false;
 				$scope.showBranches=false;
 			}
 /*			 $scope.loggedInuserDetails.userName.firstName=$rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsUserMaster.firstName
@@ -977,9 +985,17 @@ angular.module('theme.demos.dashboard.indi', [
     };
 
     $scope.construnctObjeToSend = function (complaintStatus) {
+    	if($rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsSpocRoleMaster.roleLevel == 3){
+    		var tempbranchCompanyMapId=0;
+        	tempbranchCompanyMapId = $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls.companyBranchMapId
+        }else{
+        	var tempcompanyId=0;
+        	tempcompanyId=$rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsCompanyMaster.companyId
+        }
       var dataToSend = {
         statusList: [],
-        companyId: $rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsCompanyMaster.companyId
+        companyId: tempcompanyId,// $rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsCompanyMaster.companyId
+        branchCompanyMapId:tempbranchCompanyMapId
       };
       dataToSend["statusList"] = complaintStatus;
       return dataToSend;
@@ -1038,11 +1054,13 @@ angular.module('theme.demos.dashboard.indi', [
     	                  } else {
     	                    userDetailsObj["No"] = " - ";
     	                  }
-    	                  if (!!largeLoad[i].branchName) {
-      	                    userDetailsObj["Branch"] = largeLoad[i].branchName;
-      	                  } else {
-      	                    userDetailsObj["Branch"] = " - ";
-      	                  }
+    	                  if($rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsSpocRoleMaster.roleLevel < 3){
+	    	                  if (!!largeLoad[i].branchName) {
+	      	                    userDetailsObj["Branch"] = largeLoad[i].branchName;
+	      	                  } else {
+	      	                    userDetailsObj["Branch"] = " - ";
+	      	                  }
+    	                  }
     	                  if (!!largeLoad[i].city) {
       	                    userDetailsObj["City"] = largeLoad[i].city;
       	                  } else {
@@ -1136,12 +1154,13 @@ angular.module('theme.demos.dashboard.indi', [
       	                var dataCount={};
       	                  
       	                    userDetailsObj["No"] = i+1 +".";
-      	                  
-      	                  if (!!data[i].branchName) {
-        	                userDetailsObj["Branch"] = data[i].branchName;
-        	              } else {
-        	                userDetailsObj["Branch"] = " - ";
-        	              }
+      	                  if($rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsSpocRoleMaster.roleLevel < 3){
+	      	                  if (!!data[i].branchName) {
+	        	                userDetailsObj["Branch"] = data[i].branchName;
+	        	              } else {
+	        	                userDetailsObj["Branch"] = " - ";
+	        	              }
+      	                  }
       	                  if (!!data[i].city) {
       	                    userDetailsObj["City"] = data[i].city;
       	                  } else {
@@ -1228,9 +1247,18 @@ angular.module('theme.demos.dashboard.indi', [
     $scope.getTechnicianCount("TotalTechnician");
     
     $scope.construnctObjeToSendForTechnician = function () {
+    	if($rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsSpocRoleMaster.roleLevel == 3){
+    		var tempbranchCompanyMapId=0;
+        	tempbranchCompanyMapId = $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls.companyBranchMapId
+        }else{
+        	var tempcompanyId=0;
+        	tempcompanyId=$rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsCompanyMaster.companyId
+        }
         var dataToSend = {
-          companyId: $rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsCompanyMaster.companyId
-        };
+          companyId:tempcompanyId ,// $rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsCompanyMaster.companyId,
+          branchCompanyMapId:tempbranchCompanyMapId
+          }
+        
         return dataToSend;
       };
       
@@ -1240,8 +1268,16 @@ angular.module('theme.demos.dashboard.indi', [
         	tempStatus.push(39);
         	tempStatus.push(40);
         	tempStatus.push(41);
+        	if($rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsSpocRoleMaster.roleLevel == 3){
+        		var tempbranchCompanyMapId=0;
+            	tempbranchCompanyMapId = $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls.companyBranchMapId
+            }else{
+            	var tempcompanyId=0;
+            	tempcompanyId=$rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsCompanyMaster.companyId
+            }
           var data = {
-            companyId: $rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsCompanyMaster.companyId,
+            companyId:tempcompanyId, //$rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsCompanyMaster.companyId,
+            branchCompanyMapId:tempbranchCompanyMapId,
             listOFStatusIds:tempStatus
           };
           return data;
@@ -1311,11 +1347,13 @@ angular.module('theme.demos.dashboard.indi', [
         	                  } else {
         	                    userDetailsObj["No"] = " - ";
         	                  }
-        	                  if (!!largeLoad[i].branchName) {
-        	                    userDetailsObj["Branch"] = largeLoad[i].branchName;
-        	                  } else {
-        	                    userDetailsObj["Branch"] = " - ";
-        	                  }
+      	                      if($rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsSpocRoleMaster.roleLevel < 3){
+	        	                  if (!!largeLoad[i].branchName) {
+	        	                    userDetailsObj["Branch"] = largeLoad[i].branchName;
+	        	                  } else {
+	        	                    userDetailsObj["Branch"] = " - ";
+	        	                  }
+      	                      }    
         	                  if (!!largeLoad[i].customerName) {
         	                    userDetailsObj["Customer"] = largeLoad[i].customerName;
         	                  } else {
@@ -1427,11 +1465,12 @@ angular.module('theme.demos.dashboard.indi', [
       	                for (var i = 0; i < data.length; i++) {
         	                  var userDetailsObj = {};
         	                    userDetailsObj["No"] = i+1 +".";
-        	                 
-        	                  if (!!data[i].branchName) {
-        	                    userDetailsObj["Branch"] = data[i].branchName;
-        	                  } else {
-        	                    userDetailsObj["Branch"] = " - ";
+        	                  if($rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsSpocRoleMaster.roleLevel < 3){ 
+	        	                  if (!!data[i].branchName) {
+	        	                    userDetailsObj["Branch"] = data[i].branchName;
+	        	                  } else {
+	        	                    userDetailsObj["Branch"] = " - ";
+	        	                  }
         	                  }
         	                  if (!!data[i].customerName) {
         	                    userDetailsObj["Customer"] = data[i].customerName;
@@ -1589,11 +1628,13 @@ angular.module('theme.demos.dashboard.indi', [
           	                  } else {
           	                    userDetailsObj["No"] = " - ";
           	                  }
+        	                if($rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsSpocRoleMaster.roleLevel < 3){
           	                  if (!!largeLoad[i].branchName) {
           	                    userDetailsObj["Branch"] = largeLoad[i].branchName;
         	                  }else {
           	                    userDetailsObj["Branch"] = " - ";
           	                  }
+        	                }
           	                  if (!!largeLoad[i].customerName) {
             	                userDetailsObj["Customer"] = largeLoad[i].customerName;
             	              } else {
@@ -1697,11 +1738,12 @@ angular.module('theme.demos.dashboard.indi', [
     	                	var userDetailsObj = {};
     	                
       	                    userDetailsObj["No"] =i+1 + ".";
-      	                  
-      	                  if (!!data[i].branchName) {
-      	                    userDetailsObj["Branch"] = data[i].branchName;
-      	                  } else {
-      	                    userDetailsObj["Branch"] = " - ";
+      	                  if($rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsSpocRoleMaster.roleLevel < 3){
+	      	                  if (!!data[i].branchName) {
+	      	                    userDetailsObj["Branch"] = data[i].branchName;
+	      	                  } else {
+	      	                    userDetailsObj["Branch"] = " - ";
+	      	                  }
       	                  }
       	                  if (!!data[i].customerName) {
         	                userDetailsObj["Customer"] = data[i].customerName;
@@ -1733,8 +1775,16 @@ angular.module('theme.demos.dashboard.indi', [
     	    }; 
       
       $scope.constructDataToSendForAllLiftStatus=function() {
+    	  if($rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsSpocRoleMaster.roleLevel == 3){
+      		var tempbranchCompanyMapId=0;
+          	tempbranchCompanyMapId = $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls.companyBranchMapId
+          }else{
+          	var tempcompanyId=0;
+          	tempcompanyId=$rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsCompanyMaster.companyId
+          }
           var data = {
-            companyId: $rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsCompanyMaster.companyId
+            companyId:tempcompanyId, //$rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsCompanyMaster.companyId
+            branchCompanyMapId:tempbranchCompanyMapId
           };
           return data;
         };
@@ -1847,11 +1897,13 @@ angular.module('theme.demos.dashboard.indi', [
       	                  } else {
       	                    userDetailsObj["No"] = " - ";
       	                  }
-      	                  if (!!largeLoad[i].branchName) {
-      	                    userDetailsObj["Branch"] = largeLoad[i].branchName;
-      	                  } else {
-      	                    userDetailsObj["Branch"] = " - ";
-      	                  }
+    	                  if($rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsSpocRoleMaster.roleLevel < 3){
+	      	                  if (!!largeLoad[i].branchName) {
+	      	                    userDetailsObj["Branch"] = largeLoad[i].branchName;
+	      	                  } else {
+	      	                    userDetailsObj["Branch"] = " - ";
+	      	                  }
+    	                  }
       	                  if (!!largeLoad[i].city) {
           	                userDetailsObj["City"] = largeLoad[i].city;
           	              } else {
@@ -1945,11 +1997,13 @@ angular.module('theme.demos.dashboard.indi', [
     	                	
           	                    userDetailsObj["No"] =i+1 +".";
           	                  
-          	                  if (!!data[i].branchName) {
-          	                    userDetailsObj["Branch"] = data[i].branchName;
-          	                  } else {
-          	                    userDetailsObj["Branch"] = " - ";
-          	                  }
+          	                  if($rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsSpocRoleMaster.roleLevel < 3){
+    	      	                  if (!!largeLoad[i].branchName) {
+    	      	                    userDetailsObj["Branch"] = largeLoad[i].branchName;
+    	      	                  } else {
+    	      	                    userDetailsObj["Branch"] = " - ";
+    	      	                  }
+        	                  }
           	                  if (!!data[i].city) {
               	                userDetailsObj["City"] = data[i].city;
               	              } else {
@@ -2567,45 +2621,35 @@ angular.module('theme.demos.dashboard.indi', [
     	            	  	}
     	                for (var i = 0; i < largeLoad.length; i++) {
         	                  var userDetailsObj = {};
-          	                   userDetailsObj["No"] = i+1 +".";
-     	                       if (!!largeLoad[i].branchName) {
-      	                    	   userDetailsObj["Branch"] = largeLoad[i].branchName;
-      	                       } else {
-      	                    	   userDetailsObj["Branch"] = " - ";
-      	                       }
-      	                       if (!!largeLoad[i].customerName) {
-      	                    	   userDetailsObj["Customer"] = largeLoad[i].customerName;
-      	                       } else {
-      	                    	   userDetailsObj["Customer"] = " - ";
-      	                       }
-        	                  if (!!largeLoad[i].eventDescription) {
-        	                    userDetailsObj["EventDescription"] = largeLoad[i].eventDescription;
-        	                  } else {
-        	                    userDetailsObj["EventDescription"] = " - ";
-        	                  }       	                  
-        	                  if (!!largeLoad[i].date) {
-            	                userDetailsObj["EventDate"] = largeLoad[i].date;
-            	              } else {
-            	                userDetailsObj["EventDate"] = " - ";
-            	              }
-        	                  if (!!largeLoad[i].imeiNo) {
-                	                userDetailsObj["IMEI_No"] = largeLoad[i].imeiNo;
-                	              } else {
-                	                userDetailsObj["IMEI_No"] = " - ";
-                	              }
-        	                  if (eventType=="Response") {
-	    	                	  if (!!largeLoad[i].totalFigure) {
-	            	                userDetailsObj["TotalEvents/Error"] = largeLoad[i].totalFigure;
-	            	              } else {
-	            	                userDetailsObj["TotalEvents/Error"] = " - ";
-	            	              }
-        	                  }else if(eventType=="Response") {
-        	                	  if (!!largeLoad[i].totalFigure) {
-                  	                userDetailsObj["TotalEvents/Error"] = largeLoad[i].totalFigure;
-                  	              } else {
-                  	                userDetailsObj["TotalEvents/Error"] = " - ";
-                  	              }
+        	                  userDetailsObj["No"] = i+1;
+      	                    
+      	                    if (!!data[i].liftNumber) {
+     	                    	   userDetailsObj["LiftNo"] = data[i].liftNumber;
+     	                       } else {
+     	                    	   userDetailsObj["LiftNo"] = " - ";
+     	                       }
+      	                    if($rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsSpocRoleMaster.roleLevel < 3){
+    	      	                  if (!!largeLoad[i].branchName) {
+    	      	                    userDetailsObj["Branch"] = largeLoad[i].branchName;
+    	      	                  } else {
+    	      	                    userDetailsObj["Branch"] = " - ";
+    	      	                  }
         	                  }
+    	                       if (!!data[i].customerName) {
+    	                    	   userDetailsObj["Customer"] = data[i].customerName;
+							   } else {
+								   userDetailsObj["Customer"] = " - ";
+							   }
+      	                  if (!!data[i].city) {
+      	                	  userDetailsObj["City"] = data[i].city;
+          	              } else {
+          	            	  userDetailsObj["City"] = " - ";
+          	              }
+      	                 if (!!data[i].totalFigure) {
+      	                	 userDetailsObj["TotalCount"] = data[i].totalFigure;
+          	              } else {
+          	            	 userDetailsObj["TotalCount"] = " - ";
+          	              }
         	                  userDetails
         	                    .push(userDetailsObj);
         	                }
@@ -2689,11 +2733,13 @@ angular.module('theme.demos.dashboard.indi', [
        	                       } else {
        	                    	   userDetailsObj["LiftNo"] = " - ";
        	                       }
-      	                       if (!!data[i].branchName) {
-      	                    	   userDetailsObj["Branch"] = data[i].branchName;
-      	                       } else {
-      	                    	   userDetailsObj["Branch"] = " - ";
-      	                       }
+        	                    if($rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsSpocRoleMaster.roleLevel < 3){
+      	      	                  if (!!largeLoad[i].branchName) {
+      	      	                    userDetailsObj["Branch"] = largeLoad[i].branchName;
+      	      	                  } else {
+      	      	                    userDetailsObj["Branch"] = " - ";
+      	      	                  }
+          	                  }
       	                       if (!!data[i].customerName) {
       	                    	   userDetailsObj["Customer"] = data[i].customerName;
 							   } else {

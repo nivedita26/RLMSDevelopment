@@ -47,8 +47,91 @@
 									        startDate: moment().subtract(1, "days"),
 									        endDate: moment()
 									    };
-									
-									$scope.callType = [{
+									$rootScope.complaintTitles=[
+										{
+											id : 0,
+											name : 'Stucked between floor'
+										},{
+											id : 1,
+											name : 'Door open close issue'
+										},{
+											id : 2,
+											name : 'Door sensor not working'
+										},{
+											id : 3,
+											name : 'Level mismatch'
+										},{
+											id : 4,
+											name : 'Lift lights not working'
+										},{
+											id : 5,
+											name : 'Lift fan not working'
+										},{
+											id : 6,
+											name : 'Lift intercom'
+										},{
+											id : 7,
+											name : 'Buttons not working'
+										},{
+											id : 8,
+											name : 'call not taken from lop / cop'
+										},{
+											id : 9,
+											name : 'Auto call book'
+										},{
+											id : 10,
+											name : 'Display not working'
+										},{
+											id : 11,
+											name : 'Display error E'
+										},{
+											id : 12,
+											name : 'Display some error cod'
+										},{
+											id : 13,
+											name : 'Rescue not working'
+										},{
+											id : 14,
+											name : 'Jerks and rollbacks'
+										},{
+											id : 15,
+											name : 'Vibrates during running'
+										},{
+											id : 16,
+											name : 'Alarm not working'
+										},{	
+											id : 17,
+											name : 'Gate lock not operating'
+										},{
+											id : 18,
+											name : 'Wrong annoucement'
+										},{
+											id : 19,
+											name : 'Music is off'
+										},{
+											id : 20,
+											name : 'Lift Installation'
+										},{
+											id : 21,
+											name : 'AMC Service Call'
+										},{
+											id : 22,
+											name : 'LMS alert Call'
+										},{
+											id : 23,
+											name : 'Lift configuration Call'
+										},{
+											id : 24,
+											name : 'Under Warranty Support Call'
+										},{
+											id:25,
+											name :'Operator Initiated Call'
+										},{
+											id:26,
+											name :'Other'
+										}
+										];
+									$rootScope.callTypes = [{
 										id: 1,
 										name:'Lift Installation call'
 									},{
@@ -273,9 +356,9 @@
 													//var dataToSend = $scope
 															//.construnctObjeToSend();
 													var companyData = {};
-													if ($scope.showCompany == true) {
+													if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 3) {
 														companyData = {
-															companyId : $scope.selectedCompany.selected.companyId
+																branchCompanyMapId : $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls.companyBranchMapId
 														}
 													} else {
 														companyData = {
@@ -399,9 +482,9 @@
 													//var dataToSend = $scope
 														//.construnctObjeToSend();
 													var companyData = {};
-													if ($scope.showCompany == true) {
+													if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 3) {
 														companyData = {
-															companyId : $scope.selectedCompany.selected.companyId
+																branchCompanyMapId : $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls.companyBranchMapId
 														}
 													} else {
 														companyData = {
@@ -592,17 +675,6 @@
 															.toLowerCase();
 													var dataToSend = $scope
 															.construnctObjeToSend();
-													/*var companyData = {};
-													if ($scope.showCompany == true) {
-														companyData = {
-															companyId : $scope.selectedCompany.selected.companyId
-														}
-													} else {
-														companyData = {
-															companyId : $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyMaster.companyId
-															
-														}
-													}*/
 													serviceApi
 															.doPostWithData('/RLMS/complaint/getListOfComplaints',dataToSend)
 															.then(
@@ -718,17 +790,7 @@
 												} else {
 													var dataToSend = $scope
 														.construnctObjeToSend();
-													/*var companyData = {};
-													if ($scope.showCompany == true) {
-														companyData = {
-															companyId : $scope.selectedCompany.selected.companyId
-														}
-													} else {
-														companyData = {
-															companyId : $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyMaster.companyId
-														}
-													}*/
-													
+																									
 													serviceApi
 															.doPostWithData(
 																	'/RLMS/complaint/getListOfComplaints',	dataToSend)
@@ -840,6 +902,7 @@
 								
 								
 								$scope.construnctObjeToSend = function() {
+									
 									var dataToSend = {
 											
 											branchCompanyMapId:0,
@@ -1041,7 +1104,8 @@
 									},{
 										field : "Branch",
 										displayName:"Branch",
-										width : 120
+										width : 120,
+										enableColumnMenus: false
 									}, {
 										field : "Registration_Date",
 										displayName:"Registration Date",
@@ -1094,12 +1158,13 @@
 										$window.confirm('Complaint already completed or resolved');
 									}else{
 										$rootScope.editComplaint.complaintsNumber=row.Number.replace(/-/g, '');										
-										$rootScope.editComplaint.serviceCallTypeStr=row.Call_Type.replace(/-/g, '');
+										//$rootScope.editComplaint.serviceCallTypeStr=row.Call_Type.replace(/-/g, '');
 										$rootScope.editComplaint.complaintsRemark=row.Remark.replace(/-/g, '');
 										$rootScope.editComplaint.complaintsAddress=row.Address.replace(/-/g, '');
 										$rootScope.editComplaint.complaintsCity=row.City.replace(/-/g, '');
 										$rootScope.editComplaint.technicianDtls=row.Technician;
 										$rootScope.editComplaint.regDate=row.Registration_Date;
+										
 										$rootScope.editComplaint.serviceCallType=row.Call_Typeid;
 										$rootScope.editComplaint.serviceEndDate=row.Service_End_Date;
 										$rootScope.editComplaint.serviceStartDate=row.Service_StartDate;
@@ -1175,13 +1240,7 @@
 												$rootScope.serviceCallTypeSelect=9;
 												dataToSend["serviceCallType"]=9;
 											}			
-//											if($scope.selectedCalltype.selected.type=="Complaints"){
-//												$rootScope.serviceCallTypeSelect=0;
-//												dataToSend["serviceCallType"]=0;
-//											}else{
-//												$rootScope.serviceCallTypeSelect=5;
-//												dataToSend["serviceCallType"]=5;
-//											}
+
 											serviceApi.doPostWithData('/RLMS/complaint/getAllTechniciansToAssignComplaint',dataToSend)
 											.then(function(data) {
 											console.log("DATA /RLMS/complaint/getAllTechniciansToAssignComplaint :",JSON.stringify(data));
