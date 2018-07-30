@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.rlms.constants.RLMSConstants;
 import com.rlms.constants.SpocRoleConstants;
+import com.rlms.contract.BranchDtlsDto;
 import com.rlms.contract.UserDtlsDto;
 import com.rlms.contract.UserMetaInfo;
 import com.rlms.model.RlmsSpocRoleMaster;
@@ -233,14 +234,15 @@ UserRoleDao{
 	}
 
 	@Override
-	public List<RlmsUserRoles> getUsersForBranch(int id) {
+	public List<RlmsUserRoles> getUsersForBranch(BranchDtlsDto dto) {
 	List<Integer> roleIdList = new ArrayList<>();
 	roleIdList.add(SpocRoleConstants.TECHNICIAN.getSpocRoleId());
 	roleIdList.add(SpocRoleConstants.BRANCH_OPERATOR.getSpocRoleId());
 		Session session = this.sessionFactory.getCurrentSession();
 		 Criteria criteria = session.createCriteria(RlmsUserRoles.class)
 		 		 .createAlias("rlmsSpocRoleMaster", "sm")
-				 .add(Restrictions.eq("rlmsCompanyMaster.companyId", id))
+				 .add(Restrictions.eq("rlmsCompanyMaster.companyId", dto.getCompanyId()))
+				 .add(Restrictions.eq("rlmsCompanyBranchMapDtls.companyBranchMapId",dto.getBranchCompanyMapId()))
 		 	     .add(Restrictions.in("sm.spocRoleId",roleIdList))
 		 	     .add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
 		 

@@ -110,8 +110,8 @@ public class AdminController extends BaseController{
 	        List<UserDtlsDto> listOfAllUsers = null;
 	         try{
 	        	logger.info("Method :: getAllRegisteredUsers");
-	        	if(dto.getCompanyBranchMapId()!=null) {
-	        		listOfAllUsers = userService.getUsersForBranch(dto.getCompanyId());
+	        	if(dto.getBranchCompanyMapId()!=null) {
+	        		listOfAllUsers = userService.getUsersForBranch(dto);
 	        	}
 	        	else {
 	        	listOfAllUsers =  this.userService.getAllRegisteredUsers(dto.getCompanyId(), this.getMetaInfo());

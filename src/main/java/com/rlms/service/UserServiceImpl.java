@@ -18,6 +18,7 @@ import com.rlms.constants.RLMSConstants;
 import com.rlms.constants.RlmsErrorType;
 import com.rlms.constants.SpocRoleConstants;
 import com.rlms.contract.AddNewUserDto;
+import com.rlms.contract.BranchDtlsDto;
 import com.rlms.contract.RegisterDto;
 import com.rlms.contract.ResponseDto;
 import com.rlms.contract.UserDtlsDto;
@@ -733,10 +734,10 @@ public class UserServiceImpl implements UserService {
 
 	@Transactional(propagation = Propagation.REQUIRED)
 	@Override
-	public List<UserDtlsDto>  getUsersForBranch(int id) {
+	public List<UserDtlsDto>  getUsersForBranch(BranchDtlsDto dtlsDto) {
     
 		List<UserDtlsDto> dtlsDtoList = new ArrayList<>();
-		List<RlmsUserRoles> rlmsUserRolesList =userRoleDao.getUsersForBranch(id);
+		List<RlmsUserRoles> rlmsUserRolesList =userRoleDao.getUsersForBranch(dtlsDto);
 		if(rlmsUserRolesList!=null && !rlmsUserRolesList.isEmpty()) {
 		for (RlmsUserRoles  rlmsUserRoles : rlmsUserRolesList) {
 			UserDtlsDto dto = new UserDtlsDto();
