@@ -100,6 +100,11 @@
 		} else {
 			$scope.showCompany = false;
 		}
+		if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel < 2) {
+			$scope.showBranch = true;
+		} else {
+			$scope.showBranch = false;
+		}
 		//Post call
 		$scope.submitAssignRole = function(){
 			if ($scope.selectedRole.selected.roleName===("COMPANY_OPERATOR")) {

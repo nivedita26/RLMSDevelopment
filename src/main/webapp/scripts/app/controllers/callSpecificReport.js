@@ -4,6 +4,8 @@
 	.controller('callSpecificReportCtrl', ['$scope', '$filter','serviceApi','$route','$http','utility','$rootScope', function($scope, $filter,serviceApi,$route,$http,utility,$rootScope) {
 		initReport();
 		$scope.cutomers=[];
+		$scope.showCompany = false;
+		$scope.showBranch = false;
 		$scope.filterOptions = {
 		  	      filterText: '',
 		  	      useExternalFilter: true
@@ -98,7 +100,7 @@
 $scope.loadCallID=function(){
 	var dataToSend = {
 				branchCompanyMapId : $scope.selectedBranch.selected.companyBranchMapId,
-			branchCustomerMapId : $scope.selectedCustomer.selected.branchCustomerMapId
+				branchCustomerMapId : $scope.selectedCustomer.selected.branchCustomerMapId
 		}
 		serviceApi.doPostWithData('/RLMS/report/callSpecificReport',dataToSend)
 				.then(function(callData) {
@@ -117,6 +119,7 @@ $scope.loadCallID=function(){
 			$scope.showBranch = true;
 		} else {
 			$scope.showBranch = false;
+			$scope.loadCustomerData();
 		}
 		
 		
@@ -318,6 +321,7 @@ $scope.loadCallID=function(){
 		  	        	serviceApi.doPostWithData('/RLMS/report/callSpecificReport',dataToSend)
 		  	        	.then(function(largeLoad) {
 		  	        	  var details=[];
+		  	        	  var k=0;
 		  	        	  for(var i=0;i<largeLoad.length;i++){
 		  	        		  
 		  	        		if(($scope.selectedLift.selected  && $scope.selectedLift.selected.length>0)){	  
@@ -327,7 +331,8 @@ $scope.loadCallID=function(){
 		  	        			  }
 		  	        			  for(var j=0; j<tempLiftIds.length;j++){
 		  	        				 for(var i=0;i<largeLoad.length;i++){
-		  	        				  if(tempLiftIds[j]==largeLoad[i].liftNumber){ 
+		  	        				  if(tempLiftIds[j]==largeLoad[i].liftNumber){
+		  	        					  k=k+1;
 
 				  	        			  var detailsObj={};
 				  	        		detailsObj["SrNo"] =i+1 +".";
@@ -436,7 +441,8 @@ $scope.loadCallID=function(){
 		  	        		}
 		  	        		  if((($scope.selectedCallID.selected) &&($scope.selectedCallID.selected.complaintNumber === largeLoad[i].complaintNumber)) ){
 		  	        			  var detailsObj={};
-		  	        		detailsObj["SrNo"] =i+1 +".";
+		  	        			 k= k+1;
+		  	        		detailsObj["SrNo"] =k +".";
 		  	        		
 		  	        		if(!!largeLoad[i].customerName){
 		  	        			detailsObj["CustomerName"] =largeLoad[i].customerName;
