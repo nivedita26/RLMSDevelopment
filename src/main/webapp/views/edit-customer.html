@@ -98,23 +98,35 @@
 			<div class="form-group">
 				<label class="col-sm-3 control-label">Customer Type</label>
 				<div class="col-sm-6">
-						  <ui-select ng-model="selectedCustomerTypes.selected" title="Choose a Branch">
+					<div class="select-container">
+						<select ng-model="editCustomer.customerType" class="form-control">
+						<option value="">--Select --</option>
+						<option ng-repeat="type in customerTypes" ng-selected="editCustomer.customerType ==type.name" value="{type.id}}">{{type.name}}</option>
+						</select>
+						</div>
+						  <!-- <ui-select ng-model="selectedCustomerTypes.selected" title="Choose a Branch">
 						    <ui-select-match placeholder="Select or search a branch in the list...">{{$select.selected.name}}</ui-select-match>
 						    <ui-select-choices repeat="iterator in customerTypes | filter: $select.search">
 						      <span ng-bind-html="iterator.name | highlight: $select.search"></span>
 						    </ui-select-choices>
-						  </ui-select>
+						  </ui-select> -->
 				</div>
 			</div>
 				<div class="form-group">
 				<label class="col-sm-3 control-label">Customer Status</label>
 				<div class="col-sm-6">
-						  <ui-select ng-model="selectedStatus.selected" title="Choose a Branch">
+					<div class="select-container">
+						<select ng-model="editCustomer.activeFlag" class="form-control">
+						<option value="">--Select --</option>
+						<option ng-repeat="activeFlag in activeFlags" ng-selected="editCustomer.activeFlag ==activeFlag.id" value="{{activeFlag.id}}">{{activeFlag.name}}</option>
+						</select>
+					</div>
+						  <!-- <ui-select ng-model="selectedStatus.selected" title="Choose a Branch">
 						    <ui-select-match placeholder="Select Customer Status ">{{$select.selected.name}}</ui-select-match>
 						    <ui-select-choices repeat="iterator in activeFlag | filter: $select.search">
 						      <span ng-bind-html="iterator.name | highlight: $select.search"></span>
 						    </ui-select-choices>
-						  </ui-select>
+						  </ui-select> -->
 				</div>
 			</div>
 			<fieldset>

@@ -50,6 +50,7 @@
 			}else{
 				$scope.addUser.companyId = $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyMaster.companyId;
 			}
+			$scope.addUser.firstName=$scope.addUser.firstName;
 			serviceApi.doPostWithData("/RLMS/admin/validateAndRegisterNewUser",$scope.addUser)
 			.then(function(response){
 				if(response.status){

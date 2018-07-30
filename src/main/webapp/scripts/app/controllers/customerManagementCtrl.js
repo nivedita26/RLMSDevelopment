@@ -21,8 +21,8 @@
 		} 
 		
 		$rootScope.editCustomer={};
-		//$rootScope.customerTypeArray=[{id:15,name:'RESIDENTIAL'},{id:16,name:'COMMERCIAL'},{id:17,name:'BUNGLOW'},{id:18,name:'HOSPITAL'},{id:19,name:'GOODS'},{id:20,name:'DUMB_WAITER'}];
-		//$rootScope.customerStatus=[{id:1,name:'Active'},{id:0,name:'Inactive'}];
+		$rootScope.customerTypes=[{id:15,name:'RESIDENTIAL'},{id:16,name:'COMMERCIAL'},{id:17,name:'BUNGLOW'},{id:18,name:'HOSPITAL'},{id:19,name:'GOODS'},{id:20,name:'DUMB_WAITER'}];
+		$rootScope.activeFlags=[{id:1,name:'Active'},{id:0,name:'Inactive'}];
 		$scope.editCustomerDetails=function(row){
 			$rootScope.editCustomer.customerId=row.CustomerId;
 			$rootScope.editCustomer.firstName=row.Name;
@@ -30,8 +30,8 @@
 			$rootScope.editCustomer.cntNumber=row.Contact_Number.replace(/-/g, '');
 			$rootScope.editCustomer.address=row.Address.replace(/-/g, '');
 			$rootScope.editCustomer.area=row.Area;
-			$rootScope.editCustomer.customerTypeStr=row.CustomerType;
-			$rootScope.selectedCustomerTypes=row.CustomerType;
+			$rootScope.editCustomer.customerType=row.CustomerType;
+			//$rootScope.selectedCustomerTypes=row.CustomerType;
 			$rootScope.editCustomer.city=row.City.replace(/-/g, '');
 			$rootScope.editCustomer.pinCode=row.PinCode;
 			$rootScope.editCustomer.emailID=row.Email_Id.replace(/-/g, '');

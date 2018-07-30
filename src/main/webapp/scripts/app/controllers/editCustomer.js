@@ -48,7 +48,7 @@
 						customerId:''
 						
 				};	
-				$scope.customerTypes = [
+				/*$scope.customerTypes = [
 					{
 						name:"RESIDENTIAL",
 						id:15
@@ -74,7 +74,7 @@
 						id:20
 					}
 				];
-				$scope.activeFlag=[
+				$scope.activeFlags=[
 					{
 						name:"Inactive",
 						id:0
@@ -83,13 +83,8 @@
 						name:"Active",
 						id:1
 					}
-				];
-				
-				/*if($scope.editCustomer.activeFlag=="1"){
-					$scope.selectedStatus.selected.name=="Active"
-				}else{
-					$scope.selectedStatus.selected.name=="Inactive"
-				}*/
+				];*/
+
 			}
 			
 			
@@ -142,7 +137,7 @@
 						emailID:$scope.editCustomer.emailID,
 						city:$scope.editCustomer.city,
 						pinCode:$scope.editCustomer.pinCode,
-						activeFlag:$scope.selectedStatus.selected.id,
+						activeFlag:$scope.editCustomer.activeFlag,
 						chairmanName :$scope.editCustomer.chairmanName,
 						chairmanNumber :$scope.editCustomer.chairmanNumber,
 						chairmanEmail :$scope.editCustomer.chairmanEmail,
@@ -159,7 +154,7 @@
 						tinNumber:$scope.editCustomer.tinNumber,
 						panNumber:$scope.editCustomer.panNumber,
 						//customerTypeStr:$scope.editCustomer.customerTypeStr
-						customerType:$scope.selectedCustomerTypes.selected.id
+						customerType:$scope.editCustomer.type
 				}				
 				serviceApi.doPostWithData("/RLMS/admin/validateAndUpdateCustomer",customerData)
 				.then(function(response){

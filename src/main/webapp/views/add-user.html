@@ -70,9 +70,8 @@
 				<label class="col-sm-4 control-label">Contact Number<sup class="red font-12">*</sup> </label>
 				<div class="col-sm-6">
 					<input name="contactNumber" type="text" placeholder="Required Field"required maxlength="10" onkeypress="return (event.charCode > 47 && event.charCode < 58 );"
-						ng-model="addUser.contactNumber" class="form-control">
-					<span class="help-block"
-						ng-show="addUserForm.contactNumber.$error.required && addUserForm.contactNumber.$dirty">This
+						ng-model="addUser.contactNumber" class="form-control" required>
+					<span class="help-block" ng-show="addUserForm.contactNumber.$error.required && addUserForm.contactNumber.$dirty">This
 						field is required</span>
 				</div>
 			</div>
@@ -80,7 +79,7 @@
 				<label class="col-sm-4 control-label">Email<sup class="red font-12">*</sup> </label>
 				<div class="col-sm-6">
 					<input name="emailId" type="email" placeholder="Required Field"
-						required ng-model="addUser.emailId" class="form-control">
+						required ng-model="addUser.emailId" class="form-control" required>
 					<span class="help-block"
 						ng-show="addUserForm.emailId.$error.required && addUserForm.emailId.$dirty">This
 						field is required</span>

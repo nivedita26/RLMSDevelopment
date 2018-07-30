@@ -48,23 +48,21 @@
 			<div class="form-group  col-sm-6 ">
 				<label class="col-sm-4 control-label"> Status</label>
 				<div class="col-sm-6">
-			   		<ui-select  id="statusFlag" ng-model="selectedStatus.selected" title="Choose a Status">
-			    		<ui-select-match placeholder="Select a Status">{{$select.selected.name}}</ui-select-match>
-			    		<ui-select-choices repeat="iterator in activeFlag | filter: $select.search">
-			     		<span ng-bind-html="iterator.name | highlight: $select.search"></span>
-			    		</ui-select-choices>
-			  		</ui-select> 
-			  		<!-- <div class="select-container">
-						<select ng-model="status.statusId" ng-options="activeFlag.id as activeFlag.name for activeFlag in status.activeFlags" class="form-control">
-						</select>
-				</div> -->
 
+						<div class="select-container">
+						<select ng-model="editBranch.activeFlag" class="form-control">
+						<option value="">--Select --</option>
+						<option ng-repeat="activeFlag in activeFlags" ng-selected="editBranch.activeFlag ==activeFlag.id" value="{{activeFlag.id}}">{{activeFlag.name}}</option>
+						</select>
+						</div>
+						<!-- <select ng-model="editBranch.activeFlag">
+		        		<option value="">--Select --</option>
+		       			<option ng-repeat="activeFlag in activeFlags" ng-selected="editBranch.activeFlag ==activeFlag.id" value="{{activeFlag.id}}">{{activeFlag.name}}</option>
+		    			</select> -->
+				
   				</div>
 				</div> 
-			  		<!--<div class="select-container">
-						<select ng-model="activeFlag" ng-options="x.name for x in activeFlags" class="form-control">
-						</select>
-				</div>-->
+			  		
 		 </fieldset>
 		
 			<div class="panel-footer">
