@@ -1411,12 +1411,12 @@ angular.module('theme.demos.dashboard.indi', [
       	                	
       	                	for (var i = 0; i < largeLoad.length; i++) {
     	                		
-    	                		if(largeLoad[i].underAMCCount!=null){
+    	                		if(largeLoad[i].underAMCCount!=null || largeLoad[i].renewalDueCount!=null ){
     	                			var dataCount={};
     	                			dataCount.branchName=largeLoad[i].branchName
     	                			dataCount.customerName=largeLoad[i].customerName
     	                			dataCount.city=largeLoad[i].city
-    	                			dataCount.totalAMCCount=largeLoad[i].underAMCCount
+    	                			dataCount.totalAMCCount=largeLoad[i].underAMCCount +largeLoad[i].renewalDueCount
 
     	                			data.push(dataCount);
     	                		}    	                		
@@ -1707,7 +1707,7 @@ angular.module('theme.demos.dashboard.indi', [
       	                  });*/
     	                	for (var i = 0; i < largeLoad.length; i++) {
     	                		
-    	                		if(largeLoad[i].notUnderWarranty!=null || largeLoad[i].renewalDueCount!=null || largeLoad[i].amcPendingCount!=null || largeLoad[i].underAMCCount!=null){
+    	                		if(largeLoad[i].notUnderWarranty!=null || largeLoad[i].amcPendingCount!=null || largeLoad[i].underAMCCount!=null){
     	                			var dataCount={};
     	                			dataCount.branchName=largeLoad[i].branchName
     	                			dataCount.customerName=largeLoad[i].customerName

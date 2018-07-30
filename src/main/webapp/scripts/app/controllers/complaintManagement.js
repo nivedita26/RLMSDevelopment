@@ -1105,7 +1105,6 @@
 										field : "Branch",
 										displayName:"Branch",
 										width : 120,
-										enableColumnMenus: false
 									}, {
 										field : "Registration_Date",
 										displayName:"Registration Date",

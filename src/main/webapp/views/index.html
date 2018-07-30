@@ -456,7 +456,7 @@
 						</div>
 					</a>
 				</div>
-				<div class="col-xs-6">
+				<!-- <div class="col-xs-6">
 				<a class="info-tiles tiles-{{assignedComplaints.color}}" ng-click="openDemoModalForAllAMCDetails('amcDetails','Active','Active','List of Active AMCs')">
 						<div class="tiles-heading">
 							<div class="text-center">{{amcDetailsData.activeAmc.title}}</div>
@@ -465,13 +465,13 @@
 							<div class="text-center" ng-show="assignedComplaints.text">{{amcDetailsData.activeAmc.text}}</div>
 						</div>
 					</a>
-                </div>
+                </div> -->
             </div>
         </div>
-        <div class="col-md-3 animated-content">
+   <!--      <div class="col-md-3 animated-content">
             <div class="row">
                 
-               <!--  <div class="col-xs-6">
+                <div class="col-xs-6">
                 	<a class="info-tiles tiles-{{attemptedTodayComplaints.color}}" ng-click="openDemoModalForAllAMCDetails('amcDetails','InActive','InActive','List of Inactive AMCs')">
 						<div class="tiles-heading">
 							<div class="text-center">{{amcDetailsData.inactiveAmc.title}}</div>
@@ -480,7 +480,7 @@
 							<div class="text-center" ng-show="attemptedTodayComplaints.text">{{amcDetailsData.inactiveAmc.text}}</div>
 						</div>
 					</a>
-                </div>-->
+                </div>
                 <div class="col-xs-6">
                 	<a class="info-tiles tiles-{{amcDetailsData.expiredAmc.color}}" ng-click="openDemoModalForAllAMCDetails('amcDetails','Expire','Expire','List of Expired AMCs')">
 						<div class="tiles-heading">
@@ -492,7 +492,7 @@
 					</a>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
       <hr class="separator">
     <!-- AMC Service Calls -->
@@ -517,7 +517,7 @@
     <!-- AMC Service Calls End -->   
      
    
-    	<h4><strong><u>Lift Status</u></strong></h4>
+    	<h4><strong><u>Lift Status/AMC</u></strong></h4>
     	 <div class="row">
  	    
         <div class="col-md-3 animated-content">
@@ -554,6 +554,30 @@
 						</div>
 						<div class="tiles-body">
 							<div class="text-center" ng-show="attemptedTodayComplaints.text">{{liftStatus.inactiveLiftStatus.text}}</div>
+						</div>
+					</a>
+                </div>
+                <div class="col-xs-6">
+				<a class="info-tiles tiles-{{complaintsData.todaysResolvedComplaints.color}}" ng-click="openDemoModalForAllAMCDetails('amcDetails','Active','Active','List of Active AMCs')">
+						<div class="tiles-heading">
+							<div class="text-center">{{amcDetailsData.activeAmc.title}}</div>
+						</div>
+						<div class="tiles-body">
+							<div class="text-center" ng-show="assignedComplaints.text">{{amcDetailsData.activeAmc.text}}</div>
+						</div>
+					</a>
+                </div>
+            </div>
+        </div>
+                <div class="col-md-3 animated-content">
+            <div class="row">
+                <div class="col-xs-6">
+                	<a class="info-tiles tiles-{{complaintsData.totalPendingComplaints.color}}" ng-click="openDemoModalForAllAMCDetails('amcDetails','Expire','Expire','List of Expired AMCs')">
+						<div class="tiles-heading">
+							<div class="text-center">{{amcDetailsData.expiredAmc.title}}</div>
+						</div>
+						<div class="tiles-body">
+							<div class="text-center" ng-show="resolvedComplaints.text">{{amcDetailsData.expiredAmc.text}}</div>
 						</div>
 					</a>
                 </div>
