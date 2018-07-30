@@ -1,5 +1,7 @@
 package com.rlms.dao;
 
+import java.util.Date;
+
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -32,4 +34,5 @@ public class EmailDaoImpl implements EmailDao {
 		 session.close();
 		 return emailTemplate;
 	}
+
 }

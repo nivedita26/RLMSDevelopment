@@ -34,8 +34,7 @@ public class ComplaintController extends BaseController{
 	
 	@Autowired
 	private CustomerService customerService;
-	
-	
+		
 	private static final Logger logger = Logger.getLogger(ComplaintController.class);
 	
 	@RequestMapping(value = "/getListOfComplaints", method = RequestMethod.POST)

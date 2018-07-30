@@ -595,12 +595,19 @@ public class ReportServiceImpl implements ReportService {
 	@Transactional(propagation = Propagation.REQUIRED)
 	public List<ComplaintsDto> getCallDetailedReport(ComplaintsDtlsDto dto) {
 		List<ComplaintsDto> complaintsDtoList = new ArrayList<>();
+		List<RlmsComplaintMaster> complaintList = new ArrayList<>();
+		if(dto.getListOfLiftCustoMapId()!=null) {
+		complaintList = complaintsDao.complaintMastersList(dto.getListOfLiftCustoMapId(),dto);
+		}
+		else {
 		List<RlmsLiftCustomerMap> liftCustomerMapList = liftDao.getliftCustomerMapDtlsByBranchCutomerId(dto);
 		List<Integer> listCustMapIds = new ArrayList<>();
 		for (RlmsLiftCustomerMap  liftCustomerMap : liftCustomerMapList) {
 			listCustMapIds.add(liftCustomerMap.getLiftCustomerMapId());
 		}
-		List<RlmsComplaintMaster> complaintList = complaintsDao.complaintMastersList(listCustMapIds,dto);
+		complaintList = complaintsDao.complaintMastersList(listCustMapIds,dto);
+		}
+		
 		for (RlmsComplaintMaster rlmsComplaintMaster : complaintList) {
 			ComplaintsDto complaintsDto = new ComplaintsDto();
 			complaintsDto.setServiceCallTypeStr(RLMSCallType.getStringFromID(rlmsComplaintMaster.getCallType()));
@@ -622,8 +629,9 @@ public class ReportServiceImpl implements ReportService {
                  	complaintsDto.setResolvedDateStr(DateUtils.convertDateTimestampToStringWithTime(rlmsComplaintMaster.getUpdatedDate()));
                 }
                 if(complaintTechMapDtls.getStatus()==Status.RESOLVED.getStatusId()||complaintTechMapDtls.getStatus()==Status.INPROGESS.getStatusId()) {
-                 	int totalDays =  DateUtils.daysBetween(complaintTechMapDtls.getAssignedDate(),complaintTechMapDtls.getUpdatedDate());
-                	complaintsDto.setTotalDaysRequiredToResolveComplaint(totalDays);
+                 String totalDaysForComplaint = DateUtils.convertTimeIntoDaysHrMin(DateUtils.getDateDiff(rlmsComplaintMaster.getRegistrationDate(), complaintTechMapDtls.getUpdatedDate(),TimeUnit.SECONDS),TimeUnit.SECONDS);
+                 //int totalDays =  DateUtils.daysBetween(complaintTechMapDtls.getAssignedDate(),complaintTechMapDtls.getUpdatedDate());
+                	complaintsDto.setTotalDaysForComplaint(totalDaysForComplaint);
                 	  List<RlmsSiteVisitDtls> listOfAllVisits = this.complaintsDao.getAllVisitsForComnplaints(complaintTechMapDtls.getComplaintTechMapId());
                   	  if(listOfAllVisits!=null && !listOfAllVisits.isEmpty()) {
                   		complaintsDto.setTotalAttempts(listOfAllVisits.size());

@@ -44,6 +44,7 @@
 		
 		//Post call add branch
 		$scope.submitAddUser = function(){
+			
 			if($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel ==1){
 				$scope.addUser.companyId = $scope.selectedCompany.selected.companyId;
 			}else{

@@ -37,4 +37,6 @@ public interface MessagingService {
 
 	public void sendAMCMail(List<String> listOfDyanamicValues, List<String> toList, Integer mailTemplateId) throws UnsupportedEncodingException;
 	
+	public void sendForgotPasswordEmail(String userRoleId, String mailId) throws UnsupportedEncodingException;
+
 }

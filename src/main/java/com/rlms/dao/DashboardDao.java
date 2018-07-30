@@ -52,4 +52,6 @@ public interface DashboardDao {
     public List<RlmsComplaintMaster> getAllComplaintsForAvgLogs(Date fromDate,Date toDate);
 
     public List<RlmsEventDtls> getUnidentifiedEventCountDtlsForDashboard();
+    
+    public List<Object[]> getTodaysTotalComplaintsStatusCount(List<Integer> liftCustomerMapIds);
 }

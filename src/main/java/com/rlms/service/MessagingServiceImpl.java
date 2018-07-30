@@ -117,7 +117,7 @@ public class MessagingServiceImpl implements MessagingService{
 	      Properties props = new Properties();
 	      props.put("mail.smtp.auth", "true");
 	      props.put("mail.smtp.starttls.enable", "true");
-	      props.put("mail.smtp.host", "smtp.gmail.com");
+	      props.put("mail.smtp.host", "mail.inditechsystems.com");
 	      props.put("mail.smtp.port", "587");
 
 	      // Get the Session object.
@@ -342,5 +342,26 @@ public class MessagingServiceImpl implements MessagingService{
 			e.printStackTrace();
 			log.error("::Error::::pushFCMNotification:::", e);
 		}
+	}
+	@Override
+	public void sendForgotPasswordEmail(String password, String mailId) throws UnsupportedEncodingException {
+		EmailTemplate emailTemplate = this.getEmailTemplate(EmailTemplateEnum.FORGOT_PASSWORD.getTemplateId());
+		List<String> toList = new ArrayList<String>();
+		toList.add(mailId);
+		
+		List<String> listOfDyanamicValues = new ArrayList<String>();
+		listOfDyanamicValues.add(password);
+		
+		//String content = this.emailService.replaceDyanamicValue(listOfDyanamicValues, emailTemplate.getEmailContent());
+		String content = this.replaceDyanamicValue(listOfDyanamicValues, emailTemplate.getEmailContent());
+
+		emailTemplate.setEmailContent(content);
+		
+		//MailDTO dto = this.emailService.constructMailDto(toList, emailTemplate.getEmailSubject(), emailTemplate.getEmailContent(), "sanket.tagalpallewar@gmail.com", toList);
+		
+		MailDTO dto = this.constructMailDto(toList, emailTemplate.getEmailSubject(), emailTemplate.getEmailContent());
+
+		log.debug(content);
+		this.sendEmail(dto);
 	}
 }

@@ -179,6 +179,8 @@ public class CustomerServiceImpl implements CustomerService{
 			dto.setFirstName(branchCustomerMap.getCustomerMaster().getCustomerName());
 			dto.setEmailID(branchCustomerMap.getCustomerMaster().getEmailID());
 			dto.setPanNumber(branchCustomerMap.getCustomerMaster().getPanNumber());
+			dto.setTinNumber(branchCustomerMap.getCustomerMaster().getTinNumber());
+            dto.setVatNumber(branchCustomerMap.getCustomerMaster().getVatNumber());			
 			dto.setChairmanName(branchCustomerMap.getCustomerMaster().getChairmanName());
 			dto.setChairmanNumber(branchCustomerMap.getCustomerMaster().getChairmanNumber());
 			dto.setChairmanEmail(branchCustomerMap.getCustomerMaster().getChairmanEmail());
@@ -192,7 +194,7 @@ public class CustomerServiceImpl implements CustomerService{
 			dto.setWatchmenNumber(branchCustomerMap.getCustomerMaster().getWatchmenNumber());
 			dto.setWatchmenEmail(branchCustomerMap.getCustomerMaster().getWatchmenEmail());
 			dto.setCustomerId(branchCustomerMap.getCustomerMaster().getCustomerId());
-			dto.setActiveFlag(branchCustomerMap.getActiveFlag());
+			dto.setActiveFlag(branchCustomerMap.getCustomerMaster().getActiveFlag());
 			dto.setCustomerTypeStr(CustomerType.getStringFromID(branchCustomerMap.getCustomerMaster().getCustomerType()));
 			
 			if(null != listOfLifts && !listOfLifts.isEmpty()){

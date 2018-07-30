@@ -7,8 +7,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.exception.ExceptionUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,15 +15,11 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.rlms.constants.RLMSConstants;
-import com.rlms.constants.RLMSMessages;
 import com.rlms.constants.RlmsErrorType;
 import com.rlms.constants.SpocRoleConstants;
-import com.rlms.constants.Status;
 import com.rlms.contract.AddNewUserDto;
-import com.rlms.contract.CompanyDtlsDTO;
 import com.rlms.contract.RegisterDto;
 import com.rlms.contract.ResponseDto;
-import com.rlms.contract.UserAppDtls;
 import com.rlms.contract.UserDtlsDto;
 import com.rlms.contract.UserMetaInfo;
 import com.rlms.contract.UserRoleDtlsDTO;
@@ -38,7 +32,6 @@ import com.rlms.exception.ExceptionCode;
 import com.rlms.exception.ValidationException;
 import com.rlms.model.RlmsCompanyBranchMapDtls;
 import com.rlms.model.RlmsCompanyMaster;
-import com.rlms.model.RlmsComplaintMaster;
 import com.rlms.model.RlmsMemberMaster;
 import com.rlms.model.RlmsSpocRoleMaster;
 import com.rlms.model.RlmsUserApplicationMapDtls;
@@ -414,8 +407,13 @@ public class UserServiceImpl implements UserService {
 	private boolean validateUserDtls(AddNewUserDto userDto,
 			UserMetaInfo metaInfo) throws ValidationException {
 		boolean isValidUser = true;
-
-		RlmsUsersMaster user = this.userMasterDao.getUserByEmailID(userDto.getEmailId());
+        if(userDto.getEmailId()==""||userDto.getContactNumber()==""||userDto.getFirstName()==""||userDto.getLastName()=="") {
+			isValidUser = false;
+			throw new ValidationException(
+					ExceptionCode.VALIDATION_EXCEPTION.getExceptionCode(),"please fill required field");
+        }
+        else {
+		RlmsUsersMaster user = this.userMasterDao.getUserByMailId(userDto.getEmailId());
 		if (null != user) {
 			  
 			isValidUser = false;
@@ -425,8 +423,6 @@ public class UserServiceImpl implements UserService {
 							.getPrpertyFromContext(RlmsErrorType.USER_ALREADY_REGISTERED
 									.getMessage()));
 		}
-		
-	 
 		else {
 			RlmsCompanyMaster companyMaster = this.companyService
 					.getCompanyById(userDto.getCompanyId());
@@ -439,6 +435,7 @@ public class UserServiceImpl implements UserService {
 										.getMessage()));
 			}
 		}
+        
 		  if(user==null) {
 			  RlmsUsersMaster userMaster = userMasterDao.getUserByMobileNumber(userDto.getContactNumber());
 			  
@@ -453,6 +450,7 @@ public class UserServiceImpl implements UserService {
 		       //}
 			  }
 			}
+        }
 		return isValidUser;
 	}
 
@@ -559,8 +557,7 @@ public class UserServiceImpl implements UserService {
 		userApplicationMapDtls.setLongitude(dto.getLongitude());
 		userApplicationMapDtls.setAddress(dto.getAddress());
 		userApplicationMapDtls.setUserId(userRole.getUserRoleId());
-		userApplicationMapDtls.setUserRefType(RLMSConstants.USER_ROLE_TYPE
-				.getId());
+		userApplicationMapDtls.setUserRefType(RLMSConstants.USER_ROLE_TYPE.getId());
 		userApplicationMapDtls.setCreatedBy(metaInfo.getUserId());
 		userApplicationMapDtls.setCreatedDate(new Date());
 		userApplicationMapDtls.setUpdatedDate(new Date());
@@ -647,15 +644,23 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public String changePassword(UserDtlsDto userDto) {
-		RlmsUsersMaster  rlmsUsersMaster =userMasterDao.getUserByUserId(userDto.getUserId());
+	public ResponseDto changePassword(UserDtlsDto userDto) {
+		//RlmsUsersMaster  rlmsUsersMaster =userMasterDao.getUserByUserId(userDto.getUserId());
+		ResponseDto responseDto = new ResponseDto();
+		RlmsUsersMaster  rlmsUsersMaster =userMasterDao.getUserByUserIdAndPassword(userDto);
 		if(rlmsUsersMaster !=null ) {
-			rlmsUsersMaster.setPassword(userDto.getPassword());
-			userMasterDao.changeUserPassword(rlmsUsersMaster);
-		}
-		return 	PropertyUtils
+			rlmsUsersMaster.setPassword(userDto.getNewPassword());
+			userMasterDao.updateUser(rlmsUsersMaster);
+			responseDto.setStatus(true);
+			responseDto.setResponse(PropertyUtils
 				.getPrpertyFromContext(RlmsErrorType.USER_PASSWORD_CHANGED
-						.getMessage());
+						.getMessage()));
+			}
+		else {
+			responseDto.setStatus(false);
+			responseDto.setResponse("invalid old password");
+		}
+		return responseDto;
 	}
 
 	@Override
@@ -677,7 +682,8 @@ public class UserServiceImpl implements UserService {
 	}
 	@Override
 	public ResponseDto  logout(UserDtlsDto userDto) {
-		RlmsUsersMaster rlmsUsersMaster = userMasterDao.getUserByUserIdAndPassword(userDto);
+	//	RlmsUsersMaster rlmsUsersMaster = userMasterDao.getUserByUserIdAndPassword(userDto);
+		RlmsUsersMaster rlmsUsersMaster = userMasterDao.getUserByUserId(userDto.getUserId());
 		ResponseDto responseDto = new ResponseDto();
 		if(rlmsUsersMaster!=null && rlmsUsersMaster.getIsLoggedIn()) {
 		rlmsUsersMaster.setIsLoggedIn(false);
@@ -757,6 +763,34 @@ public class UserServiceImpl implements UserService {
 		}
 		return null;
 	}
-	
 
+	@Override
+	public String forgotPassword(UserDtlsDto dto) {
+		 String ALPHA_NUM = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		 
+		RlmsUsersMaster rlmsUsersMaster = userMasterDao.getUserByMailId(dto.getEmailId());
+		if(rlmsUsersMaster!=null) {
+			StringBuffer sb = new StringBuffer(6);
+			for (int i = 0; i < 6; i++) {
+			int ndx = (int) (Math.random() * ALPHA_NUM.length());
+			sb.append(ALPHA_NUM.charAt(ndx));
+			}
+			 String newPassword = sb.toString();
+			 rlmsUsersMaster.setPassword(newPassword);
+			 userMasterDao.updateUser(rlmsUsersMaster);
+				try {
+					this.sendForgotPasswordMail(newPassword, rlmsUsersMaster.getEmailId());
+				} catch (InvalidKeyException e) {
+					e.printStackTrace();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			return "please check mail for new password";
+		}
+		return "account is not found for this emailId";
+	}
+	private void sendForgotPasswordMail(String password,String emailId)
+			throws InvalidKeyException, Exception {
+			this.messagingService.sendForgotPasswordEmail(password, emailId);
+	}
 }

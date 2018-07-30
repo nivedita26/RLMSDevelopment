@@ -23,9 +23,8 @@ import com.rlms.utils.DateUtils;
 @Service
 public class AMCMonitorServiceImpl implements AMCMonitorService{
 	
-	private static final Logger logger = Logger.getLogger(AMCMonitorServiceImpl.class);
+private static final Logger logger = Logger.getLogger(AMCMonitorServiceImpl.class);
 
-	
 	@Autowired
 	AMCMonitorDao amcMonitorDao;
 	

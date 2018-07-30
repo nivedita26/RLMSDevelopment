@@ -415,7 +415,6 @@ public class ConsumeRestFul {
 				System.out.println("Output from Server .... \n");
 				while ((output = br.readLine()) != null) {
 					System.out.println(output);
-					
 				}
 
 				conn.disconnect();

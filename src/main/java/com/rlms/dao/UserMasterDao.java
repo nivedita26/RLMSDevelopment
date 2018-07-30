@@ -15,8 +15,9 @@ import com.rlms.model.RlmsUsersMaster;
    public void updateUser(RlmsUsersMaster usermMaster);
    public void mergerUser(RlmsUsersMaster usermMaster);
    public void mergerUserRole(RlmsUserRoles userRoles);
-   public RlmsUsersMaster getUserByEmailID(String emailId);
+   public RlmsUsersMaster getUserByEmailIdAndUserId(UserDtlsDto useDtlsDto);
    public void deleteUser(UserDtlsDto dto, UserMetaInfo metaInfo);
-   public void changeUserPassword(RlmsUsersMaster usersMaster);
+  // public void changeUserPassword(RlmsUsersMaster usersMaster);
    public  RlmsUsersMaster getUserByMobileNumber(String ContactNumber);
+   public RlmsUsersMaster getUserByMailId(String mailId);
    }
