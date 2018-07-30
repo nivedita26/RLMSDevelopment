@@ -5,6 +5,7 @@ import java.security.InvalidKeyException;
 import java.util.List;
 
 import com.rlms.contract.AddNewUserDto;
+import com.rlms.contract.BranchDtlsDto;
 import com.rlms.contract.RegisterDto;
 import com.rlms.contract.ResponseDto;
 import com.rlms.contract.UserDtlsDto;
@@ -72,7 +73,7 @@ public interface UserService {
 	
 	public RlmsMemberMaster getMemberById(int id);
 	
-	public List<UserDtlsDto> getUsersForBranch(int id);
+	public List<UserDtlsDto> getUsersForBranch(BranchDtlsDto dto);
 	
 	public String  forgotPassword(UserDtlsDto dto);
 	
