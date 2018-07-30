@@ -201,7 +201,7 @@
 						name:"Dumb Waiter"
 					}
 			];
-			//AMC Type
+/*			//AMC Type
 			$scope.AMCType=[
 				{
 					id:42,
@@ -278,7 +278,7 @@
 					id:1,
 					name:'NonPluggable'
 				}
-			];
+			];*/
 			$scope.addLift={
 					fyaTranId:null,
 					liftType:0,
@@ -432,14 +432,13 @@
 					amcStartDateStr: null,
 					amcEndDateStr: null,
 					amcType: $scope.editLift.amcType,
-					amcType: $scope.selectedAMCType.selected.id,
-					amcTypeStr:  $scope.selectedAMCType.selected.name,
+					//amcType: $scope.selectedAMCType.selected.id,
+					//amcTypeStr:  $scope.selectedAMCType.selected.name,
 					amcTypeStr:  $scope.editLift.amcTypeStr,
 					amcAmount: $scope.editLift.amcAmount,
-					doorType: $scope.selectedDoorType.selected.id,
+					//doorType: $scope.selectedDoorType.selected.id,
 					doorType: $scope.editLift.doorType,
 					noOfStops: $scope.editLift.noOfStops,
-					engineType: $scope.selectedEngineMachineType.selected.id,
 					engineType: $scope.editLift.engineType,
 					machineMake: $scope.editLift.machineMake,
 					machineCapacity:$scope.editLift.machineCapacity,
@@ -457,14 +456,14 @@
 					copPhoto: $scope.editLift.copPhoto.base64,
 					lopMake:$scope.editLift.lopMake,
 					lopPhoto:$scope.editLift.lopPhoto.base64,
-					collectiveType: $scope.selectedCollectiveType.selected.id,
+					//collectiveType: $scope.selectedCollectiveType.selected.id,
 					collectiveType: $scope.editLift.collectiveType,
-					simplexDuplex: $scope.selectedSimplexDuplex.selected.id,
+					//simplexDuplex: $scope.selectedSimplexDuplex.selected.id,
 					simplexDuplex: $scope.editLift.simplexDuplex,
 					cartopPhoto: $scope.editLift.cartopPhoto.base64,
 					autoDoorMake: $scope.editLift.autoDoorMake,
 					autoDoorHeaderPhoto: $scope.editLift.autoDoorHeaderPhoto.base64,
-					wiringShceme: $scope.selectedWiringScheme.selected.id,
+					wiringShceme: $scope.editLift.wiringShceme,
 					wiringPhoto: $scope.editLift.wiringPhoto.base64,
 					fireMode: $scope.editLift.fireMode,
 					intercomm: $scope.editLift.intercomm,
