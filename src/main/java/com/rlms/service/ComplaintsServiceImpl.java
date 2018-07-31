@@ -227,6 +227,8 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 		if(null != complaintMaster.getActualServiceEndDate()){
 			dto.setActualServiceEndDateStr(DateUtils.convertDateToStringWithoutTime(complaintMaster.getActualServiceEndDate()));
 		}
+		//dto.setActualServiceEndDate(actualServiceEndDate);
+		dto.setServiceCallType(complaintMaster.getCallType());
 		dto.setServiceCallTypeStr(RLMSCallType.getStringFromID(complaintMaster.getCallType()));
 		dto.setTitle(complaintMaster.getTitle());
 		dto.setServiceStartDate(complaintMaster.getServiceStartDate());
@@ -604,13 +606,13 @@ private boolean isServiceCallToShow(Date regDate,Date serviceStartDate){
 		RlmsSiteVisitDtls visitDtls = this.constructVisitDtls(dto);
 		this.saveComplaintSiteVisitDtls(visitDtls);
 		
-		if(visitDtls.getComplaintTechMapDtls().getStatus()==Status.ASSIGNED.getStatusId()) {
+		if(visitDtls.getComplaintTechMapDtls().getStatus()==Status.ASSIGNED.getStatusId()||visitDtls.getComplaintTechMapDtls().getStatus()==Status.INPROGESS.getStatusId()) {
 		     RlmsComplaintTechMapDtls complaintTechMapDtls = visitDtls.getComplaintTechMapDtls();
 			complaintTechMapDtls.setStatus(Status.INPROGESS.getStatusId());
 			complaintTechMapDtls.setUpdatedDate(new Date());
 			complaintsDao.updateComplaints(complaintTechMapDtls);
 			RlmsComplaintMaster complaintMaster = visitDtls.getComplaintTechMapDtls().getComplaintMaster();
-			if(complaintMaster.getStatus()==Status.ASSIGNED.getStatusId()) {
+			if(complaintMaster.getStatus()==Status.ASSIGNED.getStatusId()||complaintMaster.getStatus()==Status.INPROGESS.getStatusId()) {
 				complaintMaster.setStatus(Status.INPROGESS.getStatusId());
 				complaintMaster.setUpdatedDate(new Date());
 				complaintsDao.updateComplaintsMatser(complaintMaster);
@@ -620,6 +622,11 @@ private boolean isServiceCallToShow(Date regDate,Date serviceStartDate){
 	}
 	private RlmsSiteVisitDtls constructVisitDtls(SiteVisitDtlsDto dto) throws ParseException{
 		RlmsComplaintTechMapDtls complaintTechMapDtls = this.complaintsDao.getComplTechMapByComplaintTechMapId(dto.getComplaintTechMapId());
+		//complaintTechMapDtls.setUpdatedDate(new Date());
+		//complaintsDao.updateComplaints(complaintTechMapDtls);
+	//	RlmsComplaintMaster complaintMaster = complaintTechMapDtls.getComplaintMaster();
+	//	complaintMaster.setUpdatedDate(new Date());
+	//	complaintsDao.updateComplaintsMatser(complaintMaster);
 		RlmsUserRoles userRoles = this.userService.getUserRoleObjhById(dto.getUserRoleId());
 		RlmsSiteVisitDtls visitDtls = new RlmsSiteVisitDtls();
 		visitDtls.setComplaintTechMapDtls(complaintTechMapDtls);

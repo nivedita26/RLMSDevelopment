@@ -96,8 +96,5 @@ public enum RLMSCallType {
 		}	
 			return 0;
 		}
-	  
-	  
-	  
 }
 

@@ -103,6 +103,8 @@ public class MessagingServiceImpl implements MessagingService{
 		}
 	
 	public void sendEmail(MailDTO mailDto) throws UnsupportedEncodingException {
+		
+		
 	      // Recipient's email ID needs to be mentioned.
 	      List<String> to =mailDto.getToList();
 
@@ -154,7 +156,7 @@ public class MessagingServiceImpl implements MessagingService{
 		   // Send message
 		   Transport.send(message);
 
-		   System.out.println("Sent message successfully....");
+		   //System.out.println("Sent message successfully....");
 
 	      } catch (MessagingException e) {
 		   e.printStackTrace();
