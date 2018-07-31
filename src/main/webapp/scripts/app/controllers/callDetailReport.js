@@ -230,8 +230,8 @@
 		  	        		}else{
 		  	        			detailsObj["RegDate"] =" - ";
 		  	        		}
-		  	        		if(!!largeLoad[i].totalDaysRequiredToResolveComplaint){
-		  	        			detailsObj["TotalDaysTaken"] =largeLoad[i].totalDaysRequiredToResolveComplaint;
+		  	        		if(!!largeLoad[i].totalDaysForComplaint){
+		  	        			detailsObj["TotalDaysTaken"] =largeLoad[i].totalDaysForComplaint;
 		  	        		}else{
 		  	        			detailsObj["TotalDaysTaken"] =" - ";
 		  	        		}
@@ -313,8 +313,8 @@
 		  	        		}else{
 		  	        			detailsObj["RegDate"] =" - ";
 		  	        		}
-		  	        		if(!!largeLoad[i].totalDaysRequiredToResolveComplaint){
-		  	        			detailsObj["TotalDaysTaken"] =largeLoad[i].totalDaysRequiredToResolveComplaint;
+		  	        		if(!!largeLoad[i].totalDaysForComplaint){
+		  	        			detailsObj["TotalDaysTaken"] =largeLoad[i].totalDaysForComplaint;
 		  	        		}else{
 		  	        			detailsObj["TotalDaysTaken"] =" - ";
 		  	        		}
@@ -391,8 +391,8 @@
 	  	        		}else{
 	  	        			detailsObj["RegDate"] =" - ";
 	  	        		}
-	  	        		if(!!largeLoad[i].totalDaysRequiredToResolveComplaint){
-	  	        			detailsObj["TotalDaysTaken"] =largeLoad[i].totalDaysRequiredToResolveComplaint;
+	  	        		if(!!largeLoad[i].totalDaysForComplaint){
+	  	        			detailsObj["TotalDaysTaken"] =largeLoad[i].totalDaysForComplaint;
 	  	        		}else{
 	  	        			detailsObj["TotalDaysTaken"] =" - ";
 	  	        		}
@@ -495,7 +495,7 @@
 						width : 160
 		  	      },{
 						field : "TotalDaysTaken",
-						displayName:"Total Days Taken ",
+						displayName:"Total Days",
 						width : 160
 		  	      }
 		  	      ]

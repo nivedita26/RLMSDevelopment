@@ -44,8 +44,8 @@ angular
 	    		$rootScope.showDasboardForInditech= true;
 	    		$rootScope.showDasboardForOthers=false;
 	    	}else{
-	    		$rootScope.showDasboardForOthers=true;
-	    		$rootScope.showDasboardForInditech=false;
+	    		$rootScope.showDasboardForOthers=false;
+	    		$rootScope.showDasboardForInditech=true;
 	    	}	
 		  }, function errorCallback(response) {
 		  });

@@ -182,6 +182,7 @@
 		  	    	if($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 3){
 		  	    		var companyData={};
 		  	    		companyData={
+		  	    				companyId : $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyMaster.companyId,
 		  	    				branchCompanyMapId : $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls.companyBranchMapId
 		  	    		}
 		  	    	}

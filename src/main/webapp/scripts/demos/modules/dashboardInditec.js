@@ -38,7 +38,7 @@ angular.module('theme.demos.dashboard.indi', [
 				$rootScope.showDasboardForOthers=false;
 			}else{
 				//$rootScope.showDasboardForOthers=true;
-				$rootScope.showDasboardForInditech=false;
+				$rootScope.showDasboardForInditech=true;
 			}
 			if($rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsSpocRoleMaster.roleLevel == 1){
 				$scope.showCompanies= true;
@@ -1262,6 +1262,7 @@ angular.module('theme.demos.dashboard.indi', [
         return dataToSend;
       };
       
+      //AMC Start
       $scope.constructDataToSendForAllAMCDetails=function() {
         	var tempStatus =[];
         	tempStatus.push(38);
@@ -1411,12 +1412,12 @@ angular.module('theme.demos.dashboard.indi', [
       	                	
       	                	for (var i = 0; i < largeLoad.length; i++) {
     	                		
-    	                		if(largeLoad[i].underAMCCount!=null){
+    	                		if(largeLoad[i].underAMCCount!=null || largeLoad[i].renewalDueCount!=null ){
     	                			var dataCount={};
     	                			dataCount.branchName=largeLoad[i].branchName
     	                			dataCount.customerName=largeLoad[i].customerName
     	                			dataCount.city=largeLoad[i].city
-    	                			dataCount.totalAMCCount=largeLoad[i].underAMCCount
+    	                			dataCount.totalAMCCount=largeLoad[i].underAMCCount +largeLoad[i].renewalDueCount
 
     	                			data.push(dataCount);
     	                		}    	                		
@@ -1573,8 +1574,9 @@ angular.module('theme.demos.dashboard.indi', [
         $scope.getActiveAMCCount("InActive");
         $scope.getActiveAMCCount("Expire");
         $scope.getActiveAMCCount("RenewalForThisMonth");
-        
+        //AMC End
       
+        //Lift Count 
       $scope.openDemoModalForAllLiftStatusDetails = function (currentModelOpen, headerValue, activeFlag, headingValue) {
           var emptyComplaintsArray = [];
           $scope.myComplaintsData = emptyComplaintsArray;
@@ -1707,7 +1709,7 @@ angular.module('theme.demos.dashboard.indi', [
       	                  });*/
     	                	for (var i = 0; i < largeLoad.length; i++) {
     	                		
-    	                		if(largeLoad[i].notUnderWarranty!=null || largeLoad[i].renewalDueCount!=null || largeLoad[i].amcPendingCount!=null || largeLoad[i].underAMCCount!=null){
+    	                		if(largeLoad[i].notUnderWarranty!=null || largeLoad[i].amcPendingCount!=null || largeLoad[i].underAMCCount!=null){
     	                			var dataCount={};
     	                			dataCount.branchName=largeLoad[i].branchName
     	                			dataCount.customerName=largeLoad[i].customerName
@@ -1821,7 +1823,7 @@ angular.module('theme.demos.dashboard.indi', [
 	                  });*/
 	                	var totalCount=0;
 	                	for (var i = 0; i < largeLoad.length; i++) {
-	                		if(largeLoad[i].notUnderWarranty!=null || largeLoad[i].renewalDueCount!=null || largeLoad[i].amcPendingCount!=null || largeLoad[i].underAMCCount!=null){
+	                		if(largeLoad[i].notUnderWarranty!=null || largeLoad[i].amcPendingCount!=null || largeLoad[i].underAMCCount!=null){
 	                			totalCount=totalCount+(largeLoad[i].notUnderWarranty+largeLoad[i].renewalDueCount+largeLoad[i].amcPendingCount+largeLoad[i].underAMCCount);	                		
 	                		}
 	                	}
