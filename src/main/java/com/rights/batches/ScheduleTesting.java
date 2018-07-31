@@ -24,7 +24,7 @@ public class ScheduleTesting {
 	
 	//@Scheduled(cron="0 28 13 * * ?")
    // @Scheduled(fixedRate =60000)
-	//  @Scheduled(cron="0 25 18 * * ?")
+	 @Scheduled(cron="0 01 00 * * ?")
 	 public void schedule() {
 		logger.debug("Batch start");
 		 try {
