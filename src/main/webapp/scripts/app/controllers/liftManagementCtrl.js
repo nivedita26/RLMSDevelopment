@@ -16,7 +16,7 @@
 			},
 			{
 				id:43,
-				name:'NonComprehensive'
+				name:'Non-Comprehensive'
 			},
 			{
 				id:44,
@@ -615,11 +615,11 @@
 					width: "140"
 				}, {
 					field : "Service_Start_Date",
-					displayName:"Service Start Date",
+					displayName:"Warranty Start Date",
 					width: "140"
 				}, {
 					field : "Service_End_Date",
-					displayName:"Service End Date",
+					displayName:"Warranty End Date",
 					width: "140"
 				},
 				{
@@ -655,13 +655,6 @@
 						
 						//$rootScope.editLift = data.response;
 					
-						//$scope.selectedDoorType.id= $scope.editLift.doorType; 
-						//$scope.selectedDoorType.selected =$scope.editLift.doorType;
-						/*$rootScope.amcTypeArray=['Comprehensive','NonComprehensive','On Demand','Other'];
-						$rootScope.engineTypeArray=['Geared','Gearless'];
-						$rootScope.collectiveTypeArray=['Down Collective','Full Collective'];
-						$rootScope.simplexTypeArray=['Simplex','Duplex','Group'];
-						$rootScope.wiringTypeArray=['Pluggable','NonPluggable'];*/
 						$rootScope.editLift.liftId=row.liftId;
 						$rootScope.editLift.address=row.Address.replace(/-/g, '');
 						$rootScope.editLift.city=row.City.replace(/-/g, '');

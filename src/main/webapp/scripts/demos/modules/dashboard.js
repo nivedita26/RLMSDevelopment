@@ -28,7 +28,7 @@ angular.module('theme.demos.dashboard', [
 				$rootScope.showDasboardForOthers=false;
 			}else{
 				$rootScope.showDasboardForOthers=false;
-				$rootScope.showDasboardForInditech=false;
+				$rootScope.showDasboardForInditech=true;
 			}
 		  }, function errorCallback(response) {
 		  });
