@@ -762,7 +762,7 @@ public class UserServiceImpl implements UserService {
 			    dtlsDtoList.add(dto);
 			} 
 		}
-		return null;
+		return dtlsDtoList;
 	}
 
 	@Override
