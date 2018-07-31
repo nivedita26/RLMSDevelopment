@@ -125,7 +125,7 @@ angular.module('theme.demos.dashboard.indi', [
     	        color: 'red'
     	      },
     	      activeAmc: {
-    	        title: 'Active',
+    	        title: 'Under AMC',
     	        text: '0',
     	        color: 'amber'
     	      },
@@ -135,7 +135,7 @@ angular.module('theme.demos.dashboard.indi', [
     	        color: 'blue'
     	      },
     	      expiredAmc: {
-      	        title: 'Expired',
+      	        title: 'AMC Expired',
       	        text: '0',
       	        color: 'blue'
       	      }
@@ -1522,8 +1522,8 @@ angular.module('theme.demos.dashboard.indi', [
   	                	var totalCount= 0;
 	                	for (var i = 0; i < largeLoad.length; i++) {
 	                		
-	                		if(largeLoad[i].underAMCCount!=null){
-	                			totalCount=totalCount+largeLoad[i].underAMCCount;
+	                		if(largeLoad[i].underAMCCount!=null||largeLoad[i].renewalDueCount!=null){
+	                			totalCount=totalCount+(largeLoad[i].underAMCCount +largeLoad[i].renewalDueCount);
 	                			  $scope.amcDetailsData.activeAmc.text=totalCount;
 	                		}else{
 	                   			$scope.amcDetailsData.activeAmc.text == "0";
@@ -1709,12 +1709,12 @@ angular.module('theme.demos.dashboard.indi', [
       	                  });*/
     	                	for (var i = 0; i < largeLoad.length; i++) {
     	                		
-    	                		if(largeLoad[i].notUnderWarranty!=null || largeLoad[i].amcPendingCount!=null || largeLoad[i].underAMCCount!=null){
+    	                		if(largeLoad[i].notUnderWarranty!=null){
     	                			var dataCount={};
     	                			dataCount.branchName=largeLoad[i].branchName
     	                			dataCount.customerName=largeLoad[i].customerName
     	                			dataCount.city=largeLoad[i].city
-    	                			dataCount.totalLiftCount=largeLoad[i].notUnderWarranty + largeLoad[i].renewalDueCount + largeLoad[i].amcPendingCount+ largeLoad[i].underAMCCount
+    	                			dataCount.totalLiftCount=largeLoad[i].notUnderWarranty 
     	                			
     	                			data.push(dataCount);
     	                		}
@@ -1823,8 +1823,8 @@ angular.module('theme.demos.dashboard.indi', [
 	                  });*/
 	                	var totalCount=0;
 	                	for (var i = 0; i < largeLoad.length; i++) {
-	                		if(largeLoad[i].notUnderWarranty!=null || largeLoad[i].amcPendingCount!=null || largeLoad[i].underAMCCount!=null){
-	                			totalCount=totalCount+(largeLoad[i].notUnderWarranty+largeLoad[i].renewalDueCount+largeLoad[i].amcPendingCount+largeLoad[i].underAMCCount);	                		
+	                		if(largeLoad[i].notUnderWarranty!=null ){
+	                			totalCount=totalCount+largeLoad[i].notUnderWarranty;	                		
 	                		}
 	                	}
 	                	$scope.liftStatus.inactiveLiftStatus.text=totalCount;
