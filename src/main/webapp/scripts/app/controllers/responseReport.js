@@ -293,6 +293,7 @@
 		  	        				  }
 		  	        			  }
 		  	        		  }if(!($scope.selectedLift.selected )){
+		  	        			  
 			  	        	var detailsObj={};
 	  	        			
 			  	        	detailsObj["No"] = i+1 +".";

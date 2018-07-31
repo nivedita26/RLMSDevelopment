@@ -267,7 +267,7 @@ $scope.loadCallID=function(){
 		  	        	
 		  	        	var dataToSend = constructDataToSend();
 //			  	    /	$scope.callDetail=[];
-			  	    	$scope.callDetail=[{"complaintNumber": "85",
+			  	    /*	$scope.callDetail=[{"complaintNumber": "85",
 			  	                "serviceCallTypeStr": "Under Warranty Support call",
 			  	                "title": "Door open close issue",
 			  	                "registrationDateStr": "16-Jul-2018 12:00:00 AM",
@@ -326,12 +326,12 @@ $scope.loadCallID=function(){
 			  	                "registeredBy": "Ram Dahapute(COMPANY ADMIN)",
 			  	               "callAssignedDateStr": "17-Jul-2018 07:25:14 PM"
 			  	            	   }
-			  	    	]
+			  	    	]*/
 		  	        	serviceApi.doPostWithData('/RLMS/report/callSpecificReport',dataToSend)
 		  	        	.then(function(largeLoad) {
 		  	        	  var details=[];
 		  	        	  var k=0;
-		  	        	  for(var i=0;i<$scope.callDetail.length;i++){
+		  	        	  for(var i=0;i<largeLoad.length;i++){
 		  	        		  
 		  	        		if(($scope.selectedLift.selected  && $scope.selectedLift.selected.length>0)){	  
 		  	        			var tempLiftIds = [];
@@ -339,211 +339,219 @@ $scope.loadCallID=function(){
 		  	        				  tempLiftIds.push($scope.selectedLift.selected[i].liftNumber);
 		  	        			  }
 		  	        			  for(var j=0; j<tempLiftIds.length;j++){
-		  	        				 for(var i=0;i<$scope.callDetail.length;i++){
-		  	        				  if(tempLiftIds[j]==$scope.callDetail[i].liftNumber){
+		  	        				 for(var i=0;i<largeLoad.length;i++){
+		  	        				  if(tempLiftIds[j]==largeLoad[i].liftNumber){/*
 		  	        					  k=k+1;
 
 				  	        			  var detailsObj={};
 				  	        		detailsObj["SrNo"] =i+1 +".";
 				  	        		
-				  	        		if(!!$scope.callDetail[i].customerName){
-				  	        			detailsObj["CustomerName"] =$scope.callDetail[i].customerName;
+				  	        		if(!!largeLoad[i].customerName){
+				  	        			detailsObj["CustomerName"] =largeLoad[i].customerName;
 				  	        		}else{
 				  	        			detailsObj["CustomerName"] =" - ";
 				  	        		}
-				  	        		if(!!$scope.callDetail[i].branchName){
-				  	        			detailsObj["BranchName"] =$scope.callDetail[i].branchName;
+				  	        		if(!!largeLoad[i].branchName){
+				  	        			detailsObj["BranchName"] =largeLoad[i].branchName;
 				  	        		}else{
 				  	        			detailsObj["BranchName"] =" - ";
 				  	        		}
-				  	        		if(!!$scope.callDetail[i].liftNumber){
-				  	        			detailsObj["liftNumber"] =$scope.callDetail[i].liftNumber;
+				  	        		if(!!largeLoad[i].liftNumber){
+				  	        			detailsObj["liftNumber"] =largeLoad[i].liftNumber;
 				  	        		}else{
 				  	        			detailsObj["liftNumber"] =" - ";
 				  	        		}
-				  	        		if(!!$scope.callDetail[i].status){
-				  	        			detailsObj["Status"] =$scope.callDetail[i].status;
+				  	        		if(!!largeLoad[i].status){
+				  	        			detailsObj["Status"] =largeLoad[i].status;
 				  	        		}else{
 				  	        			detailsObj["Status"] =" - ";
 				  	        		}
-				  	        		if(!!$scope.callDetail[i].callAssignedDateStr){
-				  	        			detailsObj["CallAssignedDate"] =$scope.callDetail[i].callAssignedDateStr;
+				  	        		if(!!largeLoad[i].callAssignedDateStr){
+				  	        			detailsObj["CallAssignedDate"] =largeLoad[i].callAssignedDateStr;
 				  	        		}else{
 				  	        			detailsObj["CallAssignedDate"] =" - ";
 				  	        		}
-				  	        		if(!!$scope.callDetail[i].resolvedDateStr){
-				  	        			detailsObj["CallResolvedDate"] =$scope.callDetail[i].resolvedDateStr;
+				  	        		if(!!largeLoad[i].resolvedDateStr){
+				  	        			detailsObj["CallResolvedDate"] =largeLoad[i].resolvedDateStr;
 				  	        		}else{
 				  	        			detailsObj["CallResolvedDate"] =" - ";
 				  	        		}
-				  	        		if(!!$scope.callDetail[i].remark){
-				  	        			detailsObj["Remark"] =$scope.callDetail[i].remark;
+				  	        		if(!!largeLoad[i].remark){
+				  	        			detailsObj["Remark"] =largeLoad[i].remark;
 				  	        		}else{
 				  	        			detailsObj["Remark"] =" - ";
 				  	        		}
-				  	        		if(!!$scope.callDetail[i].complaintNumber){
-				  	        			detailsObj["CallId"] =$scope.callDetail[i].complaintNumber;
+				  	        		if(!!largeLoad[i].complaintNumber){
+				  	        			detailsObj["CallId"] =largeLoad[i].complaintNumber;
 				  	        		}else{
 				  	        			detailsObj["CallId"] =" - ";
 				  	        		}
-				  	        		if(!!$scope.callDetail[i].customerAddress){
-				  	        			detailsObj["address"] =$scope.callDetail[i].customerAddress;
+				  	        		if(!!largeLoad[i].customerAddress){
+				  	        			detailsObj["address"] =largeLoad[i].customerAddress;
 				  	        		}else{
 				  	        			detailsObj["address"] =" - ";
 				  	        		}
-				  	        		if(!!$scope.callDetail[i].customerCity){
-				  	        			detailsObj["city"] =$scope.callDetail[i].customerCity;
+				  	        		if(!!largeLoad[i].customerCity){
+				  	        			detailsObj["city"] =largeLoad[i].customerCity;
 				  	        		}else{
 				  	        			detailsObj["city"] =" - ";
 				  	        		}
-				  	        		if(!!$scope.callDetail[i].registeredBy){
-				  	        			detailsObj["CallRegisteredBy"] =$scope.callDetail[i].registeredBy;
+				  	        		if(!!largeLoad[i].registeredBy){
+				  	        			detailsObj["CallRegisteredBy"] =largeLoad[i].registeredBy;
 				  	        		}else{
 				  	        			detailsObj["CallRegisteredBy"] =" - ";
 				  	        		}
-				  	        		if(!!$scope.callDetail[i].serviceCallTypeStr){
-				  	        			detailsObj["CallType"] =$scope.callDetail[i].serviceCallTypeStr;
+				  	        		if(!!largeLoad[i].serviceCallTypeStr){
+				  	        			detailsObj["CallType"] =largeLoad[i].serviceCallTypeStr;
 				  	        		}else{
 				  	        			detailsObj["CallType"] =" - ";
 				  	        		}
-				  	        		if(!!$scope.callDetail[i].title){
-				  	        			detailsObj["Title"] =$scope.callDetail[i].title;
+				  	        		if(!!largeLoad[i].title){
+				  	        			detailsObj["Title"] =largeLoad[i].title;
 				  	        		}else{
 				  	        			detailsObj["Title"] =" - ";
 				  	        		}
-				  	        		if(!!$scope.callDetail[i].registrationDateStr){
-				  	        			detailsObj["RegistrationDate"] =$scope.callDetail[i].registrationDateStr;
+				  	        		if(!!largeLoad[i].registrationDateStr){
+				  	        			detailsObj["RegistrationDate"] =largeLoad[i].registrationDateStr;
 				  	        		}else{
 				  	        			detailsObj["RegistrationDate"] =" - ";
 				  	        		}
-				  	        		if($scope.callDetail[i].siteVisitDetailsList){
-			  	        				if(!!$scope.callDetail[i].siteVisitDetailsList.techName){
-			  	        					detailsObj["Technician"] =$scope.callDetail[i].siteVisitDetailsList.techName;
+				  	        		var siteVisitArray=[];
+				  	        		if(largeLoad[i].siteVisitDetailsList){
+				  	        			var siteVisitList={};
+			  	        				if(!!largeLoad[i].siteVisitDetailsList.techName){
+			  	        					siteVisitList["Technician"] =largeLoad[i].siteVisitDetailsList.techName;
 			  	        				}else{
-			  	        					detailsObj["Technician"] =" - ";
+			  	        					siteVisitList["Technician"] =" - ";
 			  	        				}
-				  	        				if($scope.callDetail[i].siteVisitDetailsList.listOFAllVisits){
-				  	        					for(var j=0; j<$scope.callDetail[i].siteVisitDetailsList.listOFAllVisits.length; j++){
-				  	        						
-					  	        					if(!!$scope.callDetail[i].siteVisitDetailsList.listOFAllVisits[j].fromDateDtr){
-				  	        						detailsObj["FromDate"] =$scope.callDetail[i].siteVisitDetailsList.listOFAllVisits[j].fromDateDtr;
+			  	        				
+			  	        				var listofVisitArray=[];
+				  	        				if(largeLoad[i].siteVisitDetailsList.listOFAllVisits){
+				  	        					
+				  	        					for(var j=0; j<largeLoad[i].siteVisitDetailsList.listOFAllVisits.length; j++){
+				  	        						var listOfVisit={};
+					  	        					if(!!largeLoad[i].siteVisitDetailsList.listOFAllVisits[j].fromDateDtr){
+					  	        						listOfVisit["FromDate"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits[j].fromDateDtr;
 					  	        					}else{
-					  	        						detailsObj["FromDate"] =" - ";
+					  	        						listOfVisit["FromDate"] =" - ";
 					  	        					}
-					  	        					if(!!$scope.callDetail[i].siteVisitDetailsList.listOFAllVisits[j].toDateStr){
-					  	        						detailsObj["ToDate"] =$scope.callDetail[i].siteVisitDetailsList.listOFAllVisits[j].toDateStr;
+					  	        					if(!!largeLoad[i].siteVisitDetailsList.listOFAllVisits[j].toDateStr){
+					  	        						listOfVisit["ToDate"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits[j].toDateStr;
 					  	        					}else{
-					  	        						detailsObj["ToDate"] =" - ";
+					  	        						listOfVisit["ToDate"] =" - ";
 					  	        					}
-					  	        					if(!!$scope.callDetail[i].siteVisitDetailsList.listOFAllVisits[j].remark){
-								  	        			detailsObj["Remark"] =$scope.callDetail[i].siteVisitDetailsList.listOFAllVisits[j].remark;
+					  	        					if(!!largeLoad[i].siteVisitDetailsList.listOFAllVisits[j].remark){
+					  	        						listOfVisit["Remark"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits[j].remark;
 								  	        		}else{
-								  	        			detailsObj["Remark"] =" - ";
+								  	        			listOfVisit["Remark"] =" - ";
 								  	        		}
+					  	        					listofVisitArray.push(listOfVisit);
 				  	        					}
 			  	        					}
+				  	        						  	        				
 				  	        		}
 				  	        		details.push(detailsObj);
-				  	        	  
-		  	        				  }
+				  	        		
+		  	        				  */}
 		  	        				 }
+		  	        				$scope.callSpecificRep=largeLoad;
 		  	        			  }
 		  	        		}
-		  	        		  if((($scope.selectedCallID.selected) &&($scope.selectedCallID.selected.complaintNumber === $scope.callDetail[i].complaintNumber)) ){
+		  	        		  if((($scope.selectedCallID.selected) &&($scope.selectedCallID.selected.complaintNumber === largeLoad[i].complaintNumber)) ){
 		  	        			  var detailsObj={};
 		  	        			 k= k+1;
 		  	        		detailsObj["SrNo"] =k +".";
 		  	        		
-		  	        		if(!!$scope.callDetail[i].customerName){
-		  	        			detailsObj["CustomerName"] =$scope.callDetail[i].customerName;
+		  	        		if(!!largeLoad[i].customerName){
+		  	        			detailsObj["CustomerName"] =largeLoad[i].customerName;
 		  	        		}else{
 		  	        			detailsObj["CustomerName"] =" - ";
 		  	        		}
-		  	        		if(!!$scope.callDetail[i].branchName){
-		  	        			detailsObj["BranchName"] =$scope.callDetail[i].branchName;
+		  	        		if(!!largeLoad[i].branchName){
+		  	        			detailsObj["BranchName"] =largeLoad[i].branchName;
 		  	        		}else{
 		  	        			detailsObj["BranchName"] =" - ";
 		  	        		}
-		  	        		if(!!$scope.callDetail[i].liftNumber){
-		  	        			detailsObj["liftNumber"] =$scope.callDetail[i].liftNumber;
+		  	        		if(!!largeLoad[i].liftNumber){
+		  	        			detailsObj["liftNumber"] =largeLoad[i].liftNumber;
 		  	        		}else{
 		  	        			detailsObj["liftNumber"] =" - ";
 		  	        		}
-		  	        		if(!!$scope.callDetail[i].status){
-		  	        			detailsObj["Status"] =$scope.callDetail[i].status;
+		  	        		if(!!largeLoad[i].status){
+		  	        			detailsObj["Status"] =largeLoad[i].status;
 		  	        		}else{
 		  	        			detailsObj["Status"] =" - ";
 		  	        		}
-		  	        		if(!!$scope.callDetail[i].callAssignedDateStr){
-		  	        			detailsObj["CallAssignedDate"] =$scope.callDetail[i].callAssignedDateStr;
+		  	        		if(!!largeLoad[i].callAssignedDateStr){
+		  	        			detailsObj["CallAssignedDate"] =largeLoad[i].callAssignedDateStr;
 		  	        		}else{
 		  	        			detailsObj["CallAssignedDate"] =" - ";
 		  	        		}
-		  	        		if(!!$scope.callDetail[i].resolvedDateStr){
-		  	        			detailsObj["CallResolvedDate"] =$scope.callDetail[i].resolvedDateStr;
+		  	        		if(!!largeLoad[i].resolvedDateStr){
+		  	        			detailsObj["CallResolvedDate"] =largeLoad[i].resolvedDateStr;
 		  	        		}else{
 		  	        			detailsObj["CallResolvedDate"] =" - ";
 		  	        		}
-		  	        		if(!!$scope.callDetail[i].remark){
-		  	        			detailsObj["Remark"] =$scope.callDetail[i].remark;
+		  	        		if(!!largeLoad[i].remark){
+		  	        			detailsObj["Remark"] =largeLoad[i].remark;
 		  	        		}else{
 		  	        			detailsObj["Remark"] =" - ";
 		  	        		}
-		  	        		if(!!$scope.callDetail[i].complaintNumber){
-		  	        			detailsObj["CallId"] =$scope.callDetail[i].complaintNumber;
+		  	        		if(!!largeLoad[i].complaintNumber){
+		  	        			detailsObj["CallId"] =largeLoad[i].complaintNumber;
 		  	        		}else{
 		  	        			detailsObj["CallId"] =" - ";
 		  	        		}
-		  	        		if(!!$scope.callDetail[i].customerAddress){
-		  	        			detailsObj["address"] =$scope.callDetail[i].customerAddress;
+		  	        		if(!!largeLoad[i].customerAddress){
+		  	        			detailsObj["address"] =largeLoad[i].customerAddress;
 		  	        		}else{
 		  	        			detailsObj["address"] =" - ";
 		  	        		}
-		  	        		if(!!$scope.callDetail[i].customerCity){
-		  	        			detailsObj["city"] =$scope.callDetail[i].customerCity;
+		  	        		if(!!largeLoad[i].customerCity){
+		  	        			detailsObj["city"] =largeLoad[i].customerCity;
 		  	        		}else{
 		  	        			detailsObj["city"] =" - ";
 		  	        		}
-		  	        		if(!!$scope.callDetail[i].registeredBy){
-		  	        			detailsObj["CallRegisteredBy"] =$scope.callDetail[i].registeredBy;
+		  	        		if(!!largeLoad[i].registeredBy){
+		  	        			detailsObj["CallRegisteredBy"] =largeLoad[i].registeredBy;
 		  	        		}else{
 		  	        			detailsObj["CallRegisteredBy"] =" - ";
 		  	        		}
-		  	        		if(!!$scope.callDetail[i].serviceCallTypeStr){
-		  	        			detailsObj["CallType"] =$scope.callDetail[i].serviceCallTypeStr;
+		  	        		if(!!largeLoad[i].serviceCallTypeStr){
+		  	        			detailsObj["CallType"] =largeLoad[i].serviceCallTypeStr;
 		  	        		}else{
 		  	        			detailsObj["CallType"] =" - ";
 		  	        		}
-		  	        		if(!!$scope.callDetail[i].title){
-		  	        			detailsObj["Title"] =$scope.callDetail[i].title;
+		  	        		if(!!largeLoad[i].title){
+		  	        			detailsObj["Title"] =largeLoad[i].title;
 		  	        		}else{
 		  	        			detailsObj["Title"] =" - ";
 		  	        		}
-		  	        		if(!!$scope.callDetail[i].registrationDateStr){
-		  	        			detailsObj["RegistrationDate"] =$scope.callDetail[i].registrationDateStr;
+		  	        		if(!!largeLoad[i].registrationDateStr){
+		  	        			detailsObj["RegistrationDate"] =largeLoad[i].registrationDateStr;
 		  	        		}else{
 		  	        			detailsObj["RegistrationDate"] =" - ";
 		  	        		}
-		  	        		if($scope.callDetail[i].siteVisitDetailsList){
-	  	        				if(!!$scope.callDetail[i].siteVisitDetailsList.techName){
-	  	        					detailsObj["Technician"] =$scope.callDetail[i].siteVisitDetailsList.techName;
+		  	        		if(largeLoad[i].siteVisitDetailsList){
+	  	        				if(!!largeLoad[i].siteVisitDetailsList.techName){
+	  	        					detailsObj["Technician"] =largeLoad[i].siteVisitDetailsList.techName;
 	  	        				}else{
 	  	        					detailsObj["Technician"] =" - ";
 	  	        				}
-	  	        				if($scope.callDetail[i].siteVisitDetailsList.listOFAllVisits){
+	  	        				if(largeLoad[i].siteVisitDetailsList.listOFAllVisits){
 	  	        					for(j=0;j<=listOFAllVisits.length;j++){
-		  	        					if(!!$scope.callDetail[i].siteVisitDetailsList.listOFAllVisits[j].fromDateDtr){
-	  	        						detailsObj["FromDate"] =$scope.callDetail[i].siteVisitDetailsList.listOFAllVisits[j].fromDateDtr;
+		  	        					if(!!largeLoad[i].siteVisitDetailsList.listOFAllVisits[j].fromDateDtr){
+	  	        						detailsObj["FromDate"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits[j].fromDateDtr;
 		  	        					}else{
 		  	        						detailsObj["FromDate"] =" - ";
 		  	        					}
-		  	        					if(!!$scope.callDetail[i].siteVisitDetailsList.listOFAllVisits[j].toDateStr){
-		  	        						detailsObj["ToDate"] =$scope.callDetail[i].siteVisitDetailsList.listOFAllVisits[j].toDateStr;
+		  	        					if(!!largeLoad[i].siteVisitDetailsList.listOFAllVisits[j].toDateStr){
+		  	        						detailsObj["ToDate"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits[j].toDateStr;
 		  	        					}else{
 		  	        						detailsObj["ToDate"] =" - ";
 		  	        					}
-		  	        					if(!!$scope.callDetail[i].siteVisitDetailsList.listOFAllVisits[i].remark){
-					  	        			detailsObj["Remark"] =$scope.callDetail[i].siteVisitDetailsList.listOFAllVisits[j].remark;
+		  	        					if(!!largeLoad[i].siteVisitDetailsList.listOFAllVisits[i].remark){
+					  	        			detailsObj["Remark"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits[j].remark;
 					  	        		}else{
 					  	        			detailsObj["Remark"] =" - ";
 					  	        		}
@@ -558,91 +566,92 @@ $scope.loadCallID=function(){
 					  	        	var detailsObj={};
 				  	        		detailsObj["SrNo"] =i+1 +".";
 				  	        		
-				  	        		if(!!$scope.callDetail[i].customerName){
-				  	        			detailsObj["CustomerName"] =$scope.callDetail[i].customerName;
+				  	        		if(!!largeLoad[i].customerName){
+				  	        			detailsObj["CustomerName"] =largeLoad[i].customerName;
 				  	        		}else{
 				  	        			detailsObj["CustomerName"] =" - ";
 				  	        		}
-				  	        		if(!!$scope.callDetail[i].branchName){
-				  	        			detailsObj["BranchName"] =$scope.callDetail[i].branchName;
+				  	        		if(!!largeLoad[i].branchName){
+				  	        			detailsObj["BranchName"] =largeLoad[i].branchName;
 				  	        		}else{
 				  	        			detailsObj["BranchName"] =" - ";
 				  	        		}
-				  	        		if(!!$scope.callDetail[i].liftNumber){
-				  	        			detailsObj["liftNumber"] =$scope.callDetail[i].liftNumber;
+				  	        		if(!!largeLoad[i].liftNumber){
+				  	        			detailsObj["liftNumber"] =largeLoad[i].liftNumber;
 				  	        		}else{
 				  	        			detailsObj["liftNumber"] =" - ";
 				  	        		}
-				  	        		if(!!$scope.callDetail[i].status){
-				  	        			detailsObj["Status"] =$scope.callDetail[i].status;
+				  	        		if(!!largeLoad[i].status){
+				  	        			detailsObj["Status"] =largeLoad[i].status;
 				  	        		}else{
 				  	        			detailsObj["Status"] =" - ";
 				  	        		}
-				  	        		if(!!$scope.callDetail[i].callAssignedDateStr){
-				  	        			detailsObj["CallAssignedDate"] =$scope.callDetail[i].callAssignedDateStr;
+				  	        		if(!!largeLoad[i].callAssignedDateStr){
+				  	        			detailsObj["CallAssignedDate"] =largeLoad[i].callAssignedDateStr;
 				  	        		}else{
 				  	        			detailsObj["CallAssignedDate"] =" - ";
 				  	        		}
-				  	        		if(!!$scope.callDetail[i].resolvedDateStr){
-				  	        			detailsObj["CallResolvedDate"] =$scope.callDetail[i].resolvedDateStr;
+				  	        		if(!!largeLoad[i].resolvedDateStr){
+				  	        			detailsObj["CallResolvedDate"] =largeLoad[i].resolvedDateStr;
 				  	        		}else{
 				  	        			detailsObj["CallResolvedDate"] =" - ";
 				  	        		}
 				  	        		
-				  	        		if(!!$scope.callDetail[i].complaintNumber){
-				  	        			detailsObj["CallId"] =$scope.callDetail[i].complaintNumber;
+				  	        		if(!!largeLoad[i].complaintNumber){
+				  	        			detailsObj["CallId"] =largeLoad[i].complaintNumber;
 				  	        		}else{
 				  	        			detailsObj["CallId"] =" - ";
 				  	        		}
-				  	        		if(!!$scope.callDetail[i].customerAddress){
-				  	        			detailsObj["address"] =$scope.callDetail[i].customerAddress;
+				  	        		if(!!largeLoad[i].customerAddress){
+				  	        			detailsObj["address"] =largeLoad[i].customerAddress;
 				  	        		}else{
 				  	        			detailsObj["address"] =" - ";
 				  	        		}
-				  	        		if(!!$scope.callDetail[i].customerCity){
-				  	        			detailsObj["city"] =$scope.callDetail[i].customerCity;
+				  	        		if(!!largeLoad[i].customerCity){
+				  	        			detailsObj["city"] =largeLoad[i].customerCity;
 				  	        		}else{
 				  	        			detailsObj["city"] =" - ";
 				  	        		}
-				  	        		if(!!$scope.callDetail[i].registeredBy){
-				  	        			detailsObj["CallRegisteredBy"] =$scope.callDetail[i].registeredBy;
+				  	        		if(!!largeLoad[i].registeredBy){
+				  	        			detailsObj["CallRegisteredBy"] =largeLoad[i].registeredBy;
 				  	        		}else{
 				  	        			detailsObj["CallRegisteredBy"] =" - ";
 				  	        		}
-				  	        		if(!!$scope.callDetail[i].serviceCallTypeStr){
-				  	        			detailsObj["CallType"] =$scope.callDetail[i].serviceCallTypeStr;
+				  	        		if(!!largeLoad[i].serviceCallTypeStr){
+				  	        			detailsObj["CallType"] =largeLoad[i].serviceCallTypeStr;
 				  	        		}else{
 				  	        			detailsObj["CallType"] =" - ";
 				  	        		}
-				  	        		if(!!$scope.callDetail[i].title){
-				  	        			detailsObj["Title"] =$scope.callDetail[i].title;
+				  	        		if(!!largeLoad[i].title){
+				  	        			detailsObj["Title"] =largeLoad[i].title;
 				  	        		}else{
 				  	        			detailsObj["Title"] =" - ";
 				  	        		}
-				  	        		if(!!$scope.callDetail[i].registrationDateStr){
-				  	        			detailsObj["RegistrationDate"] =$scope.callDetail[i].registrationDateStr;
+				  	        		if(!!largeLoad[i].registrationDateStr){
+				  	        			detailsObj["RegistrationDate"] =largeLoad[i].registrationDateStr;
 				  	        		}else{
 				  	        			detailsObj["RegistrationDate"] =" - ";
-				  	        		}if($scope.callDetail[i].siteVisitDetailsList){
-				  	        				if(!!$scope.callDetail[i].siteVisitDetailsList.techName){
-				  	        					detailsObj["Technician"] =$scope.callDetail[i].siteVisitDetailsList.techName;
+				  	        		}if(largeLoad[i].siteVisitDetailsList){
+				  	        				if(!!largeLoad[i].siteVisitDetailsList.techName){
+				  	        					detailsObj["Technician"] =largeLoad[i].siteVisitDetailsList.techName;
 				  	        				}else{
 				  	        					detailsObj["Technician"] =" - ";
 				  	        				}
-				  	        				if($scope.callDetail[i].siteVisitDetailsList.listOFAllVisits){
+				  	        				if(largeLoad[i].siteVisitDetailsList.listOFAllVisits){
+				  	        					
 				  	        					for(j=0;j<=listOFAllVisits.length;j++){
-				  	        					if(!!$scope.callDetail[i].siteVisitDetailsList.listOFAllVisits[j].fromDateDtr){
-				  	        						detailsObj["FromDate"] =$scope.callDetail[i].siteVisitDetailsList.listOFAllVisits[j].fromDateDtr;
+				  	        					if(!!largeLoad[i].siteVisitDetailsList.listOFAllVisits[j].fromDateDtr){
+				  	        						detailsObj["FromDate"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits[j].fromDateDtr;
 				  	        					}else{
 				  	        						detailsObj["FromDate"] =" - ";
 				  	        					}
-				  	        					if(!!$scope.callDetail[i].siteVisitDetailsList.listOFAllVisits[j].toDateStr){
-				  	        						detailsObj["ToDate"] =$scope.callDetail[i].siteVisitDetailsList.listOFAllVisits[j].toDateStr;
+				  	        					if(!!largeLoad[i].siteVisitDetailsList.listOFAllVisits[j].toDateStr){
+				  	        						detailsObj["ToDate"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits[j].toDateStr;
 				  	        					}else{
 				  	        						detailsObj["ToDate"] =" - ";
 				  	        					}
-				  	        					if(!!$scope.callDetail[i].siteVisitDetailsList.listOFAllVisits[j].remark){
-							  	        			detailsObj["Remark"] =callDetail[i].siteVisitDetailsList.listOFAllVisits[j].remark;
+				  	        					if(!!largeLoad[i].siteVisitDetailsList.listOFAllVisits[j].remark){
+							  	        			detailsObj["Remark"] =largeLoad[i].siteVisitDetailsList.listOFAllVisits[j].remark;
 							  	        		}else{
 							  	        			detailsObj["Remark"] =" - ";
 							  	        		}
@@ -658,6 +667,7 @@ $scope.loadCallID=function(){
 		  	          });
 		  	          
 		  	        }
+		  	      $scope.showMembers = true;
 		  	      }, 100);
 		  	    };
 		  	    
@@ -672,7 +682,7 @@ $scope.loadCallID=function(){
 		  	      }
 		  	    }, true);
 
-		  	    $scope.gridOptions = {
+		/*  	    $scope.gridOptions = {
 		  	      data: 'myData',
 		  	      rowHeight: 40,
 		  	      enablePaging: true,
@@ -742,43 +752,39 @@ $scope.loadCallID=function(){
 			  	  },{
 						field : "FromDate",
 						displayName:"From Date",
-						width : 300,
+						width : 140,
 						//cellTemplate: '<div class="ngCellText">{{row.entity.fromDateDtr}}/{{row.getProperty(col.field)}}</div>'
-						cellTemplate: '<div class="ui-grid-cell-contents">{{row.entity.FromDate}}/{{row.getProperty(col.field)}}</div>',
+						cellTemplate: '<div class="ui-grid-cell-contents">{{row.entity.fromDateDtr}}<br>{{row.getProperty(col.field)}}</div>'
 			  	  },{
 						field : "ToDate",
 						displayName:"To Date",
-						width : 120,
-						cellTemplate: '<div class="ngCellText">{{row.entity.toDateStr}}/{{row.getProperty(col.field)}}</div>'
+						width : 140,
+						cellTemplate: '<div class="ngCellText">{{row.entity.toDateStr}}<br>{{row.getProperty(col.field)}}</div>'
 			  	  },{
 						field : "Remark",
 						displayName:"Remarks",
-						width : 120
+						width : 120,
+						cellTemplate: '<div class="ngCellText">{{row.entity.remark}}<br>{{row.getProperty(col.field)}}</div>'
 		  	      },{
 						field : "Status",
 						displayName:"Status",
 						width : 120
 			  	  }
 		  	      ]
-		  	    };
+		  	    };*/
 	   
 
 	  	  $scope.resetReportList = function(){
 	  		initReport();
 	  	  }
 	  	  function constructDataToSend(){
-	  		/*var tempStatus = [];
-	  		if($scope.selectedEventType.selected){
-	  			if($scope.selectedEventType.selected.length===0){
-	  				alert("Please select Event Type");
-	  				for (var j = 0; j < $scope.selectedEventType.selected.length; j++) {
-	  					tempStatus.push($scope.selectedEventType.selected[j].id);
-	  					//}
+	  		var tempLiftId = [];
+	  			if($scope.selectedLift.selected.length>0){
+	  				for (var j = 0; j < $scope.selectedLift.selected.length; j++) {
+	  					tempLiftId.push($scope.selectedLift.selected[j].liftId);
 	  				}
 	  			}
-	  		}else{
-	  			alert("Please select Event Type");
-	  		}*/		
+	  			
 	  		var tempbranchCustomerMapIds = [];
 			/*if($scope.selectedCustomer.selected.length > 0){
 				for (var j = 0; j < $scope.selectedCustomer.selected.length; j++) {
@@ -795,6 +801,7 @@ $scope.loadCallID=function(){
 	  		var data = {
 	  				//listOfUserRoleIds:tempListOfUserRoleIds,
 	  				//listOfEventTypeIds:tempStatus,
+	  				liftCustomerMapId:tempLiftId,
 	  				branchCustomerMapId:$scope.selectedCustomer.selected.branchCustomerMapId
 	  		};
 	  		return data;

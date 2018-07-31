@@ -61,7 +61,7 @@
 			</div>	
 		</div> 
 	</div>
-	<div class="container-fluid" ng-show="showMembers">
+	<!-- <div class="container-fluid" ng-show="showMembers">
 	<h5 class="rlms-info"><span class="fa fa-info-circle"></span>Specific Call Report </h5>
 	<div class="input-icon right mb10">
      <i class="fa fa-search"></i>
@@ -70,6 +70,75 @@
     
     <div class ="data-table" style="min-height:300px;max-height:500px" ng-grid="gridOptions"></div>
 
+	</div> -->
+	
+		<div class="container-fluid" ng-show="showMembers">
+	<h5 class="rlms-info"><span class="fa fa-info-circle"></span>Site Visit Report</h5>
+	<div class="input-icon right mb10">
+     <i class="fa fa-search"></i>
+     <input type="text" ng-model="filterOptions.filterText" class="form-control" placeholder="Search Filter">
+    </div>
+		<div class="row">
+	      <div class="col-md-12 report-container">		
+               <table class="table report-table table-bordered table-striped table-responsive">
+				 <tr class="table-active">				  
+				  <th>Call Id</th>
+				  <th>Call Type</th>
+				  <th>Title</th>
+				  <th>Call Registered By</th>
+				  <th>Lift Number</th>
+				  <th>Customer</th>
+				  <th>Customer Address</th>
+				  <th>Branch</th> 
+				  <th >City</th>
+				  <th >Call Registration Date</th>
+				  <th >Call Assigned Date</th>
+				  <th >Call Resolved Date</th>
+				  <th>Technician</th>
+				 
+				  <th class="padding4">
+				  	<table class="table table-striped table-responsive inner-table margin-b-0">
+				  		<tr>
+				  			 <th>From Date</th>
+				 			 <th>To Date</th>
+				 			 <th>Remark</th>
+				  		</tr>
+				  	</table>
+				  </th>
+				   <th>Status</th>
+				  <!-- <th>User Rating</th> -->
+				 </tr>
+				 <tr rowspan="{{report.siteVisitDetailsList.length}}" class="table-active" ng-repeat="report in callSpecificRep">
+				 {{report.siteVisitDetailsList.length}}				  
+				  <td >{{report.complaintNumber}}</td>
+				  <td>{{report.serviceCallTypeStr}}</td>
+				  <td>{{report.title}}</td>
+				  <td>{{report.registeredBy}}</td>
+				  <td>{{report.liftNumber}}</td>
+				  <td>{{report.customerName}}</td>
+				  <td>{{report.customerAddress}}</td>
+				  <td>{{report.branchName}}</td>
+				  <td >{{report.customerCity}}</td>
+ 				 <td >{{report.registrationDateStr}}</td>
+				  <td>{{report.callAssignedDateStr}}</td> 
+				  <td>{{report.resolvedDateStr}}</td>
+				  <td>{{report.siteVisitDetailsList.techName}}</td>
+				  
+				  <td class="padding0">
+				  	<table class="table table-striped table-responsive inner-table margin-b-0">
+				  		<tr ng-repeat="visit in report.siteVisitDetailsList.listOFAllVisits">
+				  			<td>{{visit.fromDateDtr}}</td>
+				  			<td>{{visit.toDateStr}}</td>
+							<td>{{visit.remark}}</td>
+				  		</tr>
+				  	</table>
+				  </td>
+				  <td>{{report.status}}</td>
+        		 
+				 </tr>
+				</table>
+	        </div>
+	    </div>
 	</div>
 </div>
 </div>
