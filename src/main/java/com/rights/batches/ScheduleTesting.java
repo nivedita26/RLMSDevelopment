@@ -23,7 +23,7 @@ public class ScheduleTesting {
   AMCMonitorService  aMCMonitorService;
 	
 	//@Scheduled(cron="0 28 13 * * ?")
-    @Scheduled(fixedRate =60000)
+   // @Scheduled(fixedRate =60000)
 	//  @Scheduled(cron="0 25 18 * * ?")
 	 public void schedule() {
 		logger.debug("Batch start");
