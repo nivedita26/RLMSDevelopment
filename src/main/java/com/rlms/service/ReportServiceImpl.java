@@ -174,10 +174,10 @@ public class ReportServiceImpl implements ReportService {
 			Date tempWarrantyStartDate = listOFAMCs.get(listOFAMCs.size() - 1).getLiftCustomerMap().getLiftMaster().getServiceStartDate();
 			Date tempWarrantyEndDate = listOFAMCs.get(listOFAMCs.size() - 1).getLiftCustomerMap().getLiftMaster().getServiceEndDate();
 		*/
-			Date tempEndDate = listOFAMCs.get(listOFAMCs.size() - 1).getAmcEndDate();
-			Date tempDateOfInstallation = listOFAMCs.get(listOFAMCs.size() - 1).getLiftCustomerMap().getLiftMaster().getDateOfInstallation();
-			Date tempWarrantyStartDate = listOFAMCs.get(listOFAMCs.size() - 1).getLiftCustomerMap().getLiftMaster().getServiceStartDate();
-			Date tempWarrantyEndDate = listOFAMCs.get(listOFAMCs.size() - 1).getLiftCustomerMap().getLiftMaster().getServiceEndDate();
+		//	Date tempEndDate = listOFAMCs.get(listOFAMCs.size() - 1).getAmcEndDate();
+		//	Date tempDateOfInstallation = listOFAMCs.get(listOFAMCs.size() - 1).getLiftCustomerMap().getLiftMaster().getDateOfInstallation();
+		//	Date tempWarrantyStartDate = listOFAMCs.get(listOFAMCs.size() - 1).getLiftCustomerMap().getLiftMaster().getServiceStartDate();
+		//	Date tempWarrantyEndDate = listOFAMCs.get(listOFAMCs.size() - 1).getLiftCustomerMap().getLiftMaster().getServiceEndDate();
 
 		//	dto.setStatus(this.calculateAMCStatus(tempStartDate, tempEndDate, tempDateOfInstallation,tempWarrantyStartDate,tempWarrantyEndDate).getStatusMsg());
 			dto.setStatus(Status.getStringFromID(liftAmcDtls.getStatus()));
@@ -230,13 +230,13 @@ public class ReportServiceImpl implements ReportService {
 		}
 	   if(amcStartDate==null && amcEndDate==null) {
 		   if(DateUtils.isBeforeToDate(warrantyEndDate,today)){
-				amcStatus = Status.NOT_UNDER_Warranty;
+				amcStatus = Status.WARRANTY_EXPIRED;
 		   }
 	   }
 		if(amcStartDate!=null &&amcEndDate!=null ) {
 		Date renewalDate = DateUtils.addDaysToDate(amcEndDate, -30);
 		if(DateUtils.isBeforeToDate(warrantyEndDate,today)&&(DateUtils.isAfterToDate(today,amcStartDate))){
-			amcStatus = Status.NOT_UNDER_Warranty;
+			amcStatus = Status.WARRANTY_EXPIRED;
 		}
 		/*else if(DateUtils.isAfterOrEqualTo(renewalDate,today) && DateUtils.isBeforeOrEqualToDate(today, amcEndDate)){
 			amcStatus = Status.RENEWAL_DUE;
@@ -375,11 +375,11 @@ public class ReportServiceImpl implements ReportService {
 			List<SiteVisitDtlsDto> listOfAllVisists = new ArrayList<SiteVisitDtlsDto>();
 			List<RlmsSiteVisitDtls> listOfAllVisits = this.complaintsDao.getAllVisitsForComnplaints(rlmsComplaintTechMapDtls.getComplaintTechMapId());
 			if(null != rlmsComplaintTechMapDtls.getComplaintMaster().getRegistrationDate()){
-				complaintwiseSiteVisitReport.setComplaintRegDate(DateUtils.convertDateTimestampToStringWithTime(rlmsComplaintTechMapDtls.getComplaintMaster().getRegistrationDate()));
+				complaintwiseSiteVisitReport.setComplaintRegDate(DateUtils.convertDateToStringWithoutTime(rlmsComplaintTechMapDtls.getComplaintMaster().getRegistrationDate()));
 			}
 			
 			if(null != rlmsComplaintTechMapDtls.getPlannedEndDate()){
-				complaintwiseSiteVisitReport.setComplaintResolveDate(DateUtils.convertDateTimestampToStringWithTime(rlmsComplaintTechMapDtls.getPlannedEndDate()));
+				complaintwiseSiteVisitReport.setComplaintResolveDate(DateUtils.convertDateToStringWithoutTime(rlmsComplaintTechMapDtls.getPlannedEndDate()));
 			}
 			complaintwiseSiteVisitReport.setMessage(rlmsComplaintTechMapDtls.getComplaintMaster().getTitle());
 			complaintwiseSiteVisitReport.setAddress(rlmsComplaintTechMapDtls.getComplaintMaster().getLiftCustomerMap().getLiftMaster().getAddress());
@@ -391,7 +391,7 @@ public class ReportServiceImpl implements ReportService {
 			complaintwiseSiteVisitReport.setTechName(rlmsComplaintTechMapDtls.getUserRoles().getRlmsUserMaster().getFirstName() + " " + rlmsComplaintTechMapDtls.getUserRoles().getRlmsUserMaster().getLastName());
 			complaintwiseSiteVisitReport.setTechNumber(rlmsComplaintTechMapDtls.getUserRoles().getRlmsUserMaster().getContactNumber());
 			if(rlmsComplaintTechMapDtls.getComplaintMaster().getServiceStartDate()!=null){
-				complaintwiseSiteVisitReport.setSericeDate(DateUtils.convertDateTimestampToStringWithTime(rlmsComplaintTechMapDtls.getComplaintMaster().getServiceStartDate()));
+				complaintwiseSiteVisitReport.setSericeDate(DateUtils.convertDateToStringWithoutTime(rlmsComplaintTechMapDtls.getComplaintMaster().getServiceStartDate()));
 			}
 			if(null != listOfAllVisits &&  !listOfAllVisits.isEmpty()){
 				complaintwiseSiteVisitReport.setTotalNoOfVisits(listOfAllVisits.size());
@@ -400,8 +400,8 @@ public class ReportServiceImpl implements ReportService {
 		//	Long totalVisitTimeForComplaint = 0L;
 			for (RlmsSiteVisitDtls rlmsSiteVisitDtls : listOfAllVisits) {
 				SiteVisitDtlsDto siteVisitDto = new SiteVisitDtlsDto();
-				siteVisitDto.setFromDateDtr(DateUtils.convertDateTimestampToStringWithTime(rlmsSiteVisitDtls.getFromDate()));
-				siteVisitDto.setToDateStr(DateUtils.convertDateTimestampToStringWithTime(rlmsSiteVisitDtls.getToDate()));
+				siteVisitDto.setFromDateDtr(DateUtils.convertDateToStringWithoutTime(rlmsSiteVisitDtls.getFromDate()));
+				siteVisitDto.setToDateStr(DateUtils.convertDateToStringWithoutTime(rlmsSiteVisitDtls.getToDate()));
 				String totalTime = DateUtils.convertTimeIntoDaysHrMin(DateUtils.getDateDiff(rlmsSiteVisitDtls.getFromDate(), rlmsSiteVisitDtls.getToDate(), TimeUnit.SECONDS), TimeUnit.SECONDS);
 				if(null != totalTime){
 					siteVisitDto.setTotalTime(totalTime);
@@ -617,16 +617,16 @@ public class ReportServiceImpl implements ReportService {
 			complaintsDto.setCustomerName(rlmsComplaintMaster.getLiftCustomerMap().getBranchCustomerMap().getCustomerMaster().getCustomerName());
 			complaintsDto.setCustomerCity(rlmsComplaintMaster.getLiftCustomerMap().getBranchCustomerMap().getCustomerMaster().getCity());
 			complaintsDto.setCustomerAddress(rlmsComplaintMaster.getLiftCustomerMap().getBranchCustomerMap().getCustomerMaster().getAddress());
-			complaintsDto.setRegistrationDateStr(DateUtils.convertDateTimestampToStringWithTime(rlmsComplaintMaster.getRegistrationDate()));
+			complaintsDto.setRegistrationDateStr(DateUtils.convertDateToStringWithoutTime(rlmsComplaintMaster.getRegistrationDate()));
             complaintsDto.setStatus(Status.getStringFromID(rlmsComplaintMaster.getStatus()));
             complaintsDto.setServiceCallType(rlmsComplaintMaster.getCallType());
         //	RlmsUserRoles  rlmsUserRoles = userRoleDao.getUserRoleByUserId(rlmsComplaintMaster.getCreatedBy());
             RlmsComplaintTechMapDtls  complaintTechMapDtls = complaintsDao.getComplTechMapObjByComplaintId(rlmsComplaintMaster.getComplaintId());		
             if(complaintTechMapDtls!=null) {
-			complaintsDto.setCallAssignedDateStr(DateUtils.convertDateTimestampToStringWithTime(complaintTechMapDtls.getAssignedDate()));
+			complaintsDto.setCallAssignedDateStr(DateUtils.convertDateToStringWithoutTime(complaintTechMapDtls.getAssignedDate()));
 			// complaintsDto.setLastVisitedDateStr(DateUtils.convertDateTimestampToStringWithTime(complaintTechMapDtls.getUpdatedDate()));
                 if(complaintTechMapDtls.getStatus()==Status.RESOLVED.getStatusId()) {
-                 	complaintsDto.setResolvedDateStr(DateUtils.convertDateTimestampToStringWithTime(rlmsComplaintMaster.getUpdatedDate()));
+                 	complaintsDto.setResolvedDateStr(DateUtils.convertDateToStringWithoutTime(rlmsComplaintMaster.getUpdatedDate()));
                 }
                 if(complaintTechMapDtls.getStatus()==Status.RESOLVED.getStatusId()||complaintTechMapDtls.getStatus()==Status.INPROGESS.getStatusId()) {
                  String totalDaysForComplaint = DateUtils.convertTimeIntoDaysHrMin(DateUtils.getDateDiff(rlmsComplaintMaster.getRegistrationDate(), complaintTechMapDtls.getUpdatedDate(),TimeUnit.SECONDS),TimeUnit.SECONDS);
@@ -636,10 +636,10 @@ public class ReportServiceImpl implements ReportService {
                   	  if(listOfAllVisits!=null && !listOfAllVisits.isEmpty()) {
                   		complaintsDto.setTotalAttempts(listOfAllVisits.size());
                   	  }
-                  	  complaintsDto.setLastVisitedDateStr(DateUtils.convertDateTimestampToStringWithTime(complaintTechMapDtls.getUpdatedDate()));
+                  	  complaintsDto.setLastVisitedDateStr(DateUtils.convertDateToStringWithoutTime(complaintTechMapDtls.getUpdatedDate()));
                 }
-                	complaintsDto.setToDateStr(DateUtils.convertDateTimestampToStringWithTime(complaintTechMapDtls.getUpdatedDate()));
-    	            complaintsDto.setFromDateStr(DateUtils.convertDateTimestampToStringWithTime(complaintTechMapDtls.getAssignedDate()));
+                	complaintsDto.setToDateStr(DateUtils.convertDateToStringWithoutTime(complaintTechMapDtls.getUpdatedDate()));
+    	            complaintsDto.setFromDateStr(DateUtils.convertDateToStringWithoutTime(complaintTechMapDtls.getAssignedDate()));
     	           	complaintsDto.setTechnicianDtls(complaintTechMapDtls.getUserRoles().getRlmsUserMaster().getFirstName()+" "+complaintTechMapDtls.getUserRoles().getRlmsUserMaster().getLastName());
     	           	complaintsDto.setRemark(rlmsComplaintMaster.getRemark());
             }
@@ -652,6 +652,9 @@ public class ReportServiceImpl implements ReportService {
     				 complaintsDto.setRegisteredBy(memberMaster.getFirstName() +" "+memberMaster.getLastName()+"("+memberMaster.getContactNumber()+")");
     			}
     		}
+        	 if(RLMSCallType.AMC_CALL.getId() == rlmsComplaintMaster.getCallType()){
+				   complaintsDto.setRegisteredBy("Autogenerated AMC Call");
+				}
         /*    if(rlmsUserRoles.getRlmsSpocRoleMaster().getSpocRoleId()==SpocRoleConstants.END_USER.getSpocRoleId()){
                 complaintsDto.setRegisteredBy(rlmsUserRoles.getRlmsUserMaster().getFirstName()+""+rlmsUserRoles.getRlmsUserMaster().getLastName()+" "+"("+"USER"+")");
             }
@@ -688,7 +691,7 @@ public class ReportServiceImpl implements ReportService {
 			complaintsDto.setCustomerName(rlmsComplaintMaster.getLiftCustomerMap().getBranchCustomerMap().getCustomerMaster().getCustomerName());
 			complaintsDto.setCustomerCity(rlmsComplaintMaster.getLiftCustomerMap().getBranchCustomerMap().getCustomerMaster().getCity());
 			complaintsDto.setCustomerAddress(rlmsComplaintMaster.getLiftCustomerMap().getBranchCustomerMap().getCustomerMaster().getAddress());
-			complaintsDto.setRegistrationDateStr(DateUtils.convertDateTimestampToStringWithTime(rlmsComplaintMaster.getRegistrationDate()));
+			complaintsDto.setRegistrationDateStr(DateUtils.convertDateToStringWithoutTime(rlmsComplaintMaster.getRegistrationDate()));
             complaintsDto.setStatus(Status.getStringFromID(rlmsComplaintMaster.getStatus()));
             //complaintsDto.setServiceCallType(rlmsComplaintMaster.getCallType());
             complaintsDto.setComplaintNumber(rlmsComplaintMaster.getComplaintNumber());
@@ -720,7 +723,7 @@ public class ReportServiceImpl implements ReportService {
               if(complaintTechMapDtls!=null) {
              //	 complaintsDto.setCallAssignedDateStr(DateUtils.convertDateToStringWithTime(complaintTechMapDtls.getAssignedDate()));
 
-             	 complaintsDto.setCallAssignedDateStr(DateUtils.convertDateTimestampToStringWithTime(complaintTechMapDtls.getAssignedDate()));
+             	 complaintsDto.setCallAssignedDateStr(DateUtils.convertDateToStringWithoutTime(complaintTechMapDtls.getAssignedDate()));
 
             	  
             	 /* complaintsDto.setCallAssignedDateStr(DateUtils.convertDateToStringWithTime(complaintTechMapDtls.getAssignedDate()));
@@ -739,10 +742,10 @@ public class ReportServiceImpl implements ReportService {
             	  List<SiteVisitDtlsDto> listOfAllVisists = new ArrayList<SiteVisitDtlsDto>();
             	  List<RlmsSiteVisitDtls> listOfAllVisits = this.complaintsDao.getAllVisitsForComnplaints(complaintTechMapDtls.getComplaintTechMapId());
             	  if(null != complaintTechMapDtls.getComplaintMaster().getRegistrationDate()){
-            		  complaintwiseSiteVisitReport.setComplaintRegDate(DateUtils.convertDateTimestampToStringWithTime(complaintTechMapDtls.getComplaintMaster().getRegistrationDate()));
+            		  complaintwiseSiteVisitReport.setComplaintRegDate(DateUtils.convertDateToStringWithoutTime(complaintTechMapDtls.getComplaintMaster().getRegistrationDate()));
             	  }
             	  if(complaintTechMapDtls.getStatus()==Status.RESOLVED.getStatusId()) {
-                  	 complaintwiseSiteVisitReport.setComplaintResolveDate(DateUtils.convertDateTimestampToStringWithTime(complaintTechMapDtls.getUpdatedDate()));
+                  	 complaintwiseSiteVisitReport.setComplaintResolveDate(DateUtils.convertDateToStringWithoutTime(complaintTechMapDtls.getUpdatedDate()));
             	  }
             	//  if(null != complaintTechMapDtls.getPlannedEndDate()){
             	//	  complaintwiseSiteVisitReport.setComplaintResolveDate(DateUtils.convertDateTimestampToStringWithTime(complaintTechMapDtls.getPlannedEndDate()));
@@ -757,7 +760,7 @@ public class ReportServiceImpl implements ReportService {
             	  complaintwiseSiteVisitReport.setTechName(complaintTechMapDtls.getUserRoles().getRlmsUserMaster().getFirstName() + " " + complaintTechMapDtls.getUserRoles().getRlmsUserMaster().getLastName());
             	  complaintwiseSiteVisitReport.setTechNumber(complaintTechMapDtls.getUserRoles().getRlmsUserMaster().getContactNumber());
             	  if(complaintTechMapDtls.getComplaintMaster().getServiceStartDate()!=null){
-            		  complaintwiseSiteVisitReport.setSericeDate(DateUtils.convertDateTimestampToStringWithTime(complaintTechMapDtls.getComplaintMaster().getServiceStartDate()));
+            		  complaintwiseSiteVisitReport.setSericeDate(DateUtils.convertDateToStringWithoutTime(complaintTechMapDtls.getComplaintMaster().getServiceStartDate()));
     				}
             	  if(null != listOfAllVisits &&  !listOfAllVisits.isEmpty()){
             		  complaintwiseSiteVisitReport.setTotalNoOfVisits(listOfAllVisits.size());
@@ -765,8 +768,8 @@ public class ReportServiceImpl implements ReportService {
             	  Long totalTimeForComplaint = 0L;
     			 for (RlmsSiteVisitDtls rlmsSiteVisitDtls : listOfAllVisits) {
     					SiteVisitDtlsDto siteVisitDto = new SiteVisitDtlsDto();
-    					siteVisitDto.setFromDateDtr(DateUtils.convertDateTimestampToStringWithTime(rlmsSiteVisitDtls.getFromDate()));
-    					siteVisitDto.setToDateStr(DateUtils.convertDateTimestampToStringWithTime(rlmsSiteVisitDtls.getToDate()));
+    					siteVisitDto.setFromDateDtr(DateUtils.convertDateToStringWithoutTime(rlmsSiteVisitDtls.getFromDate()));
+    					siteVisitDto.setToDateStr(DateUtils.convertDateToStringWithoutTime(rlmsSiteVisitDtls.getToDate()));
     					String totalTime = DateUtils.convertTimeIntoDaysHrMin(DateUtils.getDateDiff(rlmsSiteVisitDtls.getFromDate(), rlmsSiteVisitDtls.getToDate(), TimeUnit.SECONDS), TimeUnit.SECONDS);
     					if(null != totalTime){
     						siteVisitDto.setTotalTime(totalTime);

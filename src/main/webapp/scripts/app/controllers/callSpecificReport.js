@@ -547,6 +547,7 @@ $scope.loadCallID=function(){
 					  	        		}else{
 					  	        			detailsObj["Remark"] =" - ";
 					  	        		}
+		  	        					
 	  	        					}
   	        					}
 		  	        		}

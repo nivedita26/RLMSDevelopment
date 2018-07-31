@@ -178,7 +178,7 @@ public class DashBoardController extends BaseController {
 										amcStatusCount.setNotUnderAMCCount(statusCount.getStatusCount());
 									}*/
 
-									if ((statusCount.getStatusId()) == (Status.NOT_UNDER_Warranty.getStatusId())) {
+									if ((statusCount.getStatusId()) == (Status.WARRANTY_EXPIRED.getStatusId())) {
 										amcStatusCount.setNotUnderWarranty(statusCount.getStatusCount());
 									}
 								}
