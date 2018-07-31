@@ -596,17 +596,14 @@ public class ReportServiceImpl implements ReportService {
 	public List<ComplaintsDto> getCallDetailedReport(ComplaintsDtlsDto dto) {
 		List<ComplaintsDto> complaintsDtoList = new ArrayList<>();
 		List<RlmsComplaintMaster> complaintList = new ArrayList<>();
-		if(dto.getListOfLiftCustoMapId()!=null) {
-		complaintList = complaintsDao.complaintMastersList(dto.getListOfLiftCustoMapId(),dto);
-		}
-		else {
+		
 		List<RlmsLiftCustomerMap> liftCustomerMapList = liftDao.getliftCustomerMapDtlsByBranchCutomerId(dto);
 		List<Integer> listCustMapIds = new ArrayList<>();
 		for (RlmsLiftCustomerMap  liftCustomerMap : liftCustomerMapList) {
 			listCustMapIds.add(liftCustomerMap.getLiftCustomerMapId());
 		}
 		complaintList = complaintsDao.complaintMastersList(listCustMapIds,dto);
-		}
+		
 		
 		for (RlmsComplaintMaster rlmsComplaintMaster : complaintList) {
 			ComplaintsDto complaintsDto = new ComplaintsDto();
@@ -676,12 +673,19 @@ public class ReportServiceImpl implements ReportService {
     public List<CallSpecificReportDto> getCallSpecificReport(ComplaintsDtlsDto dto) {
 		
 		List<CallSpecificReportDto> complaintsDtoList = new ArrayList<>();
-		List<RlmsLiftCustomerMap> liftCustomerMapList = liftDao.getliftCustomerMapDtlsByBranchCutomerId(dto);
 		List<Integer> listCustMapIds = new ArrayList<>();
+		
+		if(dto.getListOfLiftCustoMapId()!=null) {
+			listCustMapIds= dto.getListOfLiftCustoMapId();
+		}
+		else {
+		List<RlmsLiftCustomerMap> liftCustomerMapList = liftDao.getliftCustomerMapDtlsByBranchCutomerId(dto);
 		for (RlmsLiftCustomerMap  liftCustomerMap : liftCustomerMapList) {
 			listCustMapIds.add(liftCustomerMap.getLiftCustomerMapId());
 		}
+	}
 		List<RlmsComplaintMaster> complaintList = complaintsDao.complaintMastersList(listCustMapIds,dto);
+		
 		for (RlmsComplaintMaster rlmsComplaintMaster : complaintList) {
 			CallSpecificReportDto complaintsDto = new CallSpecificReportDto();
 			complaintsDto.setServiceCallTypeStr(RLMSCallType.getStringFromID(rlmsComplaintMaster.getCallType()));
