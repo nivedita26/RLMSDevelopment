@@ -309,13 +309,17 @@ public class LiftServiceImpl implements LiftService{
 				}
 				if(amcDtls.getAmcType()!=null){
 					if (AMCType.COMPREHENSIVE.getId() == amcDtls.getAmcType()) {
+						dto.setAmcType(amcDtls.getAmcType());
 						dto.setAmcTypeStr(AMCType.COMPREHENSIVE.getType());
 					} else if (AMCType.NON_COMPREHENSIVE.getId() == amcDtls
 							.getAmcType()) {
+						dto.setAmcType(amcDtls.getAmcType());
 						dto.setAmcTypeStr(AMCType.NON_COMPREHENSIVE.getType());
 					} else if (AMCType.ON_DEMAND.getId() == amcDtls.getAmcType()) {
+						dto.setAmcType(amcDtls.getAmcType());
 						dto.setAmcTypeStr(AMCType.ON_DEMAND.getType());
 					} else if (AMCType.OTHER.getId() == amcDtls.getAmcType()) {
+						dto.setAmcType(amcDtls.getAmcType());
 						dto.setAmcTypeStr(AMCType.OTHER.getType());
 					}
 				}

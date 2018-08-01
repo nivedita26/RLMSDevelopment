@@ -38,7 +38,6 @@ angular
             angular.element(target).sparkline('html', options);
           }
         }
-
         // since the canvas will be invisible if the parent element is :\
         scope.$watch(function() {
           return element.is(':visible');

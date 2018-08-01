@@ -223,9 +223,7 @@ public class ComplaintsDaoImpl implements ComplaintsDao{
 		 criteria.createAlias("lcm.branchCustomerMap", "bcm");
 		 criteria.createAlias("bcm.companyBranchMapDtls", "cbm");
 		 criteria.createAlias("cbm.rlmsCompanyMaster", "cm");
-		 
 		 criteria.createAlias("userRoles", "role");
-		 
 				 if(null != dto.getBranchCompanyMapId()){
 					 criteria.add(Restrictions.eq("cbm.companyBranchMapId", dto.getBranchCompanyMapId()));
 				 }

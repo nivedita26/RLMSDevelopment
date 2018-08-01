@@ -801,7 +801,7 @@ $scope.loadCallID=function(){
 	  		var data = {
 	  				//listOfUserRoleIds:tempListOfUserRoleIds,
 	  				//listOfEventTypeIds:tempStatus,
-	  				liftCustomerMapId:tempLiftId,
+	  				listOfLiftCustoMapId:tempLiftId,
 	  				branchCustomerMapId:$scope.selectedCustomer.selected.branchCustomerMapId
 	  		};
 	  		return data;

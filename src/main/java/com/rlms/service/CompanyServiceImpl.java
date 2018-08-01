@@ -112,8 +112,9 @@ public class CompanyServiceImpl implements CompanyService{
 	
 	@Transactional(propagation = Propagation.REQUIRED)
 	public List<RlmsCompanyMaster> getAllCompanies(UserMetaInfo metaInfo){
-		RlmsUserRoles userRole = metaInfo.getUserRole();
 		List<RlmsCompanyMaster> listOfAllCompanies = null;
+		if(metaInfo!=null) {
+		RlmsUserRoles userRole = metaInfo.getUserRole();
 		if(null != userRole){
 			if(SpocRoleConstants.INDITECH_ADMIN.getSpocRoleId().equals(userRole.getRlmsSpocRoleMaster().getSpocRoleId()) ||
 					SpocRoleConstants.INDITECH_OPERATOR.getSpocRoleId().equals(userRole.getRlmsSpocRoleMaster().getSpocRoleId())){
@@ -121,6 +122,7 @@ public class CompanyServiceImpl implements CompanyService{
 			}else{
 				listOfAllCompanies = this.companyDao.getAllCompanies(userRole.getRlmsCompanyMaster().getCompanyId());
 			}
+		}
 		}
 		return listOfAllCompanies;
 	}

@@ -1282,22 +1282,22 @@
 								$scope.loadMap =function(){
 									var bounds = new google.maps.LatLngBounds();
 									//if($scope.technicians[0].liftLatitude!=null &&$scope.technicians[0].liftLongitude!=null){
-									//var lift = {lat: $scope.technicians[0].liftLatitude, lng: $scope.technicians[0].liftLongitude};
-									var lift = {lat:18.562622,lng:73.808723};
+									var lift = {lat: $scope.technicians[0].liftLatitude, lng: $scope.technicians[0].liftLongitude};
+								//	var lift = {lat:18.562622,lng:73.808723};
+									var lift = lift;
 									$scope.map = new google.maps.Map(document.getElementById('map'), {
 								          center: lift,
 								          zoom: 11
 								        });
-								
-							  				
 									 var image = {
-									          url: 'assets/img/liftIcon.png',
-									          // This marker is 20 pixels wide by 32 pixels high.
-									          size: new google.maps.Size(20, 32),
+									          url: 'assets/img/Lift.png',
+									          //This marker is 20 pixels wide by 32 pixels high.
+									          scaledSize : new google.maps.Size(10,10),
+									          //size: new google.maps.Size(20, 32),
 									          // The origin for this image is (0, 0).
-									          origin: new google.maps.Point(0, 0),
+									//          origin: new google.maps.Point(0, 0),
 									          // The anchor for this image is the base of the flagpole at (0, 32).
-									          anchor: new google.maps.Point(0, 32)
+									  //        anchor: new google.maps.Point(0, 32)
 									        };
 									 var liftInfowindow = new google.maps.InfoWindow({
 								          content: "<p><b>Lift Address</b>: "+ $scope.technicians[0].liftAdd
@@ -1308,11 +1308,14 @@
 								          map: $scope.map,
 								           label:{text: "L", color: "blue"},
 								          icon: {
-								             path: google.maps.SymbolPath.CIRCLE,
-								              scale: 10
-								            },
+								        	  url:'assets/img/Lift.png',
+								        	  scaledSize : new google.maps.Size(50,50)
+								          	}
+								        //  scale: 10
+								          //    scale: 10
+								      //      },
 								      //   icon:'assets/img/liftIcon.png',
-								          scaledSize: new google.maps.Size(10, 10)
+								     //    scaledSize: new google.maps.Size(10, 10)
 								        });
 									
 									liftMarker.addListener('click', function() {
@@ -1352,7 +1355,17 @@
 										var marker = new google.maps.Marker({
 											position: new google.maps.LatLng($scope.technicians[i].latitude, $scope.technicians[i].longitude),
 											map: $scope.map,
-											label:{text:"T"+(i+1),color:"black"},
+											label:{text:"T"+(i+1),color:"black",
+									      //  labelOrigin: new google.maps.Point(50, 50),
+								          //  labelAnchor: new google.maps.Point(50, 20),
+											      fontWeight: "bold"
+
+											},
+											  icon: {
+									        	  url:'assets/img/Technician.png',
+									        	  scaledSize : new google.maps.Size(40,30),
+											      labelOrigin: new google.maps.Point(45,0),
+									          	},
 								            content: "<p><b>Technician Location</b><br>Name: "+$scope.technicians[i].name+"<br>Assigned Complaint: "+$scope.technicians[i].countOfComplaintsAssigned+" <br>Todays Assigned Complaint: "+$scope.technicians[i].todaysAssignedCalls+" </p>"
 										});
 										bounds.extend(marker.position);	
@@ -1398,5 +1411,4 @@
 						        	  $scope.modalInstance.dismiss('cancel');
 						          }
 							}]);
-	
 })();

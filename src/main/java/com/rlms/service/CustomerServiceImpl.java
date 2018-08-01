@@ -195,8 +195,8 @@ public class CustomerServiceImpl implements CustomerService{
 			dto.setWatchmenEmail(branchCustomerMap.getCustomerMaster().getWatchmenEmail());
 			dto.setCustomerId(branchCustomerMap.getCustomerMaster().getCustomerId());
 			dto.setActiveFlag(branchCustomerMap.getCustomerMaster().getActiveFlag());
+			dto.setCustomerType(branchCustomerMap.getCustomerMaster().getCustomerType());
 			dto.setCustomerTypeStr(CustomerType.getStringFromID(branchCustomerMap.getCustomerMaster().getCustomerType()));
-			
 			if(null != listOfLifts && !listOfLifts.isEmpty()){
 				dto.setTotalNumberOfLifts(listOfLifts.size());
 			}

@@ -42,7 +42,6 @@
 			$scope.showCompany = false;
 			$scope.loadBranchData();
 		}
-		
 		// showBranch Flag
 		if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel < 3) {
 			$scope.showBranch = true;
@@ -59,8 +58,6 @@
 						$scope.companies = response;
 					});
 		}
-		
-		
 		$scope.filterOptions.filterText='';
 		$scope.$watch('filterOptions', function(newVal, oldVal) {
 	  	      if (newVal !== oldVal) {
@@ -87,8 +84,6 @@
 			}
 			$scope.showMembers = true;
 		}
-	   
-	  	 
 	  	  $scope.resetReportList = function(){
 	  		initReport();
 	  	  }

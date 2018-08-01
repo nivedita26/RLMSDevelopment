@@ -21,11 +21,11 @@ public class IndexController extends BaseController{
 	@RequestMapping(value="index",method = RequestMethod.GET)
 	    public  String getIndexPage() {
 		UserMetaInfo  userrole = this.getMetaInfo();
+		if(userrole!=null) {
 		  if(userrole.getUserRole().equals(SpocRoleConstants.TECHNICIAN.getSpocRoleName())) {
-			  //System.out.println("user role"+userrole.getRole());
 			  return  "login.jsp";
 		  }
-	//	  System.out.println(userrole.getUsername());
+		}
 	      return "index.jsp";
 	    }
 	  
