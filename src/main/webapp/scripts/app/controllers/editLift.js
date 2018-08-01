@@ -171,6 +171,7 @@
 			$scope.selectedCustomerType={};
 			$scope.selectedAMCType={};
 			$scope.selectedDoorType={};
+			$scope.selectedFireMode={};
 			$scope.selectedEngineMachineType={};
 			$scope.selectedCollectiveType={};
 			$scope.selectedSimplexDuplex={};
@@ -280,6 +281,7 @@
 				}
 			];*/
 			$scope.addLift={
+					customerName:'',
 					fyaTranId:null,
 					liftType:0,
 					branchCustomerMapId :'',
@@ -287,11 +289,11 @@
 					customerName:'',
 					branchName:'',
 					companyName:'',
-					liftId:'',
+					liftId:0,
 					address : '',
 					city:'',
-					rea:'',
-					pinCode:'',
+					area:'',
+					pinCode:0,
 					latitude : '',
 					longitude : '',
 					serviceStartDate : '',
@@ -306,6 +308,7 @@
 					amcEndDate:'',
 					amcType : 0,
 					amcAmount : '',
+					amcTypeStr : '',
 
 					doorType : 0,
 					noOfStops :'',
@@ -330,14 +333,14 @@
 					alarm : 0,
 					alarmBattery : '',
 					accessControl : '',
-					activeFlag:'',
+					activeFlag:0,
 					imei :'',
 					lmsEventFromContactNo:'',
 					liftCustomerMapId:null,
 					//status:'',
 					isBlank:false,
 					photoType:'',
-					totalLiftCountForCustomer:0,
+					totalLiftCountForCustomer:null,
 					
 					machinePhoto : '',
 					panelPhoto : '',
@@ -371,66 +374,38 @@
 
 		    //load compay dropdown data
 		//Post call add branch
-/*		function parseBase64(){
-			if($scope.addLift.machinePhoto != ''){
-				$scope.addLift.machinePhoto = $scope.addLift.machinePhoto.base64;
-			}
-			if($scope.addLift.panelPhoto != ''){
-				$scope.addLift.panelPhoto = $scope.addLift.panelPhoto.base64;
-			}
-			if($scope.addLift.ardPhoto != ''){
-				$scope.addLift.ardPhoto = $scope.addLift.ardPhoto.base64;
-			}
-			if($scope.addLift.lopPhoto != ''){
-				$scope.addLift.lopPhoto = $scope.addLift.lopPhoto.base64;
-			}
-			if($scope.addLift.copPhoto != ''){
-				$scope.addLift.copPhoto = $scope.addLift.copPhoto.base64;
-			}
-			if($scope.addLift.cartopPhoto != ''){
-				$scope.addLift.cartopPhoto = $scope.addLift.cartopPhoto.base64;
-			}
-			if($scope.addLift.autoDoorHeaderPhoto != ''){
-				$scope.addLift.autoDoorHeaderPhoto = $scope.addLift.autoDoorHeaderPhoto.base64;
-			}
-			if($scope.addLift.wiringPhoto != ''){
-				$scope.addLift.wiringPhoto = $scope.addLift.wiringPhoto.base64;
-			}
-			if($scope.addLift.lobbyPhoto != ''){
-				$scope.addLift.lobbyPhoto = $scope.addLift.lobbyPhoto.base64;
-			}
-		}*/
 		$scope.submitEditLift = function(){
+			if($scope.editLift.fireMode=== "false"){
+				$scope.editLift.fireMode=0
+			}else{
+				$scope.editLift.fireMode=1
+			}
 			var liftData={};
 			liftData={									
-					liftNumber: "739",
-					address: $rootScope.editLift.address,
 					customerName: '',
 					branchName: '',					
 					liftNumber: $scope.editLift.liftNumber,
 					address:$scope.editLift.address,
-					customerName: '',
-					branchName: '',
 					companyName: null,
 					city: $scope.editLift.city,
 					area: $scope.editLift.area,
 					pinCode: $scope.editLift.pinCode,
 					companyId: null,
-					branchCompanyMapId: null,
-					branchCustomerMapId: null,
+					//branchCompanyMapId: null,
+					//branchCustomerMapId: null,
 					liftId:$scope.editLift.liftId,
 					latitude:$scope.editLift.latitude,
 					longitude: $scope.editLift.longitude,
-					serviceStartDate: $scope.editLift.serviceStartDate,
-					serviceStartDateStr:null,
-					serviceEndDate:$scope.editLift.serviceEndDate,
-					serviceEndDateStr: null,
-					dateOfInstallation:$scope.editLift.dateOfInstallation,
-					dateOfInstallationStr: null,
-					amcStartDate: $scope.editLift.amcStartDate,
-					amcEndDate: $scope.editLift.amcEndDate,
-					amcStartDateStr: null,
-					amcEndDateStr: null,
+					serviceStartDateStr: $scope.editLift.serviceStartDate,
+					serviceStartDate:null,
+					serviceEndDateStr:$scope.editLift.serviceEndDate,
+					serviceEndDate: null,
+					dateOfInstallationStr:$scope.editLift.dateOfInstallation,
+					dateOfInstallation: null,
+					amcStartDateStr: $scope.editLift.amcStartDate,
+					amcEndDateStr: $scope.editLift.amcEndDate,
+					amcStartDate: null,
+					amcEndDate: null,
 					amcType: $scope.editLift.amcType,
 					//amcType: $scope.selectedAMCType.selected.id,
 					//amcTypeStr:  $scope.selectedAMCType.selected.name,
@@ -586,6 +561,7 @@
 			}*/
 			//$scope.addLift.liftTypeName=$scope.addLift.liftTypeName;
 			//$scope.addLift.branchCustomerMapId = $scope.selectedCustomer.selected.branchCustomerMapId
+			
 			serviceApi.doPostWithData("/RLMS/admin/lift/updateLiftParams",liftData)
 			.then(function(response){
 				$scope.showAlert = true;
