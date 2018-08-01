@@ -113,7 +113,7 @@
 			 <div class="col-sm-6">
 						<select ng-model="editLift.amcType" class="form-control">
 						<option value="">--Select --</option>
-						<option ng-repeat="amc in AMCType" ng-selected="editLift.amcType ==amc.id" value="{{amc.id}}">{{amc.name}}</option>
+						<option ng-repeat="amc in AMCType"  type="number"  ng-selected="editLift.amcType ==amc.id" value="{{amc.id}}">{{amc.name}}</option>
 						</select>
 					</div>
 				</div>
@@ -132,7 +132,7 @@
 			<div class="col-sm-6">
 						<select ng-model="editLift.doorType" class="form-control">
 						<option value="">--Select --</option>
-						<option ng-repeat="door in DoorType" ng-selected="editLift.doorType ==door.id" value="{{door.id}}">{{door.name}}</option>
+						<option ng-repeat="door in DoorType"  type="number"  ng-selected="editLift.doorType ==door.id" value="{{door.id}}">{{door.name}}</option>
 						</select>
 			</div>
 		</div>
@@ -208,7 +208,7 @@
 
 						<select ng-model="editLift.collectiveType" class="form-control">
 						<option value="">--Select --</option>
-						<option ng-repeat="type in CollectiveType" ng-selected="editLift.collectiveType==type.id" value="{{type.id}}">{{type.name}}</option>
+						<option ng-repeat="type in CollectiveType" type="number" ng-selected="editLift.collectiveType==type.id" value="{{type.id}}">{{type.name}}</option>
 						</select>
 			</div>
 			<!-- <div class="col-md-6"><input ng-model="editLift.collectiveType" class="form-control"  type="number" name="collectiveType"></div> -->
@@ -226,7 +226,7 @@
 					  </ui-select> -->
 						<select ng-model="editLift.simplexDuplex" class="form-control">
 						<option value="">--Select --</option>
-						<option ng-repeat="simpDup in SimplexDuplex" ng-selected="editLift.simplexDuplex ==simpDup.id" value="{{simpDup.id}}">{{simpDup.name}}</option>
+						<option ng-repeat="simpDup in SimplexDuplex"  type="number"  ng-selected="editLift.simplexDuplex ==simpDup.id" value="{{simpDup.id}}">{{simpDup.name}}</option>
 						</select>
 			</div>
 		</div>
@@ -247,7 +247,7 @@
 					  </ui-select>  -->
 						<select ng-model="editLift.wiringShceme" class="form-control">
 						<option value="">--Select --</option>
-						<option ng-repeat="wiringScheme in WiringSchemes" ng-selected="editLift.wiringShceme ==wiringScheme.id" value="{{wiringScheme.id}}">{{wiringScheme.name}}</option>
+						<option ng-repeat="wiringScheme in WiringSchemes"  type="number" ng-selected="editLift.wiringShceme ==wiringScheme.id" value="{{wiringScheme.id}}">{{wiringScheme.name}}</option>
 						</select>
 			</div> 
 		</div>

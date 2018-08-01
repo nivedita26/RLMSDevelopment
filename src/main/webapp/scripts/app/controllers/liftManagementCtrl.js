@@ -344,12 +344,12 @@
 	  	        		if(!!largeLoad[i].latitude){
 	  	        			userDetailsObj["Latitude"] =largeLoad[i].latitude;
 	  	        		}else{
-	  	        			userDetailsObj["Latitude"] =" - ";
+	  	        			userDetailsObj["Latitude"] ="";
 	  	        		}
 	  	        		if(!!largeLoad[i].longitude){
 	  	        			userDetailsObj["Longitude"] =largeLoad[i].longitude;
 	  	        		}else{
-	  	        			userDetailsObj["Longitude"] =" - ";
+	  	        			userDetailsObj["Longitude"] ="";
 	  	        		}
 	  	        		if(!!largeLoad[i].area){
 	  	        			userDetailsObj["Area"] =largeLoad[i].area;
@@ -359,172 +359,172 @@
 	  	        		if(!!largeLoad[i].noOfStops){
 	  	        			userDetailsObj["NoOfStops"] =largeLoad[i].noOfStops;
 	  	        		}else{
-	  	        			userDetailsObj["NoOfStops"] =" - ";
+	  	        			userDetailsObj["NoOfStops"] ="";
 	  	        		}
 	  	        		if(!!largeLoad[i].machineMake){
 	  	        			userDetailsObj["MachineMake"] =largeLoad[i].machineMake;
 	  	        		}else{
-	  	        			userDetailsObj["MachineMake"] =" - ";
+	  	        			userDetailsObj["MachineMake"] ="";
 	  	        		}
 	  	        		if(!!largeLoad[i].machineCapacity){
 	  	        			userDetailsObj["machineCapacity"] =largeLoad[i].machineCapacity;
 	  	        		}else{
-	  	        			userDetailsObj["machineCapacity"] =" - ";
+	  	        			userDetailsObj["machineCapacity"] ="";
 	  	        		}
 	  	        		if(!!largeLoad[i].machineCurrent){
 	  	        			userDetailsObj["MachineCurrent"] =largeLoad[i].machineCurrent;
 	  	        		}else{
-	  	        			userDetailsObj["MachineCurrent"] =" - ";
+	  	        			userDetailsObj["MachineCurrent"] ="";
 	  	        		}
 	  	        		if(!!largeLoad[i].breakVoltage){
 	  	        			userDetailsObj["BreakVoltage"] =largeLoad[i].breakVoltage;
 	  	        		}else{
-	  	        			userDetailsObj["BreakVoltage"] =" - ";
+	  	        			userDetailsObj["BreakVoltage"] ="";
 	  	        		}
 	  	        		if(!!largeLoad[i].panelMake){
 	  	        			userDetailsObj["PanelMake"] =largeLoad[i].panelMake;
 	  	        		}else{
-	  	        			userDetailsObj["PanelMake"] =" - ";
+	  	        			userDetailsObj["PanelMake"] ="";
 	  	        		}
 	  	        		if(!!largeLoad[i].ard){
 	  	        			userDetailsObj["ard"] =largeLoad[i].ard;
 	  	        		}else{
-	  	        			userDetailsObj["ard"] =" - ";
+	  	        			userDetailsObj["ard"] ="";
 	  	        		}
 	  	        		if(!!largeLoad[i].noOfBatteries){
 	  	        			userDetailsObj["noOfBatteries"] =largeLoad[i].noOfBatteries;
 	  	        		}else{
-	  	        			userDetailsObj["noOfBatteries"] =" - ";
+	  	        			userDetailsObj["noOfBatteries"] ="";
 	  	        		}
 	  	        		if(!!largeLoad[i].batteryCapacity){
 	  	        			userDetailsObj["batteryCapacity"] =largeLoad[i].batteryCapacity;
 	  	        		}else{
-	  	        			userDetailsObj["batteryCapacity"] =" - ";
+	  	        			userDetailsObj["batteryCapacity"] ="";
 	  	        		}
 	  	        		if(!!largeLoad[i].batteryMake){
 	  	        			userDetailsObj["batteryMake"] =largeLoad[i].batteryMake;
 	  	        		}else{
-	  	        			userDetailsObj["batteryMake"] =" - ";
+	  	        			userDetailsObj["batteryMake"] ="";
 	  	        		}
 	  	        		if(!!largeLoad[i].copMake){
 	  	        			userDetailsObj["copMake"] =largeLoad[i].copMake;
 	  	        		}else{
-	  	        			userDetailsObj["copMake"] =" - ";
+	  	        			userDetailsObj["copMake"] ="";
 	  	        		}
 	  	        		if(!!largeLoad[i].lopMake){
 	  	        			userDetailsObj["lopMake"] =largeLoad[i].lopMake;
 	  	        		}else{
-	  	        			userDetailsObj["lopMake"] =" - ";
+	  	        			userDetailsObj["lopMake"] ="";
 	  	        		}
 	  	        		if(!!largeLoad[i].alarmBattery){
 	  	        			userDetailsObj["alarmBattery"] =largeLoad[i].alarmBattery;
 	  	        		}else{
-	  	        			userDetailsObj["alarmBattery"] =" - ";
+	  	        			userDetailsObj["alarmBattery"] ="";
 	  	        		}
 	  	        		if(!!largeLoad[i].accessControl){
 	  	        			userDetailsObj["accessControl"] =largeLoad[i].accessControl;
 	  	        		}else{
-	  	        			userDetailsObj["accessControl"] =" - ";
+	  	        			userDetailsObj["accessControl"] ="";
 	  	        		}
 	  	        		if(!!largeLoad[i].imei){
 	  	        			userDetailsObj["imei"] =largeLoad[i].imei;
 	  	        		}else{
-	  	        			userDetailsObj["imei"] =" - ";
+	  	        			userDetailsObj["imei"] ="";
 	  	        		}
 	  	        		if(!!largeLoad[i].lmsEventFromContactNo){
 	  	        			userDetailsObj["lmsEventFromContactNo"] =largeLoad[i].lmsEventFromContactNo;
 	  	        		}else{
-	  	        			userDetailsObj["lmsEventFromContactNo"] =" - ";
+	  	        			userDetailsObj["lmsEventFromContactNo"] ="";
 	  	        		}
 	  	        		if(!!largeLoad[i].autoDoorMake){
 	  	        			userDetailsObj["autoDoorMake"] =largeLoad[i].autoDoorMake;
 	  	        		}else{
-	  	        			userDetailsObj["autoDoorMake"] =" - ";
+	  	        			userDetailsObj["autoDoorMake"] ="";
 	  	        		}
 	  	        		if(!!largeLoad[i].fireMode){
 	  	        			userDetailsObj["fireMode"] =largeLoad[i].fireMode;
 	  	        		}else{
-	  	        			userDetailsObj["fireMode"] =" - ";
+	  	        			userDetailsObj["fireMode"] ="";
 	  	        		}
 	  	        		if(!!largeLoad[i].intercomm){
 	  	        			userDetailsObj["intercomm"] =largeLoad[i].intercomm;
 	  	        		}else{
-	  	        			userDetailsObj["intercomm"] =" - ";
+	  	        			userDetailsObj["intercomm"] ="";
 	  	        		}
 	  	        		if(!!largeLoad[i].alarm){
 	  	        			userDetailsObj["alarm"] =largeLoad[i].alarm;
 	  	        		}else{
-	  	        			userDetailsObj["alarm"] =" - ";
+	  	        			userDetailsObj["alarm"] ="";
 	  	        		}
 	  	        		if(largeLoad[i].doorType=="0"||largeLoad[i].doorType=="1"){
 	  	        			userDetailsObj["doorType"] =largeLoad[i].doorType;
 	  	        		}else{
-	  	        			userDetailsObj["doorType"] =" - ";
+	  	        			userDetailsObj["doorType"] ="";
 	  	        		}
 	  	        		if(largeLoad[i].engineType=="0"||largeLoad[i].engineType=="1"){
 	  	        			userDetailsObj["engineType"] =largeLoad[i].engineType;
 	  	        		}else{
-	  	        			userDetailsObj["engineType"] =" - ";
+	  	        			userDetailsObj["engineType"] ="";
 	  	        		}
 	  	        		if(largeLoad[i].collectiveType=="0"||largeLoad[i].collectiveType=="1"){
 	  	        			userDetailsObj["collectiveType"] =largeLoad[i].collectiveType;
 	  	        		}else{
-	  	        			userDetailsObj["collectiveType"] =" - ";
+	  	        			userDetailsObj["collectiveType"] ="";
 	  	        		}
 	  	        		if(largeLoad[i].simplexDuplex=="0"||largeLoad[i].simplexDuplex=="1"){
 	  	        			userDetailsObj["simplexDuplex"] =largeLoad[i].simplexDuplex;
 	  	        		}else{
-	  	        			userDetailsObj["simplexDuplex"] =" - ";
+	  	        			userDetailsObj["simplexDuplex"] ="";
 	  	        		}
 	  	        		if(largeLoad[i].wiringShceme=="0"||largeLoad[i].wiringShceme=="1"){
 	  	        			userDetailsObj["wiringShceme"] =largeLoad[i].wiringShceme;
 	  	        		}else{
-	  	        			userDetailsObj["wiringShceme"] =" - ";
+	  	        			userDetailsObj["wiringShceme"] ="";
 	  	        		}
 	  	        		if(!!largeLoad[i].machinePhoto){
 	  	        			userDetailsObj["machinePhoto"] =largeLoad[i].machinePhoto;
 	  	        		}else{
-	  	        			userDetailsObj["machinePhoto"] =" - ";
+	  	        			userDetailsObj["machinePhoto"] ="";
 	  	        		}
 	  	        		if(!!largeLoad[i].panelPhoto){
 	  	        			userDetailsObj["panelPhoto"] =largeLoad[i].panelPhoto;
 	  	        		}else{
-	  	        			userDetailsObj["panelPhoto"] =" - ";
+	  	        			userDetailsObj["panelPhoto"] ="";
 	  	        		}
 	  	        		if(!!largeLoad[i].ardPhoto){
 	  	        			userDetailsObj["ardPhoto"] =largeLoad[i].ardPhoto;
 	  	        		}else{
-	  	        			userDetailsObj["ardPhoto"] =" - ";
+	  	        			userDetailsObj["ardPhoto"] ="";
 	  	        		}
 	  	        		if(!!largeLoad[i].lopPhoto){
 	  	        			userDetailsObj["lopPhoto"] =largeLoad[i].lopPhoto;
 	  	        		}else{
-	  	        			userDetailsObj["lopPhoto"] =" - ";
+	  	        			userDetailsObj["lopPhoto"] ="";
 	  	        		}
 	  	        		if(!!largeLoad[i].copPhoto){
 	  	        			userDetailsObj["copPhoto"] =largeLoad[i].copPhoto;
 	  	        		}else{
-	  	        			userDetailsObj["copPhoto"] =" - ";
+	  	        			userDetailsObj["copPhoto"] ="";
 	  	        		}
 	  	        		if(!!largeLoad[i].autoDoorHeaderPhoto){
 	  	        			userDetailsObj["autoDoorHeaderPhoto"] =largeLoad[i].autoDoorHeaderPhoto;
 	  	        		}else{
-	  	        			userDetailsObj["autoDoorHeaderPhoto"] =" - ";
+	  	        			userDetailsObj["autoDoorHeaderPhoto"] ="";
 	  	        		}
 	  	        		if(!!largeLoad[i].cartopPhoto){
 	  	        			userDetailsObj["cartopPhoto"] =largeLoad[i].cartopPhoto;
 	  	        		}else{
-	  	        			userDetailsObj["cartopPhoto"] =" - ";
+	  	        			userDetailsObj["cartopPhoto"] ="";
 	  	        		}
 	  	        		if(!!largeLoad[i].lobbyPhoto){
 	  	        			userDetailsObj["lobbyPhoto"] =largeLoad[i].lobbyPhoto;
 	  	        		}else{
-	  	        			userDetailsObj["lobbyPhoto"] =" - ";
+	  	        			userDetailsObj["lobbyPhoto"] ="";
 	  	        		}
 	  	        		if(!!largeLoad[i].wiringPhoto){
 	  	        			userDetailsObj["wiringPhoto"] =largeLoad[i].wiringPhoto;
 	  	        		}else{
-	  	        			userDetailsObj["wiringPhoto"] =" - ";
+	  	        			userDetailsObj["wiringPhoto"] ="";
 	  	        		}
 	  	        		userDetails.push(userDetailsObj);
 	  	        	  }
