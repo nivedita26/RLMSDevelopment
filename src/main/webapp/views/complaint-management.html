@@ -213,7 +213,7 @@
 						<div class="select-container">
 							<ui-select ng-model="selectedCalltype.selected" title="Choose a Call Type"  on-select="showWizardFun()">
 								<ui-select-match placeholder="Select Call Type">{{$select.selected.name}}</ui-select-match>
-								<ui-select-choices repeat="callTypeIterator in callType| filter: $select.search">
+								<ui-select-choices repeat="callTypeIterator in callTypes| filter: $select.search">
 									<span ng-bind-html="callTypeIterator.name | highlight: $select.search"></span>
 								</ui-select-choices>
 							</ui-select>
