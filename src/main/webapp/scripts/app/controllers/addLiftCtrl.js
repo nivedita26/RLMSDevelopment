@@ -79,11 +79,11 @@
 			$scope.addLift.liftType=liftTypeId;
 			if(liftTypeId == 1){
 				
-				var liftTypeName ="Auto Door"
+				var liftTypeName ="Geared"
 					
 			}else if(liftTypeId == 2){
 				
-				var liftTypeName ="Manual Door"
+				var liftTypeName ="Gearless"
 					
 			}else if(liftTypeId == 3){
 				

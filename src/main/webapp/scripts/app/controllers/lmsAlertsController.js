@@ -108,9 +108,13 @@
 		}
 		
 		$scope.loadLifts = function() {
-			
+			if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel < 3){
+				var tempBranchCompanyMapId = $scope.selectedBranch.selected.companyBranchMapId;
+			}else{
+				var tempBranchCompanyMapId=$rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls.companyBranchMapId;
+			}
 	  		var dataToSend = {
-	  				branchCompanyMapId : $scope.selectedBranch.selected.companyBranchMapId,
+	  				branchCompanyMapId : tempBranchCompanyMapId,
 					branchCustomerMapId : $scope.selectedCustomer.selected.branchCustomerMapId
 				}
 				serviceApi.doPostWithData('/RLMS/complaint/getAllApplicableLifts',dataToSend)
