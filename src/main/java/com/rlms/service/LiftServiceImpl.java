@@ -669,8 +669,8 @@ public class LiftServiceImpl implements LiftService{
 		
 	}
 	@Transactional(propagation = Propagation.REQUIRED)
-		public void updateLiftParams(LiftDtlsDto liftMaster){
-		
+		public ResponseDto updateLiftParams(LiftDtlsDto liftMaster){
+		    ResponseDto responseDto = new ResponseDto();
 			RlmsLiftMaster liftM = this.liftDao.getLiftById(liftMaster.getLiftId());
 			
 			if(null != liftM){
@@ -829,7 +829,10 @@ public class LiftServiceImpl implements LiftService{
 					liftM.setLmsEventContactNumber(liftMaster.getLmsEventFromContactNo());
 				}
 				this.liftDao.mergeLiftM(liftM);
+				responseDto.setStatus(true);
+				responseDto.setResponse("Lift updated successfully");
 				}
+			return responseDto;
 		}
 	@Override
 	public ResponseDto  getLiftDetailsList(UserDtlsDto dtlsDto) {

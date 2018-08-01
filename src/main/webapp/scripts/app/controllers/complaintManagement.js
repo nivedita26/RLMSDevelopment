@@ -1289,16 +1289,6 @@
 								          center: lift,
 								          zoom: 11
 								        });
-									 var image = {
-									          url: 'assets/img/Lift.png',
-									          //This marker is 20 pixels wide by 32 pixels high.
-									          scaledSize : new google.maps.Size(10,10),
-									          //size: new google.maps.Size(20, 32),
-									          // The origin for this image is (0, 0).
-									//          origin: new google.maps.Point(0, 0),
-									          // The anchor for this image is the base of the flagpole at (0, 32).
-									  //        anchor: new google.maps.Point(0, 32)
-									        };
 									 var liftInfowindow = new google.maps.InfoWindow({
 								          content: "<p><b>Lift Address</b>: "+ $scope.technicians[0].liftAdd
 								        });
@@ -1306,45 +1296,22 @@
 									var liftMarker = new google.maps.Marker({
 								          position: lift,
 								          map: $scope.map,
-								           label:{text: "L", color: "blue"},
+								           label:{text: "L", color: "black",
+											      fontWeight: "bold"
+                                            },
 								          icon: {
 								        	  url:'assets/img/Lift.png',
-								        	  scaledSize : new google.maps.Size(50,50)
+								        	  scaledSize : new google.maps.Size(35,45),
+								              labelOrigin: new google.maps.Point(30,0),
 								          	}
-								        //  scale: 10
-								          //    scale: 10
-								      //      },
-								      //   icon:'assets/img/liftIcon.png',
-								     //    scaledSize: new google.maps.Size(10, 10)
-								        });
+								           });
 									
 									liftMarker.addListener('click', function() {
 										liftInfowindow.open(map, liftMarker);
 								        });
 									
 									bounds.extend(liftMarker.getPosition());
-								//	}
-									 
-									/*for(var i = 0; i < $scope.technicians.length; i++){
-										if($scope.technicians[i].latitude!=null && $scope.technicians[i].longitude!=null ){
-										
-										var techLatLong = {lat: $scope.technicians[i].latitude, lng: $scope.technicians[i].longitude};
-						    		    var infowindow = new google.maps.InfoWindow({
-									          content: "<p><b>Technician Location</b><br>Name: "+$scope.technicians[i].name+"<br>Assigned Complaint: "+$scope.technicians[i].countOfComplaintsAssigned+" </p>"
-									        });
-										var marker = new google.maps.Marker({
-									          position: techLatLong,
-									          map: $scope.map
-									        });
-											marker.addListener('click', function() {
-									          infowindow.open(map, marker);
-									        });
-										
-										bounds.extend(marker.getPosition());
-									}
-									}*/
-									/////
-									for(var i = 0; i < $scope.technicians.length; i++){
+								for(var i = 0; i < $scope.technicians.length; i++){
 										if($scope.technicians[i].latitude!=0.0 && $scope.technicians[i].longitude!=0.0){
 										if($scope.technicians[i].countOfComplaintsAssigned==null){
 											$scope.technicians[i].countOfComplaintsAssigned=0;
@@ -1356,24 +1323,18 @@
 											position: new google.maps.LatLng($scope.technicians[i].latitude, $scope.technicians[i].longitude),
 											map: $scope.map,
 											label:{text:"T"+(i+1),color:"black",
-									      //  labelOrigin: new google.maps.Point(50, 50),
-								          //  labelAnchor: new google.maps.Point(50, 20),
-											      fontWeight: "bold"
-
-											},
+									        fontWeight: "bold"
+										},
 											  icon: {
 									        	  url:'assets/img/Technician.png',
-									        	  scaledSize : new google.maps.Size(40,30),
-											      labelOrigin: new google.maps.Point(45,0),
+									        	  scaledSize : new google.maps.Size(30,30),
+											      labelOrigin: new google.maps.Point(20,35),
 									          	},
 								            content: "<p><b>Technician Location</b><br>Name: "+$scope.technicians[i].name+"<br>Assigned Complaint: "+$scope.technicians[i].countOfComplaintsAssigned+" <br>Todays Assigned Complaint: "+$scope.technicians[i].todaysAssignedCalls+" </p>"
 										});
 										bounds.extend(marker.position);	
-										
 										var openedInfoWindow = null;
-										
 										var infowindow = new google.maps.InfoWindow();     
-																		
 										marker.addListener('click', (function() {
 										console.log('Klick! Marker='+this.content);
 										    if(openedInfoWindow != null){	                    		
