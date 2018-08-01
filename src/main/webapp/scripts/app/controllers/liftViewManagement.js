@@ -467,6 +467,7 @@
 				$scope.showBranch= true;
 			}else{
 				$scope.showBranch=false;
+				$scope.loadCustomerInfo();
 			}
 		  	
 	  	    $scope.$watch('pagingOptions', function(newVal, oldVal) {
@@ -525,11 +526,11 @@
 					width: "140"
 				}, {
 					field : "Service_Start_Date",
-					displayName:"Service Start Date",
+					displayName:"Warranty Start Date",
 					width: "140"
 				}, {
 					field : "Service_End_Date",
-					displayName:"Service End Date",
+					displayName:"Warranty End Date",
 					width: "140"
 				},
 				{
@@ -596,14 +597,6 @@
 						$rootScope.viewLift.imei=row.imei;
 						$rootScope.viewLift.liftType=row.LiftType;
 						$rootScope.viewLift.lmsEventFromContactNo=row.lmsEventFromContactNo;
-						//$rootScope.selectedEngineType=row.engineType;
-						//$rootScope.selectedWiringType=row.wiringShceme;
-						//$rootScope.selectedCollectiveType=row.collectiveType;
-						//$rootScope.selectedSimplexType=row.simplexDuplex;
-						/*$rootScope.viewLift.engineType=row.engineType;
-						$rootScope.viewLift.wiringShceme=row.wiringShceme;
-						$rootScope.viewLift.collectiveType=row.collectiveType;
-						$rootScope.viewLift.simplexDuplex=row.simplexDuplex;*/
 						
 						$rootScope.viewLift.machinePhoto=row.machinePhoto;
 						$rootScope.viewLift.panelPhoto=row.panelPhoto;

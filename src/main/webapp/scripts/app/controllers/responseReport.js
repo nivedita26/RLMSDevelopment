@@ -96,10 +96,14 @@
  	         })
 		}
 		$scope.loadLifts = function() {
-			
+			if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel < 3){
+				var tempBranchCompanyMapId = $scope.selectedBranch.selected.companyBranchMapId;
+			}else{
+				var tempBranchCompanyMapId=$rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls.companyBranchMapId;
+			}
   		var dataToSend = {
   				
-  				branchCompanyMapId : $scope.selectedBranch.selected.companyBranchMapId,
+  				branchCompanyMapId : tempBranchCompanyMapId,
 				branchCustomerMapId : $scope.selectedCustomer.selected.branchCustomerMapId,
 			}
 			serviceApi.doPostWithData('/RLMS/complaint/getAllApplicableLifts',dataToSend)
@@ -182,8 +186,8 @@
 		  	        		}else{
 		  	        			detailsObj["city"] =" - ";
 		  	        		}
-		  	        		if(!!largeLoad[i].eventFromContactNo){
-		  	        			detailsObj["LMSContactNo"] =largeLoad[i].eventFromContactNo;
+		  	        		if(!!largeLoad[i].lmsResponseContactNo){
+		  	        			detailsObj["LMSContactNo"] =largeLoad[i].lmsResponseContactNo;
 		  	        		}else{
 		  	        			detailsObj["LMSContactNo"] =" - ";
 		  	        		}
@@ -263,8 +267,8 @@
 		  			  	        		}else{
 		  			  	        			detailsObj["city"] =" - ";
 		  			  	        		}
-		  			  	        		if(!!largeLoad[i].eventFromContactNo){
-		  			  	        			detailsObj["LMSContactNo"] =largeLoad[i].eventFromContactNo;
+		  			  	        		if(!!largeLoad[i].lmsResponseContactNo){
+		  			  	        			detailsObj["LMSContactNo"] =largeLoad[i].lmsResponseContactNo;
 		  			  	        		}else{
 		  			  	        			detailsObj["LMSContactNo"] =" - ";
 		  			  	        		}
@@ -323,8 +327,8 @@
 		  	        		}else{
 		  	        			detailsObj["city"] =" - ";
 		  	        		}
-		  	        		if(!!largeLoad[i].eventFromContactNo){
-		  	        			detailsObj["LMSContactNo"] =largeLoad[i].eventFromContactNo;
+		  	        		if(!!largeLoad[i].lmsResponseContactNo){
+		  	        			detailsObj["LMSContactNo"] =largeLoad[i].lmsResponseContactNo;
 		  	        		}else{
 		  	        			detailsObj["LMSContactNo"] =" - ";
 		  	        		}
@@ -442,11 +446,6 @@
 				tempLiftIds.push($scope.selectedLift.selected[i].liftId);
 			}*/
 			
-			if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 3) {
-				$scope.companyBranchMapIdForCustomer=$rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls.companyBranchMapId;
-			}else{
-				$scope.companyBranchMapIdForCustomer=$scope.selectedBranch.selected.companyBranchMapId;
-			}
 	  		var data = {
 	  				//companyBranchMapId:$scope.companyBranchMapIdForCustomer,
 	  				//companyId:9,
