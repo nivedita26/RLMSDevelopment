@@ -254,6 +254,11 @@ angular.module('theme.core.main_controller', ['theme.core.services'])
 		  method: 'POST',
 		  url: '/RLMS/getLoggedInUser'
 		}).then(function successCallback(response) {
+			
+			if(response.data==""){
+				alert("Your session has expired. Please login again");
+				window.location="login.jsp"
+			}
 			//$rootScope.loggedInUserInfoForDashboard=response;
 			/*if($rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsSpocRoleMaster.roleLevel == 1 || $rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsSpocRoleMaster.roleLevel == 2){
 				$rootScope.showDasboardForInditech= true;
@@ -268,9 +273,11 @@ angular.module('theme.core.main_controller', ['theme.core.services'])
 			}else{
 				$scope.showBranches=false;
 			}*/
+			else{
 			 $scope.loggedInuserDetails.userName.firstName=response.data.userRole.rlmsUserMaster.firstName
 			 $scope.loggedInuserDetails.userCompany.companyName=response.data.userRole.rlmsCompanyMaster.companyName;
 			 $scope.loggedInuserDetails.userRole.roleName=response.data.userRole.rlmsSpocRoleMaster.roleName
+		   }
 		}, function errorCallback(response) {
 		  });
     

@@ -1282,23 +1282,13 @@
 								$scope.loadMap =function(){
 									var bounds = new google.maps.LatLngBounds();
 									//if($scope.technicians[0].liftLatitude!=null &&$scope.technicians[0].liftLongitude!=null){
-									//var lift = {lat: $scope.technicians[0].liftLatitude, lng: $scope.technicians[0].liftLongitude};
-									var lift = {lat:18.562622,lng:73.808723};
+									var lift = {lat: $scope.technicians[0].liftLatitude, lng: $scope.technicians[0].liftLongitude};
+								//	var lift = {lat:18.562622,lng:73.808723};
+									var lift = lift;
 									$scope.map = new google.maps.Map(document.getElementById('map'), {
 								          center: lift,
 								          zoom: 11
 								        });
-								
-							  				
-									 var image = {
-									          url: 'assets/img/liftIcon.png',
-									          // This marker is 20 pixels wide by 32 pixels high.
-									          size: new google.maps.Size(20, 32),
-									          // The origin for this image is (0, 0).
-									          origin: new google.maps.Point(0, 0),
-									          // The anchor for this image is the base of the flagpole at (0, 32).
-									          anchor: new google.maps.Point(0, 32)
-									        };
 									 var liftInfowindow = new google.maps.InfoWindow({
 								          content: "<p><b>Lift Address</b>: "+ $scope.technicians[0].liftAdd
 								        });
@@ -1306,42 +1296,22 @@
 									var liftMarker = new google.maps.Marker({
 								          position: lift,
 								          map: $scope.map,
-								           label:{text: "L", color: "blue"},
+								           label:{text: "L", color: "black",
+											      fontWeight: "bold"
+                                            },
 								          icon: {
-								             path: google.maps.SymbolPath.CIRCLE,
-								              scale: 10
-								            },
-								      //   icon:'assets/img/liftIcon.png',
-								          scaledSize: new google.maps.Size(10, 10)
-								        });
+								        	  url:'assets/img/Lift.png',
+								        	  scaledSize : new google.maps.Size(35,45),
+								              labelOrigin: new google.maps.Point(30,0),
+								          	}
+								           });
 									
 									liftMarker.addListener('click', function() {
 										liftInfowindow.open(map, liftMarker);
 								        });
 									
 									bounds.extend(liftMarker.getPosition());
-								//	}
-									 
-									/*for(var i = 0; i < $scope.technicians.length; i++){
-										if($scope.technicians[i].latitude!=null && $scope.technicians[i].longitude!=null ){
-										
-										var techLatLong = {lat: $scope.technicians[i].latitude, lng: $scope.technicians[i].longitude};
-						    		    var infowindow = new google.maps.InfoWindow({
-									          content: "<p><b>Technician Location</b><br>Name: "+$scope.technicians[i].name+"<br>Assigned Complaint: "+$scope.technicians[i].countOfComplaintsAssigned+" </p>"
-									        });
-										var marker = new google.maps.Marker({
-									          position: techLatLong,
-									          map: $scope.map
-									        });
-											marker.addListener('click', function() {
-									          infowindow.open(map, marker);
-									        });
-										
-										bounds.extend(marker.getPosition());
-									}
-									}*/
-									/////
-									for(var i = 0; i < $scope.technicians.length; i++){
+								for(var i = 0; i < $scope.technicians.length; i++){
 										if($scope.technicians[i].latitude!=0.0 && $scope.technicians[i].longitude!=0.0){
 										if($scope.technicians[i].countOfComplaintsAssigned==null){
 											$scope.technicians[i].countOfComplaintsAssigned=0;
@@ -1352,15 +1322,19 @@
 										var marker = new google.maps.Marker({
 											position: new google.maps.LatLng($scope.technicians[i].latitude, $scope.technicians[i].longitude),
 											map: $scope.map,
-											label:{text:"T"+(i+1),color:"black"},
+											label:{text:"T"+(i+1),color:"black",
+									        fontWeight: "bold"
+										},
+											  icon: {
+									        	  url:'assets/img/Technician.png',
+									        	  scaledSize : new google.maps.Size(30,30),
+											      labelOrigin: new google.maps.Point(20,35),
+									          	},
 								            content: "<p><b>Technician Location</b><br>Name: "+$scope.technicians[i].name+"<br>Assigned Complaint: "+$scope.technicians[i].countOfComplaintsAssigned+" <br>Todays Assigned Complaint: "+$scope.technicians[i].todaysAssignedCalls+" </p>"
 										});
 										bounds.extend(marker.position);	
-										
 										var openedInfoWindow = null;
-										
 										var infowindow = new google.maps.InfoWindow();     
-																		
 										marker.addListener('click', (function() {
 										console.log('Klick! Marker='+this.content);
 										    if(openedInfoWindow != null){	                    		
@@ -1398,5 +1372,4 @@
 						        	  $scope.modalInstance.dismiss('cancel');
 						          }
 							}]);
-	
 })();
