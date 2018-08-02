@@ -539,14 +539,8 @@ public class AdminController extends BaseController{
 	 
 	 @RequestMapping(value = "/lift/updateLiftParams", method = RequestMethod.POST)
 	    public @ResponseBody ResponseDto validateAndUpdateLiftDetails(@RequestBody LiftDtlsDto dto) throws RunTimeException, ValidationException {
-		 ResponseDto reponseDto = new ResponseDto();
-	     try{
-	          	this.liftService.updateLiftParams(dto);
-	      }
-	        catch(Exception e){
-	        	throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
-	        }
-	       return reponseDto;
+		ResponseDto responseDto =liftService.updateLiftParams(dto);
+	 	return responseDto;
 	  }
 
 }
