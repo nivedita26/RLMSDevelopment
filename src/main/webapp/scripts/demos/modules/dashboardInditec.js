@@ -2944,5 +2944,7 @@ angular.module('theme.demos.dashboard.indi', [
           	              });
           	          }
           	        }, 100);
-          	    }; 
+          	    };
+          	    //For edit Profile
+          	
   }]);

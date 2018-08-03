@@ -322,11 +322,12 @@
 	  	        		}else{
 	  	        			userDetailsObj["WatchmenName"] =" - ";
 	  	        		}
-	  	        		if(!!largeLoad[i].customerTypeStr){
-	  	        			userDetailsObj["CustomerType"] =largeLoad[i].customerTypeStr;
+	  	        		if(!!largeLoad[i].customerType){
+	  	        			userDetailsObj["CustomerType"] =largeLoad[i].customerType;
 	  	        		}else{
 	  	        			userDetailsObj["CustomerType"] =" - ";
 	  	        		}
+	  	        		
 	  	        		userDetails.push(userDetailsObj);
 	  	        	  }
 	  	            $scope.setPagingData(userDetails, page, pageSize);

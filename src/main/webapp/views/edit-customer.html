@@ -101,7 +101,7 @@
 					<div class="select-container">
 						<select ng-model="editCustomer.customerType" class="form-control">
 						<option value="">--Select --</option>
-						<option ng-repeat="type in customerTypes" ng-selected="editCustomer.customerType ==type.name" value="{type.id}}">{{type.name}}</option>
+						<option ng-repeat="type in customerTypes" ng-selected="editCustomer.customerType ==type.id" value="{type.id}}">{{type.name}}</option>
 						</select>
 						</div>
 						  <!-- <ui-select ng-model="selectedCustomerTypes.selected" title="Choose a Branch">
@@ -218,16 +218,16 @@
 				<div class="form-group">
 					<label class="col-sm-3 control-label">PAN Number<sup class="red font-12">*</sup></label>
 					<div class="col-sm-6">
-						<input name="panNumber" type="text" placeholder="Required Field" required ng-model="editCustomer.panNumber" class="form-control">
+						<input name="panNumber" type="text" placeholder="Required Field" maxlength="10" required onkeypress="return ((event.charCode > 64 && event.charCode < 91) ||(event.charCode > 96 && event.charCode < 123) || event.charCode == 8 || event.charCode == 32 || (event.charCode >= 48 && event.charCode <= 57));"ng-model="editCustomer.panNumber" class="form-control">
 						<span class="help-block"
 							ng-show="addCustomerForm.panNumber.$error.required && addCustomerForm.panNumber.$dirty">This
 							field is required</span>
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-sm-3 control-label">TIN Number<sup class="red font-12">*</sup></label>
+					<label class="col-sm-3 control-label">TAN Number<sup class="red font-12">*</sup></label>
 					<div class="col-sm-6">
-						<input name="tinNumber" type="text" placeholder="Required Field" required ng-model="editCustomer.tinNumber" class="form-control">
+						<input name="tinNumber" type="text" placeholder="Required Field" maxlength="10" required onkeypress="return ((event.charCode > 64 && event.charCode < 91) ||(event.charCode > 96 && event.charCode < 123) || event.charCode == 8 || event.charCode == 32 || (event.charCode >= 48 && event.charCode <= 57));"ng-model="editCustomer.tinNumber" class="form-control">
 						<span class="help-block"
 							ng-show="addCustomerForm.tinNumber.$error.required && addCustomerForm.tinNumber.$dirty">This
 							field is required</span>
@@ -236,7 +236,7 @@
 				<div class="form-group">
 					<label class="col-sm-3 control-label">GSTI Number<sup class="red font-12">*</sup></label>
 					<div class="col-sm-6">
-						<input name="vatNumber" type="text" placeholder="Required Field" onkeypress="return ((event.charCode > 64 && event.charCode < 91) ||(event.charCode > 96 && event.charCode < 123) || event.charCode == 8 || event.charCode == 32 || (event.charCode >= 48 && event.charCode <= 57));" required ng-model="editCustomer.vatNumber" class="form-control">
+						<input name="vatNumber" type="text" placeholder="Required Field" maxlength="15" onkeypress="return ((event.charCode > 64 && event.charCode < 91) ||(event.charCode > 96 && event.charCode < 123) || event.charCode == 8 || event.charCode == 32 || (event.charCode >= 48 && event.charCode <= 57));" required ng-model="editCustomer.vatNumber" class="form-control">
 						<span class="help-block"
 							ng-show="addCustomerForm.vatNumber.$error.required && addCustomerForm.vatNumber.$dirty">This
 							field is required</span>

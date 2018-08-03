@@ -37,6 +37,8 @@
 		</div>
 	</div> -->
 	<div class="container-fluid" ng-show="true">
+	<alert ng-show="showAlert" type="{{alert.type}}">
+				<span ng-bind-html="alert.msg | safe_html"></alert>
 		<form  name="editLiftForm" data-wizard="{finishButton: true, titleClick: true, block: true, validate: true}" class="form-horizontal">
 	<fieldset title="Step 1">
 		<legend>Lift Information</legend>
