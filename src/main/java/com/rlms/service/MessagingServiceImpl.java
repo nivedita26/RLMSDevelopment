@@ -143,8 +143,6 @@ public class MessagingServiceImpl implements MessagingService{
 		   
 		   message.setRecipients(Message.RecipientType.CC,this.convertToListOfIntrntAddrss(mailDto.getCcList()));
 		   
-		   
-
 		   // Set Subject: header field
 		   message.setSubject(mailDto.getSubject());
 

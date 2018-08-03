@@ -37,10 +37,10 @@ angular
 		  url: '/RLMS/getLoggedInUser'
 		}).then(function successCallback(response) {
 		    console.log(response);
-		    if(response.data==""){
+		   /* if(response.data==""){
 				alert("Your session has expired. Please login again");
 				window.location="login.jsp"
-		}else{
+		}else{*/
 		    $rootScope.loggedInUserInfo = response;
 		    $rootScope.showDasboardForInditech=false;
 		    $rootScope.showDasboardForOthers=false;
@@ -51,7 +51,7 @@ angular
 	    		$rootScope.showDasboardForOthers=false;
 	    		$rootScope.showDasboardForInditech=true;
 	    	}	
-	    	}
+	    //	}
 		  }, function errorCallback(response) {
 		  });
   }]);;

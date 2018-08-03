@@ -238,6 +238,8 @@ UserRoleDao{
 	List<Integer> roleIdList = new ArrayList<>();
 	roleIdList.add(SpocRoleConstants.TECHNICIAN.getSpocRoleId());
 	roleIdList.add(SpocRoleConstants.BRANCH_OPERATOR.getSpocRoleId());
+	roleIdList.add(SpocRoleConstants.BRANCH_ADMIN.getSpocRoleId());
+
 		Session session = this.sessionFactory.getCurrentSession();
 		 Criteria criteria = session.createCriteria(RlmsUserRoles.class)
 		 		 .createAlias("rlmsSpocRoleMaster", "sm")

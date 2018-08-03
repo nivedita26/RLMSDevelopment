@@ -227,8 +227,6 @@ public class LiftDaoImpl implements LiftDao{
 			}
 		}
 		String sql="SELECT status,count(*) FROM rlms_lift_amc_dtls where lift_customer_map_id in("+str+") group by status";
-		//"SELECT  lift_customer_map_id,status FROM rlms_lift_amc_dtls where lift_customer_map_id in("+str+") group by lift_customer_map_id";
-				
 		SQLQuery query = session.createSQLQuery(sql);
 		List<Object[]>amcStatusCount = query.list();
 		return amcStatusCount;

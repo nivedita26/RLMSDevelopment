@@ -5,7 +5,7 @@
 <hibernate-configuration>
     <session-factory name="sessionFactory">
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="hibernate.connection.password">root</property>  
+        <property name="hibernate.connection.password">rlms</property>  
       <!-- <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/rlms_db</property> -->
           <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/rlms_db</property>
          <property name="hibernate.connection.username">root</property>

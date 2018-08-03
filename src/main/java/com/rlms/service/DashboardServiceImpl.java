@@ -778,14 +778,14 @@ public class DashboardServiceImpl implements DashboardService {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	    DecimalFormat df = new DecimalFormat("###.##");
         Date pivotDate = DateUtils.addDaysToDate(new Date(), -30);
-        Date today = DateUtils.addDaysToDate(new Date(), -1);
+        Date today =new Date();
        float resolvedComplaintCount=0;
 	    try {
 		 pivotDate=sdf.parse(sdf.format(pivotDate));
 		today = sdf.parse(sdf.format(today));
 		} catch (ParseException e) {
 		}
-	    listOfAllComplaints = dashboardDao.getAllComplaintsForAvgLogs(pivotDate,today);
+	    listOfAllComplaints = dashboardDao.getAllComplaintsForAvgLogs(pivotDate,today,dto);
 	    int diff =DateUtils.daysBetween(listOfAllComplaints.get(0).getCreatedDate(),new Date());
 	    if(diff>0) {
 	    	float  listSize = listOfAllComplaints.size();

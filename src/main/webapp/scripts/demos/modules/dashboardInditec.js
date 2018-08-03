@@ -33,12 +33,12 @@ angular.module('theme.demos.dashboard.indi', [
 		  url: '/RLMS/getLoggedInUser'
 		}).then(function successCallback(response) {
 			
-			if(response.data==""){
+		/*	if(response.data==""){
 				alert("Your session has expired. Please login again");
 				window.location="login.jsp"
 		}
 			else{
-			$rootScope.loggedInUserInfoForDashboard=response;
+*/			$rootScope.loggedInUserInfoForDashboard=response;
 			if($rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsSpocRoleMaster.roleLevel < 4 ){
 				$rootScope.showDasboardForInditech= true;
 				$rootScope.showDasboardForOthers=false;
@@ -60,7 +60,7 @@ angular.module('theme.demos.dashboard.indi', [
 				//$scope.showCompanies= false;
 				$scope.showBranches=false;
 			}
-		}
+	//	}
 /*			 $scope.loggedInuserDetails.userName.firstName=$rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsUserMaster.firstName
 */		  }, function errorCallback(response) {
 	  });
