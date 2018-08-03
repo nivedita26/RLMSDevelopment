@@ -340,8 +340,8 @@
 														};
 
 														$scope.setPagingData(userDetails, 1, 10);
-													});
-									*/
+													});*/
+									
 
 								}
 								$scope.getPagedDataAsyncs = function(pageSize,

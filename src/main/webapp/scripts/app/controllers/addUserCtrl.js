@@ -10,6 +10,7 @@
 			$window.history.back();
 		}
 		$scope.alert = { type: 'success', msg: 'You successfully Added new user.',close:true };
+		$scope.alert = { type: 'error', msg: '',close:false };
 		$scope.showAlert = false;
 		$scope.showCompany=false;
 		function initAddUser(){
@@ -53,6 +54,15 @@
 			$scope.addUser.firstName=$scope.addUser.firstName;
 			serviceApi.doPostWithData("/RLMS/admin/validateAndRegisterNewUser",$scope.addUser)
 			.then(function(response){
+				$scope.showAlert = true;
+				var key = Object.keys(response);
+				var successMessage = response[key[0]];
+				$scope.alert.msg = successMessage;
+				$scope.alert.type = "success";
+				initAddUser();
+				$scope.addUserForm.$setPristine();
+				$scope.addUserForm.$setUntouched();
+				/*
 				if(response.status){
 				$scope.showAlert = true;
 				var key = Object.keys(response);
@@ -69,7 +79,7 @@
 				$scope.alert.msg = response.response;
 				$scope.alert.type = "danger";
 			}
-			},function(error){
+			*/},function(error){
 				$scope.showAlert = true;
 				$scope.alert.msg = error.exceptionMessage;
 				$scope.alert.type = "danger";

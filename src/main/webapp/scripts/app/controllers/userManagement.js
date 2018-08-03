@@ -8,9 +8,9 @@
 		$scope.goToAddUser =function(){
 			window.location.hash = "#/add-user";
 		};
-		$scope.editUser =function(){
+/*		$scope.editUser =function(){
 			window.location.hash = "#/edit-user";
-		};
+		};*/
 		$scope.alert = { type: 'success', msg: 'You successfully Deleted User.',close:true };
 		$scope.showAlert = false;
 		$rootScope.editUser={};

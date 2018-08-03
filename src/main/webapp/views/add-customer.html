@@ -195,16 +195,16 @@
 				<div class="form-group">
 					<label class="col-sm-3 control-label">PAN Number<sup class="red font-12">*</sup></label>
 					<div class="col-sm-6">
-						<input name="panNumber" type="text" placeholder="Required Field" required ng-model="addCustomer.panNumber" class="form-control">
+						<input name="panNumber" type="text" placeholder="Required Field" maxlength="10" required ng-model="addCustomer.panNumber" class="form-control">
 						<span class="help-block"
 							ng-show="addCustomerForm.panNumber.$error.required && addCustomerForm.panNumber.$dirty">This
 							field is required</span>
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-sm-3 control-label">TIN Number<sup class="red font-12">*</sup></label>
+					<label class="col-sm-3 control-label">TAN Number<sup class="red font-12">*</sup></label>
 					<div class="col-sm-6">
-						<input name="tinNumber" type="number" placeholder="Required Field" required ng-model="addCustomer.tinNumber" class="form-control">
+						<input name="tinNumber" type="text" placeholder="Required Field" maxlength="10" required onkeypress="return ((event.charCode > 64 && event.charCode < 91) ||(event.charCode > 96 && event.charCode < 123) || event.charCode == 8 || event.charCode == 32 || (event.charCode >= 48 && event.charCode <= 57));"ng-model="addCustomer.tinNumber" class="form-control">
 						<span class="help-block"
 							ng-show="addCustomerForm.tinNumber.$error.required && addCustomerForm.tinNumber.$dirty">This
 							field is required</span>
@@ -213,7 +213,7 @@
 				<div class="form-group">
 					<label class="col-sm-3 control-label">GSTI Number<sup class="red font-12">*</sup></label>
 					<div class="col-sm-6">
-						<input name="vatNumber" type="text" placeholder="Required Field" onkeypress="return ((event.charCode > 64 && event.charCode < 91) ||(event.charCode > 96 && event.charCode < 123) || event.charCode == 8 || event.charCode == 32 || (event.charCode >= 48 && event.charCode <= 57));" required ng-model="addCustomer.vatNumber" class="form-control">
+						<input name="vatNumber" type="text" placeholder="Required Field" maxlength="15" onkeypress="return ((event.charCode > 64 && event.charCode < 91) ||(event.charCode > 96 && event.charCode < 123) || event.charCode == 8 || event.charCode == 32 || (event.charCode >= 48 && event.charCode <= 57));" required ng-model="addCustomer.vatNumber" class="form-control">
 						<span class="help-block"
 							ng-show="addCustomerForm.vatNumber.$error.required && addCustomerForm.vatNumber.$dirty">This
 							field is required</span>

@@ -378,6 +378,7 @@
 	<script src="scripts/app/controllers/assignRoleCtrl.js"></script>
 	<script src="scripts/app/controllers/addUserCtrl.js"></script>
 	<script src="scripts/app/controllers/editUserCtrl.js"></script>
+	<script src="scripts/app/controllers/editProfile.js"></script>
 	<script src="scripts/app/controllers/companyManagement.js"></script>
 	<script src="scripts/app/controllers/userManagement.js"></script>
 	<script src="scripts/app/controllers/branchManagement.js"></script>

@@ -428,33 +428,26 @@
 	  		initReport();
 	  	  }
 	  	  function constructDataToSend(){
+	  		var tempEventId;
+			if($scope.selectedEventType.selected.name ==="ALL"){
+				tempEventId=-1;
+			}else{
+				tempEventId=$scope.selectedEventType.selected.name;
+			}
 	  		var tempbranchCustomerMapIds = [];
-			//if($scope.selectedCustomer.selected.length ){
-			//	for (var j = 0; j < $scope.selectedCustomer.selected.length; j++) {
-					tempbranchCustomerMapIds.push($scope.selectedCustomer.selected.branchCustomerMapId);
-				//}
-			//}
-			
+			tempbranchCustomerMapIds.push($scope.selectedCustomer.selected.branchCustomerMapId);
+
 			if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 3) {
 				$scope.companyBranchMapIdForCustomer=$rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls.companyBranchMapId;
 			}else{
 				$scope.companyBranchMapIdForCustomer=$scope.selectedBranch.selected.companyBranchMapId;
 			}
-			var tempEventType;
-			if($scope.selectedEventType.selected.name =="ALL"){
-				tempEventType=="-1";
-			}else{
-				tempEventType=$scope.selectedEventType.selected.name;
-			}
+			
 				
 	  		var data = {
-	  				//companyBranchMapId:$scope.companyBranchMapIdForCustomer,
-	  				//companyId:9,
-	  				//listOfUserRoleIds:tempListOfUserRoleIds,
-	  				//listOfEventTypeIds:$scope.selectedEventType.selected.id,
-	  				eventType:tempEventType,
+
+	  				eventType:tempEventId,
 	  				branchCustomerMapId:tempbranchCustomerMapIds,
-	  				//serviceCallType:1
 	  		};
 	  		return data;
 	  	  }
