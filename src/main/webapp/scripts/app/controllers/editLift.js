@@ -455,79 +455,7 @@
 					lmsEventFromContactNo: $scope.editLift.lmsEventFromContactNo,
 					totalLiftCountForCustomer: null,
 					blank: false
-				/*	liftId:$scope.editLift.liftId,
-					address:$scope.editLift.address,
-					liftType:$scope.editLift.liftType,
-					liftNumber :$scope.editLift.liftNumber ,
-					city:$scope.editLift.city,
-					area:$scope.editLift.area,
-					pinCode:$scope.editLift.pinCode,
-					latitude : $scope.editLift.latitude,
-					longitude : $scope.editLift.longitude,
-					serviceStartDateStr : $scope.editLift.serviceStartDate,
-					serviceEndDateStr : $scope.editLift.serviceEndDate,
-					dateOfInstallationStr: $scope.editLift.dateOfInstallation,
-					amcStartDateStr : $scope.editLift.amcStartDate,
-					amcEndDateStr :$scope.editLift.amcEndDate,
-					amcType :$scope.editLift.amcType,
-					amcAmount : $scope.editLift.amcAmount,
-
-					doorType :$scope.editLift.doorType,
-					noOfStops : $scope.editLift.noOfStops,
-					engineType : $scope.editLift.engineType,
-					machineMake : $scope.editLift.machineMake,
-					machineCapacity : $scope.editLift.machineCapacity,
-					machineCurrent : $scope.editLift.machineCurrent,
-					breakVoltage : $scope.editLift.breakVoltage,
-					panelMake : $scope.editLift.panelMake,
-					ard : $scope.editLift.ard,
-					noOfBatteries :$scope.editLift.noOfBatteries,
-					batteryCapacity : $scope.editLift.batteryCapacity,
-					batteryMake : $scope.editLift.batteryMake,
-					copMake : $scope.editLift.copMake,
-					lopMake :$scope.editLift.lopMake,
-					collectiveType :$scope.editLift.collectiveType,
-					simplexDuplex : $scope.editLift.simplexDuplex,
-					autoDoorMake :$scope.editLift.autoDoorMake,
-					wiringShceme : $scope.editLift.wiringShceme,
-					fireMode :$scope.editLift.fireMode,
-					intercomm : $scope.editLift.intercomm,
-					alarm : $scope.editLift.alarm,
-					alarmBattery : $scope.editLift.alarmBattery,
-					accessControl :$scope.editLift.accessControl,
-					imei :$scope.editLift.imei,
-					liftType :$scope.editLift.liftType,
-					lmsEventFromContactNo:$scope.editLift.lmsEventFromContactNo,
-					amcType:$scope.selectedAMCType.selected.id,
-					engineType:$scope.selectedEngineMachineType.selected.id,
-					wiringShceme:$scope.selectedWiringScheme.selected.id,
-					collectiveType:$scope.selectedCollectiveType.selected.id,
-					simplexDuplex:$scope.selectedSimplexDuplex.selected.id,
-					doorType:$scope.selectedDoorType.selected.id,
-					
-					machinePhoto : $scope.editLift.machinePhoto.base64,
-					panelPhoto : $scope.editLift.panelPhoto.base64,
-					ardPhoto : $scope.editLift.ardPhoto.base64,
-					lopPhoto :$scope.editLift.lopPhoto.base64,
-					copPhoto : $scope.editLift.copPhoto.base64,
-					cartopPhoto :$scope.editLift.cartopPhoto.base64,
-					autoDoorHeaderPhoto :$scope.editLift.autoDoorHeaderPhoto.base64,
-					wiringPhoto :$scope.editLift.wiringPhoto.base64,
-					lobbyPhoto : $scope.editLift.    t            	! .base64,
-					//status:'',
-					//activeFlag:
-					amcTypeStr:'',
-					dateOfInstallation:'',
-					serviceStartDate:'',
-					serviceEndDate:'',
-					amcStartDate:'',
-					amcEndDate:'',
-						liftCustomerMapId:null,
-						//status:'',
-						isBlank:false,
-						photoType:'',
-						totalLiftCountForCustomer:0,
-					*/
+			
 			}
 			/*parseBase64();
 			//addLift.customerType = $scope.selectedCustomerType;
@@ -567,61 +495,11 @@
 				$scope.showAlert = true;
 				var key = Object.keys(response);
 				var successMessage = response[key[0]];
-				$scope.alert.msg = successMessage;
-				$scope.alert.type = "success";
-				initAddLift();
-				//$scope.addLiftForm.$setPristine();
-				//$scope.addLiftForm.$setUntouched();
-			},function(error){
-				$scope.showAlert = true;
-				$scope.alert.msg = error.exceptionMessage;
-				$scope.alert.type = "danger";
-			});
-		}
-		
-		/*$scope.submitAddLift = function(){
-			parseBase64();
-			//addLift.customerType = $scope.selectedCustomerType;
-			
-        if($scope.selectedAMCType.selected){
-	      $scope.addLift.amcType = $scope.selectedAMCType.selected.id;
-       }
-	    	if($scope.selectedAMCType.selected){
-	    			$scope.addLift.amcType = $scope.selectedAMCType.selected.id;
-		}
-			if($scope.selectedDoorType.selected){
-				$scope.addLift.doorType = $scope.selectedDoorType.selected.id;
-			}
-			if($scope.selectedEngineMachineType.selected){
-				$scope.addLift.engineType = $scope.selectedEngineMachineType.selected.id;
-			}
-			if($scope.selectedCollectiveType.selected){
-				$scope.addLift.collectiveType = $scope.selectedCollectiveType.selected.id;
-		    }
-		   if($scope.selectedSimplexDuplex.selected){
-			   $scope.addLift.simplexDuplex = $scope.selectedSimplexDuplex.selected.id;
-		   }
-		   if($scope.selectedWiringScheme.selected){
-			$scope.addLift.wiringShceme = $scope.selectedWiringScheme.selected.id;
-		   }
-			
-			if($scope.addLift.fireMode){
-				$scope.addLift.fireMode = 1;
-			}else{
-				$scope.addLift.fireMode = 0;
-			}
-			//$scope.addLift.liftTypeName=$scope.addLift.liftTypeName;
-			$scope.addLift.branchCustomerMapId = $scope.selectedCustomer.selected.branchCustomerMapId
-			serviceApi.doPostWithData("/RLMS/admin/validateAndRegisterNewLift",$scope.addLift)
-			.then(function(response){
-				$scope.showAlert = true;
-				var key = Object.keys(response);
-				var successMessage = response[key[0]];
 				if(successMessage!=false){
 				$scope.alert.msg = response[key[1]];
 				$scope.alert.type = "success";
-				resetAddLift();
-				//initAddLift();
+				//resetAddLift();
+				initAddLift();
 				$scope.addLiftForm.$setPristine();
 				$scope.addLiftForm.$setUntouched();
 		     	}
@@ -636,7 +514,8 @@
 				$scope.alert.msg = error.exceptionMessage;
 				$scope.alert.type = "danger";
 			});
-		}*/
+		}
+		
 		//reset edit branch
 		$scope.resetEditLift = function(){
 			$scope.showAlert = false;

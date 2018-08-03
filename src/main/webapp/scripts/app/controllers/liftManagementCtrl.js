@@ -16,7 +16,7 @@
 			},
 			{
 				id:43,
-				name:'Non-Comprehensive'
+				name:'Non Comprehensive'
 			},
 			{
 				id:44,

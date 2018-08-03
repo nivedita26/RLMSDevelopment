@@ -154,7 +154,7 @@
 						tinNumber:$scope.editCustomer.tinNumber,
 						panNumber:$scope.editCustomer.panNumber,
 						//customerTypeStr:$scope.editCustomer.customerTypeStr
-						customerType:$scope.editCustomer.type
+						customerType:$scope.editCustomer.customerType
 				}				
 				serviceApi.doPostWithData("/RLMS/admin/validateAndUpdateCustomer",customerData)
 				.then(function(response){
