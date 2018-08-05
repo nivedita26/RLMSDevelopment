@@ -7,7 +7,7 @@
 		<form class="form-horizontal row-border" name="addComplaintForm">
 		<fieldset>
 		  <legend>Call Details</legend>
-		 <!--  <div class="form-group" ng-show="showCompany">
+		  <div class="form-group" ng-show="showCompany">
 				<label class="col-sm-3 control-label">Company Name: </label>
 				<div class="col-sm-6">
 					  <ui-select ng-model="selectedCompany.selected" title="Choose a Company" on-select="loadBranchData()">
@@ -18,12 +18,11 @@
 					  </ui-select>
 					  <label class="control-label" ng-bind="companyName"></label>
 				</div>
-			</div> -->
+			</div> 
 			
-			<div class="row seprator" >
-			<div class="form-group col-sm-6" ng-show="showBranch">
-					<label class="col-sm-5  control-label" ng-show="showBranch">Select Branch</label>
-			<div class="col-sm-7 select-container" ng-show="showBranch">
+			<div class="form-group" ng-show="showBranch">
+					<label class="col-sm-3  control-label" ng-show="showBranch">Select Branch</label>
+			<div class="col-sm-6 select-container" ng-show="showBranch">
 				  <ui-select ng-model="selectedBranch.selected" title="Choose a Branch" on-select="loadCustomerData();">
 				    <ui-select-match placeholder="Select Branch">{{$select.selected.rlmsBranchMaster.branchName}}</ui-select-match>
 				    <ui-select-choices repeat="branchIterator in branches| filter: $select.search">
@@ -32,9 +31,9 @@
 				  </ui-select>
 			</div>
 				</div>
-				<div class="form-group col-sm-6" >
-					<label class="col-sm-5 control-label">Select Customer</label>
-					<div class="col-sm-7">
+				<div class="form-group" >
+					<label class="col-sm-3 control-label">Select Customer</label>
+					<div class="col-sm-6">
 						  <ui-select ng-model="selectedCustomer.selected" title="Choose a Customer" on-select="loadLifts();">
 						    <ui-select-match placeholder="Select Customer">{{$select.selected.firstName}}</ui-select-match>
 						    <ui-select-choices repeat="customerIterator in cutomers| filter: $select.search">
@@ -43,7 +42,6 @@
 						  </ui-select>
 					</div>
 				</div>				
-			</div>
 			
 			<div class="form-group ">
 					<label class="col-sm-3 control-label">Select Lift</label>

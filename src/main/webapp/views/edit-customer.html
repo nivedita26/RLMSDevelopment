@@ -4,7 +4,7 @@
 	<div class="container-fluid" >
 		<alert ng-show="showAlert" type="{{alert.type}}">
 			<span ng-bind-html="alert.msg | safe_html"></alert>
-		<form class="form-horizontal row-border" name="addCustomerForm">
+		<form class="form-horizontal row-border" name="editCustomerForm">
 		<fieldset>
 		  <legend>Customer Details</legend>
 		   <div class="form-group" ng-show="showCompany" >
@@ -87,9 +87,9 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-3 control-label">Total Number Of Lifts</label>
+				<label class="col-sm-3 control-label">Total Number Of Lifts<sup class="red font-12">*</sup></label>
 				<div class="col-sm-6">
-					<input name="totalNumberOfLifts" type="number"  onkeypress="return (event.charCode > 47 && event.charCode < 58 );" placeholder="Total Number Of Lifts"  ng-model="editCustomer.totalNumberOfLifts" class="form-control">
+					<input name="totalNumberOfLifts" type="number" required onkeypress="return (event.charCode > 47 && event.charCode < 58 );" placeholder="Total Number Of Lifts"  ng-model="editCustomer.totalNumberOfLifts" class="form-control">
 					<span class="help-block"
 						ng-show="addCustomerForm.totalNumberOfLifts.$error.required && addCustomerForm.totalNumberOfLifts.$dirty">This
 						field is required</span>

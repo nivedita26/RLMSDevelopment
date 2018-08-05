@@ -570,7 +570,9 @@
 	  	      }
 	  	    }, true);
 
+	  	   
 	  	    $scope.gridOptions = {
+	  	    		 if(){},
 	  	      data: 'myData',
 	  	      rowHeight: 40,
 	  	      width:80,
@@ -645,11 +647,8 @@
 	  	    };
 	  	  $rootScope.editLift={};
 		  	$scope.selectedDoorType={};
-				//$rootScope.technicianDetails=[];
-			//	$rootScope.complaintStatusArray=['Pending','Assigned','Completed','In Progress'];
+
 				$scope.editLiftDetails=function(row){
-					
-					
 					//serviceApi.doPostWithData('/RLMS/admin/getLiftById',row.liftId)
 					//.then(function(data) {
 						

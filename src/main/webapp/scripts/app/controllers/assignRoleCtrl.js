@@ -38,22 +38,29 @@
 			loadCompanyData();
 			//loadBranchData();
 			$scope.isRoleSelected = true;
-			if($scope.selectedRole.selected.roleName==="COMPANY_OPERATOR"){
+			if($scope.selectedRole.selected.roleName===("COMPANY_OPERATOR")){
 				$scope.showCompany=false;
 				$scope.showBranch=false;
 			}
-			if($scope.selectedRole.selected.roleName===("BRANCH_ADMIN")){
+			if($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 3){
+			if($scope.selectedRole.selected.roleName===("BRANCH_ADMIN")||$scope.selectedRole.selected.roleName===("BRANCH_OPERATOR")||$scope.selectedRole.selected.roleName===("TECHNICIAN")){
 				//$scope.showCompany=false;
-				$scope.showBranch=true;
+				//$scope.showBranch=true;
 			}
-			if($scope.selectedRole.selected.roleName===("BRANCH_OPERATOR")){
+			}else{
+				if($scope.selectedRole.selected.roleName===("BRANCH_ADMIN")||$scope.selectedRole.selected.roleName===("BRANCH_OPERATOR")||$scope.selectedRole.selected.roleName===("TECHNICIAN")){
+					//$scope.showCompany=false;
+					$scope.showBranch=true;
+				}
+			}
+			/*if($scope.selectedRole.selected.roleName===("BRANCH_OPERATOR")){
 				//$scope.showCompany=false;
 				$scope.showBranch=true;
 			}
 			if($scope.selectedRole.selected.roleName===("TECHNICIAN")){
 				//$scope.showCompany=false;
 				$scope.showBranch=true;
-			}
+			}*/
 		}
 	  	
 		function loadCompanyData(){
