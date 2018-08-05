@@ -1300,7 +1300,7 @@
 											      fontWeight: "bold"
                                             },
 								          icon: {
-								        	  url:'assets/img/Lift.png',
+								        	  url:'assets/img/Lift3.png',
 								        	  scaledSize : new google.maps.Size(35,45),
 								              labelOrigin: new google.maps.Point(30,0),
 								          	}
@@ -1326,7 +1326,7 @@
 									        fontWeight: "bold"
 										},
 											  icon: {
-									        	  url:'assets/img/Technician.png',
+									        	  url:'assets/img/Technician3.png',
 									        	  scaledSize : new google.maps.Size(30,30),
 											      labelOrigin: new google.maps.Point(20,35),
 									          	},
