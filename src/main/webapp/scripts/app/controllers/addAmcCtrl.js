@@ -5,7 +5,7 @@
 		initAddAMC();
 			//loadCompayInfo();
 			$scope.alert = { type: 'success', msg: 'You successfully Added AMC details.',close:true };
-			$scope.alert = { type: 'error', msg: '',close:false };
+			//$scope.alert = { type: 'danger', msg: 'Please fill the required fields',close:false };
 			$scope.showAlert = false;
 			$scope.showCompany = false;
 			$scope.showBranch = false;
@@ -40,7 +40,7 @@
 			                	}else{
 			                			$scope.showAlert = true;
 										$scope.alert.msg =  'Add Service Call Title and Date';
-										$scope.alert.type="danger";
+										$scope.alert.type="error";
 			                	}
 			                }
 
@@ -236,7 +236,7 @@
 					$scope.addAMCForm.$setUntouched();
 				},function(error){
 					$scope.showAlert = true;
-					$scope.alert.msg = error.exceptionMessage;
+					$scope.alert.msg = error;
 					$scope.alert.type = "danger";
 				});
 			}

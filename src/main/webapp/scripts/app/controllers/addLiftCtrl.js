@@ -93,28 +93,7 @@
 			$scope.modalInstance.dismiss('cancel');
 			serviceApi.doPostWithData('/RLMS/admin/getLiftMasterForType',dataToSend)
 	         .then(function(liftdata) {
-	        	 /*if(liftdata.blank != true){
-	        		 for(var key in liftdata) {
-	        		        if(typeof liftdata[key] !== 'undefined' && typeof liftdata[key] !== 'null') {
-	        		        	if(key == "amcType"){
-	        		        		$scope.selectedAMCType.id = liftdata[key];
-	        		        	}else if(key == "doorType"){
-	        		        		$scope.selectedAMCType.id =liftdata[key];
-	        		        	}else if(key == "engineType"){
-	        		        		$scope.selectedEngineMachineType.id =utility.parseInteger(liftdata[key]);
-	        		        	}else if(key == "collectiveType"){
-	        		        		$scope.selectedCollectiveType.id = utility.parseInteger(liftdata[key]);
-	        		        	}else if(key == "simplexDuplex"){
-	        		        		$scope.selectedSimplexDuplex.id = utility.parseInteger(liftdata[key]);
-	        		        	}else if(key == "wiringShceme"){
-	        		        		$scope.selectedWiringScheme.id = utility.parseInteger(liftdata[key]);
-	        		        	}else{
-	        		        		$scope.addLift[key] = utility.parseInteger(liftdata[key]);
-	        		        	}
-	        		            
-	        		        }
-	        		    }
-	        	 }*/
+	        	
 	        	$scope.addLift["address"] = liftdata['address'];
 	        	$scope.addLift["city"] = liftdata['city'];
 	        	$scope.addLift["area"] = liftdata['area'];
@@ -353,7 +332,6 @@
 					longitude : '',
 					serviceStartDate : '',
 					serviceEndDate : '',
-					//warrantyPeriod:'',
 					dateOfInstallation : '',
 					amcStartDate : '',
 					amcEndDate:'',
@@ -383,7 +361,6 @@
 					alarm : '',
 					alarmBattery : '',
 					accessControl : '',
-					//lmsAvailable:'',
 					imei :'',
 					lmsEventFromContactNo:'',
 					

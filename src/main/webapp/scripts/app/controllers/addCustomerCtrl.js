@@ -4,7 +4,8 @@
 	.controller('addCustomerCtrl', ['$scope', '$filter','serviceApi','$route','utility','$window','$rootScope', function($scope, $filter,serviceApi,$route,utility,$window,$rootScope) {
 	initAddCustomer();
 			loadCompayInfo();
-			$scope.alert = { type: 'success', msg: 'You successfully Added Customer.',close:true };			
+			$scope.alert = { type: 'success', msg: 'You successfully Added Customer.',close:true };
+			$scope.alert = { type: 'error', msg: 'Please fill the Required Field',close:true };
 			$scope.showAlert = false;
 			$scope.showCompany=false;
 			$scope.showBranch=false;
@@ -128,7 +129,7 @@
 					$scope.addCustomerForm.$setUntouched();
 				},function(error){
 					$scope.showAlert = true;
-					$scope.alert.msg = error.exceptionMessage;
+					$scope.alert.msg = error;
 					$scope.alert.type = "danger";
 				});
 			}
