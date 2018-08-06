@@ -274,7 +274,8 @@ public class ComplaintsDaoImpl implements ComplaintsDao{
 			criteria.add(Restrictions.between("registrationDate", dto.getToDate(),dto.getFromDate()));
 		}
 		
-		 criteria.addOrder(Order.desc("registrationDate"));
+		 criteria.addOrder(Order.desc("registrationDate"))
+		 .add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
 
 		 List<RlmsComplaintMaster> complaintList= criteria.list();
 	     return complaintList;
@@ -283,7 +284,8 @@ public class ComplaintsDaoImpl implements ComplaintsDao{
 	public RlmsComplaintMaster getComplaintMasterByComplaintId(int complaintId) {
 		Session session = this.sessionFactory.getCurrentSession();
 		 Criteria criteria = session.createCriteria(RlmsComplaintMaster.class)
-				 .add(Restrictions.eq("complaintId", complaintId));
+				 .add(Restrictions.eq("complaintId", complaintId))
+		         .add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
        	 return  (RlmsComplaintMaster) criteria.uniqueResult();
 	}
 
@@ -292,7 +294,8 @@ public class ComplaintsDaoImpl implements ComplaintsDao{
 		Session session = this.sessionFactory.getCurrentSession();
 		 Criteria criteria = session.createCriteria(RlmsComplaintMaster.class)
 				 .add(Restrictions.eq("liftCustomerMap.liftCustomerMapId", complaintsDtlsDto.getLiftCustomerMapId()))
-				.add(Restrictions.eq("callType",complaintsDtlsDto.getCallType()));	 
+				.add(Restrictions.eq("callType",complaintsDtlsDto.getCallType()))	 
+		        .add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
       	 return  (RlmsComplaintMaster) criteria.uniqueResult();
 		
 	}

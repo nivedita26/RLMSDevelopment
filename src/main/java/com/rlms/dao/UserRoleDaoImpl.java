@@ -171,17 +171,13 @@ UserRoleDao{
 		 List<RlmsUserRoles> listOfAllTechnicians =  criteria.list();
 		 return listOfAllTechnicians;
 	}
-	
-	public RlmsUserRoles getUserByUserName(String username)
-	{
+	public RlmsUserRoles getUserByUserName(String username){
 		 Session session = this.sessionFactory.getCurrentSession();
 		 Criteria criteria = session.createCriteria(RlmsUserRoles.class)
 				 .add(Restrictions.eq("username", username))
 				 .add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
-		 
 		 return (RlmsUserRoles)criteria.uniqueResult();
 	}
-	
 	@Override
 	public RlmsUserRoles getUserRoleForCompany(Integer cmpanyId, Integer spocRoleId){
 		 Session session = this.sessionFactory.getCurrentSession();
@@ -193,7 +189,6 @@ UserRoleDao{
 		 RlmsUserRoles userRole = (RlmsUserRoles) criteria.uniqueResult();
 		 return userRole;
 	}
-	
 	@Override
 	public RlmsUserRoles getTechnicianRoleObjByMblNo(String mblNumber, Integer spocRoleId){
 		 Session session = this.sessionFactory.getCurrentSession();
@@ -203,21 +198,17 @@ UserRoleDao{
 				 .add(Restrictions.eq("um.contactNumber", mblNumber))
 		 	     .add(Restrictions.eq("sm.spocRoleId", spocRoleId))
 		 	     .add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
-		 
 		 RlmsUserRoles userRole = (RlmsUserRoles) criteria.uniqueResult();
 		 return userRole;
 	}
-	
 	@Override
 	public void saveUserAppDlts(RlmsUserApplicationMapDtls userApplicationMapDtls){
 		 this.sessionFactory.getCurrentSession().save(userApplicationMapDtls);
 	}
-	
 	@Override
 	public void mergeUserAppDlts(RlmsUserApplicationMapDtls userApplicationMapDtls){
 		 this.sessionFactory.getCurrentSession().merge(userApplicationMapDtls);
 	}
-
 	@Override
 	public RlmsUserRoles getTechnicianRoleObjByUserNameAndPassword(UserDtlsDto dtlsDto, int roleId) {
 		 Session session = this.sessionFactory.getCurrentSession();

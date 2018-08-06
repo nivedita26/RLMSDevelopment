@@ -2,13 +2,7 @@ package com.rlms.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang.exception.ExceptionUtils;
-import org.apache.commons.validator.EmailValidator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.rlms.constants.RlmsErrorType;
 import com.rlms.contract.AddNewUserDto;
 import com.rlms.contract.BranchDtlsDto;
@@ -64,7 +57,7 @@ public class AdminController extends BaseController{
 	
 	 @RequestMapping(value = "/addNewCompany", method = RequestMethod.POST)
 	    public @ResponseBody ResponseDto addNewCompany(@RequestBody CompanyDtlsDTO companyDtlsDTO) throws RunTimeException, ValidationException {
-	        System.out.println("Adding n ew Company");
+	        System.out.println("Adding new Company");
 	        ResponseDto reponseDto = new ResponseDto();
 	        try{
 	        	logger.info("In addNewCompany method");

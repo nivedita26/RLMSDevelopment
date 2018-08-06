@@ -285,7 +285,9 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 	@Transactional(propagation = Propagation.REQUIRED)
 	public List<ComplaintsDto> getListOfComplaintsBy(ComplaintsDtlsDto dto){
 		List<ComplaintsDto> listOfAllComplaints = new ArrayList<ComplaintsDto>();
+		
 		List<RlmsComplaintMaster> listOfComplaints = this.complaintsDao.getAllComplaintsForGivenCriteria(dto.getBranchCompanyMapId(), dto.getBranchCustomerMapId(), dto.getListOfLiftCustoMapId(), dto.getStatusList(),dto.getFromDate(), dto.getToDate(),dto.getServiceCallType());
+		if(listOfComplaints!=null && !listOfComplaints.isEmpty()) {
 		for (RlmsComplaintMaster rlmsComplaintMaster : listOfComplaints) {
 			boolean isToShow = true;
 			if(RLMSCallType.AMC_CALL.getId() == rlmsComplaintMaster.getCallType()){
@@ -297,6 +299,7 @@ public class ComplaintsServiceImpl implements ComplaintsService{
   			         listOfAllComplaints.add(complaintsDto);
 		    }
 		}
+	}
 		return listOfAllComplaints;
 	}
 	
@@ -360,6 +363,7 @@ private boolean isServiceCallToShow(Date regDate,Date serviceStartDate){
 	public List<LiftDtlsDto> getAllLiftsForBranchsOrCustomer(LiftDtlsDto dto){
 		List<LiftDtlsDto> listOfLiftDtls = new ArrayList<LiftDtlsDto>();
 		List<RlmsLiftCustomerMap> listOfLifts = this.liftDao.getAllLiftsForBranchsOrCustomer(dto);
+		if(listOfLifts!=null && !listOfLifts.isEmpty()) {
 		for (RlmsLiftCustomerMap rlmsLiftCustomerMap : listOfLifts) {
 			LiftDtlsDto lift = new LiftDtlsDto();
 			lift.setLiftId(rlmsLiftCustomerMap.getLiftCustomerMapId());
@@ -373,6 +377,7 @@ private boolean isServiceCallToShow(Date regDate,Date serviceStartDate){
 			
 			listOfLiftDtls.add(lift);
 		}
+	}
 		return listOfLiftDtls;
 	}
 	
@@ -516,6 +521,7 @@ private boolean isServiceCallToShow(Date regDate,Date serviceStartDate){
 		}
 		RlmsComplaintMaster complaintMaster = this.complaintsDao.getComplaintMasterObj(complaintsDtlsDto.getComplaintId(),complaintsDtlsDto.getServiceCallType());
 		List<UserRoleDtlsDTO> listOFUserAdtls = new ArrayList<UserRoleDtlsDTO>();
+		if(complaintMaster!=null) {
 		List<RlmsUserRoles> listOfAllTechnicians = this.userService.getListOfTechniciansForBranch(complaintMaster.getLiftCustomerMap().getBranchCustomerMap().getCompanyBranchMapDtls().getCompanyBranchMapId());
 		if(listOfAllTechnicians !=null && !listOfAllTechnicians.isEmpty()) {
 		for (RlmsUserRoles rlmsUserRoles : listOfAllTechnicians) {
@@ -566,6 +572,7 @@ private boolean isServiceCallToShow(Date regDate,Date serviceStartDate){
 			 listOFUserAdtls.add(dto);
 		    }
 		}
+	}
 		return listOFUserAdtls;
 	}
 	

@@ -381,15 +381,6 @@ public List<Object[]> getTodaysTotalComplaintsStatusCount(List<Integer> liftCust
 @Override
 public List<RlmsComplaintMaster> getAllComplaintsForAvgLogs(Date fromDate, Date toDate, ComplaintsDtlsDto dto) {
 	Session session = this.sessionFactory.getCurrentSession();
-
-	/*String sql ="SELECT * FROM rlms_complaint_master where registration_date between '"+fromDate+"' and '"+toDate+"'";
-	SQLQuery query = session.createSQLQuery(sql);
- 	@SuppressWarnings("unchecked")
-	List<RlmsComplaintMaster>complaintList = query.list();
-	return complaintList;
-	*/
-	//Session session = this.sessionFactory.getCurrentSession();
-	
 	Criteria criteria = session.createCriteria(RlmsComplaintMaster.class);
 	criteria.add(Restrictions.ge("registrationDate",fromDate));
 	criteria.add(Restrictions.le("registrationDate",toDate));

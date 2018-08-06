@@ -88,33 +88,37 @@ public class DashBoardController extends BaseController {
 
 		List<AMCDetailsDto> listOFAmcDtls = null;
 		List<RlmsCompanyBranchMapDtls> listOfAllBranches = null;
-
 		List<Integer> companyBranchIds = new ArrayList<>();
-
 		try {
 			logger.info("Method :: getAllBranchesForCompany");
 			listOfAllBranches = this.companyService.getAllBranches(amcDetailsDto.getCompanyId());
+			if(listOfAllBranches !=null && !listOfAllBranches.isEmpty()) {
 			for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
 				companyBranchIds.add(companyBranchMap.getCompanyBranchMapId());
 			}
-
 			List<CustomerDtlsDto> allCustomersForBranch = dashboardService.getAllCustomersForBranch(companyBranchIds);
 			List<Integer> liftCustomerMapIds = new ArrayList<>();
+			if(allCustomersForBranch!=null && !allCustomersForBranch.isEmpty()) {
 			for (CustomerDtlsDto customerDtlsDto : allCustomersForBranch) {
 				LiftDtlsDto dto = new LiftDtlsDto();
 				dto.setBranchCustomerMapId(customerDtlsDto.getBranchCustomerMapId());
 				List<RlmsLiftCustomerMap> list = dashboardService.getAllLiftsForBranchsOrCustomer(dto);
+				if(list!=null && !list.isEmpty()) {
 				for (RlmsLiftCustomerMap rlmsLiftCustomerMap : list) {
 					liftCustomerMapIds.add(rlmsLiftCustomerMap.getLiftCustomerMapId());
 				}
 			}
+			}
 			listOFAmcDtls = this.dashboardService.getAMCDetailsForDashboard(liftCustomerMapIds, amcDetailsDto);
-			} catch (Exception e) {
+			} 
+		}
+		}catch (Exception e) {
 			e.printStackTrace();
 			logger.error(ExceptionUtils.getFullStackTrace(e));
 			throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(),
 					PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
-		}
+		
+	}
 		return listOFAmcDtls;
 	}
 
@@ -236,8 +240,10 @@ public class DashBoardController extends BaseController {
 		}
 		else {
 		listOfAllBranches = this.companyService.getAllBranches(dto.getCompanyId());
-		for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
-			companyBranchMapIds.add(companyBranchMap.getCompanyBranchMapId());
+		if(listOfAllBranches!=null && !listOfAllBranches.isEmpty()) {
+			for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
+				companyBranchMapIds.add(companyBranchMap.getCompanyBranchMapId());
+			}
 		}
 		}
 		try {
@@ -256,30 +262,29 @@ public class DashBoardController extends BaseController {
 		List<ComplaintsDto> listOfComplaints = null;
 		List<RlmsCompanyBranchMapDtls> listOfAllBranches = null;
 		List<Integer> companyBranchMapIds = new ArrayList<>();
-		List<Integer> branchCustomerMapIds = new ArrayList<>();
 		listOfAllBranches = this.companyService.getAllBranches(dto.getCompanyId());
+		if(listOfAllBranches!=null &&!listOfAllBranches.isEmpty()) {
 		for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
 			companyBranchMapIds.add(companyBranchMap.getCompanyBranchMapId());
 		}
 		List<CustomerDtlsDto> allCustomersForBranch = dashboardService.getAllCustomersForBranch(companyBranchMapIds);
 		List<Integer> liftCustomerMapIds = new ArrayList<>();
+		if(allCustomersForBranch!=null && !allCustomersForBranch.isEmpty()) {
 		for (CustomerDtlsDto customerDtlsDto : allCustomersForBranch) {
 			LiftDtlsDto dtoToGetLifts = new LiftDtlsDto();
 			dtoToGetLifts.setBranchCustomerMapId(customerDtlsDto.getBranchCustomerMapId());
 			List<RlmsLiftCustomerMap> list = dashboardService.getAllLiftsForBranchsOrCustomer(dtoToGetLifts);
+			if(list!=null &&!list.isEmpty()) {
 			for (RlmsLiftCustomerMap rlmsLiftCustomerMap : list) {
 				liftCustomerMapIds.add(rlmsLiftCustomerMap.getLiftCustomerMapId());
 			}
 		}
-		dto.setListOfLiftCustoMapId(liftCustomerMapIds);
-		try {
-			logger.info("Method :: getListOfComplaints");
+		if(liftCustomerMapIds!=null && !liftCustomerMapIds.isEmpty()) {
+			dto.setListOfLiftCustoMapId(liftCustomerMapIds);
 			listOfComplaints = this.dashboardService.getListOfComplaintsBy(dto);
-		} catch (Exception e) {
-			logger.error(ExceptionUtils.getFullStackTrace(e));
-			throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(),
-					PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
+		 }	}
 		}
+	}
 		return listOfComplaints;
 	}
 	@RequestMapping(value = "/getListOfTotalComplaintsCountByCallType", method = RequestMethod.POST)
@@ -288,39 +293,32 @@ public class DashBoardController extends BaseController {
 		List<ComplaintsCount> listOfComplaintsCount = null;
 		List<RlmsCompanyBranchMapDtls> listOfAllBranches = null;
 		List<Integer> companyBranchMapIds = new ArrayList<>();
-		List<Integer> branchCustomerMapIds = new ArrayList<>();
-		/*listOfAllBranches = this.companyService.getAllBranches(dto.getCompanyId());
-		for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
-			companyBranchMapIds.add(companyBranchMap.getCompanyBranchMapId());
-		}*/
 		if(dto.getBranchCompanyMapId()!=null) {
 			companyBranchMapIds.add(dto.getBranchCompanyMapId());
 		}
 		else {
 		listOfAllBranches = this.companyService.getAllBranches(dto.getCompanyId());
+		if (listOfAllBranches!=null && !listOfAllBranches.isEmpty()) {
 		for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
-			companyBranchMapIds.add(companyBranchMap.getCompanyBranchMapId());
-		}
+				companyBranchMapIds.add(companyBranchMap.getCompanyBranchMapId());
+		}}
 		}
 		List<CustomerDtlsDto> allCustomersForBranch = dashboardService.getAllCustomersForBranch(companyBranchMapIds);
 		List<Integer> liftCustomerMapIds = new ArrayList<>();
+		if(allCustomersForBranch!=null && !allCustomersForBranch.isEmpty()) {
 		for (CustomerDtlsDto customerDtlsDto : allCustomersForBranch) {
 			LiftDtlsDto dtoToGetLifts = new LiftDtlsDto();
 			dtoToGetLifts.setBranchCustomerMapId(customerDtlsDto.getBranchCustomerMapId());
 			List<RlmsLiftCustomerMap> list = dashboardService.getAllLiftsForBranchsOrCustomer(dtoToGetLifts);
+			if(list!=null && !list.isEmpty()){
 			for (RlmsLiftCustomerMap rlmsLiftCustomerMap : list) {
 				liftCustomerMapIds.add(rlmsLiftCustomerMap.getLiftCustomerMapId());
-			}
+			}	}
 		}
-		dto.setListOfLiftCustoMapId(liftCustomerMapIds);
-		try {
-			logger.info("Method :: getListOfComplaints");
+		if(liftCustomerMapIds!=null && !liftCustomerMapIds.isEmpty()) {
+			dto.setListOfLiftCustoMapId(liftCustomerMapIds);
 			listOfComplaintsCount = this.dashboardService.getListOfTotalComplaintsCountByCallType(dto);
-		} catch (Exception e) {
-			logger.error(ExceptionUtils.getFullStackTrace(e));
-			throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(),
-					PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
-		}
+		}}	
 		return listOfComplaintsCount;
 	}
 	@RequestMapping(value = "/getListOfTodaysComplaintsCountByCallType", method = RequestMethod.POST)
@@ -329,38 +327,32 @@ public class DashBoardController extends BaseController {
 		List<ComplaintsCount> listOfComplaintsCount = null;
 		List<RlmsCompanyBranchMapDtls> listOfAllBranches = null;
 		List<Integer> companyBranchMapIds = new ArrayList<>();
-		List<Integer> branchCustomerMapIds = new ArrayList<>();
-	/*	listOfAllBranches = this.companyService.getAllBranches(dto.getCompanyId());
-		for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
-			companyBranchMapIds.add(companyBranchMap.getCompanyBranchMapId());
-		}*/
 		if(dto.getBranchCompanyMapId()!=null) {
 			companyBranchMapIds.add(dto.getBranchCompanyMapId());
 		}
 		else {
 		listOfAllBranches = this.companyService.getAllBranches(dto.getCompanyId());
+		if(listOfAllBranches!=null &&!listOfAllBranches.isEmpty()) {
 		for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
 			companyBranchMapIds.add(companyBranchMap.getCompanyBranchMapId());
-		}
+			}
+			}
 		}
 		List<CustomerDtlsDto> allCustomersForBranch = dashboardService.getAllCustomersForBranch(companyBranchMapIds);
 		List<Integer> liftCustomerMapIds = new ArrayList<>();
+		if(listOfAllBranches!=null  && !listOfAllBranches.isEmpty() ) {
 		for (CustomerDtlsDto customerDtlsDto : allCustomersForBranch) {
 			LiftDtlsDto dtoToGetLifts = new LiftDtlsDto();
 			dtoToGetLifts.setBranchCustomerMapId(customerDtlsDto.getBranchCustomerMapId());
 			List<RlmsLiftCustomerMap> list = dashboardService.getAllLiftsForBranchsOrCustomer(dtoToGetLifts);
-			for (RlmsLiftCustomerMap rlmsLiftCustomerMap : list) {
-				liftCustomerMapIds.add(rlmsLiftCustomerMap.getLiftCustomerMapId());
-			}
-		}
-		dto.setListOfLiftCustoMapId(liftCustomerMapIds);
-		try {
-			logger.info("Method :: getListOfComplaints");
-			listOfComplaintsCount = this.dashboardService.getListOfTodaysComplaintsCountByCallType(dto);
-		} catch (Exception e) {
-			logger.error(ExceptionUtils.getFullStackTrace(e));
-			throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(),
-					PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
+			if(list!=null && !list.isEmpty()) {
+				for (RlmsLiftCustomerMap rlmsLiftCustomerMap : list) {
+					liftCustomerMapIds.add(rlmsLiftCustomerMap.getLiftCustomerMapId());
+					}}}
+			if(liftCustomerMapIds!=null && !liftCustomerMapIds.isEmpty()) {
+					dto.setListOfLiftCustoMapId(liftCustomerMapIds);
+					listOfComplaintsCount = this.dashboardService.getListOfTodaysComplaintsCountByCallType(dto);
+				}
 		}
 		return listOfComplaintsCount;
 	}
@@ -370,38 +362,34 @@ public class DashBoardController extends BaseController {
 		List<ComplaintsCount> listOfComplaintsCount = null;
 		List<RlmsCompanyBranchMapDtls> listOfAllBranches = null;
 		List<Integer> companyBranchMapIds = new ArrayList<>();
-		List<Integer> branchCustomerMapIds = new ArrayList<>();
-		/*listOfAllBranches = this.companyService.getAllBranches(dto.getCompanyId());
-		for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
-			companyBranchMapIds.add(companyBranchMap.getCompanyBranchMapId());
-		}*/
 		if(dto.getBranchCompanyMapId()!=null) {
 			companyBranchMapIds.add(dto.getBranchCompanyMapId());
 		}
 		else {
 		listOfAllBranches = this.companyService.getAllBranches(dto.getCompanyId());
-		for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
-			companyBranchMapIds.add(companyBranchMap.getCompanyBranchMapId());
+		if(listOfAllBranches!=null  && !listOfAllBranches.isEmpty() ) {
+			for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
+				companyBranchMapIds.add(companyBranchMap.getCompanyBranchMapId());
+			}
 		}
 		}
 		List<CustomerDtlsDto> allCustomersForBranch = dashboardService.getAllCustomersForBranch(companyBranchMapIds);
 		List<Integer> liftCustomerMapIds = new ArrayList<>();
+		if(allCustomersForBranch!=null  && !allCustomersForBranch.isEmpty() ) {
 		for (CustomerDtlsDto customerDtlsDto : allCustomersForBranch) {
 			LiftDtlsDto dtoToGetLifts = new LiftDtlsDto();
 			dtoToGetLifts.setBranchCustomerMapId(customerDtlsDto.getBranchCustomerMapId());
 			List<RlmsLiftCustomerMap> list = dashboardService.getAllLiftsForBranchsOrCustomer(dtoToGetLifts);
-			for (RlmsLiftCustomerMap rlmsLiftCustomerMap : list) {
-				liftCustomerMapIds.add(rlmsLiftCustomerMap.getLiftCustomerMapId());
-			}
-		}
-		dto.setListOfLiftCustoMapId(liftCustomerMapIds);
-		try {
-			logger.info("Method :: getListOfComplaints");
-			listOfComplaintsCount = this.dashboardService.getListOfTotalComplaintsCountByStatus(dto);
-		} catch (Exception e) {
-			logger.error(ExceptionUtils.getFullStackTrace(e));
-			throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(),
-					PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
+				if(list!=null  && !list.isEmpty() ) {
+					for (RlmsLiftCustomerMap rlmsLiftCustomerMap : list) {
+						liftCustomerMapIds.add(rlmsLiftCustomerMap.getLiftCustomerMapId());
+					}
+				}
+		 }
+		 	if(liftCustomerMapIds!=null && !liftCustomerMapIds.isEmpty()) {
+		 		dto.setListOfLiftCustoMapId(liftCustomerMapIds);
+		 		listOfComplaintsCount = this.dashboardService.getListOfTotalComplaintsCountByStatus(dto);
+		    }
 		}
 		return listOfComplaintsCount;
 	}
@@ -412,38 +400,34 @@ public class DashBoardController extends BaseController {
 		List<ComplaintsCount> listOfComplaintsCount = null;
 		List<RlmsCompanyBranchMapDtls> listOfAllBranches = null;
 		List<Integer> companyBranchMapIds = new ArrayList<>();
-		List<Integer> branchCustomerMapIds = new ArrayList<>();
-		/*listOfAllBranches = this.companyService.getAllBranches(dto.getCompanyId());
-		for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
-			companyBranchMapIds.add(companyBranchMap.getCompanyBranchMapId());
-		}*/
 		if(dto.getBranchCompanyMapId()!=null) {
 			companyBranchMapIds.add(dto.getBranchCompanyMapId());
 		}
 		else {
 		listOfAllBranches = this.companyService.getAllBranches(dto.getCompanyId());
-		for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
-			companyBranchMapIds.add(companyBranchMap.getCompanyBranchMapId());
+		if(listOfAllBranches!=null  && !listOfAllBranches.isEmpty() ) {
+			for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
+				companyBranchMapIds.add(companyBranchMap.getCompanyBranchMapId());
+			}
 		}
 		}
 		List<CustomerDtlsDto> allCustomersForBranch = dashboardService.getAllCustomersForBranch(companyBranchMapIds);
 		List<Integer> liftCustomerMapIds = new ArrayList<>();
-		for (CustomerDtlsDto customerDtlsDto : allCustomersForBranch) {
-			LiftDtlsDto dtoToGetLifts = new LiftDtlsDto();
-			dtoToGetLifts.setBranchCustomerMapId(customerDtlsDto.getBranchCustomerMapId());
-			List<RlmsLiftCustomerMap> list = dashboardService.getAllLiftsForBranchsOrCustomer(dtoToGetLifts);
-			for (RlmsLiftCustomerMap rlmsLiftCustomerMap : list) {
-				liftCustomerMapIds.add(rlmsLiftCustomerMap.getLiftCustomerMapId());
+		if(allCustomersForBranch!=null  && !allCustomersForBranch.isEmpty() ) {
+			for (CustomerDtlsDto customerDtlsDto : allCustomersForBranch) {
+				LiftDtlsDto dtoToGetLifts = new LiftDtlsDto();
+				dtoToGetLifts.setBranchCustomerMapId(customerDtlsDto.getBranchCustomerMapId());
+				List<RlmsLiftCustomerMap> list = dashboardService.getAllLiftsForBranchsOrCustomer(dtoToGetLifts);
+				if(list!=null && !list.isEmpty()) {
+					for (RlmsLiftCustomerMap rlmsLiftCustomerMap : list) {
+						liftCustomerMapIds.add(rlmsLiftCustomerMap.getLiftCustomerMapId());
+					}
+				}
 			}
-		}
-		dto.setListOfLiftCustoMapId(liftCustomerMapIds);
-		try {
-			logger.info("Method :: getListOfComplaints");
-			listOfComplaintsCount = this.dashboardService.getListOfTodaysComplaintsCountByStatus(dto);
-		} catch (Exception e) {
-			logger.error(ExceptionUtils.getFullStackTrace(e));
-			throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(),
-					PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
+				if(liftCustomerMapIds!=null && !liftCustomerMapIds.isEmpty()) {
+					dto.setListOfLiftCustoMapId(liftCustomerMapIds);
+					listOfComplaintsCount = this.dashboardService.getListOfTodaysComplaintsCountByStatus(dto);
+				}
 		}
 		return listOfComplaintsCount;
 	}
@@ -454,38 +438,34 @@ public class DashBoardController extends BaseController {
 		List<ComplaintsCount> listOfComplaintsCount = null;
 		List<RlmsCompanyBranchMapDtls> listOfAllBranches = null;
 		List<Integer> companyBranchMapIds = new ArrayList<>();
-		List<Integer> branchCustomerMapIds = new ArrayList<>();
-		/*listOfAllBranches = this.companyService.getAllBranches(dto.getCompanyId());
-		for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
-			companyBranchMapIds.add(companyBranchMap.getCompanyBranchMapId());
-		}*/
 		if(dto.getBranchCompanyMapId()!=null) {
 			companyBranchMapIds.add(dto.getBranchCompanyMapId());
 		}
 		else {
 		listOfAllBranches = this.companyService.getAllBranches(dto.getCompanyId());
-		for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
-			companyBranchMapIds.add(companyBranchMap.getCompanyBranchMapId());
+		if(listOfAllBranches!=null && !listOfAllBranches.isEmpty()) {
+			for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
+				companyBranchMapIds.add(companyBranchMap.getCompanyBranchMapId());
+			}
 		}
 		}
 		List<CustomerDtlsDto> allCustomersForBranch = dashboardService.getAllCustomersForBranch(companyBranchMapIds);
 		List<Integer> liftCustomerMapIds = new ArrayList<>();
+		if(allCustomersForBranch!=null && !allCustomersForBranch.isEmpty()) {
 		for (CustomerDtlsDto customerDtlsDto : allCustomersForBranch) {
 			LiftDtlsDto dtoToGetLifts = new LiftDtlsDto();
 			dtoToGetLifts.setBranchCustomerMapId(customerDtlsDto.getBranchCustomerMapId());
 			List<RlmsLiftCustomerMap> list = dashboardService.getAllLiftsForBranchsOrCustomer(dtoToGetLifts);
-			for (RlmsLiftCustomerMap rlmsLiftCustomerMap : list) {
-				liftCustomerMapIds.add(rlmsLiftCustomerMap.getLiftCustomerMapId());
+			if(list!=null && !list.isEmpty()) {
+				for (RlmsLiftCustomerMap rlmsLiftCustomerMap : list) {
+					liftCustomerMapIds.add(rlmsLiftCustomerMap.getLiftCustomerMapId());
+				}
 			}
 		}
-		dto.setListOfLiftCustoMapId(liftCustomerMapIds);
-		try {
-			logger.info("Method :: getListOfComplaints");
+		if(liftCustomerMapIds!=null &&! liftCustomerMapIds.isEmpty()) {
+			dto.setListOfLiftCustoMapId(liftCustomerMapIds);
 			listOfComplaintsCount = this.dashboardService.getListOfTodaysTotalComplaintsCountByStatus(dto);
-		} catch (Exception e) {
-			logger.error(ExceptionUtils.getFullStackTrace(e));
-			throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(),
-					PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
+		}
 		}
 		return listOfComplaintsCount;
 	}
@@ -495,12 +475,12 @@ public class DashBoardController extends BaseController {
 		List<ComplaintsDto> listOfComplaints = null;
 		List<RlmsCompanyBranchMapDtls> listOfAllBranches = null;
 		Set<Integer> siteVisitedTodayComplaintIds = new HashSet<>();
-
 		List<Integer> companyBranchMapIds = new ArrayList<>();
-		List<Integer> branchCustomerMapIds = new ArrayList<>();
 		listOfAllBranches = this.companyService.getAllBranches(dto.getCompanyId());
+		if(listOfAllBranches!=null && !listOfAllBranches.isEmpty()) {
 		for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
 			companyBranchMapIds.add(companyBranchMap.getCompanyBranchMapId());
+			}
 		}
 		List<CustomerDtlsDto> allCustomersForBranch = dashboardService.getAllCustomersForBranch(companyBranchMapIds);
 		List<Integer> liftCustomerMapIds = new ArrayList<>();
@@ -512,7 +492,6 @@ public class DashBoardController extends BaseController {
 				liftCustomerMapIds.add(rlmsLiftCustomerMap.getLiftCustomerMapId());
 			}
 		}
-
 		dto.setListOfLiftCustoMapId(liftCustomerMapIds);
 		try {
 			logger.info("Method :: getListOfComplaints");
@@ -556,9 +535,7 @@ public class DashBoardController extends BaseController {
 
 		List<AMCDetailsDto> listOFAmcDtls = null;
 		List<RlmsCompanyBranchMapDtls> listOfAllBranches = null;
-
 		List<Integer> companyBranchIds = new ArrayList<>();
-
 		try {
 			logger.info("Method :: getAllBranchesForCompany");
 			listOfAllBranches = this.companyService.getAllBranches(amcDetailsDto.getCompanyId());
@@ -593,9 +570,7 @@ public class DashBoardController extends BaseController {
 
 		List<LiftDtlsDto> listOfLifts = new ArrayList<LiftDtlsDto>();
 		List<RlmsCompanyBranchMapDtls> listOfAllBranches = null;
-
 		List<Integer> companyBranchIds = new ArrayList<>();
-
 		try {
 			logger.info("Method :: getAllBranchesForCompany");
 			if(liftDtlsDto.getBranchCompanyMapId()!=null) {
@@ -603,15 +578,12 @@ public class DashBoardController extends BaseController {
 			}
 			else {
 			listOfAllBranches = this.companyService.getAllBranches(liftDtlsDto.getCompanyId());
-			for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
-				companyBranchIds.add(companyBranchMap.getCompanyBranchMapId());
+			if(listOfAllBranches!=null && !listOfAllBranches.isEmpty()) {
+				for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
+					companyBranchIds.add(companyBranchMap.getCompanyBranchMapId());
+				}
 			}
 			}
-		/*	
-			listOfAllBranches = this.companyService.getAllBranches(liftDtlsDto.getCompanyId());
-			for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
-				companyBranchIds.add(companyBranchMap.getCompanyBranchMapId());
-			}*/
 			listOfLifts = liftService.getLiftStatusForBranch(companyBranchIds, this.getMetaInfo());
 
 		} catch (Exception e) {
@@ -626,31 +598,22 @@ public class DashBoardController extends BaseController {
 	@RequestMapping(value = "/getLiftCount", method = RequestMethod.POST)
 	public @ResponseBody List<LiftDtlsDto> getLiftCount(@RequestBody LiftDtlsDto liftDtlsDto)
 			throws RunTimeException, ValidationException {
-
 		List<LiftDtlsDto> listOfLifts = new ArrayList<LiftDtlsDto>();
 		List<RlmsCompanyBranchMapDtls> listOfAllBranches = null;
-
 		List<Integer> companyBranchIds = new ArrayList<>();
-
 		try {
 			logger.info("Method :: getAllBranchesForCompany");
-			
-			
-	/*		listOfAllBranches = this.companyService.getAllBranches(liftDtlsDto.getCompanyId());
-			for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
-				companyBranchIds.add(companyBranchMap.getCompanyBranchMapId());
-			}*/
 			if(liftDtlsDto.getBranchCompanyMapId()!=null) {
 				companyBranchIds.add(liftDtlsDto.getBranchCompanyMapId());
 			}
 			else {
 			listOfAllBranches = this.companyService.getAllBranches(liftDtlsDto.getCompanyId());
+			if(listOfAllBranches!=null && !listOfAllBranches.isEmpty()) {
 			for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
 				companyBranchIds.add(companyBranchMap.getCompanyBranchMapId());
-			}
+			}}
 			}
 			listOfLifts = liftService.getLiftCountForBranch(companyBranchIds, this.getMetaInfo());
-
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error(ExceptionUtils.getFullStackTrace(e));
@@ -663,29 +626,22 @@ public class DashBoardController extends BaseController {
 	@RequestMapping(value = "/getLiftStatusCountByCustomer", method = RequestMethod.POST)
 	public @ResponseBody List<LiftDtlsDto> getLiftStatusCountByCustomer(@RequestBody LiftDtlsDto liftDtlsDto)
 			throws RunTimeException, ValidationException {
-
 		List<LiftDtlsDto> listOfLifts = new ArrayList<LiftDtlsDto>();
 		List<RlmsCompanyBranchMapDtls> listOfAllBranches = null;
-
 		List<Integer> companyBranchIds = new ArrayList<>();
-
 		try {
 			logger.info("Method :: getAllBranchesForCompany");
-		/*	listOfAllBranches = this.companyService.getAllBranches(liftDtlsDto.getCompanyId());
-			for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
-				companyBranchIds.add(companyBranchMap.getCompanyBranchMapId());
-			}*/
 			if(liftDtlsDto.getBranchCompanyMapId()!=null) {
 				companyBranchIds.add(liftDtlsDto.getBranchCompanyMapId());
 			}
 			else {
 			listOfAllBranches = this.companyService.getAllBranches(liftDtlsDto.getCompanyId());
+			if(listOfAllBranches!=null && !listOfAllBranches.isEmpty()) {
 			for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
 				companyBranchIds.add(companyBranchMap.getCompanyBranchMapId());
 			}
-			}
+			}}
 			listOfLifts = liftService.getLiftStatusForBranch(companyBranchIds, this.getMetaInfo());
-
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error(ExceptionUtils.getFullStackTrace(e));
@@ -700,9 +656,7 @@ public class DashBoardController extends BaseController {
 			throws RunTimeException {
 		List<CustomerDtlsDto> listOfCustomers = null;
 		List<RlmsCompanyBranchMapDtls> listOfAllBranches = null;
-
 		List<Integer> companyBranchIds = new ArrayList<>();
-
 		try {
 			logger.info("Method :: getAllBranchesForCompany");
 			listOfAllBranches = this.companyService.getAllBranches(customerDtlsDto.getCompanyId());
@@ -716,12 +670,9 @@ public class DashBoardController extends BaseController {
 			logger.error(ExceptionUtils.getFullStackTrace(e));
 			throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(),
 					PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
-
 		}
-
 		return listOfCustomers;
 	}
-
 	@RequestMapping(value = "/getCustomerCountForDashboard", method = RequestMethod.POST)
 	public @ResponseBody List<CustomerCountDtls> getCustomerCountForDashboard(
 			@RequestBody CustomerDtlsDto customerDtlsDto) throws RunTimeException {
@@ -749,8 +700,6 @@ public class DashBoardController extends BaseController {
 						}
 					}
 					CustomerCountDtls countDtls = new CustomerCountDtls();
-					//countDtls.setBranchName(companyBranchMap.getRlmsBranchMaster().getBranchName());
-				//	countDtls.setCity(companyBranchMap.getRlmsBranchMaster().getCity());
 					countDtls.setCustomerCount(listOfBranchCustomersMap.size());
 					countDtls.setActiveFlagCount(activeCount);
 					countDtls.setInactiveFlagCount(inactiveCount);
@@ -852,59 +801,18 @@ public class DashBoardController extends BaseController {
 		}
 		return branchCountDtls;
 	}
-	/*
-	 * @RequestMapping(value = "/getListOfEvents", method = RequestMethod.POST)
-	 * public @ResponseBody List<EventDtlsDto> getAllInOutEventsData(@RequestBody
-	 * EventDtlsDto dto)throws RunTimeException { List<EventDtlsDto> listOfEvents =
-	 * null; List<RlmsCompanyBranchMapDtls> listOfAllBranches = null; List<Integer>
-	 * companyBranchIds = new ArrayList<>(); try {
-	 * logger.info("Method :: getAllBranchesForCompany"); listOfAllBranches =
-	 * this.companyService .getAllBranches(dto.getCompanyId()); for
-	 * (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
-	 * companyBranchIds.add(companyBranchMap.getCompanyBranchMapId()); }
-	 * List<CustomerDtlsDto> allCustomersForBranch = dashboardService
-	 * .getAllCustomersForBranch(companyBranchIds); List<Integer> liftCustomerMapIds
-	 * = new ArrayList<>(); for (CustomerDtlsDto customerDtlsDto :
-	 * allCustomersForBranch) { LiftDtlsDto dtoTemp = new LiftDtlsDto();
-	 * dtoTemp.setBranchCustomerMapId(customerDtlsDto .getBranchCustomerMapId());
-	 * List<RlmsLiftCustomerMap> list = dashboardService
-	 * .getAllLiftsForBranchsOrCustomer(dtoTemp); for (RlmsLiftCustomerMap
-	 * rlmsLiftCustomerMap : list) { liftCustomerMapIds.add(rlmsLiftCustomerMap
-	 * .getLiftCustomerMapId()); } }
-	 * logger.info("Method :: getAllBranchesForCompany"); listOfEvents =
-	 * this.dashboardService.getListOfEvetnDetails( liftCustomerMapIds,
-	 * this.getMetaInfo());
-	 * 
-	 * } catch (Exception e) { logger.error(ExceptionUtils.getFullStackTrace(e));
-	 * throw new RunTimeException(
-	 * ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(), PropertyUtils
-	 * .getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS
-	 * .getMessage()));
-	 * 
-	 * } //FCM testing JSONObject jsnOb = new JSONObject(); try {
-	 * jsnOb.put("title","RLMS"); jsnOb.put("body","TEST"); } catch (JSONException
-	 * e1) { // TODO Auto-generated catch block e1.printStackTrace(); } try {
-	 * messagingService.sendNotification(
-	 * "emDR9YQD4S0:APA91bG3XuXAMrTGfIWIxbSqXDEOH9oTHBc8mVFsHT7Hc1-GUO_b21_Iie4T0875k26argOzM608RIce8x8rAGqG9JcqMAlt2qeDfZkVaUyNlza-9PlaVBfB7d--6nxh1FpVCaSVEZ9x",
-	 * jsnOb); } catch (SmackException e) { e.printStackTrace(); } catch
-	 * (IOException e) { e.printStackTrace(); } return listOfEvents; }
-	 */
-
+	
 	@RequestMapping(value = "/getListOfAmcServiceCalls", method = RequestMethod.POST)
 	public @ResponseBody List<ComplaintsDto> getListOfAmcServiceCalls(@RequestBody ComplaintsDtlsDto dto)
 			throws RunTimeException {
 		List<ComplaintsDto> listOfComplaints = null;
 		List<RlmsCompanyBranchMapDtls> listOfAllBranches = null;
-
 		List<Integer> companyBranchMapIds = new ArrayList<>();
-		List<Integer> branchCustomerMapIds = new ArrayList<>();
 		listOfAllBranches = this.companyService.getAllBranches(dto.getCompanyId());
 		for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
 			companyBranchMapIds.add(companyBranchMap.getCompanyBranchMapId());
 		}
-
 		List<CustomerDtlsDto> allCustomersForBranch = dashboardService.getAllCustomersForBranch(companyBranchMapIds);
-
 		List<Integer> liftCustomerMapIds = new ArrayList<>();
 		for (CustomerDtlsDto customerDtlsDto : allCustomersForBranch) {
 			LiftDtlsDto dtoToGetLifts = new LiftDtlsDto();
@@ -914,12 +822,10 @@ public class DashBoardController extends BaseController {
 				liftCustomerMapIds.add(rlmsLiftCustomerMap.getLiftCustomerMapId());
 			}
 		}
-
 		dto.setListOfLiftCustoMapId(liftCustomerMapIds);
 		try {
 			logger.info("Method :: getListOfComplaints");
 			listOfComplaints = this.dashboardService.getListOfComplaintsBy(dto);
-
 		} catch (Exception e) {
 			logger.error(ExceptionUtils.getFullStackTrace(e));
 			throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(),
@@ -927,13 +833,6 @@ public class DashBoardController extends BaseController {
 		}
 		return listOfComplaints;
 	}
-
-	/*
-	 * @RequestMapping(value = "/getListOfEvents", method = RequestMethod.POST)
-	 * public @ResponseBody List<EventDtlsDto> getListOfEventsByType(@RequestBody
-	 * RlmsEventDtls rlmsEventDtls ) { return
-	 * dashboardService.getListOfEventsByType(rlmsEventDtls); }
-	 */
 	@RequestMapping(value = "/getEventCountForLift", method = RequestMethod.POST)
 	public @ResponseBody List<EventCountDtls> getEventCountForLift(@RequestBody EventDtlsDto dto)
 			throws RunTimeException {
@@ -942,31 +841,31 @@ public class DashBoardController extends BaseController {
 		List<Integer> companyBranchIds = new ArrayList<>();
 		try {
 			logger.info("Method :: getAllBranchesForCompany");
-			
 			if(dto.getBranchCompanyMapId()!=null) {
 				companyBranchIds.add(dto.getBranchCompanyMapId());
 			}
 			else {
 			listOfAllBranches = this.companyService.getAllBranches(dto.getCompanyId());
+			if(listOfAllBranches!=null && !listOfAllBranches.isEmpty()) {
 			for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
 				companyBranchIds.add(companyBranchMap.getCompanyBranchMapId());
+			}}
 			}
-			}
-			
 			List<CustomerDtlsDto> allCustomersForBranch = dashboardService.getAllCustomersForBranch(companyBranchIds);
 			List<Integer> liftCustomerMapIds = new ArrayList<>();
+			if(allCustomersForBranch!=null && !allCustomersForBranch.isEmpty()) {
 			for (CustomerDtlsDto customerDtlsDto : allCustomersForBranch) {
 				LiftDtlsDto dtoTemp = new LiftDtlsDto();
 				dtoTemp.setBranchCustomerMapId(customerDtlsDto.getBranchCustomerMapId());
 				List<RlmsLiftCustomerMap> list = dashboardService.getAllLiftsForBranchsOrCustomer(dtoTemp);
+				if(list!=null && !list.isEmpty()) {
 				for (RlmsLiftCustomerMap rlmsLiftCustomerMap : list) {
 					liftCustomerMapIds.add(rlmsLiftCustomerMap.getLiftCustomerMapId());
 				}
+				}
 			}
-			logger.info("Method :: getAllBranchesForCompany");
 			eventCountDtls = this.dashboardService.getEventCountDetails(liftCustomerMapIds, this.getMetaInfo());
-
-		} catch (Exception e) {
+		} }catch (Exception e) {
 			logger.error(ExceptionUtils.getFullStackTrace(e));
 			throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(),
 					PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
