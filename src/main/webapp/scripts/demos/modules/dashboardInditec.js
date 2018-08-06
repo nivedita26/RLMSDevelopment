@@ -285,11 +285,21 @@ angular.module('theme.demos.dashboard.indi', [
         text: '0',
         color: 'blue'
       },
+      todaysTotalAssignedComplaints: {
+          title: 'Todays Total Assigned',
+          text: '0',
+          color: 'green'
+        },
       todaysResolvedComplaints: {
         title: 'Todays Resolved',
         text: '0',
-        color: 'green'
+        color: 'indigo'
       },
+      todaysTotalResolvedComplaints: {
+          title: 'Todays Total Resolved',
+          text: '0',
+          color: 'grey'
+        },
       todaysPandingComplaints: {
         title: 'Todays Pending',
         text: '0',

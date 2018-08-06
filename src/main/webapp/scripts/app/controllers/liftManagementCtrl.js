@@ -213,7 +213,7 @@
 	  	        		}else{
 	  	        			userDetailsObj["Amc_Start_Date"] =" - ";
 	  	        		}
-	  	        		if(!!largeLoad[i].amcEndtDateStr){
+	  	        		if(!!largeLoad[i].amcEndDateStr){
 	  	        			userDetailsObj["Amc_End_Date"] =largeLoad[i].amcEndDateStr;
 	  	        		}else{
 	  	        			userDetailsObj["Amc_End_Date"] =" - ";
@@ -234,7 +234,13 @@
 	  	        			userDetailsObj["liftId"] =" - ";
 	  	        		}
 	  	        		if(!!largeLoad[i].liftType){
-	  	        			userDetailsObj["LiftType"] =largeLoad[i].liftType;
+	  	        			if(largeLoad[i].liftType === 1){
+	  	        				userDetailsObj["LiftType"]="Geared";
+	  	        			}else if(largeLoad[i].liftType === 2){
+	  	        				userDetailsObj["LiftType"]="Gearless";
+	  	        			}else{
+	  	        			userDetailsObj["LiftType"] ="Hydraulic";
+	  	        			}
 	  	        		}else{
 	  	        			userDetailsObj["LiftType"] =" - ";
 	  	        		}
@@ -319,7 +325,7 @@
 	  	        		if(!!largeLoad[i].amcType){
 	  	        			userDetailsObj["amcType"] =largeLoad[i].amcType;
 	  	        		}else{
-	  	        			userDetailsObj["amcType"] =" - ";
+	  	        			userDetailsObj["amcType"] =0;
 	  	        		}
 	  	        		if(!!largeLoad[i].amcTypeStr){
 	  	        			userDetailsObj["amcTypeStr"] =largeLoad[i].amcTypeStr;
@@ -332,7 +338,13 @@
 	  	        			userDetailsObj["Amc_Amount"] =" - ";
 	  	        		}
 	  	        		if(!!largeLoad[i].liftType){
-	  	        			userDetailsObj["LiftType"] =largeLoad[i].liftType;
+	  	        			if(largeLoad[i].liftType === 1){
+	  	        				userDetailsObj["LiftType"]="Geared";
+	  	        			}else if(largeLoad[i].liftType === 2){
+	  	        				userDetailsObj["LiftType"]="Gearless";
+	  	        			}else{
+	  	        			userDetailsObj["LiftType"] ="Hydraulic";
+	  	        			}
 	  	        		}else{
 	  	        			userDetailsObj["LiftType"] =" - ";
 	  	        		}

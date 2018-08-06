@@ -57,7 +57,7 @@
 			.then(function(response){
 				$scope.showAlert = true;
 				var key = Object.keys(response);
-				var successMessage = response[key[0]];
+				var successMessage = response[key[1]];
 				$scope.alert.msg = successMessage;
 				$scope.alert.type = "success";
 				initAddUser();
