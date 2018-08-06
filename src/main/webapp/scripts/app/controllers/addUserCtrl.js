@@ -37,8 +37,9 @@
 		    });
 		};
 		//Hide select company from company and branch admin
-		if($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel ==1){
+		if($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 1){
 			$scope.showCompany=true;
+			loadCompayInfo();
 		}else{
 			$scope.showCompany=false;
 		}
@@ -51,7 +52,7 @@
 			}else{
 				$scope.addUser.companyId = $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyMaster.companyId;
 			}
-			$scope.addUser.firstName=$scope.addUser.firstName;
+			//$scope.addUser.firstName=$scope.addUser.firstName;
 			serviceApi.doPostWithData("/RLMS/admin/validateAndRegisterNewUser",$scope.addUser)
 			.then(function(response){
 				$scope.showAlert = true;
@@ -81,7 +82,7 @@
 			}
 			*/},function(error){
 				$scope.showAlert = true;
-				$scope.alert.msg = error.exceptionMessage;
+				$scope.alert.msg = error;
 				$scope.alert.type = "danger";
 			});
 		}

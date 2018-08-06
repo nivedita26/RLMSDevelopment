@@ -75,6 +75,7 @@
 						$scope.branches = response;
 						$scope.selectedBranch.selected=undefined;
 						$scope.selectedCustomer.selected=undefined;
+						$scope.selectedCallID.selected = undefined;
 						var emptyComplaint=[];
 						$scope.myData=emptyComplaint;
 					});
@@ -98,13 +99,19 @@
 
 		}
 $scope.loadCallID=function(){
+	var tempLiftId = [];
+		if($scope.selectedLift.selected.length>0){
+			for (var j = 0; j < $scope.selectedLift.selected.length; j++) {
+				tempLiftId.push($scope.selectedLift.selected[j].liftId);
+			}
+		}
 	var dataToSend = {
-				branchCompanyMapId : $scope.selectedBranch.selected.companyBranchMapId,
-				branchCustomerMapId : $scope.selectedCustomer.selected.branchCustomerMapId
+				branchCustomerMapId : $scope.selectedCustomer.selected.branchCustomerMapId,
+				listOfLiftCustoMapId:tempLiftId
 		}
 		serviceApi.doPostWithData('/RLMS/report/callSpecificReport',dataToSend)
 				.then(function(callData) {
-					$scope.callID = callData;			
+					$scope.callID = callData;
 				})
 	}
 		if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 1) {
@@ -457,7 +464,7 @@ $scope.loadCallID=function(){
 		  	        				$scope.callSpecificRep=largeLoad;
 		  	        			  }
 		  	        		}
-		  	        		  if((($scope.selectedCallID.selected) &&($scope.selectedCallID.selected.complaintNumber === largeLoad[i].complaintNumber)) ){
+		  	        		  if((($scope.selectedCallID.selected) &&($scope.selectedCallID.selected.complaintNumber === largeLoad[i].complaintNumber)) ){/*
 		  	        			  var detailsObj={};
 		  	        			 k= k+1;
 		  	        		detailsObj["SrNo"] =k +".";
@@ -560,8 +567,9 @@ $scope.loadCallID=function(){
   	        					}
 		  	        		}
 		  	        		details.push(detailsObj);
-		  	        	  }
-		  	        		  if((!($scope.selectedCallID.selected))&& (!($scope.selectedLift.selected))){
+		  	        	  */$scope.callSpecificRep=largeLoad;
+		  	        			  }
+		  	        		  if((!($scope.selectedCallID.selected))&& (!($scope.selectedLift.selected))){/*
 
 					  	        	var detailsObj={};
 				  	        		detailsObj["SrNo"] =i+1 +".";
@@ -661,7 +669,7 @@ $scope.loadCallID=function(){
 				  	        		
 				  	        		details.push(detailsObj);
 				  	        	  
-		  	        		  }
+		  	        		  */}
 		  	        	  }
 		  	            $scope.setPagingData(details, page, pageSize);
 		  	          });

@@ -12,6 +12,13 @@
 			$scope.branches = [];
 			$scope.cutomers=[];
 			
+			//load compay dropdown data
+			function loadCompayInfo(){
+				serviceApi.doPostWithoutData('/RLMS/admin/getAllApplicableCompanies')
+			    .then(function(response){
+			    		$scope.companies = response;
+			    });
+			};
 			$scope.loadBranchData = function(){
 				var companyData={};
 				if($scope.showCompany == true){
@@ -33,6 +40,7 @@
 			    	$scope.myData = emptyArray;
 			    });
 			}
+			
 			$scope.loadCustomerData = function(){
 				var branchData ={};
 	  	    	if($scope.showBranch == true){
@@ -68,13 +76,10 @@
 						liftCustomerMapId:0,
 						branchCustomerMapId:0,
 						companyId:0,
-						//callType:0,
 						callType:'',
 						complaintsTitle:'',
 						complaintsRemark:'',
 						registrationType:2,
-						//fromDate:'',
-						//toDate:''
 				};
 				
 				$scope.complaintTitle=[
@@ -199,13 +204,7 @@
 			      else
 			    	  $scope.openFlag[which] = false;
 			  }
-			//load compay dropdown data
-			function loadCompayInfo(){
-				serviceApi.doPostWithoutData('/RLMS/admin/getAllApplicableCompanies')
-			    .then(function(response){
-			    		$scope.companies = response;
-			    });
-			};
+			
 		
 			$scope.loadLifts = function() {
 				
@@ -250,10 +249,10 @@
 			 //showCompnay Flag
 		  	if($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 1){
 				$scope.showCompany= true;
-				//loadCompayInfo();
+				loadCompayInfo();
 			}else{
 				$scope.showCompany= false;
-				$scope.loadBranchData();
+				//$scope.loadBranchData();
 			}
 		  	
 		  	//showBranch Flag

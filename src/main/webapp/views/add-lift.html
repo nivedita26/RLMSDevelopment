@@ -44,12 +44,18 @@
 			<label for="liftNumber" class="col-md-3 control-label">Lift Number<sup class="red font-12">*</sup></label>
 			<div class="col-md-6">
 				<input ng-model="addLift.liftNumber" required class="form-control" name="liftNumber" type="text"/>
+				<span class="help-block"
+						ng-show="addLiftForm.liftNumber.$error.required && addLiftForm.liftNumber.$dirty">This
+						field is required</span>
 			</div>
 		</div>
 		<div class="form-group">
 			<label for="liftTypeName" class="col-md-3 control-label">Lift Type<sup class="red font-12">*</sup></label>
 			<div class="col-md-6">
 				<input ng-model="liftTypeName" required class="form-control" name="liftTypeName" type="text"/>
+				<span class="help-block"
+						ng-show="addLiftForm.liftTypeName.$error.required && addLiftForm.liftTypeName.$dirty">This
+						field is required</span>
 			</div>
 		</div> 
 		<div class="form-group">
@@ -62,6 +68,9 @@
 				<input name="area" type="text"
 					placeholder=""   onkeypress="return ((event.charCode > 64 && event.charCode < 91) ||(event.charCode > 96 && event.charCode < 123) || event.charCode == 8 || event.charCode == 32);"
 					ng-model="addLift.area" class="form-control" required>
+					<span class="help-block"
+						ng-show="addLiftForm.area.$error.required && addLiftForm.area.$dirty">This
+						field is required</span>
 			</div>
 		</div>
 		<div class="form-group">
@@ -70,6 +79,8 @@
 				<input name="city" type="text"
 					placeholder="" onkeypress="return ((event.charCode > 64 && event.charCode < 91) ||(event.charCode > 96 && event.charCode < 123) || event.charCode == 8 || event.charCode == 32);"
 					ng-model="addLift.city" class="form-control" required>
+					<span class="help-block"
+						ng-show="addLiftForm.city.$error.required && addLiftForm.city.$dirty">This field is required</span>
 			</div>
 		</div>
 		<div class="form-group">
@@ -77,15 +88,20 @@
 			<div class="col-sm-6">
 				<input name="pinCode" type="text" maxlength="6" onkeypress="return (event.charCode > 47 && event.charCode < 58 );"
 					ng-model="addLift.pinCode" class="form-control" required>
+				
 			</div>
 		</div>
 		<div class="form-group">
 			<label for="latitude" class="col-md-3 control-label">Latitude<sup class="red font-12">*</sup></label>
 			<div class="col-md-6"><input ng-model="addLift.latitude" class="form-control"  type="text" required name="latitude"></div>
+			<span class="help-block"
+						ng-show="addLiftForm.latitude.$error.required && addLiftForm.latitude.$dirty">This field is required</span>
 		</div>
 		<div class="form-group">
 			<label for="longitude" class="col-md-3 control-label">Longitude<sup class="red font-12">*</sup></label>
 			<div class="col-md-6"><input ng-model="addLift.longitude" class="form-control"  type="text" required name="longitude"></div>
+			<span class="help-block"
+						ng-show="addLiftForm.longitude.$error.required && addLiftForm.longitude.$dirty">This field is required</span>
 		</div>
 		<div class="form-group">
 			<label for="dateOfInstallation" class="col-md-3 control-label">Date Of Installation <sup class="red font-12">*</sup></label>

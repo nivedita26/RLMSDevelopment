@@ -369,6 +369,7 @@
         <div class="col-md-3 animated-content">
             <div class="row">
 				<div class="col-xs-6" style="color: red">
+				<span ng-show="loading"><img id="mySpinner" style="width:100px; height:100px;" src="assets/img/loading.gif"  /></span>
 					<a class="info-tiles tiles-{{complaintsData.todaysTotalComplaints.color}}" ng-click="openDemoModal('complaints','2,3,5','Todays Total Calls',true,'List of Todays Total Calls')">
 						<div class="tiles-heading">
 							<div class="text-center">{{complaintsData.todaysTotalComplaints.title}}</div>
@@ -654,6 +655,7 @@
 					</a>
 				</div>
 				<div class="col-xs-6">
+				<span ng-show="loading"><img id="mySpinner" style="width:100px; height:100px;" src="assets/img/loading2.gif"  /></span>
 				<a class="info-tiles tiles-{{assignedComplaints.color}}" ng-click="openDemoModalForAllBranches('branches','Active','Active','List of Active Branches')">
 						<div class="tiles-heading">
 							<div class="text-center">{{branchDetails.activeBranches.title}}</div>
@@ -669,6 +671,7 @@
             <div class="row">
                 
                 <div class="col-xs-6">
+                <span ng-show="loading"><img id="spinner" style="width:100px; height:100px;" src="assets/img/loading2.gif"  /></span>
                 	<a class="info-tiles tiles-{{attemptedTodayComplaints.color}}" ng-click="openDemoModalForAllBranches('branches','InActive','InActive','List of Inactive Branches')">
 						<div class="tiles-heading">
 							<div class="text-center">{{branchDetails.inactiveBranches.title}}</div>
