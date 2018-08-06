@@ -197,4 +197,10 @@ public class CustomerDaoImpl implements CustomerDao{
 		 RlmsCustomerMemberMap  customerMemberMap = (RlmsCustomerMemberMap) criteria.uniqueResult();
 		 return customerMemberMap;
 	}
+
+	@Override
+	public void updateCustomerMemberMap(RlmsCustomerMemberMap customerMemberMap) {
+		this.sessionFactory.getCurrentSession().update(customerMemberMap);
+
+	}
 }

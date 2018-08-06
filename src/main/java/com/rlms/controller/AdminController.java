@@ -3,9 +3,12 @@ package com.rlms.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.commons.validator.EmailValidator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -196,10 +199,20 @@ public class AdminController extends BaseController{
 	        }
 	        return reponseDto;
 	  }
-	 @RequestMapping(value = "/validateAndRegisterNewUser", method = RequestMethod.POST)
+	 @SuppressWarnings("deprecation")
+	@RequestMapping(value = "/validateAndRegisterNewUser", method = RequestMethod.POST)
 	    public @ResponseBody ResponseDto validateAndRegisterNewUser(@RequestBody AddNewUserDto dto) throws RunTimeException, ValidationException {
 		 ResponseDto reponseDto = new ResponseDto();
 	        try{
+	        		  /* boolean result = true;
+	        		   try {
+	        		      InternetAddress emailAddr = new InternetAddress(dto.getEmailId());
+	        		      emailAddr.validate();
+	        		      System.out.println("valid mail id");
+	        		   } catch (AddressException ex) {
+	        		      result = false;
+	        		   }*/
+	        
 	        	logger.info("Method :: validateAndRegisterNewUser");
 	        	reponseDto.setResponse(true);
 	        	reponseDto.setResponse(this.userService.validateAndRegisterNewUser(dto, this.getMetaInfo()));
@@ -323,8 +336,8 @@ public class AdminController extends BaseController{
 	  }
 	 
 	 @RequestMapping(value = "/validateAndApproveLift", method = RequestMethod.POST)
-	    public @ResponseBody ResponseDto validateAndApproveLift(@RequestBody LiftDtlsDto dto) throws RunTimeException, ValidationException {
-		 ResponseDto reponseDto = new ResponseDto();
+	   public @ResponseBody ResponseDto validateAndApproveLift(@RequestBody LiftDtlsDto dto) throws RunTimeException, ValidationException {
+	   ResponseDto reponseDto = new ResponseDto();
 	        
 	        try{
 	        	logger.info("Method :: validateAndApproveLift");

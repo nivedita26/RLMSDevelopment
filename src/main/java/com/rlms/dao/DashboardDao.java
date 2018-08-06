@@ -3,6 +3,7 @@ package com.rlms.dao;
 import java.util.Date;
 import java.util.List;
 
+import com.rlms.contract.ComplaintsDtlsDto;
 import com.rlms.model.RlmsCompanyBranchMapDtls;
 import com.rlms.model.RlmsComplaintMaster;
 import com.rlms.model.RlmsComplaintTechMapDtls;
@@ -49,7 +50,7 @@ public interface DashboardDao {
     public List<Object[]> getBranchCountDtlsForDashboard(
 			List<Integer> branchIds);
     
-    public List<RlmsComplaintMaster> getAllComplaintsForAvgLogs(Date fromDate,Date toDate);
+    public List<RlmsComplaintMaster> getAllComplaintsForAvgLogs(Date fromDate,Date toDate,ComplaintsDtlsDto dto);
 
     public List<RlmsEventDtls> getUnidentifiedEventCountDtlsForDashboard();
     

@@ -1,5 +1,8 @@
 package com.rlms.dao;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,12 +22,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.rlms.constants.RLMSConstants;
 import com.rlms.constants.Status;
+import com.rlms.contract.ComplaintsDtlsDto;
 import com.rlms.model.RlmsCompanyBranchMapDtls;
 import com.rlms.model.RlmsComplaintMaster;
 import com.rlms.model.RlmsComplaintTechMapDtls;
 import com.rlms.model.RlmsEventDtls;
 import com.rlms.model.RlmsLiftAmcDtls;
 import com.rlms.model.RlmsUserRoles;
+import com.rlms.utils.DateUtils;
 
 @Repository
 public class DashboardDaoImpl implements DashboardDao {
@@ -280,7 +285,10 @@ public List<Object[]> getBranchCountDtlsForDashboard(List<Integer> branchIds) {
 }
 @Override
 public List<Object[]> getTotalComplaintsCallTypeCount(List<Integer> liftCustomerMapIds) {
-	String str = "";
+	 Date pivotDate = DateUtils.addDaysToDate(new Date(), -30);
+	 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+	 String fromDatet = formatter.format(pivotDate);
+	 String str = "";
 	for (Integer mapId : liftCustomerMapIds) {
 		if (StringUtils.isEmpty(str)) {
 			str = str.concat(String.valueOf(mapId));
@@ -289,9 +297,7 @@ public List<Object[]> getTotalComplaintsCallTypeCount(List<Integer> liftCustomer
 		}
 	}
 	Session session = this.sessionFactory.getCurrentSession();
-	//String sql = "SELECT call_type,count(*) FROM rlms_complaint_master where lift_customer_map_id in("+str+") group by call_type";
-	//	String sql ="SELECT call_type,count(*) FROM rlms_complaint_master where (created_date or updated_date < DATE_ADD(NOW(), INTERVAL +1 MONTH)) and lift_customer_map_id in ("+str+") group by call_type";
-	String sql ="SELECT call_type,count(*) FROM rlms_complaint_master where (registration_date > DATE_ADD(NOW(), INTERVAL -30 DAY)) and  (registration_date < DATE_ADD(NOW(),INTERVAL -1 DAY)) and lift_customer_map_id in ("+str+") group by call_type";
+	String sql ="SELECT call_type,count(*) FROM rlms_complaint_master where (registration_date >= '"+fromDatet+"') and  registration_date <= NOW() and lift_customer_map_id in ("+str+") group by call_type";
 		SQLQuery query = session.createSQLQuery(sql);
 		@SuppressWarnings("unchecked")
 		List<Object[]>complaintCount = query.list();
@@ -309,12 +315,7 @@ public List<Object[]> getTodaysComplaintsCallTypeCount(List<Integer> liftCustome
 		}
 	}
 	Session session = this.sessionFactory.getCurrentSession();
-	//String sql = "SELECT call_type,count(*) FROM rlms_complaint_master where lift_customer_map_id in("+str+") group by call_type";
-	//String sql ="SELECT call_type,count(*) FROM rlms_complaint_master where (DATE(created_date)=CURDATE() or DATE(updated_date)=CURDATE()) and lift_customer_map_id in ("+str+") group by call_type";
 	String sql ="SELECT call_type,count(*) FROM rlms_complaint_master where (DATE(registration_date)=CURDATE()) and lift_customer_map_id in ("+str+") group by call_type";
-
-	
-	
 	SQLQuery query = session.createSQLQuery(sql);
 	 	@SuppressWarnings("unchecked")
 		List<Object[]>complaintCount = query.list();
@@ -322,6 +323,9 @@ public List<Object[]> getTodaysComplaintsCallTypeCount(List<Integer> liftCustome
 	}
 @Override
 public List<Object[]> getTotalComplaintsStatusCount(List<Integer> liftCustomerMapIds) {
+	 Date pivotDate = DateUtils.addDaysToDate(new Date(), -30);
+	 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+	 String fromDatet = formatter.format(pivotDate);
 	String str = "";
 	for (Integer mapId : liftCustomerMapIds) {
 		if (StringUtils.isEmpty(str)) {
@@ -331,9 +335,8 @@ public List<Object[]> getTotalComplaintsStatusCount(List<Integer> liftCustomerMa
 		}
 	}
 	Session session = this.sessionFactory.getCurrentSession();
-	//String sql = "SELECT status,count(*) FROM rlms_complaint_master where lift_customer_map_id in("+str+") group by status";	
-	String sql ="SELECT call_type,status,count(*) FROM rlms_complaint_master where  (registration_date > DATE_ADD(NOW(), INTERVAL -30 DAY)) and  (registration_date < DATE_ADD(NOW(),INTERVAL -1 DAY)) and lift_customer_map_id in ("+str+") group by status,call_type";
-   SQLQuery query = session.createSQLQuery(sql);
+	String sql ="SELECT call_type,status,count(*) FROM rlms_complaint_master where  (registration_date >='"+fromDatet+"' )and  registration_date <=NOW() and lift_customer_map_id in ("+str+") group by status,call_type";
+     SQLQuery query = session.createSQLQuery(sql);
 	 	@SuppressWarnings("unchecked")
 		List<Object[]>complaintCount = query.list();
 		return complaintCount;
@@ -376,9 +379,9 @@ public List<Object[]> getTodaysTotalComplaintsStatusCount(List<Integer> liftCust
 	}
 
 @Override
-public List<RlmsComplaintMaster> getAllComplaintsForAvgLogs(Date fromDate, Date toDate) {
+public List<RlmsComplaintMaster> getAllComplaintsForAvgLogs(Date fromDate, Date toDate, ComplaintsDtlsDto dto) {
 	Session session = this.sessionFactory.getCurrentSession();
-	
+
 	/*String sql ="SELECT * FROM rlms_complaint_master where registration_date between '"+fromDate+"' and '"+toDate+"'";
 	SQLQuery query = session.createSQLQuery(sql);
  	@SuppressWarnings("unchecked")
@@ -390,6 +393,7 @@ public List<RlmsComplaintMaster> getAllComplaintsForAvgLogs(Date fromDate, Date 
 	Criteria criteria = session.createCriteria(RlmsComplaintMaster.class);
 	criteria.add(Restrictions.ge("registrationDate",fromDate));
 	criteria.add(Restrictions.le("registrationDate",toDate));
+	criteria.add(Restrictions.in("liftCustomerMap.liftCustomerMapId", dto.getListOfLiftCustoMapId()));
 	List<RlmsComplaintMaster>complaintList = criteria.list();
 	return complaintList;
 }

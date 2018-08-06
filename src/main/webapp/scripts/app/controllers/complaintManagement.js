@@ -1300,7 +1300,7 @@
 											      fontWeight: "bold"
                                             },
 								          icon: {
-								        	  url:'assets/img/Lift3.png',
+								        	  url:'assets/img/Lift11.png',
 								        	  scaledSize : new google.maps.Size(35,45),
 								              labelOrigin: new google.maps.Point(30,0),
 								          	}
@@ -1326,9 +1326,9 @@
 									        fontWeight: "bold"
 										},
 											  icon: {
-									        	  url:'assets/img/Technician3.png',
-									        	  scaledSize : new google.maps.Size(30,30),
-											      labelOrigin: new google.maps.Point(20,35),
+									        	  url:'assets/img/Technician12.png',
+									        	  scaledSize : new google.maps.Size(30,40),
+											      labelOrigin: new google.maps.Point(20,45),
 									          	},
 								            content: "<p><b>Technician Location</b><br>Name: "+$scope.technicians[i].name+"<br>Assigned Complaint: "+$scope.technicians[i].countOfComplaintsAssigned+" <br>Todays Assigned Complaint: "+$scope.technicians[i].todaysAssignedCalls+" </p>"
 										});

@@ -525,6 +525,13 @@ https://mvnrepository.com/artifact/org.jboss.marshalling/jboss-marshalling
 		     <version>0.0.2</version>
 		</dependency> 
 		
+		
+		<dependency>
+ 				 <groupId>commons-validator</groupId>
+  				<artifactId>commons-validator</artifactId>
+ 				 <version>1.6</version>
+		</dependency>
+		
 
 <!-- 	    <dependency>
 

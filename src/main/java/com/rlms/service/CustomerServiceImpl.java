@@ -24,6 +24,7 @@ import com.rlms.contract.UserMetaInfo;
 import com.rlms.dao.BranchDao;
 import com.rlms.dao.CustomerDao;
 import com.rlms.dao.LiftDao;
+import com.rlms.dao.MemberDao;
 import com.rlms.dao.UserRoleDao;
 import com.rlms.exception.ExceptionCode;
 import com.rlms.exception.ValidationException;
@@ -262,15 +263,14 @@ public class CustomerServiceImpl implements CustomerService{
 		
 		if(memberMaster!=null){
 	      //memberMaster = this.constructMemberMaster(memberDtlsDto, memberMaster,metaInfo);
-	       
-	       memberMaster.setAddress(memberDtlsDto.getAddress());
+	        memberMaster.setAddress(memberDtlsDto.getAddress());
 			memberMaster.setContactNumber(memberDtlsDto.getContactNumber());
 			memberMaster.setEmailId(memberDtlsDto.getEmailId());
 			memberMaster.setFirstName(memberDtlsDto.getFirstName());
 			memberMaster.setLastName(memberDtlsDto.getLastName());
 			memberMaster.setCity(memberDtlsDto.getCity());
 			memberMaster.setArea(memberDtlsDto.getArea());
-			memberMaster.setActiveFlag(RLMSConstants.ACTIVE.getId());
+		//	memberMaster.setActiveFlag(memberDtlsDto.getActiveFlag());
 			memberMaster.setPincode(memberDtlsDto.getPinCode());
 			memberMaster.setUpdatedBy(metaInfo.getUserId());
 			memberMaster.setUpdatedDate(new Date());
@@ -642,7 +642,7 @@ public class CustomerServiceImpl implements CustomerService{
 			customerDao.deleteMember(memberMaster);
 			RlmsCustomerMemberMap customerMemberMap = customerDao.getCustomerMemberMapByMemberId(memberMaster.getMemberId());
 			customerMemberMap.setActiveFlag(RLMSConstants.INACTIVE.getId());
-			customerDao.saveCustomerMemberMap(customerMemberMap);
+			customerDao.updateCustomerMemberMap(customerMemberMap);
 		}
 		return  "Memeber deleted successfully";
 
