@@ -195,13 +195,11 @@
 		</div>
 		<div class="form-group">
 			<label for="engineType" class="col-md-3 control-label">Machine Type</label>
-			<!-- <div class="col-md-6"><input ng-model="addLift.engineType" class="form-control"  type="number" name="engineType"></div> -->
 			<div class="col-sm-6">
-					  <ui-select ng-model="selectedEngineMachineType.selected" title="Choose a Door Type">
-					    <ui-select-match placeholder="Select a door type...">{{$select.selected.name}}</ui-select-match> <ui-select-choices
-								repeat="iterator in EngineMachineType| filter: $select.search">
-							<span
-								ng-bind-html="iterator.name | highlight: $select.search"></span>
+					  <ui-select ng-model="selectedEngineMachineType.selected" title="Choose a Engine Type">
+					    <ui-select-match placeholder="Select a Engine type...">{{$select.selected.name}}</ui-select-match> 
+					    <ui-select-choices	repeat="iterator in EngineMachineType| filter: $select.search">
+							<span ng-bind-html="iterator.name | highlight: $select.search"></span>
 							</ui-select-choices>
 					  </ui-select>
 			</div>

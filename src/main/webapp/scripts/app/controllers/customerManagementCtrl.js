@@ -242,7 +242,7 @@
 	  	        		}else{
 	  	        			userDetailsObj["PinCode"] =" - ";
 	  	        		}
-	  	        		if(!!largeLoad[i].activeFlag){
+	  	        		if(largeLoad[i].activeFlag=="0"||largeLoad[i].activeFlag=="1"){
 	  	        			userDetailsObj["Active_Flag"] =largeLoad[i].activeFlag;
 	  	        		}else{
 	  	        			userDetailsObj["Active_Flag"] =" - ";
