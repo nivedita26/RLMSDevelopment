@@ -103,6 +103,7 @@ public class DashboardServiceImpl implements DashboardService {
 	private List<CustomerDtlsDto> constructListOfCustomerDtlsDto(
 			List<RlmsBranchCustomerMap> listOfCustomers) {
 		List<CustomerDtlsDto> listOFDtos = new ArrayList<CustomerDtlsDto>();
+		if(listOfCustomers!=null && !listOfCustomers.isEmpty()) {
 		for (RlmsBranchCustomerMap branchCustomerMap : listOfCustomers) {
 			List<Integer> listOfCustomer = new ArrayList<Integer>();
 			listOfCustomer.add(branchCustomerMap.getCustomerMaster()
@@ -156,6 +157,7 @@ public class DashboardServiceImpl implements DashboardService {
 			dto.setBranchCustomerMapId(branchCustomerMap.getBranchCustoMapId());
 			listOFDtos.add(dto);
 		}
+	}
 		return listOFDtos;
 	}
 	@Transactional(propagation = Propagation.REQUIRED)
@@ -783,10 +785,17 @@ public class DashboardServiceImpl implements DashboardService {
 	    try {
 		 pivotDate=sdf.parse(sdf.format(pivotDate));
 		today = sdf.parse(sdf.format(today));
+		
+		logger.debug("pivot date**"+pivotDate);
+		logger.debug("pivot date**"+today);
 		} catch (ParseException e) {
 		}
 	    listOfAllComplaints = dashboardDao.getAllComplaintsForAvgLogs(pivotDate,today,dto);
+	    logger.debug("total complaints**"+listOfAllComplaints.size());
+	    
 	    int diff =DateUtils.daysBetween(listOfAllComplaints.get(0).getCreatedDate(),new Date());
+	    logger.debug("date difference"+diff);
+	    
 	    if(diff>0) {
 	    	float  listSize = listOfAllComplaints.size();
 	    	avgLogsPerDay =(listSize/diff);

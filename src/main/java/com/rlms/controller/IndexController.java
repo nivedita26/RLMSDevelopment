@@ -22,7 +22,7 @@ public class IndexController extends BaseController{
 	    public  String getIndexPage() {
 		UserMetaInfo  userrole = this.getMetaInfo();
 		if(userrole!=null) {
-		  if(userrole.getUserRole().equals(SpocRoleConstants.TECHNICIAN.getSpocRoleName())) {
+		  if(userrole.getUserRole().getRole().equals(SpocRoleConstants.TECHNICIAN.getSpocRoleName())) {
 			  return  "login.jsp";
 		  }
 		}

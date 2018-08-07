@@ -124,7 +124,8 @@ UserMasterDao{
 	public RlmsUsersMaster getUserByMailId(String mailId) {
 		Session session = this.sessionFactory.getCurrentSession();
 		 Criteria criteria = session.createCriteria(RlmsUsersMaster.class)
-				 .add(Restrictions.eq("emailId",mailId));
+				 .add(Restrictions.eq("emailId",mailId))
+		       .add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
 		 return (RlmsUsersMaster)criteria.uniqueResult();
 	}
 }

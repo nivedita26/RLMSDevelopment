@@ -30,16 +30,12 @@ public interface UserRoleDao{
 	public RlmsUserRoles getUserRoleForCompany(Integer cmpanyId, Integer spocRoleId);
 	public RlmsUserRoles getTechnicianRoleObjByMblNo(String mblNumber,
 			Integer spocRoleId);
-	
 	public RlmsUserRoles getTechnicianRoleObjByUserNameAndPassword(UserDtlsDto dtlsDto,int roleId);
-			
 	public void saveUserAppDlts(RlmsUserApplicationMapDtls userApplicationMapDtls);
 	public void mergeUserAppDlts(RlmsUserApplicationMapDtls userApplicationMapDtls);
 	public List<RlmsUserRoles> getAllUserWithRoleForBranch(Integer commpBranchMapId, Integer companyId, Integer spocRoleId);
 	public RlmsUserRoles getUserIFRoleisAssigned(Integer userID);
 	public RlmsUserRoles getUserWithRoleForCompany(Integer companyId, Integer spocRoleId);
-	
 	public List<RlmsUserRoles>  getUsersForBranch(BranchDtlsDto dto);
 
-	
 }
