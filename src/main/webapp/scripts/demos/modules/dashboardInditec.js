@@ -288,12 +288,12 @@ angular.module('theme.demos.dashboard.indi', [
       todaysTotalAssignedComplaints: {
           title: 'Todays Total Assigned',
           text: '0',
-          color: 'green'
+          color: 'indigo'
         },
       todaysResolvedComplaints: {
         title: 'Todays Resolved',
         text: '0',
-        color: 'indigo'
+        color: 'green'
       },
       todaysTotalResolvedComplaints: {
           title: 'Todays Total Resolved',
@@ -436,6 +436,7 @@ angular.module('theme.demos.dashboard.indi', [
 
     	            });
     	        }, 100);
+     
      // Total Calls by Status
       setTimeout(
         function () {
@@ -541,6 +542,50 @@ angular.module('theme.demos.dashboard.indi', [
     	              			 $scope.complaintsData.todaysResolvedComplaints.text = totalCount;
     	              		  }else{
     	               			$scope.complaintsData.todaysResolvedComplaints.text == "0";
+    	               		  }
+    	              		  }
+    	              		
+    	              	  }
+    	            });
+    	        }, 100);
+      
+      //Todays Total Assigned
+      //Todays Total Calls by Status
+      setTimeout(
+    	        function () {
+    	          var dataToSend = $scope
+    	            .construnctObjeToSend(complaintStatusArray);
+    	          serviceApi
+    	            .doPostWithData(
+    	       		'/RLMS/dashboard/getListOfTodaysTotalComplaintsCountByStatus',dataToSend)
+    	            .then(
+    	            function (
+    	              largeLoad) {
+    	                              
+    	              //Todays Total Assigned
+    	              	 var totalCount=0;
+    	               	  for (var i = 0; i < largeLoad.length; i++)
+    	               	  {
+    	               		 if(largeLoad[i].callStatus== "Assigned"){
+    	               			 if(largeLoad[i].todaysCallStatusCount!=null){
+    	               				 totalCount=totalCount+largeLoad[i].todaysCallStatusCount;
+    	               				$scope.complaintsData.todaysTotalAssignedComplaints.text = totalCount;
+    	               		  }else{
+    	               			$scope.complaintsData.todaysTotalAssignedComplaints.text == "0";
+    	               		  }
+    	               		 }
+    	               	  }
+    	               	  
+    	              //Todays Total Resolved
+    	              	 var totalCount=0;
+    	              	  for (var i = 0; i < largeLoad.length; i++)
+    	              	  {
+    	              		  if(largeLoad[i].callStatus== "Resolved"){
+    	              		  if(largeLoad[i].todaysCallStatusCount!=null){
+    	              			  totalCount=totalCount+largeLoad[i].todaysCallStatusCount;
+    	              			 $scope.complaintsData.todaysTotalResolvedComplaints.text = totalCount;
+    	              		  }else{
+    	               			$scope.complaintsData.todaysTotalResolvedComplaints.text == "0";
     	               		  }
     	              		  }
     	              		
@@ -880,7 +925,7 @@ angular.module('theme.demos.dashboard.indi', [
                       page,
                       pageSize);
                   });
-        	  }else{
+        	  }else if(headerValue==="Todays Unassigned" ||headerValue==="Todays Assigned"|| headerValue==="Todays Resolved"){
         		  var dataToSend = $scope
                   .construnctObjeToSend(complaintStatus);
               	serviceApi
@@ -952,7 +997,68 @@ angular.module('theme.demos.dashboard.indi', [
                         page,
                         pageSize);
                     });
-        	  } 
+        	  }else{
+        		  var dataToSend = $scope
+                  .construnctObjeToSend(complaintStatus);
+              	serviceApi
+                  .doPostWithData('/RLMS/dashboard/getListOfTodaysTotalComplaintsCountByStatus',
+                  dataToSend)
+                  .then(
+                  function (
+                    largeLoad) {
+                    $scope.complaints = largeLoad;
+                    $scope.showTable = true;
+                    var userDetails = [];
+                    var data=[];
+
+                  if(headerValue==="Todays Total Assigned"){
+	                	for (var i = 0; i < largeLoad.length; i++) {
+	                		
+	                		if(largeLoad[i].callStatus=="Assigned"){
+	                			var dataCount={};
+	                			dataCount.callType=largeLoad[i].callType
+	                			dataCount.todaysCallStatusCount=largeLoad[i].todaysCallStatusCount	                			
+	                			data.push(dataCount);
+	                		}
+	                	}
+	                }
+                  if(headerValue==="Todays Total Resolved"){     	                	
+	                	for (var i = 0; i < largeLoad.length; i++) {
+	                		
+	                		if(largeLoad[i].callStatus=="Resolved"){
+	                			var dataCount={};
+	                			dataCount.callType=largeLoad[i].callType
+	                			dataCount.todaysCallStatusCount=largeLoad[i].todaysCallStatusCount
+	                			
+	                			data.push(dataCount);
+	                		}
+	                	}
+	                }         
+                    for (var i = 0; i < data.length; i++) {
+                        var userDetailsObj = {};
+                        
+                          userDetailsObj["No"] = i+1 +".";
+                        
+                        if (!!data[i].callType) {
+                          userDetailsObj["CallType"] = data[i].callType;
+                        } else {
+                          userDetailsObj["CallType"] = " - ";
+                        }
+                        if (!!data[i].todaysCallStatusCount) {
+                          userDetailsObj["TotalCount"] = data[i].todaysCallStatusCount;
+                        } else {
+                          userDetailsObj["TotalCount"] = " - ";
+                        }
+                        userDetails
+                          .push(userDetailsObj);
+                      }
+                      $scope
+                        .setPagingDataForComplaints(
+                        userDetails,
+                        page,
+                        pageSize);
+                    });
+        	  }
           }else{
         	  var dataToSend = $scope
               .construnctObjeToSend(complaintStatus);
