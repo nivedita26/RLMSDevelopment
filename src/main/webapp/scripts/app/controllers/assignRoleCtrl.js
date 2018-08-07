@@ -114,11 +114,15 @@
 		}
 		//Post call
 		$scope.submitAssignRole = function(){
+			if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel < 2){
 			if ($scope.selectedRole.selected.roleName===("COMPANY_OPERATOR")) {
 				$scope.assignRole.companyBranchMapId = $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls.companyBranchMapId;
 			}else{
 				$scope.assignRole.companyBranchMapId = $scope.selectedBranch.selected.companyBranchMapId;
 			}
+		}else{
+			$scope.assignRole.companyBranchMapId = $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls.companyBranchMapId;
+		}
 			$scope.assignRole.companyId = $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyMaster.companyId;
 			$scope.assignRole.spocRoleId = $scope.selectedRole.selected.spocRoleId;
 			$scope.assignRole.userId = $scope.selectedUser.selected.userId;
