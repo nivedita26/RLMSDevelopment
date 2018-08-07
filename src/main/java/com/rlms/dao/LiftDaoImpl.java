@@ -302,8 +302,8 @@ public class LiftDaoImpl implements LiftDao{
 			 Session session = this.sessionFactory.getCurrentSession();
 			 Criteria criteria = session.createCriteria(RlmsLiftCustomerMap.class)
 					 .createAlias("branchCustomerMap.companyBranchMapDtls", "branchCompanyMap")
-					 .add(Restrictions.in("branchCompanyMap.companyBranchMapId", companyBranchIds));
-					 /*.add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));*/
+					 .add(Restrictions.in("branchCompanyMap.companyBranchMapId", companyBranchIds))
+					 .add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
 			 List<RlmsLiftCustomerMap> listOfAllLifts = criteria.list();
 			 return listOfAllLifts;
 		
@@ -322,7 +322,6 @@ public class LiftDaoImpl implements LiftDao{
 	@Override
 	public List<Object[]> liftCountByBranchCustomerMapId(int liftCountByBranchCustomerMapId) {
 	Session session = this.sessionFactory.getCurrentSession();
-		
 	  String sql ="select branch_cust_map_id,count(*) from rlms_lift_customer_map where  branch_cust_map_id="+liftCountByBranchCustomerMapId+"";
     	SQLQuery query = session.createSQLQuery(sql);
 	 	List<Object[]>liftCount = query.list();
@@ -342,7 +341,8 @@ public class LiftDaoImpl implements LiftDao{
 	public RlmsLiftAmcDtls getRlmsLiftAmcDtlsByLiftCustomerMapId(int rlmsLiftCustomerMapId) {
 		Session session = this.sessionFactory.getCurrentSession();
 		Criteria criteria = session.createCriteria(RlmsLiftAmcDtls.class);
-		criteria.add(Restrictions.eq("liftCustomerMap.liftCustomerMapId",rlmsLiftCustomerMapId ));
+		criteria.add(Restrictions.eq("liftCustomerMap.liftCustomerMapId",rlmsLiftCustomerMapId ))
+		.add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
 		return (RlmsLiftAmcDtls) criteria.uniqueResult();
 	}
 

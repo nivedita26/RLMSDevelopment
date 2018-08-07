@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.mysql.fabric.xmlrpc.base.Member;
 import com.rlms.constants.AMCType;
 import com.rlms.constants.CustomerType;
 import com.rlms.constants.RLMSConstants;
@@ -32,6 +33,7 @@ import com.rlms.model.RlmsBranchCustomerMap;
 import com.rlms.model.RlmsCompanyBranchMapDtls;
 import com.rlms.model.RlmsCustomerMaster;
 import com.rlms.model.RlmsCustomerMemberMap;
+import com.rlms.model.RlmsLiftAmcDtls;
 import com.rlms.model.RlmsLiftCustomerMap;
 import com.rlms.model.RlmsLiftMaster;
 import com.rlms.model.RlmsMemberMaster;
@@ -145,10 +147,10 @@ public class CustomerServiceImpl implements CustomerService{
 	
 	@Transactional(propagation = Propagation.REQUIRED)
 	public List<CustomerDtlsDto> getAllApplicableCustomers(CustomerDtlsDto dto, UserMetaInfo metaInfo){
-		//List<Integer> listOfApplicableBranchIds = this.companyService.getListOfApplicableBranch(metaInfo.getUserRole().getUserRoleId(), metaInfo);
 		List<Integer> listOfApplicableBranchIds = new ArrayList<Integer>();
 		listOfApplicableBranchIds.add(dto.getBranchCompanyMapId());
 		List<RlmsBranchCustomerMap> listOfAllCustomers = this.customerDao.getAllCustomersForBranches(listOfApplicableBranchIds);
+	
 		return this.constructListOfCustomerDtlsDto(listOfAllCustomers);
 	}
 	private List<CustomerCountDtls> constructListOfCustomerCountDtlsDto(List<RlmsBranchCustomerMap> listOfCustomers){
@@ -167,6 +169,7 @@ public class CustomerServiceImpl implements CustomerService{
 	
 	private List<CustomerDtlsDto> constructListOfCustomerDtlsDto(List<RlmsBranchCustomerMap> listOfCustomers){
 		List<CustomerDtlsDto> listOFDtos = new ArrayList<CustomerDtlsDto>();
+		if(listOfCustomers!=null && !listOfCustomers.isEmpty()) {
 		for (RlmsBranchCustomerMap branchCustomerMap : listOfCustomers) {
 			List<Integer> listOfCustomer = new ArrayList<Integer>();
 			listOfCustomer.add(branchCustomerMap.getCustomerMaster().getCustomerId());
@@ -206,6 +209,7 @@ public class CustomerServiceImpl implements CustomerService{
 			dto.setCustomerName(branchCustomerMap.getCustomerMaster().getCustomerName());
 			listOFDtos.add(dto);
 		}
+	}
 		return listOFDtos;
 	}
 	
@@ -215,7 +219,8 @@ public class CustomerServiceImpl implements CustomerService{
 		List<Integer> listOfApplicableBranchIds = new ArrayList<Integer>();
 		listOfApplicableBranchIds.add(dto.getBranchCompanyMapId());
 		List<RlmsBranchCustomerMap> listOfAllCustomers = this.customerDao.getAllCustomersForBranches(listOfApplicableBranchIds);
-		for (RlmsBranchCustomerMap rlmsBranchCustomerMap : listOfAllCustomers) {
+	     if(listOfAllCustomers!=null && !listOfAllCustomers.isEmpty()) {
+		  for (RlmsBranchCustomerMap rlmsBranchCustomerMap : listOfAllCustomers) {
 			CustomerDtlsDto customerDtlsDto = new CustomerDtlsDto();
 			customerDtlsDto.setBranchCustomerMapId(rlmsBranchCustomerMap.getBranchCustoMapId());
 			customerDtlsDto.setFirstName(rlmsBranchCustomerMap.getCustomerMaster().getCustomerName());
@@ -236,6 +241,7 @@ public class CustomerServiceImpl implements CustomerService{
 			customerDtlsDto.setWatchmenEmail(rlmsBranchCustomerMap.getCustomerMaster().getWatchmenEmail());
 			listOFDtos.add(customerDtlsDto);
 		}
+	}
 		return listOFDtos;
 	}
 	
@@ -355,9 +361,7 @@ public class CustomerServiceImpl implements CustomerService{
 			RlmsUserApplicationMapDtls userApplicationMapDtls = this.constructUserAppMapDtls(dto, memberMaster, metaInfo);
 			this.userRoleDao.saveUserAppDlts(userApplicationMapDtls);
 		}
-		
 	}
-	
 	private RlmsUserApplicationMapDtls constructUserAppMapDtls(MemberDtlsDto dto, RlmsMemberMaster memberMaster, UserMetaInfo metaInfo){
 		RlmsUserApplicationMapDtls userApplicationMapDtls = new RlmsUserApplicationMapDtls();
 		userApplicationMapDtls.setActiveFlag(RLMSConstants.ACTIVE.getId());
@@ -373,9 +377,7 @@ public class CustomerServiceImpl implements CustomerService{
 		userApplicationMapDtls.setUpdatedBy(metaInfo.getUserId());
 		return userApplicationMapDtls;
 	}
-	
 	private MemberDtlsDto constructMemberDltsSto(RlmsMemberMaster memberMaster){
-		
 		List<RlmsCustomerMemberMap> listOFAllCustomers = this.customerDao.getAllCustomersForMember(memberMaster.getMemberId());
 		MemberDtlsDto memberDtlsDto = new MemberDtlsDto();
 		memberDtlsDto.setFirstName(memberMaster.getFirstName());
@@ -384,9 +386,7 @@ public class CustomerServiceImpl implements CustomerService{
 		memberDtlsDto.setMemberId(memberMaster.getMemberId());
 		memberDtlsDto.setListOfCustomerDtls(this.constructCustoDtlsDto(listOFAllCustomers));
 		return memberDtlsDto;
-		
 	}
-	
 	private List<CustomerDtlsDto> constructCustoDtlsDto(List<RlmsCustomerMemberMap> listOfAllCustomers){
 		List<CustomerDtlsDto> listOfCusoDtls = new ArrayList<CustomerDtlsDto>();
 		for (RlmsCustomerMemberMap customerMemberMap : listOfAllCustomers) {
@@ -400,13 +400,12 @@ public class CustomerServiceImpl implements CustomerService{
 		}
 		return listOfCusoDtls;
 	}
-	
 	@Transactional(propagation = Propagation.REQUIRED)
 	public List<MemberDtlsDto> getListOfAllMemberDtls(MemberDtlsDto memberDtlsDto){
 		List<RlmsCustomerMemberMap> listOfAllMembers = this.customerDao.getAllMembersForCustomer(memberDtlsDto.getBranchCustoMapId());
 		List<MemberDtlsDto> listOfMemberDtls= new ArrayList<MemberDtlsDto>();
+		if(listOfAllMembers!=null && !listOfAllMembers.isEmpty()) {
 		for (RlmsCustomerMemberMap rlmsCustomerMemberMap : listOfAllMembers) {
-			
 			MemberDtlsDto dto = new MemberDtlsDto();
 			dto.setBranchName(rlmsCustomerMemberMap.getRlmsBranchCustomerMap().getCompanyBranchMapDtls().getRlmsBranchMaster().getBranchName());
 			dto.setCompanyName(rlmsCustomerMemberMap.getRlmsBranchCustomerMap().getCompanyBranchMapDtls().getRlmsCompanyMaster().getCompanyName());
@@ -421,18 +420,16 @@ public class CustomerServiceImpl implements CustomerService{
 			dto.setEmailId(rlmsCustomerMemberMap.getRlmsMemberMaster().getEmailId());
 			dto.setAddress(rlmsCustomerMemberMap.getRlmsMemberMaster().getAddress());
 			dto.setMemberId(rlmsCustomerMemberMap.getRlmsMemberMaster().getMemberId());
-			
 			listOfMemberDtls.add(dto);
 		}
+	}
 		return listOfMemberDtls;
 	}
-	
 	@Transactional(propagation = Propagation.REQUIRED)
 	public UserAppDtls getUserAppDtls(Integer userId, Integer userType){
 		UserAppDtls userAppDtls = new UserAppDtls();
 		RlmsUserApplicationMapDtls userApplicationMapDtls = this.customerDao.getUserAppDtls(userId, userType);
 		if(null != userApplicationMapDtls){
-			
 			userAppDtls.setAppRegId(userApplicationMapDtls.getAppRegId());
 			userAppDtls.setUserId(userId);
 			userAppDtls.setUserType(userType);
@@ -442,13 +439,11 @@ public class CustomerServiceImpl implements CustomerService{
 		}
 		return userAppDtls;
 	}
-	
 	@Transactional(propagation = Propagation.REQUIRED)
 	public List<RlmsCustomerMemberMap> getAllMembersForCustomer(
 			Integer branchCustomerMapId){
 		return this.customerDao.getAllMembersForCustomer(branchCustomerMapId);
 	}
-	
 	@Transactional(propagation = Propagation.REQUIRED)
 	public List<LiftDtlsDto> getAllLiftsForMember(Integer memberId){
 		List<LiftDtlsDto> listOfLiftDtls = new ArrayList<LiftDtlsDto>();
@@ -602,7 +597,9 @@ public class CustomerServiceImpl implements CustomerService{
 	@Transactional(propagation = Propagation.REQUIRED)
 	public String validateAndEditCustomer(CustomerDtlsDto customerDtlsDto,UserMetaInfo metaInfo)
  {
-		String statusMessage = "User updated successfully";
+		List<Integer> branchCustomerMapId = new ArrayList<>();
+		String statusMessage =  null;
+		List<Integer> liftCustomerMapList = new ArrayList<>();
 		RlmsCustomerMaster  customerMaster = this.customerDao.getCustomerById(customerDtlsDto.getCustomerId());
 		customerMaster.setAddress(customerDtlsDto.getAddress());
 		customerMaster.setCntNumber(customerDtlsDto.getCntNumber());
@@ -631,6 +628,39 @@ public class CustomerServiceImpl implements CustomerService{
 		customerMaster.setUpdatedBy(metaInfo.getUserId());
 		customerMaster.setUpdatedDate(new Date());
 		this.customerDao.updateCustomer(customerMaster);
+		statusMessage =  "Customer updated successfully";
+		if(customerDtlsDto.getActiveFlag()==RLMSConstants.INACTIVE.getId()) {
+		RlmsBranchCustomerMap branchCustomerMap = customerDao.getBranchCustomerMapByCustoId(customerMaster.getCustomerId());
+		if(branchCustomerMap!=null) {
+			branchCustomerMap.setActiveFlag(customerDtlsDto.getActiveFlag());
+			branchDao.updateRlmsBranchCustomerMapDtls(branchCustomerMap);
+			branchCustomerMapId.add(branchCustomerMap.getBranchCustoMapId());
+		    List<RlmsLiftCustomerMap> rlmsLiftCustomerMapList = liftDao.getAllLiftsForCustomres(branchCustomerMapId);
+		    if(rlmsLiftCustomerMapList!=null && !rlmsLiftCustomerMapList.isEmpty()) {
+		    	for (RlmsLiftCustomerMap rlmsLiftCustomerMap : rlmsLiftCustomerMapList) {
+		    		rlmsLiftCustomerMap.setActiveFlag(customerDtlsDto.getActiveFlag());
+		    		liftDao.updateLiftCustomerMap(rlmsLiftCustomerMap);
+		    	 	/*RlmsLiftMaster liftMaster = rlmsLiftCustomerMap.getLiftMaster();
+		    		liftMaster.setActiveFlag(customerDtlsDto.getActiveFlag());
+		    		liftDao.updateLiftM(liftMaster);
+		    		RlmsLiftAmcDtls amcDtls = liftDao.getRlmsLiftAmcDtlsByLiftCustomerMapId(rlmsLiftCustomerMap.getLiftCustomerMapId());
+		    		if(amcDtls!=null) {
+		    		amcDtls.setActiveFlag(customerDtlsDto.getActiveFlag());
+		    		liftDao.saveLiftAMCDtls(amcDtls);
+		    		}*/
+		    	}
+		    }
+		  List< RlmsCustomerMemberMap> customerMemberMapList = customerDao.getAllMembersForCustomer(branchCustomerMap.getBranchCustoMapId());
+		  if(customerMemberMapList!=null) {
+			  for (RlmsCustomerMemberMap rlmsCustomerMemberMap : customerMemberMapList) {
+				  rlmsCustomerMemberMap.setActiveFlag(customerDtlsDto.getActiveFlag());
+				  customerDao.updateCustomerMemberMap(rlmsCustomerMemberMap);
+				  RlmsMemberMaster memberMaster = rlmsCustomerMemberMap.getRlmsMemberMaster();
+				  memberMaster.setActiveFlag(customerDtlsDto.getActiveFlag());
+			 }
+		   }
+		 }
+		}
 		return statusMessage;
 	}
 
@@ -645,7 +675,6 @@ public class CustomerServiceImpl implements CustomerService{
 			customerDao.updateCustomerMemberMap(customerMemberMap);
 		}
 		return  "Memeber deleted successfully";
-
 	}
 }
 

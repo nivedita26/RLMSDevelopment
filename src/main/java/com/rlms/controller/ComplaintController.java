@@ -1,5 +1,9 @@
 package com.rlms.controller;
 
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
@@ -21,8 +25,13 @@ import com.rlms.contract.UserRoleDtlsDTO;
 import com.rlms.exception.ExceptionCode;
 import com.rlms.exception.RunTimeException;
 import com.rlms.exception.ValidationException;
+import com.rlms.model.RlmsCompanyBranchMapDtls;
+import com.rlms.model.RlmsLiftCustomerMap;
+import com.rlms.service.CompanyService;
 import com.rlms.service.ComplaintsService;
 import com.rlms.service.CustomerService;
+import com.rlms.service.DashboardService;
+import com.rlms.utils.DateUtils;
 import com.rlms.utils.PropertyUtils;
 
 @Controller
@@ -34,16 +43,62 @@ public class ComplaintController extends BaseController{
 	
 	@Autowired
 	private CustomerService customerService;
+	
+	@Autowired
+	private CompanyService companyService;
+	
+	@Autowired
+	private DashboardService dashboardService;
 		
 	private static final Logger logger = Logger.getLogger(ComplaintController.class);
 	
 	@RequestMapping(value = "/getListOfComplaints", method = RequestMethod.POST)
 	 public  @ResponseBody List<ComplaintsDto> getListOfComplaints(@RequestBody ComplaintsDtlsDto dto) throws RunTimeException{
 		 List<ComplaintsDto> listOfComplaints = null;
+    	List<RlmsCompanyBranchMapDtls> listOfAllBranches = null;
+
+    		List<Integer> companyBranchMapIds = new ArrayList<>();
+    		List<Integer> branchCustomerMapIds = new ArrayList<>();
 		 try{
 	        	logger.info("Method :: getListOfComplaints");
+	        	if(dto.getBranchCompanyMapId()==null ) {
+	        	
+	        		listOfAllBranches = companyService.getAllBranches(dto.getCompanyId());
+	        		if(listOfAllBranches!=null  && !listOfAllBranches.isEmpty()) {
+	        		for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
+	        			companyBranchMapIds.add(companyBranchMap.getCompanyBranchMapId());
+	        		}
+
+	        		List<CustomerDtlsDto> allCustomersForBranch = dashboardService.getAllCustomersForBranch(companyBranchMapIds);
+
+	        		List<Integer> liftCustomerMapIds = new ArrayList<>();
+	        		if(allCustomersForBranch!=null && !allCustomersForBranch.isEmpty()) {
+	        		for (CustomerDtlsDto customerDtlsDto : allCustomersForBranch) {
+	        			LiftDtlsDto dtoToGetLifts = new LiftDtlsDto();
+	        			dtoToGetLifts.setBranchCustomerMapId(customerDtlsDto.getBranchCustomerMapId());
+	        			List<RlmsLiftCustomerMap> list = dashboardService.getAllLiftsForBranchsOrCustomer(dtoToGetLifts);
+	        			if(list!=null && !list.isEmpty()) {
+	        			for (RlmsLiftCustomerMap rlmsLiftCustomerMap : list) {
+	        				liftCustomerMapIds.add(rlmsLiftCustomerMap.getLiftCustomerMapId());
+	        			}
+	        		}
+	        		dto.setListOfLiftCustoMapId(liftCustomerMapIds);
+	        	
+	        	if(dto.getFromDate()==null ||dto.getToDate()==null){
+	           	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	            Date pivotDate = DateUtils.addDaysToDate(new Date(), -30);
+	            Date today =new Date();
+	            pivotDate=sdf.parse(sdf.format(pivotDate));
+	    		today = sdf.parse(sdf.format(today));
+	    		dto.setFromDate(pivotDate);
+	    		dto.setToDate(today);
+	        	}
 	        	listOfComplaints = this.complaintsService.getListOfComplaintsBy(dto);
-	        }
+	        		}
+	        		}
+	        	}
+	        	}
+		 }
 	        catch(Exception e){
 	        	logger.error(ExceptionUtils.getFullStackTrace(e));
 	        	throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));

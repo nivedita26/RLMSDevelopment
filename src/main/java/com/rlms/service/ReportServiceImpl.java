@@ -427,9 +427,7 @@ public class ReportServiceImpl implements ReportService {
 	public List<TechnicianWiseReportDTO> getTechnicianWiseReport(TechnicianWiseReportDTO dto){
 		List<Integer> listOfUserRoleIds = new ArrayList<Integer>();
 		List<TechnicianWiseReportDTO> technicianList = new ArrayList<TechnicianWiseReportDTO>();
-		
 		List<RlmsUserRoles> listOfAllTechnicians = this.userRoleDao.getAllUserWithRoleForBranch(dto.getBranchCompanyMapId(), null, SpocRoleConstants.TECHNICIAN.getSpocRoleId());
-		
 		for (RlmsUserRoles userRoles : listOfAllTechnicians) {
 			listOfUserRoleIds.add(userRoles.getUserRoleId());
 		}
@@ -439,7 +437,6 @@ public class ReportServiceImpl implements ReportService {
 			}
 		}
 		List<RlmsComplaintTechMapDtls> listOfComplaints = this.complaintsDao.getListOfComplaintDtlsForTechies(dto);
-		
 		List<SiteVisitReportDto> listOfAllComplaints = new ArrayList<SiteVisitReportDto>();
 		for (Integer userRoleId : listOfUserRoleIds) {
 			List<RlmsComplaintTechMapDtls> tempListOfComplaints = new ArrayList<RlmsComplaintTechMapDtls>(listOfComplaints);
@@ -476,7 +473,6 @@ public class ReportServiceImpl implements ReportService {
 			}else{
 				technician.setTotalComplaintsAssigned(RLMSConstants.ZERO.getId());
 			}
-			
 			technician.setTotalComplaintsResolved(totalResolvedComplaints);
 			if(totalTimeForAllComplaints > 0L && totalResolvedComplaints > 0){
 				Long avgTimeTaken = totalTimeForAllComplaints/totalResolvedComplaints;

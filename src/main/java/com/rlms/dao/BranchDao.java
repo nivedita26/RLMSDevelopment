@@ -20,4 +20,10 @@ public interface BranchDao {
 	public Integer saveBranchCustomerMapDtls(RlmsBranchCustomerMap branchCustomerMap);
 	RlmsBranchCustomerMap getBranchCustomerMapDtls(Integer branchCustomerMapId);
 	public RlmsBranchMaster getBranchByBranchId(Integer branchId);
+	
+	public RlmsCompanyBranchMapDtls getRlmsCompanyBranchMapDtls(int branchId);
+	public void updateRlmsCompanyBranchMapDtls(RlmsCompanyBranchMapDtls companyBranchMapDtls);
+	public void updateRlmsBranchCustomerMapDtls(RlmsBranchCustomerMap branchCustomerMap);
+
+	
 }

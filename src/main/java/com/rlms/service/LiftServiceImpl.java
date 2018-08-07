@@ -274,19 +274,16 @@ public class LiftServiceImpl implements LiftService{
 			dto.setCompanyName(liftCustomerMap.getBranchCustomerMap().getCompanyBranchMapDtls().getRlmsCompanyMaster().getCompanyName());
 			listOfDtos.add(dto);
 		}
-		
 		return listOfDtos;
 	}
 	
 	@Transactional(propagation = Propagation.REQUIRED)
 	public String approveLift(LiftDtlsDto liftDtlsDto, UserMetaInfo metaInfo){
 		RlmsLiftCustomerMap liftCustomerMap = this.liftDao.getLiftCustomerMapByLiftId(liftDtlsDto.getLiftId());
-		
 		liftCustomerMap.getLiftMaster().setActiveFlag(RLMSConstants.ACTIVE.getId());
 		liftCustomerMap.getLiftMaster().setServiceStartDate(new Date());
 		liftCustomerMap.setActiveFlag(RLMSConstants.ACTIVE.getId());
 		this.liftDao.updateLiftCustomerMap(liftCustomerMap);
-		
 		RlmsFyaTranDtls fyaTranDtls = this.fyaDao.getFyaByFyaTranIDt(liftDtlsDto.getFyaTranId());
 		fyaTranDtls.setStatus(Status.COMPLETED.getStatusId());
 		this.fyaDao.updateFyaTranDtls(fyaTranDtls);
@@ -297,6 +294,7 @@ public class LiftServiceImpl implements LiftService{
 	public List<LiftDtlsDto> getLiftDetailsForBranch(LiftDtlsDto liftDtlsDto, UserMetaInfo metaInfo){
 		List<RlmsLiftCustomerMap> listOFAllLifts = this.liftDao.getAllLiftsForBranchs(liftDtlsDto.getBranchCompanyMapId());
 		List<LiftDtlsDto> listOfAllDtos = new ArrayList<LiftDtlsDto>();
+		if(listOFAllLifts!=null && !listOFAllLifts.isEmpty()) {
 		for (RlmsLiftCustomerMap liftCustomerMap : listOFAllLifts) {
 			RlmsLiftMaster liftM = liftCustomerMap.getLiftMaster();
 			RlmsLiftAmcDtls amcDtls = liftDao.getRlmsLiftAmcDtlsByLiftCustomerMapId(liftCustomerMap.getLiftCustomerMapId());
@@ -411,6 +409,7 @@ public class LiftServiceImpl implements LiftService{
 			dto.setLiftType(liftM.getLiftType());
 			listOfAllDtos.add(dto);
 		}
+	}
 		return listOfAllDtos;
 	}
 	@Transactional(propagation = Propagation.REQUIRED)
@@ -593,7 +592,6 @@ public class LiftServiceImpl implements LiftService{
 	public List<LiftDtlsDto> getLiftStatusForBranch(List<Integer> companyBranchIds, UserMetaInfo metaInfo){
 		List<RlmsLiftCustomerMap> listOFAllLifts = this.liftDao.getAllLiftsStatusForBranchs(companyBranchIds);
 		List<LiftDtlsDto> listOfAllDtos = new ArrayList<LiftDtlsDto>();
-		Set<RlmsBranchCustomerMap> branchCustomerMapIdList = new HashSet<RlmsBranchCustomerMap>();
 		for (RlmsLiftCustomerMap liftCustomerMap : listOFAllLifts) {
 			RlmsLiftMaster liftM = liftCustomerMap.getLiftMaster();
 			LiftDtlsDto dto = new LiftDtlsDto();
@@ -644,19 +642,14 @@ public class LiftServiceImpl implements LiftService{
 		List<LiftDtlsDto> listOfAllDtos = new ArrayList<LiftDtlsDto>();
 		Set<RlmsBranchCustomerMap> branchCustomerMapIdList = new HashSet<RlmsBranchCustomerMap>();
 		for (RlmsLiftCustomerMap liftCustomerMap : listOFAllLifts) {
-			//new code
 			branchCustomerMapIdList.add(liftCustomerMap.getBranchCustomerMap());
 		}
 		for (RlmsBranchCustomerMap rlmsBranchCustomerMap : branchCustomerMapIdList) {
 			   List<Object []> liftCountObj =  liftDao.liftCountByBranchCustomerMapId(rlmsBranchCustomerMap.getBranchCustoMapId());
-		
 		            for (Object[] objects : liftCountObj) {
-		            	//RlmsLiftMaster liftMaster = new RlmsLiftMaster();
 		    			LiftDtlsDto dto = new LiftDtlsDto();
-
 		            	RlmsBranchCustomerMap  branchCustomerMap = new RlmsBranchCustomerMap();
 		            	BigInteger liftCount =  (BigInteger) objects[1];
-		            	
 		            	branchCustomerMap = liftDao.getBranchCustomerMapByBranchCustomerMapId((int)objects[0]);
 		            	dto.setBranchName(branchCustomerMap.getCompanyBranchMapDtls().getRlmsBranchMaster().getBranchName());
 		            	dto.setCustomerName(branchCustomerMap.getCustomerMaster().getCustomerName());

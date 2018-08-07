@@ -48,11 +48,9 @@ public enum CustomerType {
 			}
 			else if(customerTypeId == CustomerType.HOSPITAL.getId()){
 				return CustomerType.HOSPITAL.getType();
-				
 			}
 			else if(customerTypeId == CustomerType.RESIDENTIAL.getId()){
 				return CustomerType.RESIDENTIAL.getType();
-				
 			}
 			return "";
 			
