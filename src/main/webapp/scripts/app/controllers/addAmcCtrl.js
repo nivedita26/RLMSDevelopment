@@ -5,7 +5,7 @@
 		initAddAMC();
 			//loadCompayInfo();
 			$scope.alert = { type: 'success', msg: 'You successfully Added AMC details.',close:true };
-			//$scope.alert = { type: 'danger', msg: 'Please fill the required fields',close:false };
+			$scope.alert = { type: 'danger', message: 'Please fill the required fields',close:true };
 			$scope.showAlert = false;
 			$scope.showCompany = false;
 			$scope.showBranch = false;
@@ -35,12 +35,12 @@
 			                
 			                $scope.submitAdd=function(){
 			                	if(($scope.newCallTypes.title &&$scope.newCallTypes.serviceDate)){
-			                		 $scope.showAlert = false;
+			                		 $scope.showAlert1 = false;
 			                		 $scope.Add();
 			                	}else{
-			                			$scope.showAlert = true;
-										$scope.alert.msg =  'Add Service Call Title and Date';
-										$scope.alert.type="error";
+			                			$scope.showAlert1 = true;
+										$scope.alert.message =  'Add Service Call Title and Date';
+										$scope.alert.type="danger";
 			                	}
 			                }
 

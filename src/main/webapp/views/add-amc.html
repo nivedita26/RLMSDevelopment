@@ -106,6 +106,8 @@
 	<script type="text/ng-template" id="addServiceCallsTemplate">
 	    <div class="modal-header">
 	        <h3 class="modal-title">Add Service Calls</h3>
+			<alert ng-show="showAlert1" type="{{alert.type}}">
+			<span ng-bind-html="alert.message | safe_html"></alert>
 	    </div>
 	    <div class="modal-body">
 			<alert ng-show="showAlert" type="{{alert.type}}">

@@ -6,7 +6,7 @@
 		initAddBranch();
 		loadCompayInfo();
 		$scope.alert = { type: 'success', msg: 'You successfully Added Branch.',close:true };
-		$scope.alert = { type: 'error', msg: 'Please fill the Required Field',close:true };
+		//$scope.alert = { type: 'error', msg: 'Please fill the Required Field',close:true };
 		//loadBranchListInfo();
 		$scope.showCompany = false;
 		$scope.showAlert = false;
@@ -54,11 +54,11 @@
 				initAddBranch();
 				$scope.addBranchForm.$setPristine();
 				$scope.addBranchForm.$setUntouched();
-			},function(error){
+			}/*,function(error){
 				$scope.showAlert = true;
 				$scope.alert.msg = error;
 				$scope.alert.type = "danger";
-			});
+			}*/);
 		}
 		//rese add branch
 		$scope.resetAddBranch = function(){
