@@ -123,44 +123,7 @@ public class ReportController extends BaseController{
 		List<EventDtlsDto> getAllInOutEventsData(@RequestBody EventDtlsDto dto)throws RunTimeException {
 			List<EventDtlsDto> listOfEvents = null;
 			listOfEvents =reportService.getAllInOutEventsData(dto);
-			/*List<RlmsCompanyBranchMapDtls> listOfAllBranches = null;
-			List<Integer> companyBranchIds = new ArrayList<>();
-			try {
-				logger.info("Method :: getAllBranchesForCompany");
-				listOfAllBranches = this.companyService
-						.getAllBranches(dto.getCompanyId());
-				for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
-					companyBranchIds.add(companyBranchMap.getCompanyBranchMapId());
-				}
-				List<CustomerDtlsDto> allCustomersForBranch = dashboardService
-						.getAllCustomersForBranch(companyBranchIds);
-				List<Integer> liftCustomerMapIds = new ArrayList<>();
-				for (CustomerDtlsDto customerDtlsDto : allCustomersForBranch) {
-					LiftDtlsDto dtoTemp = new LiftDtlsDto();
-					dtoTemp.setBranchCustomerMapId(customerDtlsDto
-							.getBranchCustomerMapId());
-					List<RlmsLiftCustomerMap> list = dashboardService
-							.getAllLiftsForBranchsOrCustomer(dtoTemp);
-					for (RlmsLiftCustomerMap rlmsLiftCustomerMap : list) {
-						liftCustomerMapIds.add(rlmsLiftCustomerMap
-								.getLiftCustomerMapId());
-					}
-				}
-				logger.info("Method :: getAllBranchesForCompany");
-				listOfEvents = this.dashboardService.getListOfEvetnDetails(
-						liftCustomerMapIds, this.getMetaInfo());
-
-			} catch (Exception e) {
-				logger.error(ExceptionUtils.getFullStackTrace(e));
-				throw new RunTimeException(
-						ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(),
-						PropertyUtils
-								.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS
-										.getMessage()));
-
-			}*/
-		
-			return listOfEvents;
+				return listOfEvents;
 		}
 	
 }

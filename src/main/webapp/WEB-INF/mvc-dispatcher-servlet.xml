@@ -100,8 +100,9 @@
 			 <value>com.rlms.model.RlmsLiftAmcDtls</value>
 			 <value>com.rlms.model.RlmsSiteVisitDtls</value>
 			 <value>com.rlms.model.RlmsEventDtls</value>
-			 
-		     </list>
+			<value>com.rlms.model.RlmsCompanyManual</value>
+			<value>com.rlms.model.RlmsLiftManualMapDtls</value>
+	     </list>
 		</property> 
         <property name="hibernateProperties">
             <props>

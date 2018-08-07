@@ -2,7 +2,6 @@ package com.rlms.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -10,22 +9,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.rlms.constants.RLMSCallType;
 import com.rlms.constants.RlmsErrorType;
 import com.rlms.constants.Status;
 import com.rlms.contract.ComplaintsDtlsDto;
 import com.rlms.contract.ComplaintsDto;
-import com.rlms.contract.CustomerLiftDtls;
 import com.rlms.contract.LiftDtlsDto;
 import com.rlms.contract.LoginDtlsDto;
 import com.rlms.contract.MemberDtlsDto;
@@ -37,10 +31,7 @@ import com.rlms.dao.LiftDao;
 import com.rlms.exception.ExceptionCode;
 import com.rlms.exception.RunTimeException;
 import com.rlms.exception.ValidationException;
-import com.rlms.model.RlmsLiftCustomerMap;
-import com.rlms.model.RlmsLiftMaster;
 import com.rlms.model.RlmsUserRoles;
-import com.rlms.model.RlmsUsersMaster;
 import com.rlms.service.ComplaintsService;
 import com.rlms.service.CustomerService;
 import com.rlms.service.DashboardService;
@@ -49,7 +40,6 @@ import com.rlms.service.RlmsLiftEventService;
 import com.rlms.service.UserService;
 import com.rlms.utils.DateUtils;
 import com.rlms.utils.PropertyUtils;
-import com.sun.mail.iap.Response;
 
 @RestController
 @RequestMapping(value="/API")
@@ -132,11 +122,9 @@ public class RestControllerController  extends BaseController {
     
     @RequestMapping(value = "/getAllComplaintsAssigned", method = RequestMethod.POST, produces="application/json")
     public @ResponseBody ResponseDto getAllComplaintsAssigned(@RequestBody LoginDtlsDto loginDtlsDto) {
-    //17
-    	ObjectMapper mapper = new ObjectMapper();
+     	ObjectMapper mapper = new ObjectMapper();
     	ResponseDto dto = new ResponseDto();
-    	
-    	List<ComplaintsDto> listOfAllAssignedComplaints = null;
+     	List<ComplaintsDto> listOfAllAssignedComplaints = null;
     	 List<Integer> statusList = new ArrayList<Integer>();
     	 statusList.add(Status.ASSIGNED.getStatusId());
     	 statusList.add(Status.INPROGESS.getStatusId());
@@ -145,7 +133,6 @@ public class RestControllerController  extends BaseController {
     		 listOfAllAssignedComplaints =  this.ComplaintsService.getAllComplaintsAssigned(Integer.valueOf(loginDtlsDto.getUserRoleId()), statusList);
     		 if(null != listOfAllAssignedComplaints && !listOfAllAssignedComplaints.isEmpty()){
 	    		 dto.setStatus(true);    
-	    		
 	    		 dto.setResponse(mapper.writeValueAsString(listOfAllAssignedComplaints));
     		 }else{
     			 dto.setStatus(false);
@@ -207,14 +194,11 @@ public class RestControllerController  extends BaseController {
         	metaInfo.setUserRole(userRoles);
         	MemberDtlsDto dto = this.customerService.registerMemeberDeviceByMblNo(memberDtlsDto, metaInfo);
         	reponseDto.setResponse(mapper.writeValueAsString(dto));
-        	
-        	reponseDto.setStatus(true);
-        	
-        }catch(ValidationException vex){
+         	reponseDto.setStatus(true);
+         }catch(ValidationException vex){
         	log.error(ExceptionUtils.getFullStackTrace(vex));
         	reponseDto.setStatus(false);
         	reponseDto.setResponse(vex.getExceptionMessage());
-        	
         }
         catch(Exception e){
         	log.error(ExceptionUtils.getFullStackTrace(e));
@@ -222,7 +206,6 @@ public class RestControllerController  extends BaseController {
         	reponseDto.setResponse(PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
         	//throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
         }
- 
         return reponseDto;
     }
     
@@ -259,15 +242,19 @@ public class RestControllerController  extends BaseController {
     	ResponseDto reponseDto = new ResponseDto();
     	ObjectMapper mapper = new ObjectMapper();
        try{
-        	log.info("Method :: registerTechnicianDeviceByMblNo");
+        	log.info("Method :: registerTechnicianDeviceByUserNamePassword");
+        	log.debug("registerlat"+userDtlsDto.getLatitude());
+        	log.debug("registerlong"+userDtlsDto.getLongitude());
+        	log.debug("registeradd"+userDtlsDto.getAddress());
+        	log.debug("registerAppId"+userDtlsDto.getAppRegId());
+        	log.debug("registerUserAppId"+userDtlsDto.getUserRoleId());
+
         	RlmsUserRoles userRoles = this.userService.getUserRoleObjhById(1);
         	UserMetaInfo metaInfo = new UserMetaInfo();
         	metaInfo.setUserId(userRoles.getRlmsUserMaster().getUserId());
         	metaInfo.setUserName(userRoles.getRlmsUserMaster().getFirstName());
         	metaInfo.setUserRole(userRoles);
-        	
         	UserDtlsDto dtlsDto=this.userService.getTechnicianRoleObjByUserNameAndPassword(userDtlsDto, metaInfo);
-        	
         	if(dtlsDto.getMsg()==null) {
         	reponseDto.setResponse(mapper.writeValueAsString(dtlsDto));
         	reponseDto.setStatus(true);
@@ -276,7 +263,6 @@ public class RestControllerController  extends BaseController {
         		reponseDto.setStatus(false);
             	reponseDto.setResponse(dtlsDto.getMsg());
         	}
-        	
         }catch(ValidationException vex){
       	log.error(ExceptionUtils.getFullStackTrace(vex));
        	reponseDto.setStatus(false);
@@ -286,9 +272,7 @@ public class RestControllerController  extends BaseController {
         	reponseDto.setStatus(false);
         	reponseDto.setResponse(PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
         	log.error(ExceptionUtils.getFullStackTrace(e));
-        	//throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
         }
- 
         return reponseDto;
     }
     
@@ -454,7 +438,10 @@ public class RestControllerController  extends BaseController {
     public @ResponseBody ResponseDto updateTechnicianLocation(@RequestBody UserDtlsDto userDtlsDto) throws ValidationException, RunTimeException{
     	ResponseDto reponseDto = new ResponseDto();
         try{
-        	log.info("Method :: registerTechnicianDeviceByMblNo");
+        	log.info("Method :: updateTechnicianLocation");
+        	log.debug("techlocation");
+        	log.debug("techlat"+userDtlsDto.getLatitude());
+        	log.debug("techlong"+userDtlsDto.getLongitude());
         	RlmsUserRoles userRoles = this.userService.getUserRoleObjhById(1);
         	UserMetaInfo metaInfo = new UserMetaInfo();
         	metaInfo.setUserId(userRoles.getRlmsUserMaster().getUserId());
@@ -481,11 +468,7 @@ public class RestControllerController  extends BaseController {
     	
 		return  userService.logout(userDtlsDto);
     }
-   /* @RequestMapping(value="/getCustomerListForTechnician", method = RequestMethod.POST)
-    public List<CustomerLiftDtls> getCustomerListForTechnician(@RequestBody UserDtlsDto dtlsDto){
-    	
-    	return   liftService.getLiftDetailsList(dtlsDto);
-    }*/
+   
     @RequestMapping(value="/getCustomerListForTechnician", method = RequestMethod.POST)
     public ResponseDto  getCustomerListForTechnician(@RequestBody UserDtlsDto dtlsDto){
     	
@@ -523,9 +506,7 @@ public class RestControllerController  extends BaseController {
     public @ResponseBody ResponseDto resetPassword(@RequestBody UserDtlsDto dto){
     	ResponseDto responseDto = new ResponseDto();
     	try{
-         // reponseDto.setStatus(true);
-    	 //reponseDto.setResponse(userService.changePassword(dto));
-    		responseDto=userService.changePassword(dto);
+        	responseDto=userService.changePassword(dto);
     	}catch(Exception e){
         	log.error(ExceptionUtils.getFullStackTrace(e));
         	responseDto.setStatus(false);
@@ -533,4 +514,81 @@ public class RestControllerController  extends BaseController {
         }
     	return responseDto;
     }
+    
+    
+    
+    /*
+    @RequestMapping(value = "/downloadUserGuide", method = RequestMethod.POST)
+	public String downloadUserGuide(int liftCustomerMapId,HttpServletResponse response) throws FileNotFoundException, SQLException, IOException {
+	int directoryfileCount;
+	final String OUTPUT_ZIP_FILE;
+	final String INTERNAL_FILE_PATH;
+	InputStream inputStream=null ;
+	int filestatus = restapidao.getfileStatus(deviceid);
+	if (filestatus >0){
+		File zipfilename=new File(deviceid + ".zip");
+		if(zipfilename.exists()){
+			zipfilename.delete();
+			logger.debug("previously present zip file deleted");
+		}
+		response.setContentType("application/zip");
+		OUTPUT_ZIP_FILE = Constant.zipfilepath + deviceid+ ".zip";
+		logger.debug("OUTPUT_ZIP_FILE "+OUTPUT_ZIP_FILE);
+		
+		directoryfileCount = getFileCountInDirectory(Constant.filepath + deviceid);//to avoid empty zip
+		logger.debug("no of files to zip in productId"+deviceid+"filecount:"+directoryfileCount);
+		
+		if (directoryfileCount>0){
+			Set<String> fileList = new HashSet<String>();
+				*//**
+				 * Generate List of files
+				 *//*
+			Set<String> zipfileList = generateFileList(new File(Constant.filepath + deviceid ),fileList);
+				*//**
+				 * Zip all files
+				 *//*
+			zipIt(OUTPUT_ZIP_FILE,deviceid,zipfileList);
+			INTERNAL_FILE_PATH=Constant.zipfilepath + deviceid + ".zip";
+					
+			logger.debug("Internal zip file path"+ INTERNAL_FILE_PATH);
+			File file = new File(INTERNAL_FILE_PATH);
+			String mimeType = URLConnection.guessContentTypeFromName(file.getName());
+			if (mimeType == null) {
+				mimeType = "application/octet-stream";
+			}
+			response.setHeader("Content-Disposition", String.format("inline; filename=\"" + file.getName()+"\"" ));
+			logger.debug("set response header");
+			response.setContentLength((int) file.length());
+			logger.debug("response length"+file.length());
+			try {
+				inputStream = new BufferedInputStream(new FileInputStream(file));
+				logger.debug("inputstream"+file);
+				FileCopyUtils.copy(inputStream, response.getOutputStream());
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			logger.debug("Response to App : Zip file for " + deviceid  + " sent successfully.");
+			File zipfile = new File(INTERNAL_FILE_PATH);
+			if(zipfile.exists()){
+				zipfile.delete();   
+				logger.debug("zip file deleted"+zipfile);
+				File productDirectoryPath = new File(Constant.filepath + deviceid);
+				if(productDirectoryPath.exists()){
+					FileUtils.cleanDirectory(productDirectoryPath);
+					FileUtils.deleteDirectory(productDirectoryPath);
+				}
+			}
+			return "";
+		} 
+		else {
+			logger.debug(" " +  deviceid  + " data  not present in directory.");
+			return "";
+		} 
+	}
+	logger.debug("Response Sent : " + deviceid + " is not present in Database.");
+	return "";
+	}*/
+    
 }

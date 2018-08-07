@@ -20,4 +20,5 @@ import com.rlms.model.RlmsUsersMaster;
   // public void changeUserPassword(RlmsUsersMaster usersMaster);
    public  RlmsUsersMaster getUserByMobileNumber(String ContactNumber);
    public RlmsUsersMaster getUserByMailId(String mailId);
+
    }

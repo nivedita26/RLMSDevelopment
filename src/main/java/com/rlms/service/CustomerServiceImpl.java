@@ -674,7 +674,7 @@ public class CustomerServiceImpl implements CustomerService{
 			customerMemberMap.setActiveFlag(RLMSConstants.INACTIVE.getId());
 			customerDao.updateCustomerMemberMap(customerMemberMap);
 		}
-		return  "Memeber deleted successfully";
+		return  "Member deleted successfully";
 	}
 }
 

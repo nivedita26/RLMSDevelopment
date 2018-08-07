@@ -1,0 +1,146 @@
+package com.rlms.model;
+
+import static javax.persistence.GenerationType.IDENTITY;
+
+import java.io.Serializable;
+import java.sql.Blob;
+import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "rlms_company_manual")
+public class RlmsCompanyManual implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+	
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "companu_manual_id", unique = true, nullable = false)
+	private Integer companyManualId;
+	
+	@Column(name="lift_type")
+	private Integer liftType;
+	
+	@Column(name="user_manual")
+	private Blob userManual;
+	
+	@Column(name="safety_guide")
+	private Blob safetyGuide;
+	
+	@OneToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name = "company_id")
+	private RlmsCompanyMaster  companyMaster;
+
+	@Column(name="created_date")
+	private Date createdDate;	
+	
+	@Column(name="created_by")
+	private Integer createdBy;
+	
+	@Column(name="updated_date")
+	private Date updatedDate;
+	
+	@Column(name="updated_by")
+	private Integer updatedBy;
+	
+	@Column(name="active_flag")
+	private Integer activeFlag;
+
+	private Integer companyId;
+	
+	public Integer getCompanyId() {
+		return companyId;
+	}
+
+	public void setCompanyId(Integer companyId) {
+		this.companyId = companyId;
+	}
+
+	public Integer getCompanyManualId() {
+		return companyManualId;
+	}
+
+	public void setCompanyManualId(Integer companyManualId) {
+		this.companyManualId = companyManualId;
+	}
+
+	public Integer getLiftType() {
+		return liftType;
+	}
+
+	public void setLiftType(Integer liftType) {
+		this.liftType = liftType;
+	}
+
+	public Blob getUserManual() {
+		return userManual;
+	}
+
+	public void setUserManual(Blob userManual) {
+		this.userManual = userManual;
+	}
+
+	public Blob getSafetyGuide() {
+		return safetyGuide;
+	}
+
+	public void setSafetyGuide(Blob safetyGuide) {
+		this.safetyGuide = safetyGuide;
+	}
+
+	public RlmsCompanyMaster getCompanyMaster() {
+		return companyMaster;
+	}
+
+	public void setCompanyMaster(RlmsCompanyMaster companyMaster) {
+		this.companyMaster = companyMaster;
+	}
+
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public Integer getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(Integer createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Date getUpdatedDate() {
+		return updatedDate;
+	}
+
+	public void setUpdatedDate(Date updatedDate) {
+		this.updatedDate = updatedDate;
+	}
+
+	public Integer getUpdatedBy() {
+		return updatedBy;
+	}
+
+	public void setUpdatedBy(Integer updatedBy) {
+		this.updatedBy = updatedBy;
+	}
+
+	public Integer getActiveFlag() {
+		return activeFlag;
+	}
+
+	public void setActiveFlag(Integer activeFlag) {
+		this.activeFlag = activeFlag;
+	}
+	
+}

@@ -35,6 +35,7 @@ import com.rlms.dao.LiftDao;
 import com.rlms.dao.UserMasterDao;
 import com.rlms.dao.UserRoleDao;
 import com.rlms.model.RlmsBranchCustomerMap;
+import com.rlms.model.RlmsCompanyManual;
 import com.rlms.model.RlmsFyaTranDtls;
 import com.rlms.model.RlmsLiftAmcDtls;
 import com.rlms.model.RlmsLiftCustomerMap;
@@ -70,6 +71,9 @@ public class LiftServiceImpl implements LiftService{
 	@Autowired
 	private ReportService reportService;
 	
+	@Autowired
+	private LiftManualService liftManualService;
+	
 	@Transactional(propagation = Propagation.REQUIRED)
 	public List<RlmsLiftCustomerMap> getAllLiftsForBranch(Integer companyBranchMapId){
 		List<RlmsLiftCustomerMap> liftsForBranch = new ArrayList<RlmsLiftCustomerMap>();
@@ -99,9 +103,14 @@ public class LiftServiceImpl implements LiftService{
 		Integer liftCustomerMapID = this.liftDao.saveLiftCustomerMap(liftCustomerMap);
 		liftCustomerMap.setLiftCustomerMapId(liftCustomerMapID);
 		
+		//get company manual
+		RlmsCompanyManual companyManual = liftManualService.getCompanyManual(liftCustomerMap.getBranchCustomerMap().getCompanyBranchMapDtls().getRlmsCompanyMaster().getCompanyId(), liftM.getLiftType());
+		if(companyManual!=null) {
+			
+		}
+		
 		AMCDetailsDto amcDetailsDto = this.constructAMCDtlsDto(liftCustomerMap);
 		this.reportService.addAMCDetailsForLift(amcDetailsDto, metaInfo);
-		
 		RlmsFyaTranDtls fyaTranDtls = this.constructFyaTranDtls(liftCustomerMap, metaInfo);
 		this.fyaDao.saveFyaTranDtls(fyaTranDtls);
 		ResponseDto.setStatus(true);
@@ -831,14 +840,11 @@ public class LiftServiceImpl implements LiftService{
 	public ResponseDto  getLiftDetailsList(UserDtlsDto dtlsDto) {
 		ResponseDto responseDto = new ResponseDto();
       List<Integer> branchCompanyMapId= new ArrayList<>();
-    //List<Integer> branchCustomerMapIDs = new ArrayList<>();
       List<CustomerLiftDtls> liftDtlsDtoList = new ArrayList<>();
-  // List<LiftCustomerMap> customerMapList = new ArrayList<>();
- // List<String> uniqueCustomerList= new ArrayList<>();
-		RlmsUserRoles  rlmsUserRoles = userRoleDao.getUserRoleByUserId(dtlsDto.getUserId());
+  	RlmsUserRoles  rlmsUserRoles = userRoleDao.getUserRoleByUserId(dtlsDto.getUserId());
 		if(rlmsUserRoles!=null) {
 			branchCompanyMapId.add(rlmsUserRoles.getRlmsCompanyBranchMapDtls().getCompanyBranchMapId());
-			List<RlmsBranchCustomerMap> rlmsBranchCustomerMaps = customerDao.getAllCustomersForDashboard(branchCompanyMapId);
+			List<RlmsBranchCustomerMap> rlmsBranchCustomerMaps = customerDao.getAllCustomersForTechician(branchCompanyMapId);
 			if(rlmsBranchCustomerMaps!=null && !rlmsBranchCustomerMaps.isEmpty()) {
 			   	  for (RlmsBranchCustomerMap rlmsBranchCustomerMap : rlmsBranchCustomerMaps) {
 			   		List<Integer> branchCustomerMapIDs = new ArrayList<>();

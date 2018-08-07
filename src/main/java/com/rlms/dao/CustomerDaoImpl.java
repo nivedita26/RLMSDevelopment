@@ -170,6 +170,7 @@ public class CustomerDaoImpl implements CustomerDao{
 		 Session session = this.sessionFactory.getCurrentSession();
 		 Criteria criteria = session.createCriteria(RlmsBranchCustomerMap.class)
 				 		.add(Restrictions.in("companyBranchMapDtls.companyBranchMapId", listOfBranchCompanyMapId));
+		               // .add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
 		 List<RlmsBranchCustomerMap> listOfCustomers = criteria.list();
 		 return listOfCustomers;
 	}
@@ -202,5 +203,15 @@ public class CustomerDaoImpl implements CustomerDao{
 	public void updateCustomerMemberMap(RlmsCustomerMemberMap customerMemberMap) {
 		this.sessionFactory.getCurrentSession().update(customerMemberMap);
 
+	}
+
+	@Override
+	public List<RlmsBranchCustomerMap> getAllCustomersForTechician(List<Integer> listOfBranchCompanyMapId) {
+		 Session session = this.sessionFactory.getCurrentSession();
+		 Criteria criteria = session.createCriteria(RlmsBranchCustomerMap.class)
+				 		.add(Restrictions.in("companyBranchMapDtls.companyBranchMapId", listOfBranchCompanyMapId))
+		               .add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
+		 List<RlmsBranchCustomerMap> listOfCustomers = criteria.list();
+		 return listOfCustomers;
 	}
 }

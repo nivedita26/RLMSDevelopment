@@ -14,6 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.poi.ss.usermodel.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -599,8 +600,6 @@ public class ReportServiceImpl implements ReportService {
 			listCustMapIds.add(liftCustomerMap.getLiftCustomerMapId());
 		}
 		complaintList = complaintsDao.complaintMastersList(listCustMapIds,dto);
-		
-		
 		for (RlmsComplaintMaster rlmsComplaintMaster : complaintList) {
 			ComplaintsDto complaintsDto = new ComplaintsDto();
 			complaintsDto.setServiceCallTypeStr(RLMSCallType.getStringFromID(rlmsComplaintMaster.getCallType()));
@@ -622,7 +621,9 @@ public class ReportServiceImpl implements ReportService {
                  	complaintsDto.setResolvedDateStr(DateUtils.convertDateToStringWithoutTime(rlmsComplaintMaster.getUpdatedDate()));
                 }
                 if(complaintTechMapDtls.getStatus()==Status.RESOLVED.getStatusId()||complaintTechMapDtls.getStatus()==Status.INPROGESS.getStatusId()) {
-                 String totalDaysForComplaint = DateUtils.convertTimeIntoDaysHrMin(DateUtils.getDateDiff(rlmsComplaintMaster.getRegistrationDate(), complaintTechMapDtls.getUpdatedDate(),TimeUnit.SECONDS),TimeUnit.SECONDS);
+                Date updateDateDiff = 	rlmsComplaintMaster.getUpdatedDate();
+                updateDateDiff = DateUtils.addDaysToDate(updateDateDiff, 1);
+                 String totalDaysForComplaint = DateUtils.convertTimeIntoDaysHrMin(DateUtils.getDateDiff(rlmsComplaintMaster.getRegistrationDate(), updateDateDiff,TimeUnit.SECONDS),TimeUnit.SECONDS);
                  //int totalDays =  DateUtils.daysBetween(complaintTechMapDtls.getAssignedDate(),complaintTechMapDtls.getUpdatedDate());
                 	complaintsDto.setTotalDaysForComplaint(totalDaysForComplaint);
                 	  List<RlmsSiteVisitDtls> listOfAllVisits = this.complaintsDao.getAllVisitsForComnplaints(complaintTechMapDtls.getComplaintTechMapId());

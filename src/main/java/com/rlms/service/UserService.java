@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.rlms.contract.AddNewUserDto;
 import com.rlms.contract.BranchDtlsDto;
+import com.rlms.contract.CompanyDtlsDTO;
 import com.rlms.contract.RegisterDto;
 import com.rlms.contract.ResponseDto;
 import com.rlms.contract.UserDtlsDto;
@@ -38,7 +39,7 @@ public interface UserService {
 	public RlmsUserRoles getUserByUserName(String userName);
 	public RlmsUserRoles getUserRoleObj(Integer userID, String userName, String password);
 	public List<RlmsSpocRoleMaster> getAllRoles(UserMetaInfo metaInfo);
-	public List<UserDtlsDto> getAllUsersForCompany( Integer companyId);
+	public List<UserDtlsDto> getAllUsersForCompany(UserDtlsDto dtlsDto);
 	
 	public String validateAndAssignRole(UserRoleDtlsDTO userRoleDtlsDTO, UserMetaInfo metaInfo) throws IOException, ValidationException, InvalidKeyException, Exception;
 	

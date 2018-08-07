@@ -37,5 +37,8 @@ public interface UserRoleDao{
 	public RlmsUserRoles getUserIFRoleisAssigned(Integer userID);
 	public RlmsUserRoles getUserWithRoleForCompany(Integer companyId, Integer spocRoleId);
 	public List<RlmsUserRoles>  getUsersForBranch(BranchDtlsDto dto);
+	
+	   public List<RlmsUserRoles> getAllUsersForBranch(UserDtlsDto dtlsDto);
+
 
 }
