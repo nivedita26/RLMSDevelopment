@@ -380,6 +380,7 @@
 			}else{
 				$scope.editLift.fireMode=1
 			}
+			
 			var liftData={};
 			liftData={									
 					customerName: '',
@@ -457,6 +458,7 @@
 					blank: false
 			
 			}
+			
 			/*parseBase64();
 			//addLift.customerType = $scope.selectedCustomerType;
 			

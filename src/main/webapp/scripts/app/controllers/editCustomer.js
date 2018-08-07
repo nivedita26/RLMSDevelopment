@@ -153,7 +153,6 @@
 						vatNumber:$scope.editCustomer.vatNumber,
 						tinNumber:$scope.editCustomer.tinNumber,
 						panNumber:$scope.editCustomer.panNumber,
-						//customerTypeStr:$scope.editCustomer.customerTypeStr
 						customerType:$scope.editCustomer.customerType
 				}				
 				serviceApi.doPostWithData("/RLMS/admin/validateAndUpdateCustomer",customerData)

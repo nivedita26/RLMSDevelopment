@@ -5,6 +5,7 @@
 	initAddMember();
 			loadCompayInfo();
 			$scope.alert = { type: 'success', msg: 'You successfully Added Member.',close:true };
+			$scope.alert = { type: 'error', msg: 'Please fill the required fields.',close:false };
 			//loadBranchListInfo();
 			$scope.showAlert = false;
 			$scope.showCompany = false;
@@ -82,14 +83,14 @@
 					$scope.showAlert = true;
 					var key = Object.keys(response);
 					var successMessage = response[key[0]];
-					$scope.alert.msg = successMessage;
+					$scope.alert.message = successMessage;
 					$scope.alert.type = "success";
 					initAddMember();
 					$scope.addMemberForm.$setPristine();
 					$scope.addMemberForm.$setUntouched();
 				},function(error){
 					$scope.showAlert = true;
-					$scope.alert.msg = error.exceptionMessage;
+					$scope.alert.message = error;
 					$scope.alert.type = "danger";
 				});
 			}
@@ -100,13 +101,12 @@
 				loadCompayInfo();
 			}else{
 				$scope.showCompany= false;
-				$scope.loadBranchData();
+				//$scope.loadBranchData();
 			}
 		  	
 		  	//showBranch Flag
 		  	if($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 2){
 				$scope.showBranch= true;
-				$scope.showCompany=false
 				$scope.loadBranchData();
 				//$scope.loadCustomerData();
 			}else{
