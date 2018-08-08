@@ -114,7 +114,7 @@
 		}
 		//Post call
 		$scope.submitAssignRole = function(){
-			if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel < 2){
+			if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel <3){
 			if ($scope.selectedRole.selected.roleName===("COMPANY_OPERATOR")) {
 				$scope.assignRole.companyBranchMapId = $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls.companyBranchMapId;
 			}else{

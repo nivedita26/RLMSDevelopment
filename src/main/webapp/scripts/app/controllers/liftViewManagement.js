@@ -14,6 +14,85 @@
 			 $scope.branches=[];
 			 $scope.showTable = false;
 		} 
+		
+		$rootScope.AMCType=[
+			{
+				id:42,
+				name:'Comprehensive'
+			},
+			{
+				id:43,
+				name:'Non Comprehensive'
+			},
+			{
+				id:44,
+				name:'On Demand'
+			},
+			{
+				id:45,
+				name:'Other'
+			},
+		];
+		//Door Type
+		$rootScope.DoorType=[
+			{
+				id:0,
+				name:'Auto Door'
+			},
+			{
+				id:1,
+				name:'Manual Door'
+			}
+		];
+		//Engine-Machine Type
+		$rootScope.EngineMachineTypes=[
+			{
+				id:0,
+				name:'Geared'
+			},
+			{
+				id:1,
+				name:'Gearless'
+			}
+		];
+		//Collective Type
+		$rootScope.CollectiveType=[
+			{
+				id:0,
+				name:'Down Collective'
+			},
+			{
+				id:1,
+				name:'Full Collective'
+			}
+		];
+		//SimplexDuplex - Group
+		$rootScope.SimplexDuplex=[
+			{
+				id:0,
+				name:'Simplex'
+			},
+			{
+				id:1,
+				name:'Duplex'
+			},
+			{
+				id:1,
+				name:'Group'
+			}
+		];
+		//WiringScheme
+		$rootScope.WiringSchemes=[
+			{
+				id:0,
+				name:'Pluggable'
+			},
+			{
+				id:1,
+				name:'NonPluggable'
+			}
+		];
+		
 		function loadCompanyData(){
 			serviceApi.doPostWithoutData('/RLMS/admin/getAllApplicableCompanies')
 		    .then(function(response){
@@ -196,7 +275,7 @@
 	  	        		if(!!largeLoad[i].liftId){
 	  	        			userDetailsObj["liftId"] =largeLoad[i].liftId;
 	  	        		}else{
-	  	        			userDetailsObj["liftId"] =" - ";
+	  	        			userDetailsObj["liftId"] ="";
 	  	        		}
 	  	        		if(!!largeLoad[i].customerName){
 	  	        			userDetailsObj["Customer_Name"] =largeLoad[i].customerName;
@@ -251,7 +330,7 @@
 	  	        		if(!!largeLoad[i].amcType){
 	  	        			userDetailsObj["amcType"] =largeLoad[i].amcType;
 	  	        		}else{
-	  	        			userDetailsObj["amcType"] ="-";
+	  	        			userDetailsObj["amcType"] ="0";
 	  	        		}
 	  	        		if(!!largeLoad[i].amcAmount){
 	  	        			userDetailsObj["Amc_Amount"] =largeLoad[i].amcAmount;
@@ -261,7 +340,7 @@
 	  	        		if(!!largeLoad[i].liftType){
 	  	        			userDetailsObj["liftType"] =largeLoad[i].liftType;
 	  	        		}else{
-	  	        			userDetailsObj["liftType"] =" - ";
+	  	        			userDetailsObj["liftType"] ="";
 	  	        		}
 	  	        		if(!!largeLoad[i].liftType){
 	  	        			if(largeLoad[i].liftType === 1){
@@ -277,7 +356,7 @@
 	  	        		if(!!largeLoad[i].pinCode){
 	  	        			userDetailsObj["PinCode"] =largeLoad[i].pinCode;
 	  	        		}else{
-	  	        			userDetailsObj["PinCode"] =" - ";
+	  	        			userDetailsObj["PinCode"] ="";
 	  	        		}
 	  	        		if(!!largeLoad[i].latitude){
 	  	        			userDetailsObj["Latitude"] =largeLoad[i].latitude;
@@ -332,7 +411,7 @@
 	  	        		if(!!largeLoad[i].noOfBatteries){
 	  	        			userDetailsObj["noOfBatteries"] =largeLoad[i].noOfBatteries;
 	  	        		}else{
-	  	        			userDetailsObj["noOfBatteries"] =" - ";
+	  	        			userDetailsObj["noOfBatteries"] ="";
 	  	        		}
 	  	        		if(!!largeLoad[i].batteryCapacity){
 	  	        			userDetailsObj["batteryCapacity"] =largeLoad[i].batteryCapacity;
@@ -367,7 +446,7 @@
 	  	        		if(!!largeLoad[i].imei){
 	  	        			userDetailsObj["imei"] =largeLoad[i].imei;
 	  	        		}else{
-	  	        			userDetailsObj["imei"] =" - ";
+	  	        			userDetailsObj["imei"] ="0";
 	  	        		}
 	  	        		if(!!largeLoad[i].lmsEventFromContactNo){
 	  	        			userDetailsObj["lmsEventFromContactNo"] =largeLoad[i].lmsEventFromContactNo;
@@ -382,7 +461,7 @@
 	  	        		if(!!largeLoad[i].fireMode){
 	  	        			userDetailsObj["fireMode"] =largeLoad[i].fireMode;
 	  	        		}else{
-	  	        			userDetailsObj["fireMode"] =" - ";
+	  	        			userDetailsObj["fireMode"] ="";
 	  	        		}
 	  	        		if(!!largeLoad[i].intercomm){
 	  	        			userDetailsObj["intercomm"] =largeLoad[i].intercomm;
@@ -392,7 +471,7 @@
 	  	        		if(!!largeLoad[i].alarm){
 	  	        			userDetailsObj["alarm"] =largeLoad[i].alarm;
 	  	        		}else{
-	  	        			userDetailsObj["alarm"] =" - ";
+	  	        			userDetailsObj["alarm"] ="";
 	  	        		}
 	  	        		if(largeLoad[i].doorType=="0"||largeLoad[i].doorType=="1"){
 	  	        			userDetailsObj["doorType"] =largeLoad[i].doorType;
@@ -528,7 +607,7 @@
 					displayName:"Lift Number",
 					width: "120"
 				}, {
-					field : "LiftType",
+					field : "LiftTypeStr",
 					displayName:"Lift Type",
 					width: "140"
 				}, {
