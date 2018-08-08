@@ -44,8 +44,7 @@
 			<label for="liftNumber" class="col-md-3 control-label">Lift Number<sup class="red font-12">*</sup></label>
 			<div class="col-md-6">
 				<input ng-model="addLift.liftNumber" required class="form-control" name="liftNumber" type="text"/>
-				<span class="help-block"
-						ng-show="addLiftForm.liftNumber.$error.required && addLiftForm.liftNumber.$dirty">This
+				<span class="help-block" ng-show="addLiftForm.liftNumber.$error.required && addLiftForm.liftNumber.$dirty">This
 						field is required</span>
 			</div>
 		</div>
@@ -316,9 +315,11 @@
 			<label for="lmsAvailable" class="col-md-3 control-label">LMS<sup class="red font-12">*</sup></label>
 			<div class="col-sm-6">
 			 <ui-select ng-model="selectedLmsAvailable.selected"  ng-click="lmsData() " title="Choose a LMS Availability" required>
-					    <ui-select-match placeholder="Select availability of LMS">{{$select.selected.name}}</ui-select-match> 
+					    <ui-select-match required placeholder="This field is Required">{{$select.selected.name}}</ui-select-match> 
 					    <ui-select-choices repeat="iterator in lmsAvailable |filter: $select.search">
 								<span ng-bind-html="iterator.name | highlight: $select.search"></span>
+								<span class="help-block" ng-show="addLiftForm.lmsAvailable.$error.required && addLiftForm.lmsAvailable.$dirty">This
+						field is required</span>
 							</ui-select-choices>
 					  </ui-select>
 					  </div>

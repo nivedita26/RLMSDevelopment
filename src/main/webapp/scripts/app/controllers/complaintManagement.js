@@ -494,7 +494,7 @@
 													
 													serviceApi
 															.doPostWithData(
-																	'/RLMS/complaint/getListOfComplaints',	companyData)
+																	'/RLMS/complaint/getListOfComplaints',companyData)
 															.then(
 																	function(
 																			largeLoad) {

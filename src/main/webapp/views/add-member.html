@@ -3,7 +3,11 @@
 	<h1 class="rlms-heading">Add Member</h1>
 	<div class="container-fluid" >
 		<alert ng-show="showAlert" type="{{alert.type}}">
-			<span ng-bind-html="alert.message | safe_html">
+			<span ng-bind-html="alert.msg | safe_html">
+			<!-- <span ng-bind-html="alert.message | safe_html"> -->
+			</alert>
+			<alert ng-show="showAlert1" type="{{alert.type}}">
+			<span ng-bind-html="alert.msg | safe_html">
 			<!-- <span ng-bind-html="alert.message | safe_html"> -->
 			</alert>
 		<form class="form-horizontal row-border" name="addMemberForm">
