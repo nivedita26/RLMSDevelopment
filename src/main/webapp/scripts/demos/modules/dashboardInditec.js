@@ -376,7 +376,7 @@ angular.module('theme.demos.dashboard.indi', [
         complaintStatusArray.push(str_array[i]);
       }
       $scope.testComplaintValue="After";
-      
+      $scope.loading = true;
     //Total Calls
       setTimeout(
         function () {
@@ -407,7 +407,7 @@ angular.module('theme.demos.dashboard.indi', [
             	  if(largeLoad[0].avgResolvedPerDay!=null){
         			  $scope.complaintsData.avgResolvedPerDayRegistered.text = largeLoad[0].avgResolvedPerDay;
         		  }
-            	                
+            	  $scope.loading = false;            
             });
         }, 100);
       
@@ -761,7 +761,6 @@ angular.module('theme.demos.dashboard.indi', [
     $scope.getPagedDataAsyncForComplaints = function (pageSize,
       page, searchText, complaintStatus, callingModel,isTodaysData,headerValue) {
       var url;
-     // url = '/RLMS/dashboard/getListOfComplaintsForDashboard';
       
       url = '/RLMS/dashboard/getListOfTodaysComplaintsCountByCallType';
       
@@ -2979,7 +2978,7 @@ angular.module('theme.demos.dashboard.indi', [
               scope: $scope
             });
           };
-            $scope.getCountAmcSrviceCalls("AmcServiceCall");
+            /*$scope.getCountAmcSrviceCalls("AmcServiceCall");
             $scope.getPagedDataAsyncForAmcServiceCalls = function (pageSize,
           	      page, searchText, activeFlag) {
           	      var url;
@@ -3092,7 +3091,7 @@ angular.module('theme.demos.dashboard.indi', [
           	              });
           	          }
           	        }, 100);
-          	    };
+          	    };*/
           	    //For edit Profile
           	
   }]);

@@ -8,6 +8,7 @@
 			$scope.alert = { type: 'error', msg: 'Please fill the required fields.',close:false };
 			//loadBranchListInfo();
 			$scope.showAlert = false;
+			$scope.showAlert1 = false;
 			$scope.showCompany = false;
 			$scope.showBranch = false;
 			$scope.companies = [];
@@ -89,7 +90,7 @@
 					$scope.addMemberForm.$setPristine();
 					$scope.addMemberForm.$setUntouched();
 				},function(error){
-					$scope.showAlert = true;
+					$scope.showAlert1 = true;
 					$scope.alert.message = error;
 					$scope.alert.type = "danger";
 				});

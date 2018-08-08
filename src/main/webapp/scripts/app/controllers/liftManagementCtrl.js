@@ -234,15 +234,20 @@
 	  	        			userDetailsObj["liftId"] =" - ";
 	  	        		}
 	  	        		if(!!largeLoad[i].liftType){
+	  	        			userDetailsObj["liftType"] =largeLoad[i].liftType;
+	  	        		}else{
+	  	        			userDetailsObj["liftType"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].liftType){
 	  	        			if(largeLoad[i].liftType === 1){
-	  	        				userDetailsObj["LiftType"]="Geared";
+	  	        				userDetailsObj["LiftTypeStr"]="Geared";
 	  	        			}else if(largeLoad[i].liftType === 2){
-	  	        				userDetailsObj["LiftType"]="Gearless";
+	  	        				userDetailsObj["LiftTypeStr"]="Gearless";
 	  	        			}else{
-	  	        			userDetailsObj["LiftType"] ="Hydraulic";
+	  	        			userDetailsObj["LiftTypeStr"] ="Hydraulic";
 	  	        			}
 	  	        		}else{
-	  	        			userDetailsObj["LiftType"] =" - ";
+	  	        			userDetailsObj["LiftTypeStr"] =" - ";
 	  	        		}
 	  	        		userDetails.push(userDetailsObj);
 	  	        	  }
@@ -338,15 +343,20 @@
 	  	        			userDetailsObj["Amc_Amount"] =" - ";
 	  	        		}
 	  	        		if(!!largeLoad[i].liftType){
+	  	        			userDetailsObj["liftType"] =largeLoad[i].liftType;
+	  	        		}else{
+	  	        			userDetailsObj["liftType"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].liftType){
 	  	        			if(largeLoad[i].liftType === 1){
-	  	        				userDetailsObj["LiftType"]="Geared";
+	  	        				userDetailsObj["LiftTypeStr"]="Geared";
 	  	        			}else if(largeLoad[i].liftType === 2){
-	  	        				userDetailsObj["LiftType"]="Gearless";
+	  	        				userDetailsObj["LiftTypeStr"]="Gearless";
 	  	        			}else{
-	  	        			userDetailsObj["LiftType"] ="Hydraulic";
+	  	        			userDetailsObj["LiftTypeStr"] ="Hydraulic";
 	  	        			}
 	  	        		}else{
-	  	        			userDetailsObj["LiftType"] =" - ";
+	  	        			userDetailsObj["LiftTypeStr"] =" - ";
 	  	        		}
 	  	        		if(!!largeLoad[i].pinCode){
 	  	        			userDetailsObj["PinCode"] =largeLoad[i].pinCode;
@@ -604,7 +614,7 @@
 					displayName:"Lift Number",
 					width: "120"
 				}, {
-					field : "LiftType",
+					field : "LiftTypeStr",
 					displayName:"Lift Type",
 					width: "140"
 				}, {
