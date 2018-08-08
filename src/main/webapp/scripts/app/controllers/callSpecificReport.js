@@ -809,7 +809,7 @@ $scope.loadCallID=function(){
 	  		var data = {
 	  				//listOfUserRoleIds:tempListOfUserRoleIds,
 	  				//listOfEventTypeIds:tempStatus,
-//	  				callId:$scope.selectedCallID.selected.callID,
+	  				complaintId:$scope.selectedCallID.selected.complaintNumber,
 	  				listOfLiftCustoMapId:tempLiftId,
 	  				branchCustomerMapId:$scope.selectedCustomer.selected.branchCustomerMapId
 	  		};

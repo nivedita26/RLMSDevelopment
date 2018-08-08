@@ -1374,7 +1374,7 @@ angular.module('theme.demos.dashboard.indi', [
     	                			totalCount=totalCount+largeLoad[i].totalInactiveTechnician;
     	                			$scope.technicianData.inactiveTechnicians.text=totalCount;
     	                		}else{
-    	                			/*$scope.technicianData.inactiveTechnicians.text="0";*/
+    	                			$scope.technicianData.inactiveTechnicians.text="0";
     	                		}
     	                	}
     	                	  	                 
