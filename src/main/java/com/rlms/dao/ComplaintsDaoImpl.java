@@ -270,6 +270,9 @@ public class ComplaintsDaoImpl implements ComplaintsDao{
 		if(dto.getServiceCallType()!=null) {
 			criteria.add(Restrictions.eq("callType", dto.getCallType()));
 		}
+		if(dto.getComplaintId()!=null) {
+			criteria.add(Restrictions.eq("complaintId", dto.getComplaintId()));
+		}
 		if(dto.getToDate()!=null && dto.getFromDate()!=null) {
 			criteria.add(Restrictions.between("registrationDate", dto.getToDate(),dto.getFromDate()));
 		}
