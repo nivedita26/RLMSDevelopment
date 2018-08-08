@@ -475,9 +475,6 @@ public class LiftDtlsDto {
 	public void setImei(String imei) {
 		this.imei = imei;
 	}
-	
-	
-
 	public String getLmsEventFromContactNo() {
 		return lmsEventFromContactNo;
 	}

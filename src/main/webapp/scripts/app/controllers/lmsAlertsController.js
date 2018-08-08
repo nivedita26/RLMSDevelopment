@@ -430,7 +430,7 @@
 	  	  function constructDataToSend(){
 	  		var tempEventId;
 			if($scope.selectedEventType.selected.name ==="ALL"){
-				tempEventId=-1;
+				tempEventId="-1";
 			}else{
 				tempEventId=$scope.selectedEventType.selected.name;
 			}

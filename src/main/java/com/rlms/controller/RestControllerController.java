@@ -45,7 +45,6 @@ import com.rlms.utils.PropertyUtils;
 @RequestMapping(value="/API")
 public class RestControllerController  extends BaseController {
 
-	
 	@Autowired
 	private ComplaintsService ComplaintsService;
 	

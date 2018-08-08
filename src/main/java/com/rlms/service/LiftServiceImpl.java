@@ -104,10 +104,10 @@ public class LiftServiceImpl implements LiftService{
 		liftCustomerMap.setLiftCustomerMapId(liftCustomerMapID);
 		
 		//get company manual
-		RlmsCompanyManual companyManual = liftManualService.getCompanyManual(liftCustomerMap.getBranchCustomerMap().getCompanyBranchMapDtls().getRlmsCompanyMaster().getCompanyId(), liftM.getLiftType());
+	/*	RlmsCompanyManual companyManual = liftManualService.getCompanyManual(liftCustomerMap.getBranchCustomerMap().getCompanyBranchMapDtls().getRlmsCompanyMaster().getCompanyId(), liftM.getLiftType());
 		if(companyManual!=null) {
 			
-		}
+		}*/
 		
 		AMCDetailsDto amcDetailsDto = this.constructAMCDtlsDto(liftCustomerMap);
 		this.reportService.addAMCDetailsForLift(amcDetailsDto, metaInfo);
@@ -347,7 +347,7 @@ public class LiftServiceImpl implements LiftService{
 			dto.setNoOfStops(liftM.getNoOfStops());
 			dto.setEngineType(liftM.getEngineType());
 			dto.setMachineMake(liftM.getMachineMake());
-			dto.setMachineCapacity(liftM.getMachineMake());
+			dto.setMachineCapacity(liftM.getMachineCapacity());
 			dto.setMachineCurrent(liftM.getMachineCurrent());
 			dto.setBreakVoltage(liftM.getBreakVoltage());
 			dto.setPanelPhoto(liftM.getPanelPhoto());
@@ -901,6 +901,9 @@ public class LiftServiceImpl implements LiftService{
 		if(null != dto.getAlarm()){
 			liftMaster.setAlarm(dto.getAlarm());
 		}
+		if(null != dto.getAlarmBattery()){
+			liftMaster.setAlarmBattery(dto.getAlarmBattery());
+		}
 		if(null != dto.getAmcType()){
 			liftMaster.setAmcType(dto.getAmcType());
 		}
@@ -972,6 +975,11 @@ public class LiftServiceImpl implements LiftService{
 		if(null != dto.getLopPhoto()){
 			liftMaster.setLOPPhoto(dto.getLopPhoto());
 		}
+		
+		if(null != dto.getPanelMake()){
+			liftMaster.setPanelMake(dto.getPanelMake());
+		}
+		
 		if(null != dto.getPanelPhoto()){
 			liftMaster.setPanelPhoto(dto.getPanelPhoto());
 		}
