@@ -1000,13 +1000,13 @@ public class LiftServiceImpl implements LiftService{
 		if(!StringUtils.isEmpty(dto.getAmcAmount())){
 			liftMaster.setAmcAmount(dto.getAmcAmount());
 		}
-		if(!StringUtils.isEmpty(dto.getLatitude())){
+		/*if(!StringUtils.isEmpty(dto.getLatitude())){
 			liftMaster.setLatitude(dto.getLatitude());
 		}
 		
 		if(!StringUtils.isEmpty(dto.getLongitude())){
 			liftMaster.setLongitude(dto.getLongitude());
-		}
+		}*/
 		if(dto.getDoorType()!=null){
 			liftMaster.setDoorType(dto.getDoorType());
 		}
