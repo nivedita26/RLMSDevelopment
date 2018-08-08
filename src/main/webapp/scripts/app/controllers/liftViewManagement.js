@@ -150,9 +150,20 @@
 	  	        			userDetailsObj["liftId"] =" - ";
 	  	        		}
 	  	        		if(!!largeLoad[i].liftType){
-	  	        			userDetailsObj["LiftType"] =largeLoad[i].liftType;
+	  	        			userDetailsObj["liftType"] =largeLoad[i].liftType;
 	  	        		}else{
-	  	        			userDetailsObj["LiftType"] =" - ";
+	  	        			userDetailsObj["liftType"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].liftType){
+	  	        			if(largeLoad[i].liftType === 1){
+	  	        				userDetailsObj["LiftTypeStr"]="Geared";
+	  	        			}else if(largeLoad[i].liftType === 2){
+	  	        				userDetailsObj["LiftTypeStr"]="Gearless";
+	  	        			}else{
+	  	        			userDetailsObj["LiftTypeStr"] ="Hydraulic";
+	  	        			}
+	  	        		}else{
+	  	        			userDetailsObj["LiftTypeStr"] =" - ";
 	  	        		}
 	  	        		userDetails.push(userDetailsObj);
 	  	        	  }
@@ -248,9 +259,20 @@
 	  	        			userDetailsObj["Amc_Amount"] =" - ";
 	  	        		}
 	  	        		if(!!largeLoad[i].liftType){
-	  	        			userDetailsObj["LiftType"] =largeLoad[i].liftType;
+	  	        			userDetailsObj["liftType"] =largeLoad[i].liftType;
 	  	        		}else{
-	  	        			userDetailsObj["LiftType"] =" - ";
+	  	        			userDetailsObj["liftType"] =" - ";
+	  	        		}
+	  	        		if(!!largeLoad[i].liftType){
+	  	        			if(largeLoad[i].liftType === 1){
+	  	        				userDetailsObj["LiftTypeStr"]="Geared";
+	  	        			}else if(largeLoad[i].liftType === 2){
+	  	        				userDetailsObj["LiftTypeStr"]="Gearless";
+	  	        			}else{
+	  	        			userDetailsObj["LiftTypeStr"] ="Hydraulic";
+	  	        			}
+	  	        		}else{
+	  	        			userDetailsObj["LiftTypeStr"] =" - ";
 	  	        		}
 	  	        		if(!!largeLoad[i].pinCode){
 	  	        			userDetailsObj["PinCode"] =largeLoad[i].pinCode;
@@ -372,27 +394,27 @@
 	  	        		}else{
 	  	        			userDetailsObj["alarm"] =" - ";
 	  	        		}
-	  	        		if(!!largeLoad[i].doorType){
+	  	        		if(largeLoad[i].doorType=="0"||largeLoad[i].doorType=="1"){
 	  	        			userDetailsObj["doorType"] =largeLoad[i].doorType;
 	  	        		}else{
 	  	        			userDetailsObj["doorType"] =" - ";
 	  	        		}
-	  	        		if(!!largeLoad[i].engineType){
+	  	        		if(largeLoad[i].engineType=="0"||largeLoad[i].engineType=="1"){
 	  	        			userDetailsObj["engineType"] =largeLoad[i].engineType;
 	  	        		}else{
 	  	        			userDetailsObj["engineType"] =" - ";
 	  	        		}
-	  	        		if(!!largeLoad[i].collectiveType){
+	  	        		if(largeLoad[i].collectiveType=="0"||largeLoad[i].collectiveType=="1"){
 	  	        			userDetailsObj["collectiveType"] =largeLoad[i].collectiveType;
 	  	        		}else{
 	  	        			userDetailsObj["collectiveType"] =" - ";
 	  	        		}
-	  	        		if(!!largeLoad[i].simplexDuplex){
+	  	        		if(largeLoad[i].simplexDuplex=="0"||largeLoad[i].simplexDuplex=="1"){
 	  	        			userDetailsObj["simplexDuplex"] =largeLoad[i].simplexDuplex;
 	  	        		}else{
 	  	        			userDetailsObj["simplexDuplex"] =" - ";
 	  	        		}
-	  	        		if(!!largeLoad[i].wiringShceme){
+	  	        		if(largeLoad[i].wiringShceme=="0"||largeLoad[i].wiringShceme=="1"){
 	  	        			userDetailsObj["wiringShceme"] =largeLoad[i].wiringShceme;
 	  	        		}else{
 	  	        			userDetailsObj["wiringShceme"] =" - ";

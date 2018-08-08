@@ -40,15 +40,19 @@
 			loadCompanyData();
 		} else {
 			$scope.showCompany = false;
-			$scope.loadBranchData();
+			
 		}
 		// showBranch Flag
 		if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel < 3) {
 			$scope.showBranch = true;
-			loadCompanyData();
+			$scope.loadBranchData();
+			//loadCompanyData();
 		} else {
 			$scope.showBranch = false;
-			$scope.loadBranchData();
+			//$scope.loadBranchData();
+			//$scope.loadReportList();
+			var emptySite=[];
+			$scope.siteViseReport=emptySite;
 		}
 		
 		function loadCompanyData() {
@@ -68,18 +72,40 @@
 		$scope.loadReportList = function(searchText){
 			if (searchText) {
 	  	          var ft = searchText.toLowerCase();
- 	         var dataToSend = constructDataToSend();
- 	         serviceApi.doPostWithData('/RLMS/report/getTechnicianWiseReport',dataToSend)
+	  	        var branchData ={};
+	  	    	if($scope.showBranch == true){
+	  	    		branchData = {
+	  	    			branchCompanyMapId : $scope.selectedBranch.selected!=null?$scope.selectedBranch.selected.companyBranchMapId:0
+						}
+	  	    	}else{
+	  	    		branchData = {
+	  	    			branchCompanyMapId : $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls.companyBranchMapId
+						}
+	  	    	}
+ 	         //var dataToSend = constructDataToSend();
+ 	         serviceApi.doPostWithData('/RLMS/report/getTechnicianWiseReport',branchData)
  	         .then(function(data) {
  	        	 $scope.siteViseReport = data.filter(function(item) {
 	  	              return JSON.stringify(item).toLowerCase().indexOf(ft) !== -1;
 	  	            });
  	         })
 			}else{
-				var dataToSend = constructDataToSend();
-	 	         serviceApi.doPostWithData('/RLMS/report/getTechnicianWiseReport',dataToSend)
+				//var dataToSend = constructDataToSend();
+				var branchData ={};
+	  	    	if($scope.showBranch == true){
+	  	    		branchData = {
+	  	    			branchCompanyMapId : $scope.selectedBranch.selected!=null?$scope.selectedBranch.selected.companyBranchMapId:0
+						}
+	  	    	}else{
+	  	    		branchData = {
+	  	    			branchCompanyMapId : $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls.companyBranchMapId
+						}
+	  	    	}
+				
+	 	         serviceApi.doPostWithData('/RLMS/report/getTechnicianWiseReport',branchData)
 	 	         .then(function(data) {
 	 	        	 $scope.siteViseReport = data;
+	 	        	 
 	 	         })
 			}
 			$scope.showMembers = true;
@@ -88,8 +114,13 @@
 	  		initReport();
 	  	  }
 	  	  function constructDataToSend(){
+	  		  if($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 3) {
+	  			branchCompanyMapId=$rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls.companyBranchMapId;
+	  		  }else{
+	  			branchCompanyMapId=$scope.selectedBranch.selected.companyBranchMapId;
+	  		  }
 	  		var data = {
-	  				'branchCompanyMapId':$scope.selectedBranch.selected.companyBranchMapId,
+	  				'branchCompanyMapId':branchCompanyMapId,
 	  				//'companyId':$scope.selectedCompany.selected.companyId,
 	  		};
 	  		return data;
