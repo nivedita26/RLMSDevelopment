@@ -17,17 +17,14 @@ import com.rlms.service.LiftConfigurationService;
 import com.rlms.utils.PropertyUtils;
 
 public class LiftConfigurationController {
-
 	
 	@Autowired
 	private LiftConfigurationService liftConfigurationService;
-	
 	private static final Logger logger = Logger.getLogger(ComplaintController.class);
 	
 	@RequestMapping(value = "/saveAndSendLiftConfiguration", method = RequestMethod.POST)
 	 public  @ResponseBody ResponseDto saveAndSendLiftConfiguration(@RequestBody LiftConfigurationDTO dto) throws RunTimeException{
 		ResponseDto reponseDto = new ResponseDto();
-		 
 		 try{
 	        	logger.info("Method :: saveAndSendLiftConfiguration");
 	        	reponseDto.setResponse(this.liftConfigurationService.saveAndSendLiftConfiguration(dto));

@@ -215,14 +215,12 @@ public class DashboardDaoImpl implements DashboardDao {
 			Criteria criteria = session.createCriteria(RlmsEventDtls.class).add(
 					Restrictions.in("rlmsLiftCustomerMap.liftCustomerMapId", liftCustMapIds));
 			if(eventType!=null&&eventType=="-1") {
-				criteria.add(Restrictions.ne("eventType", "RES"));
-				eventDtls = criteria.list();
+				criteria.add(Restrictions.ne("eventType","RES"));
 			}
 			else if(eventType!=null&&eventType!="-1") {
-				criteria.add(Restrictions.eq("eventType", eventType));
+				criteria.add(Restrictions.eq("eventType",eventType));
 			}
 			criteria.addOrder(Order.desc("generatedDate"));
-			
 			eventDtls = criteria.list();
 		} catch (HibernateException e) {
 			e.printStackTrace();

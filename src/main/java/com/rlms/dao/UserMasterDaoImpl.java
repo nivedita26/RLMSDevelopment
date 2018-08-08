@@ -128,4 +128,5 @@ UserMasterDao{
 		       .add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
 		 return (RlmsUsersMaster)criteria.uniqueResult();
 	}
+
 }

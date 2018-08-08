@@ -317,20 +317,16 @@ private static final Logger log = Logger.getLogger(MessagingServiceImpl.class);
 		EmailTemplate emailTemplate = this.getEmailTemplate(EmailTemplateEnum.FORGOT_PASSWORD.getTemplateId());
 		List<String> toList = new ArrayList<String>();
 		toList.add(mailId);
-		
 		List<String> listOfDyanamicValues = new ArrayList<String>();
 		listOfDyanamicValues.add(password);
-		
-		//String content = this.emailService.replaceDyanamicValue(listOfDyanamicValues, emailTemplate.getEmailContent());
 		String content = this.replaceDyanamicValue(listOfDyanamicValues, emailTemplate.getEmailContent());
-
 		emailTemplate.setEmailContent(content);
-		
-		//MailDTO dto = this.emailService.constructMailDto(toList, emailTemplate.getEmailSubject(), emailTemplate.getEmailContent(), "sanket.tagalpallewar@gmail.com", toList);
-		
 		MailDTO dto = this.constructMailDto(toList, emailTemplate.getEmailSubject(), emailTemplate.getEmailContent());
-
 		log.debug(content);
-		this.sendEmail(dto);
+		try {
+			this.sendEmail(dto);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

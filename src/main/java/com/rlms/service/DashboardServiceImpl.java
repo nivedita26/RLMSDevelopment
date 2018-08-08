@@ -724,12 +724,10 @@ public class DashboardServiceImpl implements DashboardService {
 			      eventDtlsDto.setEventCode(rlmsEventDtls.getEventCode());
 			      eventDtlsDto.setEventDescription(rlmsEventDtls.getEventDescription());
 			      eventDtlsDto.setFloorNo(rlmsEventDtls.getFloorNo());
-			      
 			   //  convert epoch into date format
 			        DateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 			        format.setTimeZone(TimeZone.getTimeZone("IST"));
 			        String eventDate = format.format(rlmsEventDtls.getEventDate());
-			      		      
 			      eventDtlsDto.setDate(eventDate); 
 			      eventDtlsDto.setLiftCustomerMap(rlmsEventDtls.getRlmsLiftCustomerMap());
 			      eventDtlsDto.setActiveFlag(rlmsEventDtls.getActiveFlag());
@@ -781,21 +779,21 @@ public class DashboardServiceImpl implements DashboardService {
 	    DecimalFormat df = new DecimalFormat("###.##");
         Date pivotDate = DateUtils.addDaysToDate(new Date(), -30);
         Date today =new Date();
+        
        float resolvedComplaintCount=0;
 	    try {
 		 pivotDate=sdf.parse(sdf.format(pivotDate));
-		today = sdf.parse(sdf.format(today));
-		
+		 today = sdf.parse(sdf.format(today));
 		logger.debug("pivot date**"+pivotDate);
 		logger.debug("pivot date**"+today);
+		
 		} catch (ParseException e) {
 		}
 	    listOfAllComplaints = dashboardDao.getAllComplaintsForAvgLogs(pivotDate,today,dto);
 	    logger.debug("total complaints**"+listOfAllComplaints.size());
-	    
-	    int diff =DateUtils.daysBetween(listOfAllComplaints.get(0).getCreatedDate(),new Date());
+		logger.debug(DateUtils.addDaysToDate(today,1));
+	    int diff =DateUtils.daysBetween(listOfAllComplaints.get(0).getCreatedDate(), DateUtils.addDaysToDate(today,1));
 	    logger.debug("date difference"+diff);
-	    
 	    if(diff>0) {
 	    	float  listSize = listOfAllComplaints.size();
 	    	avgLogsPerDay =(listSize/diff);

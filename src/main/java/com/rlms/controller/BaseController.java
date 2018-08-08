@@ -24,9 +24,10 @@ public class BaseController {
     	String userName = authentication.getName();
     	authentication.getCredentials();
     	if(userName!=null) {
-    	//RlmsUserRoles  rlmsUserRoles = this.userService.getUserByUserName(userName);
-      //if(rlmsUserRoles!=null) {
-    	return userName;
+    		RlmsUserRoles  rlmsUserRoles = this.userService.getUserByUserName(userName);
+    		if(rlmsUserRoles!=null && rlmsUserRoles.getActiveFlag()!=0) {
+    			return userName;
+    		}
     	}
     	   return "login.jsp";
  //     return this.userService.getUserByUserName(userName);

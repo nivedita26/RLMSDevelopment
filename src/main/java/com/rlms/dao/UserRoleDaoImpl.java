@@ -2,8 +2,6 @@ package com.rlms.dao;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -11,7 +9,6 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.rlms.constants.RLMSConstants;
 import com.rlms.constants.SpocRoleConstants;
 import com.rlms.contract.BranchDtlsDto;
@@ -20,11 +17,11 @@ import com.rlms.contract.UserMetaInfo;
 import com.rlms.model.RlmsSpocRoleMaster;
 import com.rlms.model.RlmsUserApplicationMapDtls;
 import com.rlms.model.RlmsUserRoles;
+import com.rlms.model.RlmsUsersMaster;
 
 
 @Repository
-public class UserRoleDaoImpl implements
-UserRoleDao{
+public class UserRoleDaoImpl implements UserRoleDao{
 
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -242,6 +239,22 @@ UserRoleDao{
 		 @SuppressWarnings("unchecked")
 		List<RlmsUserRoles> userRole = (List<RlmsUserRoles>) criteria.list();
 		 return userRole;
+	}
+
+	@Override
+	public List<RlmsUserRoles> getAllUsersForBranch(UserDtlsDto dtlsDto) {
+		 Session session = this.sessionFactory.getCurrentSession();
+		 Criteria criteria = session.createCriteria(RlmsUserRoles.class);
+				 if(null != dtlsDto.getBranchCompanyMapId()){
+					criteria.add(Restrictions.eq("rlmsCompanyBranchMapDtls.companyBranchMapId", dtlsDto.getBranchCompanyMapId()));
+				 }
+				 if(null != dtlsDto.getCompanyId()){
+					criteria.add(Restrictions.eq("rlmsCompanyMaster.companyId", dtlsDto.getCompanyId()));
+				 }
+				
+				 criteria.add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
+		 List<RlmsUserRoles> listOfAllUsersForBranch =  criteria.list();
+		 return listOfAllUsersForBranch;
 	}
 	
 }

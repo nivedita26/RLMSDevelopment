@@ -18,11 +18,7 @@ import javax.persistence.Table;
 @Table(name = "rlms_complaint_tech_map_dtls")
 public class RlmsComplaintTechMapDtls implements Serializable{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-	
 	private Integer complaintTechMapId;
 	private RlmsComplaintMaster complaintMaster;
 	private RlmsUserRoles userRoles;
@@ -35,9 +31,6 @@ public class RlmsComplaintTechMapDtls implements Serializable{
 	private Integer createdBy;
 	private Date updatedDate;
 	private Integer updatedBy;
-	
-	
-	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "complaint_tech_map_id", unique = true, nullable = false)	
@@ -97,8 +90,7 @@ public class RlmsComplaintTechMapDtls implements Serializable{
 	public void setActiveFlag(Integer activeFlag) {
 		this.activeFlag = activeFlag;
 	}
-	
-	
+		
 	@Column(name = "created_date", unique = true, nullable = false)
 	public Date getCreatedDate() {
 		return createdDate;
@@ -138,7 +130,5 @@ public class RlmsComplaintTechMapDtls implements Serializable{
 	public void setUserRating(Integer userRating) {
 		this.userRating = userRating;
 	}
-	
-	
 	
 }

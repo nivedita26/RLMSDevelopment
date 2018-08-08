@@ -340,7 +340,7 @@ public class DashBoardController extends BaseController {
 		}
 		List<CustomerDtlsDto> allCustomersForBranch = dashboardService.getAllCustomersForBranch(companyBranchMapIds);
 		List<Integer> liftCustomerMapIds = new ArrayList<>();
-		if(listOfAllBranches!=null  && !listOfAllBranches.isEmpty() ) {
+		if(allCustomersForBranch!=null  && !allCustomersForBranch.isEmpty() ) {
 		for (CustomerDtlsDto customerDtlsDto : allCustomersForBranch) {
 			LiftDtlsDto dtoToGetLifts = new LiftDtlsDto();
 			dtoToGetLifts.setBranchCustomerMapId(customerDtlsDto.getBranchCustomerMapId());

@@ -97,6 +97,8 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 			dto.setServiceStartDate(complaintTechMapDtls.getComplaintMaster().getServiceStartDate());
 			dto.setComplaintId(complaintTechMapDtls.getComplaintMaster().getComplaintId());
 			dto.setComplaintTechMapId(complaintTechMapDtls.getComplaintTechMapId());
+			dto.setServiceCallType(complaintTechMapDtls.getComplaintMaster().getCallType());
+			dto.setTitle(complaintTechMapDtls.getComplaintMaster().getTitle());
 			if(Status.PENDING.getStatusId().equals(complaintTechMapDtls.getComplaintMaster().getStatus())){
 				dto.setStatus(Status.PENDING.getStatusMsg());
 			}else if(Status.ASSIGNED.getStatusId().equals(complaintTechMapDtls.getComplaintMaster().getStatus())){

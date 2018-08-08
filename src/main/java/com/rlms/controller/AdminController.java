@@ -14,6 +14,7 @@ import com.rlms.constants.RlmsErrorType;
 import com.rlms.contract.AddNewUserDto;
 import com.rlms.contract.BranchDtlsDto;
 import com.rlms.contract.CompanyDtlsDTO;
+import com.rlms.contract.CompanyManualDto;
 import com.rlms.contract.CustomerDtlsDto;
 import com.rlms.contract.LiftDtlsDto;
 import com.rlms.contract.MemberDtlsDto;
@@ -30,6 +31,7 @@ import com.rlms.model.RlmsSpocRoleMaster;
 import com.rlms.service.CompanyService;
 import com.rlms.service.ComplaintsService;
 import com.rlms.service.CustomerService;
+import com.rlms.service.LiftManualService;
 import com.rlms.service.LiftService;
 import com.rlms.service.UserService;
 import com.rlms.utils.PropertyUtils;
@@ -52,6 +54,9 @@ public class AdminController extends BaseController{
 	
 	@Autowired
 	private ComplaintsService Service;
+	
+	@Autowired
+	private LiftManualService liftManualService;
 	
 	private static final Logger logger = Logger.getLogger(AdminController.class);
 	
@@ -87,12 +92,12 @@ public class AdminController extends BaseController{
 	        return listOfAllRoles;
 	 }
 	 @RequestMapping(value = "/getAllUsersForCompany", method = RequestMethod.POST)
-	    public @ResponseBody List<UserDtlsDto> getAllUsersForCompany(@RequestBody CompanyDtlsDTO companyDtlsDTO) throws RunTimeException {
+	    public @ResponseBody List<UserDtlsDto> getAllUsersForCompany(@RequestBody UserDtlsDto dtlsDto) throws RunTimeException {
 	        List<UserDtlsDto> listOfAllUsers = null;
 	        
 	        try{
 	        	logger.info("Method :: getAllUsersForCompany");
-	        	listOfAllUsers =  this.userService.getAllUsersForCompany(companyDtlsDTO.getCompanyId());
+	        	listOfAllUsers =  this.userService.getAllUsersForCompany(dtlsDto);
 	        	
 	        }catch(Exception e){
 	        	logger.error(ExceptionUtils.getFullStackTrace(e));
@@ -197,15 +202,6 @@ public class AdminController extends BaseController{
 	    public @ResponseBody ResponseDto validateAndRegisterNewUser(@RequestBody AddNewUserDto dto) throws RunTimeException, ValidationException {
 		 ResponseDto reponseDto = new ResponseDto();
 	        try{
-	        		  /* boolean result = true;
-	        		   try {
-	        		      InternetAddress emailAddr = new InternetAddress(dto.getEmailId());
-	        		      emailAddr.validate();
-	        		      System.out.println("valid mail id");
-	        		   } catch (AddressException ex) {
-	        		      result = false;
-	        		   }*/
-	        
 	        	logger.info("Method :: validateAndRegisterNewUser");
 	        	reponseDto.setResponse(true);
 	        	reponseDto.setResponse(this.userService.validateAndRegisterNewUser(dto, this.getMetaInfo()));
@@ -223,8 +219,7 @@ public class AdminController extends BaseController{
 	 @RequestMapping(value = "/validateAndRegisterNewCustomer", method = RequestMethod.POST)
 	    public @ResponseBody ResponseDto validateAndRegisterNewCustomer(@RequestBody CustomerDtlsDto dto) throws RunTimeException, ValidationException {
 		 ResponseDto reponseDto = new ResponseDto();
-	        
-	        try{
+        try{
 	        	logger.info("Method :: validateAndRegisterNewCustomer");
 	        	reponseDto.setResponse(this.customerService.validateAndRegisterNewCustomer(dto, this.getMetaInfo()));
 	        	
@@ -314,17 +309,14 @@ public class AdminController extends BaseController{
 	 @RequestMapping(value = "/getLiftsToBeApproved", method = RequestMethod.POST)
 	    public @ResponseBody List<LiftDtlsDto> getLiftsToBeApproved() throws RunTimeException{
 		 List<LiftDtlsDto> listOfInActiveLifts = new ArrayList<LiftDtlsDto>();
-	        
 	        try{
 	        	logger.info("Method :: getLiftsToBeApproved");
 	        	listOfInActiveLifts = this.liftService.getLiftsToBeApproved();
-	        	
 	        }
 	        catch(Exception e){
 	        	logger.error(ExceptionUtils.getFullStackTrace(e));
 	        	throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
 	        }
-	 
 	        return listOfInActiveLifts;
 	  }
 	 
@@ -335,7 +327,6 @@ public class AdminController extends BaseController{
 	        try{
 	        	logger.info("Method :: validateAndApproveLift");
 	        	reponseDto.setResponse(this.liftService.approveLift(dto, this.getMetaInfo()));
-	        	
 	        }
 	        catch(Exception e){
 	        	logger.error(ExceptionUtils.getFullStackTrace(e));
@@ -549,4 +540,18 @@ public class AdminController extends BaseController{
 	 	return responseDto;
 	  }
 
+	 
+	 @RequestMapping(value = "/saveCompanyManual", method = RequestMethod.POST)
+	    public @ResponseBody ResponseDto saveCompanyManual(@RequestBody CompanyManualDto dto) throws RunTimeException, ValidationException {
+		 ResponseDto reponseDto = new ResponseDto();
+	        try{
+	        	logger.info("Method :: validate and update customer");
+	        	this.liftManualService.saveCompanyManual(dto,this.getMetaInfo());
+	        }	        
+	        catch(Exception e){
+	        	logger.error(ExceptionUtils.getFullStackTrace(e));
+	        	throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
+	        }
+	        return reponseDto;
+	  }
 }

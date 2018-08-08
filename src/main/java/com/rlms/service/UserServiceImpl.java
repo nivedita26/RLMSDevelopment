@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +20,14 @@ import com.rlms.constants.RlmsErrorType;
 import com.rlms.constants.SpocRoleConstants;
 import com.rlms.contract.AddNewUserDto;
 import com.rlms.contract.BranchDtlsDto;
+import com.rlms.contract.CompanyDtlsDTO;
 import com.rlms.contract.RegisterDto;
 import com.rlms.contract.ResponseDto;
 import com.rlms.contract.UserDtlsDto;
 import com.rlms.contract.UserMetaInfo;
 import com.rlms.contract.UserRoleDtlsDTO;
+import com.rlms.controller.ComplaintController;
+import com.rlms.dao.BranchDao;
 import com.rlms.dao.ComplaintsDao;
 import com.rlms.dao.CustomerDao;
 import com.rlms.dao.MemberDao;
@@ -44,34 +48,26 @@ import com.rlms.utils.PropertyUtils;
 @Service("userService")
 @Transactional
 public class UserServiceImpl implements UserService {
-
+	private static final Logger logger = Logger.getLogger(UserServiceImpl.class);
 	private static final AtomicLong counter = new AtomicLong();
-
 	private static List<User> users;
-
 	@Autowired
 	private UserMasterDao userMasterDao;
-
 	@Autowired
 	private UserRoleDao userRoleDao;
-
 	@Autowired
 	private CompanyService companyService;
-
 	@Autowired
 	private MessagingService messagingService;
-
 	@Autowired
 	private CustomerDao customerDao;
-	
 	@Autowired
 	private ComplaintsDao  complaintDao;
-	
 	@Autowired
 	private MemberDao memberDao;
+	@Autowired
+	private BranchDao branchDao;
 	
-	
-
 	static {
 		users = populateDummyUsers();
 	}
@@ -156,12 +152,18 @@ public class UserServiceImpl implements UserService {
 	public List<RlmsSpocRoleMaster> getAllRoles(UserMetaInfo metaInfo) {
 		return this.userRoleDao.getAllRoles(metaInfo);
 	}
-
 	@Transactional(propagation = Propagation.REQUIRED)
-	public List<UserDtlsDto> getAllUsersForCompany(Integer companyId) {
+	public List<UserDtlsDto> getAllUsersForCompany(UserDtlsDto dtlsDto) {
 		List<UserDtlsDto> listOfUserDtls = new ArrayList<UserDtlsDto>();
-		List<RlmsUsersMaster> listOfAllUsers = this.userMasterDao
-				.getAllUsersForCompany(companyId);
+		List<RlmsUserRoles> rlmsUserRolesList = new ArrayList<>();
+		List<RlmsUsersMaster> listOfAllUsers = new ArrayList<>();
+		//rlmsUserRolesList = userRoleDao.getAllUsersForBranch(dtlsDto);
+	//	if(rlmsUserRolesList!=null && !rlmsUserRolesList.isEmpty()) {
+	//		for (RlmsUserRoles  rlmsUserRoles  : rlmsUserRolesList) {
+			//	listOfAllUsers.add(rlmsUserRoles.getRlmsUserMaster());
+	//		}
+	//	}
+		listOfAllUsers = userMasterDao.getAllUsersForCompany(dtlsDto.getCompanyId());
 		Iterator<RlmsUsersMaster> it = listOfAllUsers.iterator();
 		while (it.hasNext()) {
 			RlmsUsersMaster userMaster = it.next();
@@ -486,33 +488,24 @@ public class UserServiceImpl implements UserService {
 	 * RlmsCompanyRoleMap getTechnicianRoleForBranch(Integer commpBranchMapId){
 	 * return this.userRoleDao.getTechnicianRoleForBranch(commpBranchMapId); }
 	 */
-
 	@Transactional(propagation = Propagation.REQUIRED)
 	public List<RlmsUserRoles> getAllUserWithRoleForBranch(
 			Integer commpBranchMapId, Integer spocRoleId) {
 		return this.userRoleDao.getAllUserWithRoleForBranch(commpBranchMapId,
 				spocRoleId);
 	}
-
 	@Transactional(propagation = Propagation.REQUIRED)
-	public List<RlmsUserRoles> getListOfTechniciansForBranch(
-			Integer compBranchMapId) {
-		// RlmsCompanyRoleMap companyRoleMap =
-		// this.getTechnicianRoleForBranch(compBranchMapId);
+	public List<RlmsUserRoles> getListOfTechniciansForBranch(Integer compBranchMapId) {
 		List<RlmsUserRoles> listOfUserRoles = new ArrayList<RlmsUserRoles>();
-
-		listOfUserRoles = this.getAllUserWithRoleForBranch(compBranchMapId,
-				SpocRoleConstants.TECHNICIAN.getSpocRoleId());
+		listOfUserRoles = this.getAllUserWithRoleForBranch(compBranchMapId,SpocRoleConstants.TECHNICIAN.getSpocRoleId());
 		List<RlmsUserRoles> listOfActiveUserRoles = new ArrayList<RlmsUserRoles>();
 		for (RlmsUserRoles rlmsUserRoles : listOfUserRoles) {
 			if(rlmsUserRoles.getRlmsUserMaster().getActiveFlag().equals(RLMSConstants.ACTIVE.getId())){
 				listOfActiveUserRoles.add(rlmsUserRoles);
 			}
 		}
-
 		return listOfActiveUserRoles;
 	}
-
 	@Transactional(propagation = Propagation.REQUIRED)
 	public UserDtlsDto registerTechnicianDeviceByMblNo(UserDtlsDto dto,
 			UserMetaInfo metaInfo) throws ValidationException {
@@ -531,18 +524,28 @@ public class UserServiceImpl implements UserService {
 	}
 	private void registerUserDevice(UserDtlsDto dto, RlmsUserRoles userRole,
 			UserMetaInfo metaInfo) {
+		logger.debug("inside registerUserDevice");
 		RlmsUserApplicationMapDtls existingAppDtl = this.customerDao
 				.getUserAppDtls(userRole.getUserRoleId(),
 						RLMSConstants.USER_ROLE_TYPE.getId());
 		if (null != existingAppDtl) {
+			logger.debug("existing userApp"+existingAppDtl.getUserId());
 			if (!existingAppDtl.getAppRegId().equalsIgnoreCase(
 					dto.getAppRegId())) {
+				logger.debug("update appId");
+				existingAppDtl.setAddress(dto.getAddress());
+				existingAppDtl.setLatitude(dto.getLatitude());
+				existingAppDtl.setLongitude(dto.getLongitude());
 				existingAppDtl.setAppRegId(dto.getAppRegId());
+				existingAppDtl.setUpdatedDate(new Date());
+				existingAppDtl.setUpdatedBy(metaInfo.getUserId());
 				this.userRoleDao.mergeUserAppDlts(existingAppDtl);
+				
 			}
 		} else {
 			RlmsUserApplicationMapDtls userApplicationMapDtls = this
 					.constructUserAppMapDtls(dto, userRole, metaInfo);
+			logger.debug("new registration of app");
 			this.userRoleDao.saveUserAppDlts(userApplicationMapDtls);
 		}
 		RlmsUsersMaster rlmsUsersMaster = userRole.getRlmsUserMaster();
@@ -632,9 +635,10 @@ public class UserServiceImpl implements UserService {
 	@Transactional(propagation = Propagation.REQUIRED)
 	public String updateTechnicianLocation(UserDtlsDto dto,
 			UserMetaInfo metaInfo) {
+		logger.debug("updateTechnicianLocation by time");
 		RlmsUserApplicationMapDtls existingAppDtl = this.customerDao
-				.getUserAppDtls(dto.getUserId(),
-						RLMSConstants.USER_ROLE_TYPE.getId());
+				.getUserAppDtls(dto.getUserId(),RLMSConstants.USER_ROLE_TYPE.getId());
+		if(existingAppDtl !=null) {
 		existingAppDtl.setLatitude(dto.getLatitude());
 		existingAppDtl.setLongitude(dto.getLongitude());
 		existingAppDtl.setUpdatedBy(metaInfo.getUserId());
@@ -642,11 +646,12 @@ public class UserServiceImpl implements UserService {
 		this.userRoleDao.mergeUserAppDlts(existingAppDtl);
 		return PropertyUtils.getPrpertyFromContext(RlmsErrorType.TECHNICIAN_LOCATION_UPDATED
 				.getMessage());
+		}
+		return "app details not found";
 	}
 
 	@Override
 	public ResponseDto changePassword(UserDtlsDto userDto) {
-		//RlmsUsersMaster  rlmsUsersMaster =userMasterDao.getUserByUserId(userDto.getUserId());
 		ResponseDto responseDto = new ResponseDto();
 		RlmsUsersMaster  rlmsUsersMaster =userMasterDao.getUserByUserIdAndPassword(userDto);
 		if(rlmsUsersMaster !=null ) {
@@ -781,17 +786,20 @@ public class UserServiceImpl implements UserService {
 			 userMasterDao.updateUser(rlmsUsersMaster);
 				try {
 					this.sendForgotPasswordMail(newPassword, rlmsUsersMaster.getEmailId());
+					return "please check mail for new password";
 				} catch (InvalidKeyException e) {
 					e.printStackTrace();
+					return "server error";
 				} catch (Exception e) {
 					e.printStackTrace();
+					return "server error";
 				}
-			return "please check mail for new password";
 		}
 		return "account is not found for this emailId";
 	}
 	private void sendForgotPasswordMail(String password,String emailId)
 			throws InvalidKeyException, Exception {
+		
 			this.messagingService.sendForgotPasswordEmail(password, emailId);
 	}
 }
