@@ -196,7 +196,7 @@ angular.module('theme.demos.dashboard', [
             .construnctObjeToSend(complaintStatusArray);
           serviceApi
             .doPostWithData(
-            //'/RLMS/dashboard/getListOfComplaintsForDashboard',
+            '/RLMS/dashboard/getListOfComplaintsForDashboard',
             dataToSend)
             .then(
             function (
@@ -414,7 +414,7 @@ angular.module('theme.demos.dashboard', [
           $scope.setPagingData(data, page, pageSize);
         } else {
           var dataToSend = constructDataToSend();
-          serviceApi.doPostWithData('/RLMS/dashboard/getAllAMCDetailsCount', dataToSend)
+          serviceApi.doPostWithData('/RLMS/dashboard/getAMCDetails', dataToSend)
             .then(function (largeLoad) {
               var details = [];
               for (var i = 0; i < largeLoad.length; i++) {
@@ -518,7 +518,7 @@ angular.module('theme.demos.dashboard', [
       if (callingModel == 'attemptedToday') {
         url = '/RLMS/dashboard/getListOfComplaintsForSiteVisited';
       } else {
-       // url = '/RLMS/dashboard/getListOfComplaintsForDashboard';
+        url = '/RLMS/dashboard/getListOfComplaintsForDashboard';
       }
       console.log("Url called is -->" + url);
       setTimeout(

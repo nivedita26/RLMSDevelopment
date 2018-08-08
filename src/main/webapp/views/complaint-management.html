@@ -11,7 +11,8 @@
             <div class="col-md-3">
                <div class="row">
                   <div class="col-xs-6" style="color: red">
-                     <a class="info-tiles tiles-{{complaintsData.totalComplaints.color}}" ng-click="openDemoModal('complaints','2,3,5','Total Calls','','List of Total Calls')">
+                    <span ng-show="loading"><img id="mySpinner" style="width:145px; height:145px;" src="assets/img/loader2.gif"  /></span>
+					<a ng-hide="loading" class="info-tiles tiles-{{complaintsData.totalComplaints.color}}" ng-click="openDemoModal('complaints','2,3,5','Total Calls','','List of Total Calls')">
                         <div class="tiles-heading">
                            <div class="text-center" ng-show=complaintsData.totalComplaints.title>{{complaintsData.totalComplaints.title}}</div>
                         </div>
@@ -21,7 +22,8 @@
                      </a>
                   </div>
                   <div class="col-xs-6">
-                     <a class="info-tiles tiles-{{complaintsData.totalUnassignedComplaints.color}}" ng-click="openDemoModal('complaints','2','Total Unassigned','','List of Unassigned Calls')">
+                   <span ng-show="loading"><img id="mySpinner" style="width:145px; height:145px;" src="assets/img/loader2.gif"  /></span>
+					<a ng-hide="loading"  class="info-tiles tiles-{{complaintsData.totalUnassignedComplaints.color}}" ng-click="openDemoModal('complaints','2','Total Unassigned','','List of Unassigned Calls')">
                         <div class="tiles-heading">
                            <div class="text-center">{{complaintsData.totalUnassignedComplaints.title}}</div>
                         </div>
@@ -36,7 +38,8 @@
             <div class="col-md-3">
                <div class="row">
                   <div class="col-xs-6">
-                     <a class="info-tiles tiles-{{complaintsData.totalAssignedComplaints.color}}" ng-click="openDemoModal('complaints','3','Total Assigned','','List of Assigned Calls')">
+                   <span ng-show="loading"><img id="mySpinner" style="width:145px; height:145px;" src="assets/img/loader2.gif"  /></span>
+					<a ng-hide="loading"  class="info-tiles tiles-{{complaintsData.totalAssignedComplaints.color}}" ng-click="openDemoModal('complaints','3','Total Assigned','','List of Assigned Calls')">
                         <div class="tiles-heading">
                            <div class="text-center">{{complaintsData.totalAssignedComplaints.title}}</div>
                         </div>
@@ -47,7 +50,8 @@
                      <!-- <tile-simple data="{ title: 'Complaints Attempted Today', text: '41', color: 'blue'}" ng-click="openDemoModal('Complaints Attempted Today','3')"></tile-simple> -->
                   </div>
                   <div class="col-xs-6">
-                     <a class="info-tiles tiles-{{complaintsData.totalResolvedComplaints.color}}" ng-click="openDemoModal('complaints','5','Total Resolved','','List of Resolved Calls')">
+                   <span ng-show="loading"><img id="mySpinner" style="width:145px; height:145px;" src="assets/img/loader2.gif"  /></span>
+					<a ng-hide="loading"  class="info-tiles tiles-{{complaintsData.totalResolvedComplaints.color}}" ng-click="openDemoModal('complaints','5','Total Resolved','','List of Resolved Calls')">
                         <div class="tiles-heading">
                            <div class="text-center">{{complaintsData.totalResolvedComplaints.title}}</div>
                         </div>
@@ -73,7 +77,8 @@
                      <tile-simple data="{ title: 'Total Complaints', text: '41', color: 'indigo'}" ng-click="openDemoModal('Total Complaints','2,3,5')"></tile-simple>
                   </div> -->
                   <div class="col-xs-6">
-                     <a class="info-tiles tiles-{{complaintsData.totalPendingComplaints.color}}" >
+                   <span ng-show="loading"><img id="mySpinner" style="width:145px; height:145px;" src="assets/img/loader2.gif"  /></span>
+					<a ng-hide="loading"  class="info-tiles tiles-{{complaintsData.totalPendingComplaints.color}}" >
                         <div class="tiles-heading">
                            <div class="text-center">{{complaintsData.avgLogPerDay.title}}</div>
                         </div>
@@ -85,7 +90,8 @@
                   </div>
                   
                    <div class="col-xs-6">
-                     <a class="info-tiles tiles-{{newCustomerRegistered.color}}">
+                      <span ng-show="loading"><img id="mySpinner" style="width:145px; height:145px;" src="assets/img/loader2.gif"  /></span>
+					<a ng-hide="loading" class="info-tiles tiles-{{newCustomerRegistered.color}}">
                         <div class="tiles-heading">
                            <div class="text-center">{{complaintsData.avgResolvedPerDayRegistered.title}}</div>
                         </div>
@@ -109,7 +115,8 @@
             <div class="col-md-3">
                <div class="row">
                   <div class="col-xs-6" style="color: red">
-                     <a class="info-tiles tiles-{{complaintsData.todaysTotalComplaints.color}}" ng-click="openDemoModal('complaints','2,3,5','Todays Total Calls',true,'List of Todays Total Calls')">
+                  <span ng-show="loading"><img id="mySpinner" style="width:145px; height:145px;" src="assets/img/loader2.gif"  /></span>
+					<a ng-hide="loading" class="info-tiles tiles-{{complaintsData.todaysTotalComplaints.color}}" ng-click="openDemoModal('complaints','2,3,5','Todays Total Calls',true,'List of Todays Total Calls')">
                         <div class="tiles-heading">
                            <div class="text-center">{{complaintsData.todaysTotalComplaints.title}}</div>
                         </div>
@@ -119,7 +126,8 @@
                      </a>
                   </div>
                   <div class="col-xs-6">
-                     <a class="info-tiles tiles-{{complaintsData.todaysUnassignedComplaints.color}}" ng-click="openDemoModal('complaints','2','Todays Unassigned',true,'List of Todays Unassigned Calls')">
+                  <span ng-show="loading"><img id="mySpinner" style="width:145px; height:145px;" src="assets/img/loader2.gif"  /></span>
+					<a ng-hide="loading" class="info-tiles tiles-{{complaintsData.todaysUnassignedComplaints.color}}" ng-click="openDemoModal('complaints','2','Todays Unassigned',true,'List of Todays Unassigned Calls')">
                         <div class="tiles-heading">
                            <div class="text-center">{{complaintsData.todaysUnassignedComplaints.title}}</div>
                         </div>
@@ -134,7 +142,8 @@
             <div class="col-md-3 ">
                <div class="row">
                    <div class="col-xs-6">
-                	<a class="info-tiles tiles-{{complaintsData.todaysAssignedComplaints.color}}" ng-click="openDemoModal('complaints','3','Todays Assigned',true,'List of Todays Assigned Calls')">
+                   <span ng-show="loading"><img id="mySpinner" style="width:145px; height:145px;" src="assets/img/loader2.gif"  /></span>
+					<a ng-hide="loading" class="info-tiles tiles-{{complaintsData.todaysAssignedComplaints.color}}" ng-click="openDemoModal('complaints','3','Todays Assigned',true,'List of Todays Assigned Calls')">
 						<div class="tiles-heading">
 							<div class="text-center">{{complaintsData.todaysAssignedComplaints.title}}</div>
 						</div>
@@ -145,7 +154,8 @@
                     <!-- <tile-simple data="{ title: 'Complaints Attempted Today', text: '41', color: 'blue'}" ng-click="openDemoModal('Complaints Attempted Today','3')"></tile-simple> -->
                 </div>
                 <div class="col-xs-6">
-                	<a class="info-tiles tiles-{{complaintsData.todaysResolvedComplaints.color}}" ng-click="openDemoModal('complaints','5','Todays Resolved',true,'List of Todays Resolved Calls')">
+                <span ng-show="loading"><img id="mySpinner" style="width:145px; height:145px;" src="assets/img/loader2.gif"  /></span>
+					<a ng-hide="loading" class="info-tiles tiles-{{complaintsData.todaysResolvedComplaints.color}}" ng-click="openDemoModal('complaints','5','Todays Resolved',true,'List of Todays Resolved Calls')">
 						<div class="tiles-heading">
 							<div class="text-center">{{complaintsData.todaysResolvedComplaints.title}}</div>
 						</div>
@@ -162,7 +172,8 @@
                <div class="row">
                
                <div class="col-xs-6">
-                	<a class="info-tiles tiles-{{complaintsData.todaysTotalAssignedComplaints.color}}" ng-click="openDemoModal('complaints','3','Todays Total Assigned',true,'List of Todays Total Assigned Calls')">
+               <span ng-show="loading"><img id="mySpinner" style="width:145px; height:145px;" src="assets/img/loader2.gif"  /></span>
+					<a ng-hide="loading" class="info-tiles tiles-{{complaintsData.todaysTotalAssignedComplaints.color}}" ng-click="openDemoModal('complaints','3','Todays Total Assigned',true,'List of Todays Total Assigned Calls')">
 						<div class="tiles-heading">
 							<div class="text-center">{{complaintsData.todaysTotalAssignedComplaints.title}}</div>
 						</div>
@@ -174,7 +185,8 @@
                 </div>
 
         <div class="col-xs-6">
-                	<a class="info-tiles tiles-{{complaintsData.todaysTotalResolvedComplaints.color}}" ng-click="openDemoModal('complaints','5','Todays Total Resolved',true,'List of Todays Total Resolved Calls')">
+        <span ng-show="loading"><img id="mySpinner" style="width:145px; height:145px;" src="assets/img/loader2.gif"  /></span>
+					<a ng-hide="loading" class="info-tiles tiles-{{complaintsData.todaysTotalResolvedComplaints.color}}" ng-click="openDemoModal('complaints','5','Todays Total Resolved',true,'List of Todays Total Resolved Calls')">
 						<div class="tiles-heading">
 							<div class="text-center">{{complaintsData.todaysTotalResolvedComplaints.title}}</div>
 						</div>
