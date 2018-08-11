@@ -116,7 +116,9 @@
 				//$scope.addCustomer.companyName = $scope.selectedCompany.selected.companyName;
 				$scope.addCustomer.branchName = $scope.selectedBranch.selected.rlmsBranchMaster.branchName;
 				$scope.addCustomer.branchCompanyMapId = $scope.selectedBranch.selected.companyBranchMapId;
-				$scope.addCustomer.customerType =$scope.selectedCustomerTypes.selected.id;
+				if($scope.selectedCustomerTypes.selected){
+					$scope.addCustomer.customerType =$scope.selectedCustomerTypes.selected.id;
+				}
 				serviceApi.doPostWithData("/RLMS/admin/validateAndRegisterNewCustomer",$scope.addCustomer)
 				.then(function(response){
 					$scope.showAlert = true;

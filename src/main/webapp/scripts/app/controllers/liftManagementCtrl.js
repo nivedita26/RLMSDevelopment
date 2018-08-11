@@ -49,6 +49,28 @@
 				name:'Gearless'
 			}
 		];
+		//intercom
+		$rootScope.Intercomms=[
+			{
+				id:1,
+				name:'Yes'
+			},
+			{
+				id:0,
+				name:'No'
+			}
+		];
+		//Alarm
+		$rootScope.Alarms=[
+			{
+				id:1,
+				name:'Yes'
+			},
+			{
+				id:0,
+				name:'No'
+			}
+		];
 		//Collective Type
 		$rootScope.CollectiveType=[
 			{

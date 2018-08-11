@@ -7,7 +7,7 @@
 * @website: http://www.improvely.com/
 */
 
-(function(root, factory) {
+(function(root, factory,$rootScope) {
 
   if (typeof define === 'function' && define.amd) {
     define(['moment', 'jquery', 'exports'], function(momentjs, $, exports) {
@@ -151,7 +151,7 @@
             this.applyClass = 'btn-success';
             this.cancelClass = 'btn-default';
 
-            this.format = 'MM/DD/YYYY';
+            this.format = 'DD/MM/YYYY';
             this.separator = ' - ';
 
             this.locale = {
@@ -1015,7 +1015,7 @@
             return monthHtml + yearHtml;
         },
 
-        renderCalendar: function (calendar, selected, minDate, maxDate, side) {
+        renderCalendar: function (calendar, selected, minDate, maxDate, side) {/*
 
             var html = '<div class="calendar-date">';
             html += '<table class="table-condensed">';
@@ -1229,7 +1229,7 @@
 
             return html;
 
-        },
+        */},
 
         remove: function() {
 

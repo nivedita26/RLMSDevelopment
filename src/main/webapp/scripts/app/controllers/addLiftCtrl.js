@@ -200,6 +200,8 @@
 			$scope.selectedBranch = {};
 			$scope.selectedCustomer = {};
 			$scope.selectedCustomerType={};
+			$scope.selectedAlarm={};
+			$scope.selectedIntercommType={};
 			$scope.selectedAMCType={};
 			$scope.selectedDoorType={};
 			$scope.selectedEngineMachineType={};
@@ -207,6 +209,7 @@
 			$scope.selectedSimplexDuplex={};
 			$scope.selectedWiringScheme={};
 			$scope.selectedLmsAvailable={};
+			
 			$scope.lmsAvailable=[
 					{
 						id:0,
@@ -307,6 +310,28 @@
 				{
 					id:2,
 					name:'Group'
+				}
+			];
+			//Intercom
+			$scope.Intercomm=[
+				{
+					id:1,
+					name:'Yes'
+				},
+				{
+					id:0,
+					name:'No'
+				}
+			];
+			//Alarm
+			$scope.Alarm=[
+				{
+					id:1,
+					name:'Yes'
+				},
+				{
+					id:0,
+					name:'No'
 				}
 			];
 			//WiringScheme
@@ -474,6 +499,12 @@
 	    	/*if($scope.selectedAMCType.selected){
 	    			$scope.addLift.amcType = $scope.selectedAMCType.selected.id;
 		}*/
+	        if($scope.selectedIntercomm.selected){
+				$scope.addLift.intercomm = $scope.selectedIntercomm.selected.id;
+			}
+	        if($scope.selectedAlarm.selected){
+				$scope.addLift.alarm = $scope.selectedAlarm.selected.id;
+			}
 			if($scope.selectedDoorType.selected){
 				$scope.addLift.doorType = $scope.selectedDoorType.selected.id;
 			}
@@ -487,7 +518,7 @@
 			   $scope.addLift.simplexDuplex = $scope.selectedSimplexDuplex.selected.id;
 		   }
 		   if($scope.selectedWiringScheme.selected){
-			$scope.addLift.wiringShceme = $scope.selectedWiringScheme.selected.id;
+			   $scope.addLift.wiringShceme = $scope.selectedWiringScheme.selected.id;
 		   }
 			
 			if($scope.addLift.fireMode){

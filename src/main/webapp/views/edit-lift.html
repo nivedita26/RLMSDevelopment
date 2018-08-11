@@ -261,11 +261,21 @@
 		</div>
 		<div class="form-group">
 			<label for="intercomm" class="col-md-3 control-label">Intercom</label>
-			<div class="col-md-6"><input ng-model="editLift.intercomm" class="form-control"  type="text" name="intercomm"></div>
+			<div class="col-md-6"><!-- <input ng-model="editLift.intercomm" class="form-control"  type="text" name="intercomm"> -->
+			<select ng-model="editLift.intercomm" class="form-control">
+						<option value="">--Select --</option>
+						<option ng-repeat="intercomm in Intercomms"  type="number" ng-selected="editLift.intercomm ==intercomm.id" value="{{intercomm.id}}">{{intercomm.name}}</option>
+						</select>
+			</div>
 		</div>
 		<div class="form-group">
 			<label for="alarm" class="col-md-3 control-label">Alarm</label>
-			<div class="col-md-6"><input ng-model="editLift.alarm" class="form-control"  type="number" name="alarm"></div>
+			<div class="col-md-6"><!-- <input ng-model="editLift.alarm" class="form-control"  type="number" name="alarm"> -->
+				<select ng-model="editLift.alarm" class="form-control">
+				<option value="">--Select --</option>
+						<option ng-repeat="alarm in Alarms"  type="number" ng-selected="editLift.alarm ==alarm.id" value="{{alarm.id}}">{{alarm.name}}</option>
+						</select>
+			</div>
 		</div>
 		<div class="form-group">
 			<label for="alarmBattery" class="col-md-3 control-label">Alarm Battery</label>
