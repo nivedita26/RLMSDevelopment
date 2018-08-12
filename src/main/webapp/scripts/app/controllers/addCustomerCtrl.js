@@ -5,7 +5,7 @@
 	initAddCustomer();
 			loadCompayInfo();
 			$scope.alert = { type: 'success', msg: 'You successfully Added Customer.',close:true };
-			$scope.alert = { type: 'error', msg: 'Please fill the Required Field',close:true };
+			//$scope.alert = { type: 'error', msg: 'Please fill the Required Field',close:true };
 			$scope.showAlert = false;
 			$scope.showCompany=false;
 			$scope.showBranch=false;
@@ -124,14 +124,25 @@
 					$scope.showAlert = true;
 					var key = Object.keys(response);
 					var successMessage = response[key[0]];
-					$scope.alert.msg = successMessage;
+					if(successMessage){
+						$scope.alert.msg = "You successfully Added Customer.";
+						$scope.alert.type = "success";
+						initAddCustomer();
+						$scope.addBranchForm.$setPristine();
+						$scope.addBranchForm.$setUntouched();
+					}else{
+						$scope.showAlert = true;
+						$scope.alert.msg =  successMessage;
+						$scope.alert.type="danger";
+					}
+					/*$scope.alert.msg = successMessage;
 					$scope.alert.type = "success";
 					initAddCustomer();
 					$scope.addCustomerForm.$setPristine();
-					$scope.addCustomerForm.$setUntouched();
+					$scope.addCustomerForm.$setUntouched();*/
 				},function(error){
 					$scope.showAlert = true;
-					$scope.alert.msg = error;
+					$scope.alert.msg = exceptionMessage;
 					$scope.alert.type = "danger";
 				});
 			}

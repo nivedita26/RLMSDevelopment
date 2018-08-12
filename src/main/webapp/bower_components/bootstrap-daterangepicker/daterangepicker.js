@@ -1015,7 +1015,7 @@
             return monthHtml + yearHtml;
         },
 
-        renderCalendar: function (calendar, selected, minDate, maxDate, side) {/*
+        renderCalendar: function (calendar, selected, minDate, maxDate, side) {
 
             var html = '<div class="calendar-date">';
             html += '<table class="table-condensed">';
@@ -1229,7 +1229,7 @@
 
             return html;
 
-        */},
+        },
 
         remove: function() {
 
