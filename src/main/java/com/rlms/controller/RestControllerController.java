@@ -1,7 +1,23 @@
 package com.rlms.controller;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.net.URLConnection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
+
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -9,12 +25,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.rlms.constants.RLMSCallType;
 import com.rlms.constants.RlmsErrorType;
 import com.rlms.constants.Status;
@@ -31,10 +49,13 @@ import com.rlms.dao.LiftDao;
 import com.rlms.exception.ExceptionCode;
 import com.rlms.exception.RunTimeException;
 import com.rlms.exception.ValidationException;
+import com.rlms.model.RlmsLiftCustomerMap;
+import com.rlms.model.RlmsLiftManualMapDtls;
 import com.rlms.model.RlmsUserRoles;
 import com.rlms.service.ComplaintsService;
 import com.rlms.service.CustomerService;
 import com.rlms.service.DashboardService;
+import com.rlms.service.LiftManualService;
 import com.rlms.service.LiftService;
 import com.rlms.service.RlmsLiftEventService;
 import com.rlms.service.UserService;
@@ -65,6 +86,9 @@ public class RestControllerController  extends BaseController {
 	
 	@Autowired
 	RlmsLiftEventService rlmsLiftEventService;
+	
+	@Autowired
+	LiftManualService liftManualService;
 	
 	private static final Logger log = Logger.getLogger(RestControllerController.class);
 	   
@@ -120,19 +144,25 @@ public class RestControllerController  extends BaseController {
     }   
     
     @RequestMapping(value = "/getAllComplaintsAssigned", method = RequestMethod.POST, produces="application/json")
-    public @ResponseBody ResponseDto getAllComplaintsAssigned(@RequestBody LoginDtlsDto loginDtlsDto) {
+    public @ResponseBody ResponseDto getAllComplaintsAssigned(@RequestBody ComplaintsDtlsDto complaintsDtlsDto) {
      	ObjectMapper mapper = new ObjectMapper();
     	ResponseDto dto = new ResponseDto();
      	List<ComplaintsDto> listOfAllAssignedComplaints = null;
-    	 List<Integer> statusList = new ArrayList<Integer>();
+     	List<Integer> statusList = new ArrayList<Integer>();
+     	if(complaintsDtlsDto.getStatus()==1) {
     	 statusList.add(Status.ASSIGNED.getStatusId());
     	 statusList.add(Status.INPROGESS.getStatusId());
-    	 statusList.add(Status.COMPLETED.getStatusId());
+       	 statusList.add(Status.REASSIGNED.getStatusId());
+     	}
+     	else {
+     		 statusList.add(complaintsDtlsDto.getStatus());
+     	}
     	 try {
-    		 listOfAllAssignedComplaints =  this.ComplaintsService.getAllComplaintsAssigned(Integer.valueOf(loginDtlsDto.getUserRoleId()), statusList);
+    		 listOfAllAssignedComplaints =  this.ComplaintsService.getAllComplaintsAssigned(Integer.valueOf(complaintsDtlsDto.getUserRoleId()), statusList);
     		 if(null != listOfAllAssignedComplaints && !listOfAllAssignedComplaints.isEmpty()){
 	    		 dto.setStatus(true);    
 	    		 dto.setResponse(mapper.writeValueAsString(listOfAllAssignedComplaints));
+	    	//	 dto.setResponse(listOfAllAssignedComplaints);
     		 }else{
     			 dto.setStatus(false);
     			 dto.setResponse(PropertyUtils.getPrpertyFromContext(RlmsErrorType.NO_COMPLAINT_ASSIGNED.getMessage()));
@@ -233,7 +263,6 @@ public class RestControllerController  extends BaseController {
         	log.error(ExceptionUtils.getFullStackTrace(e));
         	//throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
         }
- 
         return reponseDto;
     }
     @RequestMapping(value = "/register/registerTechnicianDeviceByUserNamePassword", method = RequestMethod.POST)
@@ -319,6 +348,7 @@ public class RestControllerController  extends BaseController {
     	ResponseDto reponseDto = new ResponseDto();
         try{
         	log.info("Method :: uploadPhoto");
+        	reponseDto.setStatus(true);
         	reponseDto.setResponse(this.liftService.uploadPhoto(dto));        	
        
         }catch(Exception e){
@@ -463,9 +493,8 @@ public class RestControllerController  extends BaseController {
     }
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
     public @ResponseBody ResponseDto logout(@RequestBody UserDtlsDto userDtlsDto) {
-	
-    	
-		return  userService.logout(userDtlsDto);
+	   	
+    	return  userService.logout(userDtlsDto);
     }
    
     @RequestMapping(value="/getCustomerListForTechnician", method = RequestMethod.POST)
@@ -514,12 +543,89 @@ public class RestControllerController  extends BaseController {
     	return responseDto;
     }
     
-    
-    
-    /*
-    @RequestMapping(value = "/downloadUserGuide", method = RequestMethod.POST)
-	public String downloadUserGuide(int liftCustomerMapId,HttpServletResponse response) throws FileNotFoundException, SQLException, IOException {
-	int directoryfileCount;
+    @RequestMapping(value = "/downloadUserManual", method = RequestMethod.POST)
+	public String downloadUserManual(@RequestBody LiftDtlsDto dtlsDto,HttpServletResponse response) throws FileNotFoundException, SQLException, IOException {
+    	byte[] userManual = null;
+    	RlmsLiftCustomerMap liftCustomerMap = liftDao.getLiftCustomerMapById(dtlsDto.getLiftCustomerMapId());
+    	if(liftCustomerMap!=null) {
+    		RlmsLiftManualMapDtls liftManualMapDtls =  liftManualService.getLiftManualMapDtls(liftCustomerMap.getLiftCustomerMapId());
+    		if(liftManualMapDtls!=null) {
+    			 userManual = liftManualMapDtls.getCompanyManual().getUserManual();
+    		}
+    	}
+    	  response.setContentType("application/pdf");
+          String filename = liftCustomerMap.getLiftMaster().getLiftNumber()+"_"+"userguide"+"."+"pdf";
+          response.setHeader("Content-disposition", "attachment; filename="+ filename);
+          OutputStream os=null;
+          try {
+        	  os = response.getOutputStream();
+        	  os.write(userManual);
+          } finally {
+        	  os.close();
+          }
+          return "";
+    }
+        @RequestMapping(value = "/downloadSafetyGuide", method = RequestMethod.POST)
+      	public String downloadSafetyGuide(@RequestBody LiftDtlsDto dtlsDto,HttpServletResponse response) throws FileNotFoundException, SQLException, IOException {
+          	byte[] safetyGuide = null;
+          	
+          	RlmsLiftCustomerMap liftCustomerMap = liftDao.getLiftCustomerMapById(dtlsDto.getLiftCustomerMapId());
+          	if(liftCustomerMap!=null) {
+          		RlmsLiftManualMapDtls liftManualMapDtls =  liftManualService.getLiftManualMapDtls(liftCustomerMap.getLiftCustomerMapId());
+          		if(liftManualMapDtls!=null) {
+          			safetyGuide = liftManualMapDtls.getCompanyManual().getSafetyGuide();
+          		}
+          	}
+          	  response.setContentType("application/pdf");
+              String filename = liftCustomerMap.getLiftMaster().getLiftNumber()+"_"+"userguide"+"."+"pdf";
+              response.setHeader("Content-disposition", "attachment; filename="+ filename);
+                OutputStream os=null;
+                try {
+              	  os = response.getOutputStream();
+              	  os.write(safetyGuide);
+                } finally {
+              	  os.close();
+                }
+                return "";
+      	}
+  }
+   /* 	response.setContentType("application/pdf");
+    	response.setHeader("Content-Disposition", "filename=\"first\"");
+    	response.setContentLength(userGuide.length);
+    	OutputStream os = response.getOutputStream();
+
+    	try {
+    	   os.write(userGuide , 0, userGuide.length);
+    	} catch (Exception excp) {
+    	   //handle error
+    	} finally {
+    	    os.close();
+    	}*/
+    	//ResponseBuilder rsp = Response.ok("Your Content Here", "application/docx");    
+    //	rsp.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+    	
+    	
+      /*   String  INTERNAL_FILE_PATH="C:\\Users\\USER\\Desktop\\first.pdf";
+	//	logger.debug("Internal zip file path"+ INTERNAL_FILE_PATH);
+		File file = new File(INTERNAL_FILE_PATH);
+		String mimeType = URLConnection.guessContentTypeFromName(file.getName());
+		if (mimeType == null) {
+			mimeType = "application/octet-stream";
+		}
+		response.setHeader("Content-Disposition", String.format("inline; filename=\"" + file.getName()+"\"" ));
+		//logger.debug("set response header");
+		response.setContentLength((int) file.length());
+	//	logger.debug("response length"+file.length());
+		InputStream	inputStream  =null;
+		try {
+	     inputStream = new BufferedInputStream(new FileInputStream(file));
+		//	logger.debug("inputstream"+file);
+			FileCopyUtils.copy(inputStream, response.getOutputStream());
+		}
+		finally {
+			inputStream.close();
+        }*/
+   /* int directoryfileCount;
 	final String OUTPUT_ZIP_FILE;
 	final String INTERNAL_FILE_PATH;
 	InputStream inputStream=null ;
@@ -587,7 +693,31 @@ public class RestControllerController  extends BaseController {
 		} 
 	}
 	logger.debug("Response Sent : " + deviceid + " is not present in Database.");
-	return "";
-	}*/
-    
-}
+	return "";*/
+      
+	/**
+	 * upload files on server
+	 */
+	/*@RequestMapping(value = "/uploadImageFiles", method = RequestMethod.POST, headers = "content-type=multipart/form-data")
+	public @ResponseBody String releaseUploadtest(ModelMap model,HttpSession session, HttpServletRequest request,HttpServletResponse response,
+												 @RequestParam("fileList") List<MultipartFile> files,@RequestParam("fileKeyList") List<String> fileTypesNameKey)
+												 throws IOException, ServletException, SQLException, Exception {
+		logger.trace("Request to Upload Release files for ");
+		String liveUser = null;
+		int userid = 0;
+		User user = (User) session.getAttribute("loggedInUser");
+		if (user == null) {
+			logger.info("Session timeout got user object NULL");
+			model.addAttribute("nullObjectfromUpload", "0");
+			return "home";
+		}
+		liveUser = user.getUserName(); // for logged user
+		userid = user.getUserId(); // logged user id
+		model.addAttribute("LoggedInUser", liveUser);
+		model.addAttribute("LoggedUserId", userid);
+		String userRole = user.getRole();
+		model.addAttribute("LoggedUserRole", userRole);
+
+		return releaseServiceObj.releaseUpload(request, files,fileTypesNameKey, liveUser);
+	}
+  }*/

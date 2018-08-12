@@ -6,6 +6,7 @@ public enum Status {
 	ASSIGNED(3,"Assigned"),
 	INPROGESS(4,"In Progress"),
 	RESOLVED(5,"Resolved"),
+	REASSIGNED(6,"Reassigned"),
 	PENDING_FOR_APPROVAL(9,"Pending For Approval"),
 	COMPLETED(10,"Completed"),
 	UNDER_WARRANTY(38,"Under Warranty"),

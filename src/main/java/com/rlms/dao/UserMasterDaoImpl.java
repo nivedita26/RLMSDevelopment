@@ -55,6 +55,14 @@ UserMasterDao{
 		 return (RlmsUsersMaster)criteria.uniqueResult();
 	}
 	
+	public RlmsUsersMaster getUserForLogout(Integer userId)
+	{
+		 Session session = this.sessionFactory.getCurrentSession();
+		 Criteria criteria = session.createCriteria(RlmsUsersMaster.class)
+				 .add(Restrictions.eq("userId", userId));
+		 return (RlmsUsersMaster)criteria.uniqueResult();
+	}
+	
 	public RlmsUsersMaster getUserByUserNameAndPassword(String username, String password)
 	{
 		 Session session = this.sessionFactory.getCurrentSession();

@@ -127,6 +127,7 @@ public class LiftDaoImpl implements LiftDao{
 	}
 	
 	@Override
+	@Transactional
 	public RlmsLiftCustomerMap getLiftCustomerMapById(Integer liftCustomerMapId){		
 		 Session session = this.sessionFactory.getCurrentSession();
 		 Criteria criteria = session.createCriteria(RlmsLiftCustomerMap.class)

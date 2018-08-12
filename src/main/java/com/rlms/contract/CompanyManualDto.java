@@ -1,12 +1,12 @@
 package com.rlms.contract;
-import java.sql.Blob;
 
 public class CompanyManualDto{
 	
 private Integer liftType;
-private Blob userManual;
-private Blob safetyGuide;
+private byte[] userManual;
+private byte[] safetyGuide;
 private Integer  companyId;
+
 private Integer liftCustomerMapId;
 private Integer companyManualMapId;
 
@@ -28,18 +28,19 @@ public Integer getLiftType() {
 	public void setLiftType(Integer liftType) {
 		this.liftType = liftType;
 }
-	public Blob getUserManual() {
+	
+	public byte[] getUserManual() {
 		return userManual;
-}
-	public void setUserManual(Blob userManual) {
+	}
+	public void setUserManual(byte[] userManual) {
 		this.userManual = userManual;
-}
-	public Blob getSafetyGuide() {
+	}
+	public byte[] getSafetyGuide() {
 		return safetyGuide;
-}
-	public void setSafetyGuide(Blob safetyGuide) {
+	}
+	public void setSafetyGuide(byte[] safetyGuide) {
 		this.safetyGuide = safetyGuide;
-}
+	}
 	public Integer getCompanyId() {
 		return companyId;
 }

@@ -21,8 +21,22 @@ public class ComplaintsDtlsDto {
 	private Integer  callType;
 	private Integer serviceCallType;
 	private Integer serviceCallTypeStr;
+	private Integer userRoleId;
+	private Integer status;
 	
-   public Integer getServiceCallType() {
+public Integer getStatus() {
+		return status;
+	}
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+public Integer getUserRoleId() {
+		return userRoleId;
+	}
+	public void setUserRoleId(Integer userRoleId) {
+		this.userRoleId = userRoleId;
+	}
+public Integer getServiceCallType() {
 		return serviceCallType;
 	}
 	public void setServiceCallType(Integer serviceCallType) {

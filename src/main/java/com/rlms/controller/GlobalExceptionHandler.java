@@ -27,7 +27,6 @@ public class GlobalExceptionHandler {
 	//	logger.error(ExceptionUtils.getFullStackTrace(vex));
 		ErrorInfo info = new ErrorInfo(vex.getExceptionCode(), vex.getExceptionMessage());
 		return info;
-		
 	}
 	
 	@RequestMapping(produces = "application/json")

@@ -2,8 +2,8 @@ package com.rlms.constants;
 
 public enum LiftType {
 
-	type1(1,"Auto Door"),//Geared
-	type2(2,"Manual Door"),//Gearless
+	type1(1,"Geared"),//Geared
+	type2(2,"Gearless"),//Gearless
 	type3(3,"Hydraulic");
 	
 	private int id;

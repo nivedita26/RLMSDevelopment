@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -32,6 +33,7 @@ import com.rlms.dao.BranchDao;
 import com.rlms.dao.CustomerDao;
 import com.rlms.dao.FyaDao;
 import com.rlms.dao.LiftDao;
+import com.rlms.dao.LiftManualDao;
 import com.rlms.dao.UserMasterDao;
 import com.rlms.dao.UserRoleDao;
 import com.rlms.model.RlmsBranchCustomerMap;
@@ -39,6 +41,7 @@ import com.rlms.model.RlmsCompanyManual;
 import com.rlms.model.RlmsFyaTranDtls;
 import com.rlms.model.RlmsLiftAmcDtls;
 import com.rlms.model.RlmsLiftCustomerMap;
+import com.rlms.model.RlmsLiftManualMapDtls;
 import com.rlms.model.RlmsLiftMaster;
 import com.rlms.model.RlmsUserRoles;
 import com.rlms.utils.DateUtils;
@@ -74,6 +77,11 @@ public class LiftServiceImpl implements LiftService{
 	@Autowired
 	private LiftManualService liftManualService;
 	
+	@Autowired
+	private LiftManualDao  liftManualDao;
+	
+	private static final Logger logger = Logger.getLogger(LiftServiceImpl.class);
+
 	@Transactional(propagation = Propagation.REQUIRED)
 	public List<RlmsLiftCustomerMap> getAllLiftsForBranch(Integer companyBranchMapId){
 		List<RlmsLiftCustomerMap> liftsForBranch = new ArrayList<RlmsLiftCustomerMap>();
@@ -92,23 +100,23 @@ public class LiftServiceImpl implements LiftService{
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public ResponseDto validateAndAddNewLiftDtls(LiftDtlsDto dto, UserMetaInfo metaInfo) throws ParseException{
+		
 		ResponseDto ResponseDto = new ResponseDto();
  	   	RlmsLiftMaster liftMaster = liftDao.getLiftByLiftNumber(dto.getLiftNumber());
  	   	if(liftMaster==null) {
 		RlmsLiftMaster liftM = this.constructLiftMaster(dto, metaInfo);
 		Integer liftId = this.liftDao.saveLiftM(liftM);
 		liftM.setLiftId(liftId);
-		
 		RlmsLiftCustomerMap liftCustomerMap = this.constructLiftCustomerMap(liftM, dto, metaInfo);
 		Integer liftCustomerMapID = this.liftDao.saveLiftCustomerMap(liftCustomerMap);
 		liftCustomerMap.setLiftCustomerMapId(liftCustomerMapID);
-		
-		//get company manual
-	/*	RlmsCompanyManual companyManual = liftManualService.getCompanyManual(liftCustomerMap.getBranchCustomerMap().getCompanyBranchMapDtls().getRlmsCompanyMaster().getCompanyId(), liftM.getLiftType());
+		logger.debug("get company manual");
+		RlmsCompanyManual companyManual = liftManualService.getCompanyManual(liftCustomerMap.getBranchCustomerMap().getCompanyBranchMapDtls().getRlmsCompanyMaster().getCompanyId(), liftM.getLiftType());
 		if(companyManual!=null) {
-			
-		}*/
-		
+			logger.debug("manual found");
+			RlmsLiftManualMapDtls liftManualMapDtls = this.constructLiftManualMapDtls(companyManual,liftCustomerMap, metaInfo);
+			liftManualDao.saveLiftManualMapDtls(liftManualMapDtls);
+		}
 		AMCDetailsDto amcDetailsDto = this.constructAMCDtlsDto(liftCustomerMap);
 		this.reportService.addAMCDetailsForLift(amcDetailsDto, metaInfo);
 		RlmsFyaTranDtls fyaTranDtls = this.constructFyaTranDtls(liftCustomerMap, metaInfo);
@@ -153,6 +161,20 @@ public class LiftServiceImpl implements LiftService{
 		ResponseDto.setResponse("Duplicate lift number");
     	return ResponseDto;
 	}*/
+	private RlmsLiftManualMapDtls constructLiftManualMapDtls(RlmsCompanyManual  companyManual,RlmsLiftCustomerMap liftCustomerMap,UserMetaInfo metaInfo){
+		RlmsLiftManualMapDtls liftManualMapDtls = new RlmsLiftManualMapDtls();
+		
+		
+		liftManualMapDtls.setCompanyManual(companyManual);
+		liftManualMapDtls.setRlmsLiftCustomerMap(liftCustomerMap);
+		liftManualMapDtls.setActiveFlag(RLMSConstants.ACTIVE.getId());
+		liftManualMapDtls.setCreatedDate(new Date());
+		liftManualMapDtls.setCreatedBy(metaInfo.getUserId());
+		liftManualMapDtls.setUpdatedBy(metaInfo.getUserId());
+		liftManualMapDtls.setUpdatedDate(new Date());
+		return liftManualMapDtls;
+	}
+	
 	private AMCDetailsDto constructAMCDtlsDto(RlmsLiftCustomerMap liftCustomerMap){
 		AMCDetailsDto dto = new AMCDetailsDto();
 		//if(liftCustomerMap.getLiftMaster().getAmcStartDate()!=null) {
@@ -1000,13 +1022,13 @@ public class LiftServiceImpl implements LiftService{
 		if(!StringUtils.isEmpty(dto.getAmcAmount())){
 			liftMaster.setAmcAmount(dto.getAmcAmount());
 		}
-		if(!StringUtils.isEmpty(dto.getLatitude())){
+		/*if(!StringUtils.isEmpty(dto.getLatitude())){
 			liftMaster.setLatitude(dto.getLatitude());
 		}
 		
 		if(!StringUtils.isEmpty(dto.getLongitude())){
 			liftMaster.setLongitude(dto.getLongitude());
-		}
+		}*/
 		if(dto.getDoorType()!=null){
 			liftMaster.setDoorType(dto.getDoorType());
 		}
