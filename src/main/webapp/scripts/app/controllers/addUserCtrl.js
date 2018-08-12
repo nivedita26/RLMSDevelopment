@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 	angular.module('rlmsApp')
-	.controller('addUserCtrl', ['$scope', '$filter','serviceApi','$route','$http','utility','$window','pinesNotifications','$rootScope', function($scope, $filter,serviceApi,$route,$http,utility,$window,pinesNotifications) {
+	.controller('addUserCtrl', ['$scope', '$filter','serviceApi','$route','$http','utility','$window','pinesNotifications','$rootScope', function($scope, $filter,serviceApi,$route,$http,utility,$window,pinesNotifications,$rootScope) {
 		//initialize add Branch
 		initAddUser();
 		loadCompayInfo();
@@ -12,6 +12,7 @@
 		$scope.alert = { type: 'success', msg: 'You successfully Added new user.',close:true };
 		$scope.alert = { type: 'error', msg: '',close:false };
 		$scope.showAlert = false;
+		$scope.showAlert1 = false;
 		$scope.showCompany=false;
 		function initAddUser(){
 			$scope.selectedCompany = {};
@@ -57,14 +58,20 @@
 			.then(function(response){
 				$scope.showAlert = true;
 				var key = Object.keys(response);
-				var successMessage = response[key[1]];
-				$scope.alert.msg = successMessage;
-				$scope.alert.type = "success";
-				initAddUser();
-				$scope.addUserForm.$setPristine();
-				$scope.addUserForm.$setUntouched();
-				/*
-				if(response.status){
+				var successMessage = response[key[0]];
+				if(successMessage){
+					$scope.alert.msg = "You successfully Added User.";
+					$scope.alert.type = "success";
+					initAddCustomer();
+					$scope.addBranchForm.$setPristine();
+					$scope.addBranchForm.$setUntouched();
+				}else{
+					$scope.showAlert = true;
+					$scope.alert.msg =  response[key[1]];
+					$scope.alert.type="danger";
+				}
+				
+				/*if(response.status){
 				$scope.showAlert = true;
 				var key = Object.keys(response);
 				var successMessage = response[key[0]];
@@ -79,9 +86,9 @@
 				$scope.showAlert = true;
 				$scope.alert.msg = response.response;
 				$scope.alert.type = "danger";
-			}
-			*/},function(error){
-				$scope.showAlert = true;
+			}*/
+			},function(error){
+				$scope.showAlert1 = true;
 				$scope.alert.msg = error;
 				$scope.alert.type = "danger";
 			});

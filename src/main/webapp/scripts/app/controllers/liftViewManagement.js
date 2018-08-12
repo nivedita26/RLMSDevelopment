@@ -92,7 +92,28 @@
 				name:'NonPluggable'
 			}
 		];
-		
+		//intercom
+		$rootScope.Intercomm=[
+			{
+				id:1,
+				name:'Yes'
+			},
+			{
+				id:0,
+				name:'No'
+			}
+		];
+		//Alarm
+		$rootScope.Alarm=[
+			{
+				id:1,
+				name:'Yes'
+			},
+			{
+				id:0,
+				name:'No'
+			}
+		];
 		function loadCompanyData(){
 			serviceApi.doPostWithoutData('/RLMS/admin/getAllApplicableCompanies')
 		    .then(function(response){

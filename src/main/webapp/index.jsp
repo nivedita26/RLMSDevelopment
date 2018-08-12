@@ -409,6 +409,7 @@
 	<script src="scripts/demos/modules/dashboard.js"></script>
 	<script src="scripts/app/services/serviceApi.js"></script>
 	<script src="scripts/app/services/utility.js"></script>
+	<script src="scripts/app/controllers/changePassword.js"></script>
  	<script src="scripts/app/controllers/mapCtrl.js"></script>
 	
 	<!-- App-->

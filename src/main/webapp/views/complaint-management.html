@@ -178,7 +178,7 @@
 							<div class="text-center">{{complaintsData.todaysTotalAssignedComplaints.title}}</div>
 						</div>
 						<div class="tiles-body">
-							<div class="text-center" ng-show="complaintsData..todaysTotalAssignedComplaints.text">{{complaintsData.todaysTotalAssignedComplaints.text}}</div>
+							<div class="text-center" ng-show="complaintsData.todaysTotalAssignedComplaints.text">{{complaintsData.todaysTotalAssignedComplaints.text}}</div>
 						</div>
 					</a>
                     <!-- <tile-simple data="{ title: 'Complaints Attempted Today', text: '41', color: 'blue'}" ng-click="openDemoModal('Complaints Attempted Today','3')"></tile-simple> -->
@@ -262,13 +262,11 @@
 				</div>
 				<div class="filter-section" ng-show="showAdvanceFilter">
 					<div class="form-group">
-						<label for="daterange2" class="control-label" ng-show="showBranch">Select Date Range</label>
+						<label class="control-label" ng-show="showBranch">Select Date Range</label>
 						<div class="select-container" >
 							<div class="input-group" >
-								<span class="input-group-addon">
-									<i class="glyphicon glyphicon-calendar"></i>
-								</span>
-								<input daterangepicker type="daterange2" id="daterange2"  placeholder="Select Date" class="form-control "  ng-model="date">
+								<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+								<input daterangepicker  class="form-control " />
 								</div>
 							</div>
 							<label class="control-label" >Select Lifts </label>
