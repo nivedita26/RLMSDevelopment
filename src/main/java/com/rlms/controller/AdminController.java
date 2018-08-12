@@ -66,6 +66,7 @@ public class AdminController extends BaseController{
 	        ResponseDto reponseDto = new ResponseDto();
 	        try{
 	        	logger.info("In addNewCompany method");
+	        	reponseDto.setStatus(true);
 	        	reponseDto.setResponse(this.companyService.validateAndSaveCompanyObj(companyDtlsDTO, this.getMetaInfo()));
 	        	
 	        }catch(ValidationException vex){
@@ -189,6 +190,8 @@ public class AdminController extends BaseController{
 	        
 	        try{
 	        	logger.info("Method :: registerUser");
+	        	reponseDto.setStatus(true);
+
 	        	reponseDto.setResponse(this.userService.registerUser(registerDto));
 	        	
 	        }catch(Exception e){
@@ -221,6 +224,7 @@ public class AdminController extends BaseController{
 		 ResponseDto reponseDto = new ResponseDto();
         try{
 	        	logger.info("Method :: validateAndRegisterNewCustomer");
+	        	reponseDto.setStatus(true);
 	        	reponseDto.setResponse(this.customerService.validateAndRegisterNewCustomer(dto, this.getMetaInfo()));
 	        	
 	        }catch(ValidationException vex){
@@ -238,6 +242,7 @@ public class AdminController extends BaseController{
 		 ResponseDto reponseDto = new ResponseDto();
 	        try{
 	        	logger.info("Method :: addNewBranchInCompany");
+	        	reponseDto.setStatus(true);
 	        	reponseDto.setResponse(this.companyService.validateAndAddNewBranchInCompany(dto, this.getMetaInfo()));
 	        }catch(Exception e){
 	        	logger.error(ExceptionUtils.getFullStackTrace(e));
@@ -295,6 +300,7 @@ public class AdminController extends BaseController{
 	       
 	        try{
 	        	logger.info("Method :: validateAndRegisterNewCustomer");
+	        	reponseDto.setStatus(true);
 	        	reponseDto = this.liftService.validateAndAddNewLiftDtls(dto, this.getMetaInfo());
 	        	
 	        }
@@ -326,6 +332,7 @@ public class AdminController extends BaseController{
 	        
 	        try{
 	        	logger.info("Method :: validateAndApproveLift");
+	        	reponseDto.setStatus(true);
 	        	reponseDto.setResponse(this.liftService.approveLift(dto, this.getMetaInfo()));
 	        }
 	        catch(Exception e){
@@ -355,6 +362,7 @@ public class AdminController extends BaseController{
 	        
 	        try{
 	        	logger.info("Method :: validateAndRegisterNewMember");
+	        	reponseDto.setStatus(true);
 	        	reponseDto.setResponse(this.customerService.validateAndRegisterNewMember(memberDtlsDto, this.getMetaInfo()));
 	        
 	        }catch(ValidationException vex){
@@ -374,6 +382,7 @@ public class AdminController extends BaseController{
 		 ResponseDto reponseDto = new ResponseDto();
 	        try{
 	        	logger.info("Method :: validateAndUpdateNewMember");
+	        	reponseDto.setStatus(true);
 	        	reponseDto.setResponse(this.customerService.validateAndUpdateNewMember(memberDtlsDto, this.getMetaInfo()));
 	        }
 	        catch(Exception e){
@@ -388,6 +397,7 @@ public class AdminController extends BaseController{
 		 ResponseDto reponseDto = new ResponseDto();
 	        try{
 	        	logger.info("Method :: validateAndUpdateNewMember");
+	        	reponseDto.setStatus(true);
 	          	reponseDto.setResponse(this.customerService.deleteMember(memberDtlsDto,this.getMetaInfo()));
 	        }
 	        catch(Exception e){
@@ -443,9 +453,11 @@ public class AdminController extends BaseController{
 		 ResponseDto reponseDto = new ResponseDto();
 	        try{
 	        	logger.info("Method :: validateAndRegisterNewUser");
+	        	reponseDto.setStatus(true);
 	        	reponseDto.setResponse(this.userService.validateAndEditUser(dto, this.getMetaInfo()));
 	        }catch(ValidationException vex){
 	        	logger.error(ExceptionUtils.getFullStackTrace(vex));
+	        	
 	        	throw vex;
 	        }
 	        catch(Exception e){
@@ -462,6 +474,7 @@ public class AdminController extends BaseController{
 	        
 	        try{
 	        	logger.info("Method :: deleteUser");
+	        	reponseDto.setStatus(true);
 	        	reponseDto.setResponse(this.userService.deleteUserObj(dto, this.getMetaInfo()));
 	        	
 	        }catch(Exception e){
@@ -476,6 +489,7 @@ public class AdminController extends BaseController{
 	        ResponseDto reponseDto = new ResponseDto();
 	        try{
 	        	logger.info("In updateCompany method");
+	        	reponseDto.setStatus(true);
 	        	reponseDto.setResponse(this.companyService.validateAndUpdateCompanyObj(companyDtlsDTO, this.getMetaInfo()));
 	        }catch(ValidationException vex){
 	        	logger.error(ExceptionUtils.getFullStackTrace(vex));	        	
@@ -493,6 +507,7 @@ public class AdminController extends BaseController{
 	        ResponseDto reponseDto = new ResponseDto();
 	        try{
 	        	logger.info("In deleteCompany method");
+	        	reponseDto.setStatus(true);
 	        	reponseDto.setResponse(this.companyService.validateAndDeleteCompanyObj(companyDtlsDTO, this.getMetaInfo()));
 	        	
 	        }catch(ValidationException vex){
@@ -511,6 +526,7 @@ public class AdminController extends BaseController{
 	        
 	        try{
 	        	logger.info("Method :: addNewBranchInCompany");
+	        	reponseDto.setStatus(true);
 	        	reponseDto.setResponse(this.companyService.editBranchInCompany(dto, this.getMetaInfo()));
 	        	
 	        }catch(Exception e){
@@ -525,6 +541,8 @@ public class AdminController extends BaseController{
 		 ResponseDto reponseDto = new ResponseDto();
 	        try{
 	        	logger.info("Method :: validate and update customer");
+	        	reponseDto.setStatus(true);
+
 	        	reponseDto.setResponse(this.customerService.validateAndEditCustomer(dto,this.getMetaInfo()));
 	        }	        
 	        catch(Exception e){
@@ -537,9 +555,8 @@ public class AdminController extends BaseController{
 	 @RequestMapping(value = "/lift/updateLiftParams", method = RequestMethod.POST)
 	    public @ResponseBody ResponseDto validateAndUpdateLiftDetails(@RequestBody LiftDtlsDto dto) throws RunTimeException, ValidationException {
 		ResponseDto responseDto =liftService.updateLiftParams(dto);
-	 	return responseDto;
+    	return responseDto;
 	  }
-
 	 
 	 @RequestMapping(value = "/saveCompanyManual", method = RequestMethod.POST)
 	    public @ResponseBody ResponseDto saveCompanyManual(@RequestBody CompanyManualDto dto) throws RunTimeException, ValidationException {
@@ -547,6 +564,8 @@ public class AdminController extends BaseController{
 	        try{
 	        	logger.info("Method :: validate and update customer");
 	        	this.liftManualService.saveCompanyManual(dto,this.getMetaInfo());
+	        	reponseDto.setStatus(true);
+	        	reponseDto.setResponse("company manual successfully saved");
 	        }	        
 	        catch(Exception e){
 	        	logger.error(ExceptionUtils.getFullStackTrace(e));
@@ -554,4 +573,5 @@ public class AdminController extends BaseController{
 	        }
 	        return reponseDto;
 	  }
+	 
 }

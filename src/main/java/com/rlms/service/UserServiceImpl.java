@@ -600,7 +600,13 @@ public class UserServiceImpl implements UserService {
 		userMaster.setFirstName(userDto.getFirstName());
 		userMaster.setLastName(userDto.getLastName());
 		userMaster.setAddress(userDto.getAddress());
-		userMaster.setContactNumber(userDto.getContactNumber());
+		if(!userDto.getContactNumber().equals(userMaster.getContactNumber())) {
+			userMaster.setContactNumber(userDto.getContactNumber());
+		}
+		else {
+		return 	RlmsErrorType.USER_MOBILE_NUMBER_ALREADY_REGISTERED
+					.getMessage();
+		}
 		userMaster.setEmailId(userDto.getEmailId());
 		userMaster.setCity(userDto.getCity());
 		userMaster.setArea(userDto.getArea());
@@ -618,15 +624,15 @@ public class UserServiceImpl implements UserService {
 			usersMaster.setActiveFlag(RLMSConstants.INACTIVE.getId());
 			usersMaster.setUpdatedBy(metaInfo.getUserId());
 			usersMaster.setUpdatedDate(new Date());
+			this.userMasterDao.updateUser(usersMaster);
 		}
-		this.userMasterDao.updateUser(usersMaster);
 		statusMesage = PropertyUtils.getPrpertyFromContext(RlmsErrorType.USER_DELETED.getMessage());
-		
 		RlmsUserRoles rlmsUserRoles = userRoleDao.getUserIFRoleisAssigned(usersMaster.getUserId());
 		if(rlmsUserRoles!=null) {
 			if(rlmsUserRoles.getRlmsSpocRoleMaster().getSpocRoleId() == SpocRoleConstants.TECHNICIAN.getSpocRoleId()) {
 				rlmsUserRoles.setActiveFlag(RLMSConstants.INACTIVE.getId());
 				userMasterDao.mergerUserRole(rlmsUserRoles);
+				
 				this.sendNotificationsAboutUserDeactivation(rlmsUserRoles);
 			}
 		}
@@ -688,8 +694,7 @@ public class UserServiceImpl implements UserService {
 	}
 	@Override
 	public ResponseDto  logout(UserDtlsDto userDto) {
-	//	RlmsUsersMaster rlmsUsersMaster = userMasterDao.getUserByUserIdAndPassword(userDto);
-		RlmsUsersMaster rlmsUsersMaster = userMasterDao.getUserByUserId(userDto.getUserId());
+		RlmsUsersMaster rlmsUsersMaster = userMasterDao.getUserForLogout(userDto.getUserId());
 		ResponseDto responseDto = new ResponseDto();
 		if(rlmsUsersMaster!=null && rlmsUsersMaster.getIsLoggedIn()) {
 		rlmsUsersMaster.setIsLoggedIn(false);
@@ -713,8 +718,8 @@ public class UserServiceImpl implements UserService {
 	public void sendNotificationsAboutUserDeactivation(RlmsUserRoles  rlmsUserRoles){
 		 JSONObject  dataPayload = new JSONObject();
 		try {
-			dataPayload.put("title",  rlmsUserRoles.getRlmsUserMaster().getFirstName()+" "+rlmsUserRoles.getRlmsUserMaster().getLastName()+" - " + "This RLMS technecian deactivated from service");
-			dataPayload.put("body", "Your RLMS account is deacivated"
+			dataPayload.put("title",  rlmsUserRoles.getRlmsUserMaster().getFirstName()+" "+rlmsUserRoles.getRlmsUserMaster().getLastName());
+			dataPayload.put("body", "Your RLMS account has been deactivated"
 					+ ""
 					+ "");
 		} catch (JSONException e1) {

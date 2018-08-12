@@ -86,7 +86,7 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 			ComplaintsDto dto = new ComplaintsDto();
 			dto.setActualServiceEndDate(complaintTechMapDtls.getComplaintMaster().getActualServiceEndDate());
 			dto.setComplaintNumber(complaintTechMapDtls.getComplaintMaster().getComplaintNumber());
-			dto.setServiceCallTypeStr(Status.getStringFromID(complaintTechMapDtls.getComplaintMaster().getCallType()));
+			dto.setServiceCallTypeStr(RLMSCallType.getStringFromID(complaintTechMapDtls.getComplaintMaster().getCallType()));
 			dto.setCustomerName(complaintTechMapDtls.getComplaintMaster().getLiftCustomerMap().getBranchCustomerMap().getCustomerMaster().getCustomerName());
 			dto.setLatitude(complaintTechMapDtls.getComplaintMaster().getLiftCustomerMap().getLiftMaster().getLatitude());
 			dto.setLongitude(complaintTechMapDtls.getComplaintMaster().getLiftCustomerMap().getLiftMaster().getLongitude());

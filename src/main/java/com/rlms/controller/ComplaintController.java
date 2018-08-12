@@ -107,6 +107,7 @@ public class ComplaintController extends BaseController{
 		 ResponseDto reponseDto = new ResponseDto();
 		 try{
 	        	logger.info("Method :: validateAndRegisterNewComplaint");
+	        	reponseDto.setStatus(true);
 	        	reponseDto.setResponse(this.complaintsService.validateAndRegisterNewComplaint(dto, this.getMetaInfo()));
 	        }
 	        catch(Exception e){
@@ -122,6 +123,7 @@ public class ComplaintController extends BaseController{
 		 
 		 try{
 	        	logger.info("Method :: assignComplaint");
+	        	reponseDto.setStatus(true);
 	        	reponseDto.setResponse(this.complaintsService.assignComplaint(dto, this.getMetaInfo()));
 	        	
 	        } catch(ValidationException e){
@@ -200,6 +202,7 @@ public class ComplaintController extends BaseController{
 		 ResponseDto reponseDto = new ResponseDto();
 		 try{
 	        	logger.info("Method :: validateAndRegisterNewComplaint");
+	        	reponseDto.setStatus(true);
 	        	reponseDto.setResponse(this.complaintsService.validateAndUpdateComplaint(dto, this.getMetaInfo()));
 	        }
 	        catch(Exception e){
@@ -214,6 +217,7 @@ public class ComplaintController extends BaseController{
 		 ResponseDto reponseDto = new ResponseDto();
 		 try{
 	        	logger.info("Method :: validateAndRegisterNewComplaint");
+	        	reponseDto.setStatus(true);
 	        	reponseDto.setResponse(this.complaintsService.validateAndUpdateComplaints(dto, this.getMetaInfo()));
 	        }
 	        catch(Exception e){

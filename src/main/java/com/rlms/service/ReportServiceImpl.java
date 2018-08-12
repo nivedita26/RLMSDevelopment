@@ -366,7 +366,6 @@ public class ReportServiceImpl implements ReportService {
 	public List<SiteVisitReportDto> getSiteVisitReport(SiteVisitReportDto dto){
 		
 		//List<RlmsLiftCustomerMap> liftCustomerMapsList = liftDao.getLiftCustomerMapDtlsListByBranchCustomerMapId(dto.getListOfBranchCustoMapIds());
-		
 		//List<RlmsComplaintTechMapDtls> listOfComplaints = this.complaintsDao.getListOfComplaintDtlsForTechies(dto);
 		
 		List<RlmsComplaintTechMapDtls> listOfComplaints = this.complaintsDao.getListOfComplaintDtlsForTechies(dto);
@@ -598,6 +597,18 @@ public class ReportServiceImpl implements ReportService {
 		for (RlmsLiftCustomerMap  liftCustomerMap : liftCustomerMapList) {
 			listCustMapIds.add(liftCustomerMap.getLiftCustomerMapId());
 		}
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date pivotDate = DateUtils.addDaysToDate(new Date(), -30);
+		Date today =new Date();
+		try {
+			pivotDate=sdf.parse(sdf.format(pivotDate));
+			today = sdf.parse(sdf.format(today));
+		} catch (ParseException e) {
+		}
+		
+		dto.setFromDate(pivotDate);
+		dto.setToDate(today);
 		complaintList = complaintsDao.complaintMastersList(listCustMapIds,dto);
 		for (RlmsComplaintMaster rlmsComplaintMaster : complaintList) {
 			ComplaintsDto complaintsDto = new ComplaintsDto();
@@ -670,6 +681,18 @@ public class ReportServiceImpl implements ReportService {
 			listCustMapIds.add(liftCustomerMap.getLiftCustomerMapId());
 		}
 	}
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date pivotDate = DateUtils.addDaysToDate(new Date(), -30);
+		Date today =new Date();
+		try {
+			pivotDate=sdf.parse(sdf.format(pivotDate));
+			today = sdf.parse(sdf.format(today));
+		} catch (ParseException e) {
+		}
+		
+		dto.setFromDate(pivotDate);
+		dto.setToDate(today);
 		List<RlmsComplaintMaster> complaintList = complaintsDao.complaintMastersList(listCustMapIds,dto);
 		
 		for (RlmsComplaintMaster rlmsComplaintMaster : complaintList) {

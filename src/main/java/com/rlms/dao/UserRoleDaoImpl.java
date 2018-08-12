@@ -212,8 +212,8 @@ public class UserRoleDaoImpl implements UserRoleDao{
 		 Criteria criteria = session.createCriteria(RlmsUserRoles.class)
 				 .createAlias("rlmsUserMaster", "um")
 		 		 .createAlias("rlmsSpocRoleMaster", "sm")
-				 .add(Restrictions.eq("um.username", dtlsDto.getUserName()))
-				 .add(Restrictions.eq("um.password", dtlsDto.getPassword()))
+				 .add(Restrictions.ilike("um.username", dtlsDto.getUserName()))
+				 .add(Restrictions.ilike("um.password", dtlsDto.getPassword()))
 		 	     .add(Restrictions.eq("sm.spocRoleId", roleId))
 		 	     .add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
 		 

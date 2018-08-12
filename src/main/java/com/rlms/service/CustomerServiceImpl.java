@@ -517,6 +517,7 @@ public class CustomerServiceImpl implements CustomerService{
 		for (RlmsLiftCustomerMap liftCustomerMap : allLiftsForCustomes) {
 			RlmsLiftMaster liftM = liftCustomerMap.getLiftMaster();
 			LiftDtlsDto dto = new LiftDtlsDto();
+			dto.setLiftType(liftM.getLiftType());
 			dto.setAccessControl(liftM.getAccessControl());
 			dto.setAddress(liftM.getAddress());
 			dto.setArea(liftM.getArea());
