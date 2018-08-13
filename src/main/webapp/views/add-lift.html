@@ -76,7 +76,7 @@
 			<label class="col-sm-3 control-label">City<sup class="red font-12">*</sup></label>
 			<div class="col-sm-6">
 				<input name="city" type="text"
-					placeholder="" onkeypress="return ((event.charCode > 64 && event.charCode < 91) ||(event.charCode > 96 && event.charCode < 123) || event.charCode == 8 || event.charCode == 32);"
+					placeholder="City" onkeypress="return ((event.charCode > 64 && event.charCode < 91) ||(event.charCode > 96 && event.charCode < 123) || event.charCode == 8 || event.charCode == 32);"
 					ng-model="addLift.city" class="form-control" required>
 					<span class="help-block"
 						ng-show="addLiftForm.city.$error.required && addLiftForm.city.$dirty">This field is required</span>
@@ -145,7 +145,7 @@
 				</div> -->
 				
 			<div class="col-sm-6">
-					  <ui-select ng-model="selectedAMCType.selected" title="Choose a AMC Type" ng-required="true" name="amctype" ng-required="true">
+					  <ui-select ng-model="selectedAMCType.selected" title="Choose a AMC Type" name="amctype" ng-required="true">
 					    <ui-select-match placeholder="Select a AMC Type in the list...">{{$select.selected.name}}</ui-select-match> <ui-select-choices
 								repeat="iterator in AMCType| filter: $select.search">
 							<span
@@ -332,7 +332,7 @@
 		<div class="form-group">
 			<label for="lmsAvailable" class="col-md-3 control-label">LMS<sup class="red font-12">*</sup></label>
 			<div class="col-sm-6">
-			 <ui-select ng-model="selectedLmsAvailable.selected"  ng-click="lmsData() " title="Choose a LMS Availability" required>
+			 <ui-select ng-model="selectedLmsAvailable.selected"  ng-click="lmsData() " title="Choose a LMS Availability" ng-required="true" >
 					    <ui-select-match required placeholder="This field is Required">{{$select.selected.name}}</ui-select-match> 
 					    <ui-select-choices repeat="iterator in lmsAvailable |filter: $select.search">
 								<span ng-bind-html="iterator.name | highlight: $select.search"></span>

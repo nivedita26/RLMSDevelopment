@@ -45,9 +45,9 @@
 			</form>	
 		</div>
 		<div class="panel-footer">
-			<div class="pull-left">
+		<!-- 	<div class="pull-left">
 				<a href="#/index" class="btn btn-default">Cancel</a>
-			</div>
+			</div> -->
 			<div class="pull-right">
 				<a href="#" ng-click="postSignup();" class="btn btn-success">Sign up</a>
 			</div>

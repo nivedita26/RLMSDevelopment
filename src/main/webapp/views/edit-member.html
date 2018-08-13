@@ -63,10 +63,10 @@
 				</div>
 			</div>
 			<div class="form-group col-sm-6">
-				<label class="col-sm-4 control-label">Pincode</label>
+				<label class="col-sm-4 control-label">Pincode<sup class="red font-12">*</sup></label>
 				<div class="col-sm-6">
 					<input name="pinCode" type="text"  maxlength="6" onkeypress="return (event.charCode > 47 && event.charCode < 58 );"
-						ng-model="editMember.pinCode" placeholder="Pincode" class="form-control">
+						ng-model="editMember.pinCode" placeholder="Pincode" required class="form-control">
 				</div>
 			</div>
 			

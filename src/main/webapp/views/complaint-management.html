@@ -5,7 +5,7 @@
 		<div class="row">
 			<!-- Start Complaint Dashboard Block -->
 
-		<div class="container" ng-controller="DashboardControllerInditech" ng-show="showDasboardForInditech">   
+		<div class="container" ng-controller="DashboardControllerInditech"  ng-show="showDashboardForOperator">   
 
          <div class="row">
             <div class="col-md-3">
@@ -262,13 +262,13 @@
 				</div>
 				<div class="filter-section" ng-show="showAdvanceFilter">
 					<div class="form-group">
-						<label class="control-label" ng-show="showBranch">Select Date Range</label>
+						<!-- <label class="control-label" ng-show="showBranch">Select Date Range</label>
 						<div class="select-container" >
 							<div class="input-group" >
 								<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
 								<input daterangepicker  class="form-control " />
 								</div>
-							</div>
+							</div> -->
 							<label class="control-label" >Select Lifts </label>
 							<div class="select-container">
 								<ui-select multiple ng-model="selectedlifts.selected" close-on-select="false" title="Choose lifts">
