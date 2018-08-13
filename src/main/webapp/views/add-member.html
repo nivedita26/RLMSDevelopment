@@ -49,7 +49,7 @@
 			<div class="form-group">
 				<label class="col-sm-3 control-label">First Name<sup class="red font-12">*</sup></label>
 				<div class="col-sm-6">
-					<input name="firstName" type="text" placeholder="Required Field" onkeypress="return ((event.charCode > 64 && event.charCode < 91) ||(event.charCode > 96 && event.charCode < 123) || event.charCode == 8 || event.charCode == 32);" ng-model="addMember.firstName" class="form-control">
+					<input name="firstName" type="text" placeholder="Required Field" required onkeypress="return ((event.charCode > 64 && event.charCode < 91) ||(event.charCode > 96 && event.charCode < 123) || event.charCode == 8 || event.charCode == 32);" ng-model="addMember.firstName" class="form-control">
 					<span class="help-block" ng-show="addMemberForm.firstName.$error.required && addMemberForm.firstName.$dirty">This
 						field is required</span>
 				</div>
@@ -66,7 +66,7 @@
 			<div class="form-group">
 				<label class="col-sm-3 control-label">Address</label>
 				<div class="col-sm-6">
-					<input name="address" type="text" placeholder=""  ng-model="addMember.address" class="form-control">
+					<input name="address" type="text" placeholder="Address"  ng-model="addMember.address" class="form-control">
 				</div>
 			</div>
 			<div class="form-group">
@@ -86,10 +86,12 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-3 control-label">Pincode</label>
+				<label class="col-sm-3 control-label">Pincode<sup class="red font-12">*</sup></label>
 				<div class="col-sm-6">
 					<input name="pinCode" type="text" maxlength="6" onkeypress="return (event.charCode > 47 && event.charCode < 58 );"
-						ng-model="addMember.pinCode" placeholder="Pincode" class="form-control">
+						ng-model="addMember.pinCode" placeholder="Pincode" class="form-control" required>
+						<span class="help-block" ng-show="addMemberForm.pinCode.$error.required && addMemberForm.pinCode.$dirty">This
+						field is required</span>
 				</div>
 			</div>
 			<div class="form-group">

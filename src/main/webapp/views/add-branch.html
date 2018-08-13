@@ -53,10 +53,12 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-3 control-label">Pincode</label>
+				<label class="col-sm-3 control-label">Pincode<sup class="red font-12">*</sup></label>
 				<div class="col-sm-6">
 					<input name="pinCode" type="text" maxlength="6" onkeypress="return (event.charCode > 47 && event.charCode < 58 );"
-						ng-model="addBranch.pinCode" placeholder="Pincode" class="form-control">
+						ng-model="addBranch.pinCode" placeholder="Pincode" class="form-control" required>
+						<span class="help-block" ng-show="addBranchForm.pinCode.$error.required && addBranchForm.pinCode.$dirty">This
+						field is required</span>
 				</div>
 			</div>
 		 </fieldset>

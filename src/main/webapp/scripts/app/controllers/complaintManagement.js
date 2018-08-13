@@ -44,9 +44,10 @@
 									//$scope.selectedComplaintsTitle={};
 									$scope.branches = [];
 									$scope.date = {
-									        startDate: moment().subtract(1, "days"),
-									        endDate: moment()
+									        /*startDate: moment().subtract(1, "days"),
+									        endDate: moment()*/
 									    };
+									
 									$rootScope.complaintTitles=[
 										{
 											id : 0,
@@ -162,10 +163,10 @@
 									$scope.selectedlifts = {};
 									$scope.selectedStatus = {};
 									$scope.selectedTechnician = {};
-									$scope.dateRange={};
+									$scope.datePicker={};
 									$scope.isAssigned=true;
 									//var today = new Date().toISOString().slice(0, 10);
-									//$scope.dateRange.date = {"startDate": today, "endDate": today};
+									$scope.datePicker.date = {};
 									$scope.status = [ {
 										id : 2,
 										name : 'Pending'
@@ -900,7 +901,8 @@
 											}, 100);
 								};
 								
-								
+							var startDate;
+							startDate=$scope.datePicker.date;
 								$scope.construnctObjeToSend = function() {
 									
 									var dataToSend = {
@@ -962,8 +964,8 @@
 										}
 										dataToSend["listOfLiftCustoMapId"] = tempLiftIds;
 										dataToSend["statusList"] = tempStatus;
-										dataToSend["fromDate"]=$scope.date.startDate;
-										dataToSend["toDate"]=$scope.date.endDate;
+										dataToSend["fromDate"]=moment($scope.datePicker.date.startDate).format('YYYY-MM-DD');//$scope.date.startDate;
+										dataToSend["toDate"]=moment($scope.datePicker.date).format('YYYY-MM-DD');
 									}
 									return dataToSend;
 								}
@@ -973,6 +975,8 @@
 											$scope.pagingOptions.pageSize,
 											$scope.pagingOptions.currentPage);
 								}
+								
+								
 								 $scope.resetComplaintList = function(){
 									 initComplaintList();
 								  	  }
