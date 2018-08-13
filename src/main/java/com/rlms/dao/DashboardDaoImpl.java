@@ -264,6 +264,26 @@ public class DashboardDaoImpl implements DashboardDao {
 		
 	}
 
+	@Override
+	public List<Object[]> getTodaysEventCountDtlsForDashboard(
+			List<Integer> liftCustMapIds) {
+		
+		String str = "";
+		for (Integer mapId : liftCustMapIds) {
+			if (StringUtils.isEmpty(str)) {
+				str = str.concat(String.valueOf(mapId));
+			} else {
+				str = str.concat("," + mapId);
+			}
+		}
+		Session session = this.sessionFactory.getCurrentSession();
+       String sql ="SELECT lift_customer_map_id,event_type,count(*) FROM  (DATE(created_date)=CURDATE()) and rlms_event where lift_customer_map_id in("+str+") group by event_type,lift_customer_map_id order by lift_customer_map_id";
+	    	SQLQuery query = session.createSQLQuery(sql);
+		 	List<Object[]>EventCount = query.list();
+			return EventCount;
+		
+	}
+
 @Override
 public List<Object[]> getBranchCountDtlsForDashboard(List<Integer> branchIds) {
 	String str = "";

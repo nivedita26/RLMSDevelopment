@@ -770,6 +770,38 @@ public class DashboardServiceImpl implements DashboardService {
 	}
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
+	public List<EventCountDtls> getTodaysEventCountDetails(List<Integer> listCustMap,
+			UserMetaInfo metaInfo) {
+		Set<Integer> uniqueIdsForLiftCustMapId = new  HashSet<Integer>();
+		List<EventCountDtls> eventDtlsDtosList = new ArrayList<EventCountDtls>();
+		RlmsLiftCustomerMap liftCustomerMap = new RlmsLiftCustomerMap();
+		List<Object[]> EventCount = this.dashboardDao.getTodaysEventCountDtlsForDashboard(listCustMap);
+		               for (Object[] obj : EventCount) {
+		            	   EventCountDtls eventCountDtls = new EventCountDtls();
+		            	   if(!uniqueIdsForLiftCustMapId.contains(obj[0])) {
+		            	   	   liftCustomerMap = liftDao.getLiftCustomerMapById((Integer)obj[0]);
+		            	   }
+		            	   eventCountDtls.setBranchName(liftCustomerMap.getBranchCustomerMap().getCompanyBranchMapDtls().getRlmsBranchMaster().getBranchName());
+		            	   eventCountDtls.setCity(liftCustomerMap.getBranchCustomerMap().getCompanyBranchMapDtls().getRlmsBranchMaster().getCity());
+		            	   eventCountDtls.setCustomerName(liftCustomerMap.getBranchCustomerMap().getCustomerMaster().getCustomerName());
+		            	   eventCountDtls.setLiftNumber(liftCustomerMap.getLiftMaster().getLiftNumber());
+		            	if(obj[1].equals("EVENT")) {
+		            		eventCountDtls.setTotolEventCount((BigInteger)obj[2]);
+		            		}
+		            	else if(obj[1].equals("ERROR")) {
+		            		eventCountDtls.setTotalErrorCount((BigInteger)obj[2]);
+		            	}
+		            	else if(obj[1].equals("RES")) {
+		            	   eventCountDtls.setTotalResCount((BigInteger)obj[2]);
+		            	}
+		            	 uniqueIdsForLiftCustMapId.add((Integer)obj[0]);
+			             eventDtlsDtosList.add(eventCountDtls);
+
+					}
+		return 	 eventDtlsDtosList;
+	}
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
  	public List<ComplaintsCount> getListOfTotalComplaintsCountByCallType(ComplaintsDtlsDto dto) {
 	List<RlmsComplaintMaster> listOfAllComplaints = new ArrayList<RlmsComplaintMaster>();
 	List<ComplaintsCount> complaintsCountsList =  new ArrayList<>();

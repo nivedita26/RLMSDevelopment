@@ -554,7 +554,7 @@ public class RestControllerController  extends BaseController {
     		}
     	}
     	  response.setContentType("application/pdf");
-          String filename = liftCustomerMap.getLiftMaster().getLiftNumber()+"_"+"userguide"+"."+"pdf";
+          String filename = liftCustomerMap.getLiftMaster().getLiftNumber()+"_"+"usermanual"+"."+"pdf";
           response.setHeader("Content-disposition", "attachment; filename="+ filename);
           OutputStream os=null;
           try {
@@ -568,7 +568,6 @@ public class RestControllerController  extends BaseController {
         @RequestMapping(value = "/downloadSafetyGuide", method = RequestMethod.POST)
       	public String downloadSafetyGuide(@RequestBody LiftDtlsDto dtlsDto,HttpServletResponse response) throws FileNotFoundException, SQLException, IOException {
           	byte[] safetyGuide = null;
-          	
           	RlmsLiftCustomerMap liftCustomerMap = liftDao.getLiftCustomerMapById(dtlsDto.getLiftCustomerMapId());
           	if(liftCustomerMap!=null) {
           		RlmsLiftManualMapDtls liftManualMapDtls =  liftManualService.getLiftManualMapDtls(liftCustomerMap.getLiftCustomerMapId());
@@ -577,7 +576,7 @@ public class RestControllerController  extends BaseController {
           		}
           	}
           	  response.setContentType("application/pdf");
-              String filename = liftCustomerMap.getLiftMaster().getLiftNumber()+"_"+"userguide"+"."+"pdf";
+              String filename = liftCustomerMap.getLiftMaster().getLiftNumber()+"_"+"safetyguide"+"."+"pdf";
               response.setHeader("Content-disposition", "attachment; filename="+ filename);
                 OutputStream os=null;
                 try {

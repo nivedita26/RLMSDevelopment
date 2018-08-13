@@ -144,7 +144,6 @@ public class ComplaintController extends BaseController{
 		try{
         	logger.info("Method :: assignComplaint");
         	listOfLifts = this.complaintsService.getAllLiftsForBranchsOrCustomer(dto);
-        	
         }
         catch(Exception e){
         	logger.error(ExceptionUtils.getFullStackTrace(e));

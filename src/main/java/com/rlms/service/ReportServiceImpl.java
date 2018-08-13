@@ -681,7 +681,6 @@ public class ReportServiceImpl implements ReportService {
 			listCustMapIds.add(liftCustomerMap.getLiftCustomerMapId());
 		}
 	}
-		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Date pivotDate = DateUtils.addDaysToDate(new Date(), -30);
 		Date today =new Date();
@@ -690,7 +689,6 @@ public class ReportServiceImpl implements ReportService {
 			today = sdf.parse(sdf.format(today));
 		} catch (ParseException e) {
 		}
-		
 		dto.setFromDate(pivotDate);
 		dto.setToDate(today);
 		List<RlmsComplaintMaster> complaintList = complaintsDao.complaintMastersList(listCustMapIds,dto);
@@ -762,9 +760,9 @@ public class ReportServiceImpl implements ReportService {
             			  complaintwiseSiteVisitReport.setTotalTimeTaken(DateUtils.convertTimeIntoDaysHrMin(totalTimeForComplaint, TimeUnit.SECONDS));
             		  }
             		  complaintwiseSiteVisitReport.setListOFAllVisits(listOfAllVisists);
-            		  complaintsDto.setSiteVisitDetailsList(complaintwiseSiteVisitReport);
-            	  }
+            	   }
     				complaintwiseSiteVisitReport.setUserRating(complaintTechMapDtls.getUserRating());
+    			    complaintsDto.setSiteVisitDetailsList(complaintwiseSiteVisitReport);
               }
                  complaintsDtoList.add(complaintsDto);
 		}
