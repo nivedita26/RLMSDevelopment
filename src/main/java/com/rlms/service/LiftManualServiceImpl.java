@@ -18,6 +18,7 @@ import com.rlms.model.RlmsLiftManualMapDtls;
 
 	@Service
 	public class LiftManualServiceImpl implements LiftManualService{
+		
     @Autowired
     LiftManualDao liftManualDao;
     

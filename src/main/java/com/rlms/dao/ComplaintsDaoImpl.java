@@ -10,7 +10,6 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
 import com.rlms.constants.RLMSConstants;
 import com.rlms.constants.Status;
 import com.rlms.contract.ComplaintsDtlsDto;
@@ -105,15 +104,10 @@ public class ComplaintsDaoImpl implements ComplaintsDao{
 					 criteria.add(Restrictions.eq("callType", callType));
 				 }
 				 criteria.add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
-				// criteria.add(Order.("registrationDate"));
-				 
 				 criteria.addOrder(Order.desc("registrationDate"));
-				 
-				 
 		 List<RlmsComplaintMaster> listOfAllcomplaints = criteria.list();
 		 return listOfAllcomplaints;
 	}
-	
 	@SuppressWarnings("unchecked")
 	public RlmsComplaintTechMapDtls getComplTechMapObjByComplaintId(Integer complaintId){
 		 Session session = this.sessionFactory.getCurrentSession();
@@ -271,11 +265,11 @@ public class ComplaintsDaoImpl implements ComplaintsDao{
 			criteria.add(Restrictions.eq("callType", dto.getCallType()));
 		}
 		if(dto.getComplaintId()!=null) {
-			criteria.add(Restrictions.eq("complaintId", dto.getCallType()));
+			criteria.add(Restrictions.eq("complaintId", dto.getComplaintId()));
 		}
 		if(dto.getToDate()!=null && dto.getFromDate()!=null) {
-			 criteria.add(Restrictions.ge("registrationDate", dto.getToDate()));
-			 criteria.add(Restrictions.le("registrationDate",dto.getFromDate()));
+			 criteria.add(Restrictions.ge("registrationDate",dto.getFromDate()));
+			 criteria.add(Restrictions.le("registrationDate",dto.getToDate()));
 		}
 		
 		 criteria.addOrder(Order.desc("registrationDate"))

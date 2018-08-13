@@ -873,6 +873,47 @@ public class DashBoardController extends BaseController {
 		return eventCountDtls;
 	}
 	
+	
+	@RequestMapping(value = "/getTodaysEventCountForLift", method = RequestMethod.POST)
+	public @ResponseBody List<EventCountDtls> getTodaysEventCountForLift(@RequestBody EventDtlsDto dto)
+			throws RunTimeException {
+		List<EventCountDtls> eventCountDtls = null;
+		List<RlmsCompanyBranchMapDtls> listOfAllBranches = null;
+		List<Integer> companyBranchIds = new ArrayList<>();
+		try {
+			logger.info("Method :: getAllBranchesForCompany");
+			if(dto.getBranchCompanyMapId()!=null) {
+				companyBranchIds.add(dto.getBranchCompanyMapId());
+			}
+			else {
+			listOfAllBranches = this.companyService.getAllBranches(dto.getCompanyId());
+			if(listOfAllBranches!=null && !listOfAllBranches.isEmpty()) {
+			for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
+				companyBranchIds.add(companyBranchMap.getCompanyBranchMapId());
+			}}
+			}
+			List<CustomerDtlsDto> allCustomersForBranch = dashboardService.getAllCustomersForBranch(companyBranchIds);
+			List<Integer> liftCustomerMapIds = new ArrayList<>();
+			if(allCustomersForBranch!=null && !allCustomersForBranch.isEmpty()) {
+			for (CustomerDtlsDto customerDtlsDto : allCustomersForBranch) {
+				LiftDtlsDto dtoTemp = new LiftDtlsDto();
+				dtoTemp.setBranchCustomerMapId(customerDtlsDto.getBranchCustomerMapId());
+				List<RlmsLiftCustomerMap> list = dashboardService.getAllLiftsForBranchsOrCustomer(dtoTemp);
+				if(list!=null && !list.isEmpty()) {
+				for (RlmsLiftCustomerMap rlmsLiftCustomerMap : list) {
+					liftCustomerMapIds.add(rlmsLiftCustomerMap.getLiftCustomerMapId());
+				}
+				}
+			}
+			eventCountDtls = this.dashboardService.getTodaysEventCountDetails(liftCustomerMapIds, this.getMetaInfo());
+		} }catch (Exception e) {
+			logger.error(ExceptionUtils.getFullStackTrace(e));
+			throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(),
+					PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
+		}
+		return eventCountDtls;
+	}
+	
 	@RequestMapping(value = "/getUnidentifiedImeiEventCount", method = RequestMethod.POST)
 	public @ResponseBody List<RlmsEventDtls> getUnidentifiedImeiEventCount(@RequestBody int companyId)
 			throws RunTimeException {

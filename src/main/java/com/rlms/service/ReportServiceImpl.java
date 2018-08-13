@@ -681,7 +681,6 @@ public class ReportServiceImpl implements ReportService {
 			listCustMapIds.add(liftCustomerMap.getLiftCustomerMapId());
 		}
 	}
-		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Date pivotDate = DateUtils.addDaysToDate(new Date(), -30);
 		Date today =new Date();
@@ -690,7 +689,6 @@ public class ReportServiceImpl implements ReportService {
 			today = sdf.parse(sdf.format(today));
 		} catch (ParseException e) {
 		}
-		
 		dto.setFromDate(pivotDate);
 		dto.setToDate(today);
 		List<RlmsComplaintMaster> complaintList = complaintsDao.complaintMastersList(listCustMapIds,dto);
@@ -721,8 +719,9 @@ public class ReportServiceImpl implements ReportService {
              complaintsDto.setBranchName(rlmsComplaintMaster.getLiftCustomerMap().getBranchCustomerMap().getCompanyBranchMapDtls().getRlmsBranchMaster().getBranchName());
               RlmsComplaintTechMapDtls  complaintTechMapDtls = complaintsDao.getComplTechMapObjByComplaintId(rlmsComplaintMaster.getComplaintId());		
               if(complaintTechMapDtls!=null) {
-            	 complaintsDto.setCallAssignedDateStr(DateUtils.convertDateToStringWithoutTime(complaintTechMapDtls.getAssignedDate()));
             	  SiteVisitReportDto complaintwiseSiteVisitReport = new SiteVisitReportDto();
+            	  complaintwiseSiteVisitReport.setTechName(complaintTechMapDtls.getUserRoles().getRlmsUserMaster().getFirstName() + " " + complaintTechMapDtls.getUserRoles().getRlmsUserMaster().getLastName());
+            	 complaintsDto.setCallAssignedDateStr(DateUtils.convertDateToStringWithoutTime(complaintTechMapDtls.getAssignedDate()));
             	  List<SiteVisitDtlsDto> listOfAllVisists = new ArrayList<SiteVisitDtlsDto>();
             	  List<RlmsSiteVisitDtls> listOfAllVisits = this.complaintsDao.getAllVisitsForComnplaints(complaintTechMapDtls.getComplaintTechMapId());
             	  if(null != complaintTechMapDtls.getComplaintMaster().getRegistrationDate()){
@@ -738,34 +737,32 @@ public class ReportServiceImpl implements ReportService {
             	  complaintwiseSiteVisitReport.setComplNumber(complaintTechMapDtls.getComplaintMaster().getComplaintNumber());
             	  complaintwiseSiteVisitReport.setCustomerName(complaintTechMapDtls.getComplaintMaster().getLiftCustomerMap().getBranchCustomerMap().getCustomerMaster().getCustomerName());
             	  complaintwiseSiteVisitReport.setLiftNumber(complaintTechMapDtls.getComplaintMaster().getLiftCustomerMap().getLiftMaster().getLiftNumber());
-            	  complaintwiseSiteVisitReport.setTechName(complaintTechMapDtls.getUserRoles().getRlmsUserMaster().getFirstName() + " " + complaintTechMapDtls.getUserRoles().getRlmsUserMaster().getLastName());
             	  complaintwiseSiteVisitReport.setTechNumber(complaintTechMapDtls.getUserRoles().getRlmsUserMaster().getContactNumber());
             	  if(complaintTechMapDtls.getComplaintMaster().getServiceStartDate()!=null){
             		  complaintwiseSiteVisitReport.setSericeDate(DateUtils.convertDateToStringWithoutTime(complaintTechMapDtls.getComplaintMaster().getServiceStartDate()));
     				}
             	  if(null != listOfAllVisits &&  !listOfAllVisits.isEmpty()){
             		  complaintwiseSiteVisitReport.setTotalNoOfVisits(listOfAllVisits.size());
-            	  
-            	  Long totalTimeForComplaint = 0L;
-    			 for (RlmsSiteVisitDtls rlmsSiteVisitDtls : listOfAllVisits) {
-    					SiteVisitDtlsDto siteVisitDto = new SiteVisitDtlsDto();
-    					siteVisitDto.setFromDateDtr(DateUtils.convertDateToStringWithoutTime(rlmsSiteVisitDtls.getFromDate()));
-    					siteVisitDto.setToDateStr(DateUtils.convertDateToStringWithoutTime(rlmsSiteVisitDtls.getToDate()));
-    					String totalTime = DateUtils.convertTimeIntoDaysHrMin(DateUtils.getDateDiff(rlmsSiteVisitDtls.getFromDate(), rlmsSiteVisitDtls.getToDate(), TimeUnit.SECONDS), TimeUnit.SECONDS);
-    					if(null != totalTime){
-    						siteVisitDto.setTotalTime(totalTime);
-    					}
-    					totalTimeForComplaint = totalTimeForComplaint + DateUtils.getDateDiff(rlmsSiteVisitDtls.getFromDate(), rlmsSiteVisitDtls.getToDate(), TimeUnit.SECONDS);
-    					siteVisitDto.setRemark(rlmsSiteVisitDtls.getRemark());
-    					listOfAllVisists.add(siteVisitDto);
-    				}
-    				if(null != totalTimeForComplaint){
-    					complaintwiseSiteVisitReport.setTotalTimeTaken(DateUtils.convertTimeIntoDaysHrMin(totalTimeForComplaint, TimeUnit.SECONDS));
-    				}
-    				complaintwiseSiteVisitReport.setListOFAllVisits(listOfAllVisists);
-    				complaintsDto.setSiteVisitDetailsList(complaintwiseSiteVisitReport);
-            	  }
+            		  Long totalTimeForComplaint = 0L;
+            		  for (RlmsSiteVisitDtls rlmsSiteVisitDtls : listOfAllVisits) {
+            			  SiteVisitDtlsDto siteVisitDto = new SiteVisitDtlsDto();
+            			  siteVisitDto.setFromDateDtr(DateUtils.convertDateToStringWithoutTime(rlmsSiteVisitDtls.getFromDate()));
+            			  siteVisitDto.setToDateStr(DateUtils.convertDateToStringWithoutTime(rlmsSiteVisitDtls.getToDate()));
+            			  String totalTime = DateUtils.convertTimeIntoDaysHrMin(DateUtils.getDateDiff(rlmsSiteVisitDtls.getFromDate(), rlmsSiteVisitDtls.getToDate(), TimeUnit.SECONDS), TimeUnit.SECONDS);
+            			  if(null != totalTime){
+            				  siteVisitDto.setTotalTime(totalTime);
+            			  }
+            			  totalTimeForComplaint = totalTimeForComplaint + DateUtils.getDateDiff(rlmsSiteVisitDtls.getFromDate(), rlmsSiteVisitDtls.getToDate(), TimeUnit.SECONDS);
+            			  siteVisitDto.setRemark(rlmsSiteVisitDtls.getRemark());
+            			  listOfAllVisists.add(siteVisitDto);
+            		  }
+            		  if(null != totalTimeForComplaint){
+            			  complaintwiseSiteVisitReport.setTotalTimeTaken(DateUtils.convertTimeIntoDaysHrMin(totalTimeForComplaint, TimeUnit.SECONDS));
+            		  }
+            		  complaintwiseSiteVisitReport.setListOFAllVisits(listOfAllVisists);
+            	   }
     				complaintwiseSiteVisitReport.setUserRating(complaintTechMapDtls.getUserRating());
+    			    complaintsDto.setSiteVisitDetailsList(complaintwiseSiteVisitReport);
               }
                  complaintsDtoList.add(complaintsDto);
 		}

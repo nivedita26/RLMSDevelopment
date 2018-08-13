@@ -572,17 +572,14 @@ public class UserServiceImpl implements UserService {
 	private UserDtlsDto constructMemberDltsSto(RlmsUserRoles userRole) {
 
 		UserDtlsDto userDtlsDto = new UserDtlsDto();
-		userDtlsDto.setBranchCompanyMapId(userRole
-				.getRlmsCompanyBranchMapDtls().getCompanyBranchMapId());
-		userDtlsDto.setBranchName(userRole.getRlmsCompanyBranchMapDtls()
-				.getRlmsBranchMaster().getBranchName());
-		userDtlsDto.setCompanyName(userRole.getRlmsCompanyMaster()
-				.getCompanyName());
-		userDtlsDto.setContactNumber(userRole.getRlmsUserMaster()
-				.getContactNumber());
+		userDtlsDto.setBranchCompanyMapId(userRole.getRlmsCompanyBranchMapDtls().getCompanyBranchMapId());
+		userDtlsDto.setBranchName(userRole.getRlmsCompanyBranchMapDtls().getRlmsBranchMaster().getBranchName());
+		userDtlsDto.setCompanyName(userRole.getRlmsCompanyMaster().getCompanyName());
+		userDtlsDto.setContactNumber(userRole.getRlmsUserMaster().getContactNumber());
 		userDtlsDto.setFirstName(userRole.getRlmsUserMaster().getFirstName());
 		userDtlsDto.setLastName(userRole.getRlmsUserMaster().getLastName());
 		userDtlsDto.setUserId(userRole.getRlmsUserMaster().getUserId());
+		userDtlsDto.setEmailId(userRole.getRlmsUserMaster().getEmailId());
 		userDtlsDto.setUserRoleId(userRole.getUserRoleId());
 		return userDtlsDto;
 	}

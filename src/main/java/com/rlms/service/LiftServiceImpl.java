@@ -542,7 +542,7 @@ public class LiftServiceImpl implements LiftService{
 			if(null != luftCustomerMap.getLiftMaster().getServiceEndDate()){
 				dto.setServiceEndDateStr(DateUtils.convertDateToStringWithoutTime(luftCustomerMap.getLiftMaster().getServiceEndDate()));
 			}
-		}else{
+		  }else{
 			dto.setBlank(true);
 		}
 		return dto;
@@ -752,6 +752,10 @@ public class LiftServiceImpl implements LiftService{
 				}
 				if(null != liftMaster.getAmcStartDate()){
 					liftM.setAmcStartDate(liftMaster.getAmcStartDate());
+				}
+				
+				if(null != liftMaster.getAmcType()){
+					liftM.setAmcType(liftMaster.getAmcType());
 				}
 				if(null != liftMaster.getArd()&& !liftMaster.getArd().isEmpty() ){
 					liftM.setARD(liftMaster.getArd());
@@ -1061,6 +1065,6 @@ public class LiftServiceImpl implements LiftService{
 			liftMaster.setLOPMake(dto.getLopMake());
 		}
 		this.liftDao.mergeLiftM(liftMaster);
-		return PropertyUtils.getPrpertyFromContext(RlmsErrorType.PHOTO_UPDATED.getMessage());	
+		return PropertyUtils.getPrpertyFromContext("Lift parameter updated successfully");	
 	}
 }

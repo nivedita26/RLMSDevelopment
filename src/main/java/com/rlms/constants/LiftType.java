@@ -1,4 +1,4 @@
-package com.rlms.constants;
+ package com.rlms.constants;
 
 public enum LiftType {
 
