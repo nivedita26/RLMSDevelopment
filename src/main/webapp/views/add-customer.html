@@ -35,10 +35,10 @@
 			<div class="form-group">
 				<label class="col-sm-3 control-label">Customer Name<sup class="red font-12">*</sup></label>
 				<div class="col-sm-6">
-					<input name="firstName" type="text" placeholder="Required Field" required onkeypress="return ((event.charCode > 64 && event.charCode < 91) ||(event.charCode > 96 && event.charCode < 123) || event.charCode == 8 || event.charCode == 32);" ng-model="addCustomer.firstName" class="form-control">
-					<span class="help-block"
+					<input name="firstName" type="text" placeholder="Required Field" ng-required="true" onkeypress="return ((event.charCode > 64 && event.charCode < 91) ||(event.charCode > 96 && event.charCode < 123) || event.charCode == 8 || event.charCode == 32);" ng-model="addCustomer.firstName" required class="form-control">
+				<!-- 	<span class="help-block"
 						ng-show="addCustomerForm.firstName.$error.required && addCustomerForm.firstName.$dirty">This
-						field is required</span>
+						field is required</span> -->
 				</div>
 			</div>
 			
@@ -46,9 +46,9 @@
 				<label class="col-sm-3 control-label">Address<sup class="red font-12">*</sup></label>
 				<div class="col-sm-6">
 					<input name="address" type="text" placeholder="Required Field" required ng-model="addCustomer.address" class="form-control">
-					<span class="help-block"
+					<!-- <span class="help-block"
 						ng-show="addCustomerForm.address.$error.required && addCustomerForm.address.$dirty">This
-						field is required</span>
+						field is required</span> -->
 				</div>
 			</div>
 			<div class="form-group">
@@ -78,9 +78,9 @@
 				<label class="col-sm-3 control-label">Email ID<sup class="red font-12">*</sup></label>
 				<div class="col-sm-6">
 					<input name="emailID" type="email" placeholder="Required Field" required ng-model="addCustomer.emailID" class="form-control">
-					<span class="help-block"
+					<!-- <span class="help-block"
 						ng-show="addCustomerForm.emailID.$error.required && addCustomerForm.emailID.$dirty">This
-						field is required</span>
+						field is required</span> -->
 				</div>
 			</div>
 			<div class="form-group">

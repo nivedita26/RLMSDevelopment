@@ -239,7 +239,6 @@
 					<a ng-hide="loading" class="info-tiles tiles-{{event.inout.color}}" ng-click="openDemoModalForEvents('events','Event','Event','List of LMS Events')">
 						<div class="tiles-heading">
 						<div class="text-center">{{event.inout.title}}</div>
-									
 						</div>
 						<div class="tiles-body">
 							<div class="text-center" ng-show="event.inout.text">{{event.inout.text}}</div>
@@ -269,6 +268,43 @@
 						</div>
 						<div class="tiles-body">
 							<div class="text-center" ng-show="event.inout.text">{{event.responses.text}}</div>
+						</div>
+					</a>
+				</div>
+				<div class="col-xs-6" style="color: blue">
+				<span ng-show="loading"><img id="mySpinner" style="width:140px; height:140px;" src="assets/img/loader2.gif"  /></span>
+					<a ng-hide="loading" class="info-tiles tiles-{{event.todaysEvents.color}}" ng-click="openDemoModalForEvents('events','Todays Events','Response','List of Todays LMS Events')">
+						<div class="tiles-heading">
+						<div class="text-center">{{event.todaysEvents.title}}</div>									
+						</div>
+						<div class="tiles-body">
+							<div class="text-center" ng-show="event.inout.text">{{event.todaysEvents.text}}</div>
+						</div>
+					</a>
+				</div>
+			</div>
+		</div>
+		 <div class="col-md-3 animated-content">
+            <div class="row">
+				<div class="col-xs-6" style="color: blue">
+				<span ng-show="loading"><img id="mySpinner" style="width:140px; height:140px;" src="assets/img/loader2.gif"  /></span>
+					<a ng-hide="loading" class="info-tiles tiles-{{event.todaysErrors.color}}" ng-click="openDemoModalForEvents('events','Todays Errors','Response','List of Todays LMS Errors')">
+						<div class="tiles-heading">
+						<div class="text-center">{{event.todaysErrors.title}}</div>									
+						</div>
+						<div class="tiles-body">
+							<div class="text-center" ng-show="event.inout.text">{{event.todaysErrors.text}}</div>
+						</div>
+					</a>
+				</div>
+				<div class="col-xs-6" style="color: blue">
+				<span ng-show="loading"><img id="mySpinner" style="width:140px; height:140px;" src="assets/img/loader2.gif"  /></span>
+					<a ng-hide="loading" class="info-tiles tiles-{{event.todaysResponses.color}}" ng-click="openDemoModalForEvents('events','Todays Responses','Response','List of Todays LMS Responses')">
+						<div class="tiles-heading">
+						<div class="text-center">{{event.todaysResponses.title}}</div>									
+						</div>
+						<div class="tiles-body">
+							<div class="text-center" ng-show="event.inout.text">{{event.todaysResponses.text}}</div>
 						</div>
 					</a>
 				</div>

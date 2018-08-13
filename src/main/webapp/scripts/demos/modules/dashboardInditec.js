@@ -44,14 +44,13 @@ angular.module('theme.demos.dashboard.indi', [
     //spinner end
     
     
-    
-    
     $scope.showCompanies=false;
     $scope.showAmc=true;
     $scope.showBranches=false;
     
     $rootScope.showDasboardForInditech=false;
     $rootScope.showDasboardForOthers=false;
+    //$rootScope.showDashboardForOperator=false;
     
    /* $scope.loggedInuserDetails={
     		userName:{
@@ -71,12 +70,18 @@ angular.module('theme.demos.dashboard.indi', [
 		}
 			else{
 */			$rootScope.loggedInUserInfoForDashboard=response;
-			if($rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsSpocRoleMaster.roleLevel < 4 ){
+			
+			if($rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsSpocRoleMaster.spocRoleId == 4 || $rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsSpocRoleMaster.spocRoleId == 6){
+				window.location.hash = "#/complaint-management";
+			}
+
+			if($rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsSpocRoleMaster.roleLevel < 4 &&$rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsSpocRoleMaster.spocRoleId < 4  ){
 				$rootScope.showDasboardForInditech= true;
 				$rootScope.showDasboardForOthers=false;
 			}else{
 				//$rootScope.showDasboardForOthers=true;
 				$rootScope.showDasboardForInditech=true;
+				//$rootScope.showDashboardForOperator=true;
 			}
 			if($rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsSpocRoleMaster.roleLevel == 1){
 				$scope.showCompanies= true;
@@ -92,6 +97,7 @@ angular.module('theme.demos.dashboard.indi', [
 				//$scope.showCompanies= false;
 				$scope.showBranches=false;
 			}
+			
 	//	}
 /*			 $scope.loggedInuserDetails.userName.firstName=$rootScope.loggedInUserInfoForDashboard.data.userRole.rlmsUserMaster.firstName
 */		  }, function errorCallback(response) {
@@ -131,7 +137,22 @@ angular.module('theme.demos.dashboard.indi', [
    				title: 'RESPONSE',
    				text: '0',
    				color: 'blue'
-              }
+              },
+              todaysEvents: {
+ 				title: 'Todays Events',
+ 				text: '0',
+ 				color: 'green'
+              },
+              todaysErrors: {
+   				title: 'Todays Errors',
+   				text: '0',
+   				color: 'indigo'
+              },
+              todaysResponses: {
+ 				title: 'Todays Responses',
+ 				text: '0',
+ 				color: 'toyo'
+               }
     	    };
     $scope.amcSeriveCalls = {
     	        title: 'AMC Service Calls',
@@ -268,7 +289,7 @@ angular.module('theme.demos.dashboard.indi', [
       avgLogPerDay: {
         title: 'Avg Log Per Day',
         text: '0',
-        color: 'grey'
+        color: 'toyo'
       },
       todaysTotalComplaints: {
         title: 'Todays Total',
@@ -298,7 +319,7 @@ angular.module('theme.demos.dashboard.indi', [
       todaysTotalResolvedComplaints: {
           title: 'Todays Total Resolved',
           text: '0',
-          color: 'grey'
+          color: 'toyo'
         },
       todaysPandingComplaints: {
         title: 'Todays Pending',
@@ -342,7 +363,7 @@ angular.module('theme.demos.dashboard.indi', [
     $scope.newCustomerRegistered = {
       title: 'New Customers Registered',
       text: '0',
-      color: 'grey'
+      color: 'toyo'
     };
     $scope.gridOptionsForComplaints = {
       data: 'myComplaintsData',
@@ -466,7 +487,7 @@ angular.module('theme.demos.dashboard.indi', [
               	 var totalCount=0;
                	  for (var i = 0; i < largeLoad.length; i++)
                	  {
-               		 if(largeLoad[i].callStatus== "Assigned"){
+               		 if(largeLoad[i].callStatus== "Assigned"||largeLoad[i].callStatus== "In Progress"){
                			 if(largeLoad[i].totalCallStatusCount!=null){
                				 totalCount=totalCount+largeLoad[i].totalCallStatusCount;
                				$scope.complaintsData.totalAssignedComplaints.text = totalCount;
@@ -566,7 +587,7 @@ angular.module('theme.demos.dashboard.indi', [
     	              	 var totalCount=0;
     	               	  for (var i = 0; i < largeLoad.length; i++)
     	               	  {
-    	               		 if(largeLoad[i].callStatus== "Assigned"){
+    	               		 if(largeLoad[i].callStatus== "Assigned"||largeLoad[i].callStatus== "In Progress"){
     	               			 if(largeLoad[i].todaysCallStatusCount!=null){
     	               				 totalCount=totalCount+largeLoad[i].todaysCallStatusCount;
     	               				$scope.complaintsData.todaysTotalAssignedComplaints.text = totalCount;
@@ -952,7 +973,7 @@ angular.module('theme.demos.dashboard.indi', [
                   if(headerValue==="Todays Assigned"){
 	                	for (var i = 0; i < largeLoad.length; i++) {
 	                		
-	                		if(largeLoad[i].callStatus=="Assigned"){
+	                		if(largeLoad[i].callStatus=="Assigned" || largeLoad[i].callStatus== "In Progress"){
 	                			var dataCount={};
 	                			dataCount.callType=largeLoad[i].callType
 	                			dataCount.todaysCallStatusCount=largeLoad[i].todaysCallStatusCount	                			
@@ -1013,7 +1034,7 @@ angular.module('theme.demos.dashboard.indi', [
                   if(headerValue==="Todays Total Assigned"){
 	                	for (var i = 0; i < largeLoad.length; i++) {
 	                		
-	                		if(largeLoad[i].callStatus=="Assigned"){
+	                		if(largeLoad[i].callStatus=="Assigned" ||largeLoad[i].callStatus== "In Progress"){
 	                			var dataCount={};
 	                			dataCount.callType=largeLoad[i].callType
 	                			dataCount.todaysCallStatusCount=largeLoad[i].todaysCallStatusCount	                			
@@ -1086,7 +1107,7 @@ angular.module('theme.demos.dashboard.indi', [
                   if(headerValue==="Total Assigned"){
 	                	for (var i = 0; i < largeLoad.length; i++) {
 	                		
-	                		if(largeLoad[i].callStatus=="Assigned"){
+	                		if(largeLoad[i].callStatus=="Assigned" ||largeLoad[i].callStatus== "In Progress"){
 	                			var dataCount={};
 	                			dataCount.callType=largeLoad[i].callType
 	                			dataCount.totalCallStatusCount=largeLoad[i].totalCallStatusCount	                			
@@ -1655,9 +1676,8 @@ angular.module('theme.demos.dashboard.indi', [
       	          }
       	        }, 100);
       	    }; 
-        
-        
-        
+
+      	    
         $scope.getActiveAMCCount = function (amcStatus) {
   	        
   	        setTimeout(

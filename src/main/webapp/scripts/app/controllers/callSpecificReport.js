@@ -106,12 +106,12 @@ $scope.loadCallID=function(){
 			}
 		}
 	var dataToSend = {
-				branchCustomerMapId : $scope.selectedCustomer.selected.branchCustomerMapId,
+				//branchCustomerMapId : $scope.selectedCustomer.selected.branchCustomerMapId,
 				listOfLiftCustoMapId:tempLiftId
 		}
 		serviceApi.doPostWithData('/RLMS/report/callSpecificReport',dataToSend)
 				.then(function(callData) {
-					$scope.callID = callData;
+					$scope.complaintNumber = callData;
 				})
 	}
 		if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 1) {

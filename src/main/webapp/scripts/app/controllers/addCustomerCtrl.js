@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 	angular.module('rlmsApp')
-	.controller('addCustomerCtrl', ['$scope', '$filter','serviceApi','$route','utility','$window','$rootScope', function($scope, $filter,serviceApi,$route,utility,$window,$rootScope) {
+	.controller('addCustomerCtrl', ['$scope', '$filter','serviceApi','$route','utility','$window','$rootScope','$http', function($scope, $filter,serviceApi,$route,utility,$window,$rootScope,$http) {
 	initAddCustomer();
 			loadCompayInfo();
 			$scope.alert = { type: 'success', msg: 'You successfully Added Customer.',close:true };
@@ -142,7 +142,7 @@
 					$scope.addCustomerForm.$setUntouched();*/
 				},function(error){
 					$scope.showAlert = true;
-					$scope.alert.msg = exceptionMessage;
+					$scope.alert.msg = error.exceptionMessage;
 					$scope.alert.type = "danger";
 				});
 			}

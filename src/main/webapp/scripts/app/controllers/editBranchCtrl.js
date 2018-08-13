@@ -70,11 +70,11 @@
 				$scope.alert.type = "success";
 				$scope.addBranchForm.$setPristine();
 				$scope.addBranchForm.$setUntouched();
-			},function(error){
+			}/*,function(error){
 				$scope.showAlert = true;
 				$scope.alert.msg = error.exceptionMessage;
 				$scope.alert.type = "danger";
-			});
+			}*/);
 		}
 		//rese add branch
 	/*	$scope.resetEditBranch = function(){

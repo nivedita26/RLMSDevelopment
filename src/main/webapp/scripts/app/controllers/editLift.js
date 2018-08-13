@@ -6,7 +6,7 @@
 		initAddLift();
 		$scope.alert = { type: 'success', msg: 'You successfully Edited Lift.',close:true };
 		$scope.alert = { type: 'error', msg: '',close:false };
-		$scope.displayMachinePhoto=false;
+		/*$scope.displayMachinePhoto=false;
 		$scope.displayPanelPhoto=false;
 		$scope.displayArdPhoto=false;
 		$scope.displayLopPhoto=false;
@@ -14,7 +14,7 @@
 		$scope.displayCarTopPhoto=false;
 		$scope.displayHeaderPhoto=false;
 		$scope.displayWiringPhoto=false;
-		$scope.displayLobbyPhoto=false;
+		$scope.displayLobbyPhoto=false;*/
 		
 		//show popup for selecting lift
 		$scope.setMachinePhoto=function(element,photoType){
@@ -24,47 +24,47 @@
 				if(photoType==="Machine"){
 					$scope.image_source=event.target.result;
 					$scope.displayMachinePhoto=true;
-					$scope.addLift.machinePhoto=$scope.currentFile;
+					$scope.editLift.machinePhoto=$scope.currentFile;
 				}
 				if(photoType==="Panel"){
 					$scope.image_source1=event.target.result;
 					$scope.displayPanelPhoto=true;
-					$scope.addLift.panelPhoto=$scope.currentFile;
+					$scope.editLift.panelPhoto=$scope.currentFile;
 				}
 				if(photoType==="ARD"){
 					$scope.image_source2=event.target.result;
 					$scope.displayArdPhoto=true;
-					$scope.addLift.ardPhoto=$scope.currentFile;
+					$scope.editLift.ardPhoto=$scope.currentFile;
 				}
 				if(photoType==="LOP"){
 					$scope.image_source3=event.target.result;
 					$scope.displayLopPhoto=true;
-					$scope.addLift.lopPhoto=$scope.currentFile;
+					$scope.editLift.lopPhoto=$scope.currentFile;
 				}
 				if(photoType==="COP"){
 					$scope.image_source4=event.target.result;
 					$scope.displayCopPhoto=true;
-					$scope.addLift.copPhoto=$scope.currentFile;
+					$scope.editLift.copPhoto=$scope.currentFile;
 				}
 				if(photoType==="CarTop"){
 					$scope.image_source5=event.target.result;
 					$scope.displayCarTopPhoto=true;
-					$scope.addLift.cartopPhoto=$scope.currentFile;
+					$scope.editLift.cartopPhoto=$scope.currentFile;
 				}
 				if(photoType==="Header"){
 					$scope.image_source6=event.target.result;
 					$scope.displayHeaderPhoto=true;
-					$scope.addLift.autoDoorHeaderPhoto=$scope.currentFile;
+					$scope.editLift.autoDoorHeaderPhoto=$scope.currentFile;
 				}
 				if(photoType==="Wiring"){
 					$scope.image_source7=event.target.result;
 					$scope.displayWiringPhoto=true;
-					$scope.addLift.wiringPhoto=$scope.currentFile;
+					$scope.editLift.wiringPhoto=$scope.currentFile;
 				}
 				if(photoType==="Lobby"){
 					$scope.image_source8=event.target.result;
 					$scope.displayLobbyPhoto=true;
-					$scope.addLift.lobbyPhoto=$scope.currentFile;
+					$scope.editLift.lobbyPhoto=$scope.currentFile;
 				}
 				$scope.apply();
 			};
@@ -312,7 +312,7 @@
 
 					doorType : 0,
 					noOfStops :'',
-					engineType : 0,
+					engineType : '',
 					machineMake : '',
 					machineCapacity : '',
 					machineCurrent : '',
@@ -324,10 +324,10 @@
 					batteryMake : '',
 					copMake : '',
 					lopMake : '',
-					collectiveType : 0,
-					simplexDuplex : 0,
+					collectiveType : '',
+					simplexDuplex : '',
 					autoDoorMake : '',
-					wiringShceme : 0,
+					wiringShceme : '',
 					fireMode : 0,
 					intercomm : '',
 					alarm : 0,
@@ -512,7 +512,7 @@
 				}
 				$scope.alert.type=' ';
 			},function(error){
-				$scope.showAlert = true;
+				$scope.showAlert = false;
 				$scope.alert.msg = error.exceptionMessage;
 				$scope.alert.type = "danger";
 			});
