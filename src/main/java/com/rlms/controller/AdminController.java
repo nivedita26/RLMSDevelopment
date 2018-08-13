@@ -206,7 +206,7 @@ public class AdminController extends BaseController{
 		 ResponseDto reponseDto = new ResponseDto();
 	        try{
 	        	logger.info("Method :: validateAndRegisterNewUser");
-	        	reponseDto.setResponse(true);
+	        	reponseDto.setStatus(true);
 	        	reponseDto.setResponse(this.userService.validateAndRegisterNewUser(dto, this.getMetaInfo()));
 	          }catch(ValidationException vex){
 	        	logger.error(ExceptionUtils.getFullStackTrace(vex));
