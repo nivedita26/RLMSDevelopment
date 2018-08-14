@@ -638,9 +638,11 @@ public class UserServiceImpl implements UserService {
 	@Transactional(propagation = Propagation.REQUIRED)
 	public String updateTechnicianLocation(UserDtlsDto dto,
 			UserMetaInfo metaInfo) {
-		logger.debug("updateTechnicianLocation by time");
+		logger.debug("UpdateTechnicianLocation by time");
 		RlmsUserApplicationMapDtls existingAppDtl = this.customerDao
 				.getUserAppDtls(dto.getUserId(),RLMSConstants.USER_ROLE_TYPE.getId());
+		logger.debug("techapptest");
+		logger.debug("userId"+dto.getUserId()+"userRoleId"+dto.getUserRoleId());
 		if(existingAppDtl !=null) {
 		existingAppDtl.setLatitude(dto.getLatitude());
 		existingAppDtl.setLongitude(dto.getLongitude());
@@ -650,7 +652,8 @@ public class UserServiceImpl implements UserService {
 		return PropertyUtils.getPrpertyFromContext(RlmsErrorType.TECHNICIAN_LOCATION_UPDATED
 				.getMessage());
 		}
-		return "app details not found";
+	//	return "App details is not found";
+		return "";
 	}
 
 	@Override
@@ -667,7 +670,7 @@ public class UserServiceImpl implements UserService {
 			}
 		else {
 			responseDto.setStatus(false);
-			responseDto.setResponse("invalid old password");
+			responseDto.setResponse("Invalid old password");
 		}
 		return responseDto;
 	}
@@ -677,7 +680,7 @@ public class UserServiceImpl implements UserService {
 		RlmsUserRoles userRole = this.userRoleDao.getTechnicianRoleObjByUserNameAndPassword(dtlsDto,	SpocRoleConstants.TECHNICIAN.getSpocRoleId());
 	    UserDtlsDto dto = new UserDtlsDto();	
 		if (null == userRole) {
-			dto.setMsg("invalid user login credentials");
+			dto.setMsg("Invalid login credentials");
 		    return dto;
 		}
 		/*else {
@@ -702,7 +705,7 @@ public class UserServiceImpl implements UserService {
 		}
 		else if(rlmsUsersMaster!=null && !rlmsUsersMaster.getIsLoggedIn()) {
 			responseDto.setStatus(false);
-			responseDto.setResponse("user already logout");
+			responseDto.setResponse("User already logout");
 			return responseDto;
 		}
 		else {
@@ -788,7 +791,7 @@ public class UserServiceImpl implements UserService {
 			 userMasterDao.updateUser(rlmsUsersMaster);
 				try {
 					this.sendForgotPasswordMail(newPassword, rlmsUsersMaster.getEmailId());
-					return "please check mail for new password";
+					return "Please check mail for new password";
 				} catch (InvalidKeyException e) {
 					e.printStackTrace();
 					return "server error";
@@ -797,7 +800,7 @@ public class UserServiceImpl implements UserService {
 					return "server error";
 				}
 		}
-		return "account is not found for this emailId";
+		return "Account is not found for this emailId";
 	}
 	private void sendForgotPasswordMail(String password,String emailId)
 			throws InvalidKeyException, Exception {
