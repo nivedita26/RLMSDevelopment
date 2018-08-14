@@ -197,9 +197,6 @@
 </div>
 
 
-
-
-
 <div class="rlms-wrapper">
 <div class="rlms-container" ng-controller="DashboardControllerInditech" ng-show="showDasboardForInditech">
 <h1 class="rlms-heading">Dashboard</h1>
@@ -236,7 +233,7 @@
             <div class="row">
 				<div class="col-xs-6" style="color: red">
 				<span ng-show="loading"><img id="mySpinner" style="width:140px; height:140px;" src="assets/img/loader2.gif"  /></span>
-					<a ng-hide="loading" class="info-tiles tiles-{{event.inout.color}}" ng-click="openDemoModalForEvents('events','Event','Event','List of LMS Events')">
+					<a ng-hide="loading" class="info-tiles tiles-{{event.inout.color}}" ng-click="openDemoModalForEvents('events','Events','Event','List of LMS Events')">
 						<div class="tiles-heading">
 						<div class="text-center">{{event.inout.title}}</div>
 						</div>
@@ -247,7 +244,7 @@
 				</div>
 				<div class="col-xs-6" style="color: yellow">
 				<span ng-show="loading"><img id="mySpinner" style="width:140px; height:140px;" src="assets/img/loader2.gif"  /></span>
-					<a ng-hide="loading" class="info-tiles tiles-{{event.error.color}}" ng-click="openDemoModalForEvents('events','Error','Error','List of LMS Errors')">
+					<a ng-hide="loading" class="info-tiles tiles-{{event.error.color}}" ng-click="openDemoModalForEvents('events','Errors','Error','List of LMS Errors')">
 						<div class="tiles-heading">
 						<div class="text-center">{{event.error.title}}</div>						
 						</div>

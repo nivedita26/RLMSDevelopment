@@ -2685,8 +2685,7 @@ angular.module('theme.demos.dashboard.indi', [
 	        	  var dataToSend = $scope
 	              .constructDataToSendForAllLiftStatus();
 	            serviceApi
-	              .doPostWithData(
-	              '/RLMS/dashboard/getEventCountForLift',
+	              .doPostWithData('/RLMS/dashboard/getEventCountForLift',
 	              dataToSend)
 	              .then(
 	              function (
@@ -2739,6 +2738,65 @@ angular.module('theme.demos.dashboard.indi', [
 	                //  $scope.event.inout.text=largeLoad.length;
 	              });
 	          }, 100);
+	        
+	        setTimeout(
+	  	          function () {
+	  	        	  var dataToSend = $scope
+	  	              .constructDataToSendForAllLiftStatus();
+	  	            serviceApi
+	  	              .doPostWithData('/RLMS/dashboard/getTodaysEventCountForLift',
+	  	              dataToSend)
+	  	              .then(
+	  	              function (
+	  	                largeLoad) {
+	  	            	  if (eventType=="Event") {
+	  		                  /*$scope.inout = largeLoad.filter(function (item) {
+	  		                    //return item.eventType === "EVENT";
+	  		                    return item.eventType==="EVENT";
+	  		                  });*/
+	  	            		  var totalCount= 0;
+	  	  	                	for (var i = 0; i < largeLoad.length; i++) {
+	  	  	                		
+	  	  	                		if(largeLoad[i].totolEventCount!=null){
+	  	  	                			totalCount=totalCount+largeLoad[i].totolEventCount;
+	  	  	                			
+	  	  	                		}else{
+	  	  	                			$scope.event.todaysEvents.text="0";
+	  	  	                		}
+	  	  	                	}
+	  	  	                	 $scope.event.todaysEvents.text=totalCount;
+	  		                }
+	  	            	  if (eventType=="Error") {
+	  		                  /*$scope.error = largeLoad.filter(function (item) {
+	  		                    return item.eventType === "ERROR";
+	  		                  });*/
+	  	            		  var totalCount= 0;
+	  	  	                	for (var i = 0; i < largeLoad.length; i++) {
+	  	  	                		if(largeLoad[i].totalErrorCount!=null){
+	  	  	                			totalCount=totalCount+largeLoad[i].totalErrorCount;
+	  	  	                			
+	  	  	                		}else{
+	  	  	                			$scope.event.todaysErrors.text="0";
+	  	  	                		}
+	  	  	                	}
+	  	  	                	$scope.event.todaysErrors.text=totalCount;
+
+	  	            	  }
+	  	            	  if (eventType=="Response") {
+	  	            		  var totalCount= 0;
+	    	                	for (var i = 0; i < largeLoad.length; i++) {
+	    	                		if(largeLoad[i].totalResCount!=null){
+	    	                			totalCount=totalCount+largeLoad[i].totalResCount;
+	    	                			
+	    	                		}else{
+	    	                			$scope.event.todaysResponses.text="0";
+	    	                		}
+	    	                	}
+	    	                	$scope.event.todaysResponses.text=totalCount;
+	  	            	  }
+	  	                //  $scope.event.inout.text=largeLoad.length;
+	  	              });
+	  	          }, 100);
 	      };
       //add event api call
      /*$scope.getCountForEvent = function (eventName) {
@@ -2757,11 +2815,14 @@ angular.module('theme.demos.dashboard.indi', [
 	      $scope.getCountForEvent("Event");
 	      $scope.getCountForEvent("Error");
 	      $scope.getCountForEvent("Response");
-          $scope.getPagedDataAsyncForEvents = function (pageSize,page, searchText, eventType) {
+          $scope.getPagedDataAsyncForEvents = function (pageSize,page, searchText, eventType,headerValue) {
     	  var url;
     	  var dataToSend = $scope.constructDataToSendForAllLiftStatus();
-    	     url = '/RLMS/dashboard/getEventCountForLift',
-     	      //  url = '/RLMS/report/getListOfEvents',
+    	  if(headerValue==="Events" || headerValue==="Errors"|| headerValue==="Responses" ){
+    	     url = '/RLMS/dashboard/getEventCountForLift'
+    	  }else{
+    		  url = '/RLMS/dashboard/getTodaysEventCountForLift'
+    	  }
     	      setTimeout(
     	        function () {
     	          var data;
@@ -2951,7 +3012,7 @@ angular.module('theme.demos.dashboard.indi', [
           $scope.modalHeaderVal = headerValue;
           $scope.modalHeading = headingValue;
           $scope.activeFlagForEvents = activeFlag;
-          $scope.getPagedDataAsyncForEvents($scope.pagingOptionsForComplaints.pageSize, $scope.pagingOptionsForComplaints.currentPage, "",activeFlag); 
+          $scope.getPagedDataAsyncForEvents($scope.pagingOptionsForComplaints.pageSize, $scope.pagingOptionsForComplaints.currentPage, "",activeFlag,headerValue); 
           $scope.modalInstance = $modal.open({
             templateUrl: 'demoModalContent.html',
             scope: $scope
