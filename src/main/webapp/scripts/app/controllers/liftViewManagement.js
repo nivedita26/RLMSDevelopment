@@ -77,7 +77,7 @@
 				name:'Duplex'
 			},
 			{
-				id:1,
+				id:2,
 				name:'Group'
 			}
 		];
@@ -93,7 +93,7 @@
 			}
 		];
 		//intercom
-		$rootScope.Intercomm=[
+		$rootScope.Intercomms=[
 			{
 				id:1,
 				name:'Yes'
@@ -104,7 +104,7 @@
 			}
 		];
 		//Alarm
-		$rootScope.Alarm=[
+		$rootScope.Alarms=[
 			{
 				id:1,
 				name:'Yes'

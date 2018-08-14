@@ -24,47 +24,47 @@
 				if(photoType==="Machine"){
 					$scope.image_source=event.target.result;
 					$scope.displayMachinePhoto=true;
-					$scope.editLift.machinePhoto=$scope.currentFile;
+					$scope.addLift.machinePhoto=$scope.currentFile;
 				}
 				if(photoType==="Panel"){
 					$scope.image_source1=event.target.result;
 					$scope.displayPanelPhoto=true;
-					$scope.editLift.panelPhoto=$scope.currentFile;
+					$scope.addLift.panelPhoto=$scope.currentFile;
 				}
 				if(photoType==="ARD"){
 					$scope.image_source2=event.target.result;
 					$scope.displayArdPhoto=true;
-					$scope.editLift.ardPhoto=$scope.currentFile;
+					$scope.addLift.ardPhoto=$scope.currentFile;
 				}
 				if(photoType==="LOP"){
 					$scope.image_source3=event.target.result;
 					$scope.displayLopPhoto=true;
-					$scope.editLift.lopPhoto=$scope.currentFile;
+					$scope.addLift.lopPhoto=$scope.currentFile;
 				}
 				if(photoType==="COP"){
 					$scope.image_source4=event.target.result;
 					$scope.displayCopPhoto=true;
-					$scope.editLift.copPhoto=$scope.currentFile;
+					$scope.addLift.copPhoto=$scope.currentFile;
 				}
 				if(photoType==="CarTop"){
 					$scope.image_source5=event.target.result;
 					$scope.displayCarTopPhoto=true;
-					$scope.editLift.cartopPhoto=$scope.currentFile;
+					$scope.addLift.cartopPhoto=$scope.currentFile;
 				}
 				if(photoType==="Header"){
 					$scope.image_source6=event.target.result;
 					$scope.displayHeaderPhoto=true;
-					$scope.editLift.autoDoorHeaderPhoto=$scope.currentFile;
+					$scope.addLift.autoDoorHeaderPhoto=$scope.currentFile;
 				}
 				if(photoType==="Wiring"){
 					$scope.image_source7=event.target.result;
 					$scope.displayWiringPhoto=true;
-					$scope.editLift.wiringPhoto=$scope.currentFile;
+					$scope.addLift.wiringPhoto=$scope.currentFile;
 				}
 				if(photoType==="Lobby"){
 					$scope.image_source8=event.target.result;
 					$scope.displayLobbyPhoto=true;
-					$scope.editLift.lobbyPhoto=$scope.currentFile;
+					$scope.addLift.lobbyPhoto=$scope.currentFile;
 				}
 				$scope.apply();
 			};
@@ -502,8 +502,8 @@
 				$scope.alert.type = "success";
 				//resetAddLift();
 				initAddLift();
-				$scope.addLiftForm.$setPristine();
-				$scope.addLiftForm.$setUntouched();
+				$scope.editLiftForm.$setPristine();
+				$scope.editLiftForm.$setUntouched();
 		     	}
 				else{
 					$scope.showAlert = true;
@@ -522,8 +522,8 @@
 		$scope.resetEditLift = function(){
 			$scope.showAlert = false;
 			initAddLift();
-			$scope.addLiftForm.$setPristine();
-			$scope.addLiftForm.$setUntouched();
+			$scope.editLiftForm.$setPristine();
+			$scope.editLiftForm.$setUntouched();
 		}
 		
 	}]);
