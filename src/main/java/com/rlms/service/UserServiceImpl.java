@@ -592,18 +592,18 @@ public class UserServiceImpl implements UserService {
 	public String validateAndEditUser(UserDtlsDto userDto, UserMetaInfo metaInfo)
 			throws ValidationException {
 		String statusMessage = "User updated successfully";
-		RlmsUsersMaster userMaster = this.userMasterDao.getUserByUserId(userDto
-				.getUserId());
+		RlmsUsersMaster userMaster = this.userMasterDao.getUserByUserId(userDto.getUserId());
 		userMaster.setFirstName(userDto.getFirstName());
 		userMaster.setLastName(userDto.getLastName());
 		userMaster.setAddress(userDto.getAddress());
-		if(!userDto.getContactNumber().equals(userMaster.getContactNumber())) {
+		/*RlmsUsersMaster usersMaster =  userMasterDao.getUserByMobileNumber(userDto.getContactNumber());
+		if(usersMaster == null) {
 			userMaster.setContactNumber(userDto.getContactNumber());
 		}
 		else {
-		return 	RlmsErrorType.USER_MOBILE_NUMBER_ALREADY_REGISTERED
-					.getMessage();
-		}
+			return 	RlmsErrorType.USER_MOBILE_NUMBER_ALREADY_REGISTERED
+						.getMessage();
+		}*/
 		userMaster.setEmailId(userDto.getEmailId());
 		userMaster.setCity(userDto.getCity());
 		userMaster.setArea(userDto.getArea());
@@ -629,7 +629,6 @@ public class UserServiceImpl implements UserService {
 			if(rlmsUserRoles.getRlmsSpocRoleMaster().getSpocRoleId() == SpocRoleConstants.TECHNICIAN.getSpocRoleId()) {
 				rlmsUserRoles.setActiveFlag(RLMSConstants.INACTIVE.getId());
 				userMasterDao.mergerUserRole(rlmsUserRoles);
-				
 				this.sendNotificationsAboutUserDeactivation(rlmsUserRoles);
 			}
 		}
@@ -683,12 +682,6 @@ public class UserServiceImpl implements UserService {
 			dto.setMsg("Invalid login credentials");
 		    return dto;
 		}
-		/*else {
-			if(userRole.getRlmsUserMaster().getIsLoggedIn()) {
-				dto.setMsg("user already loggedin");
-				return dto;
-			}
-		}*/
 		this.registerUserDevice(dtlsDto, userRole, metaInfo);
 		return this.constructMemberDltsSto(userRole);
 	}

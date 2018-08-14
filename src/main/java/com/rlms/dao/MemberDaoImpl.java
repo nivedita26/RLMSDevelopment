@@ -28,4 +28,14 @@ public class MemberDaoImpl  implements MemberDao{
         	RlmsMemberMaster  memberMaster = (RlmsMemberMaster) criteria.uniqueResult();
 			 return memberMaster;
 	}
+
+	@Override
+	public RlmsMemberMaster getMemberByContactNumber(String contactNumber) {
+		 Session session = this.sessionFactory.getCurrentSession();
+		 Criteria criteria = session.createCriteria(RlmsMemberMaster.class)
+		.add(Restrictions.eq("contactNumber",contactNumber))
+		 .add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
+    	RlmsMemberMaster  memberMaster = (RlmsMemberMaster) criteria.uniqueResult();
+		 return memberMaster;
+	}
 }

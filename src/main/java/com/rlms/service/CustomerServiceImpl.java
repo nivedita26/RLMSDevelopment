@@ -59,6 +59,9 @@ public class CustomerServiceImpl implements CustomerService{
 	@Autowired
 	private UserRoleDao userRoleDao;
 	
+	@Autowired
+	private MemberDao memberDao;
+	
 	public RlmsCustomerMaster getCustomerByEmailId(String emailId){
 		return this.customerDao.getCustomerByEmailId(emailId);
 	}
@@ -266,12 +269,19 @@ public class CustomerServiceImpl implements CustomerService{
 	public String validateAndUpdateNewMember(MemberDtlsDto memberDtlsDto, UserMetaInfo metaInfo) throws ValidationException{
 		String statusMessage = "";
 		RlmsMemberMaster memberMaster = this.customerDao.getMemberById(memberDtlsDto.getMemberId()) ;
-		
 		if(memberMaster!=null){
 	      //memberMaster = this.constructMemberMaster(memberDtlsDto, memberMaster,metaInfo);
 	        memberMaster.setAddress(memberDtlsDto.getAddress());
-			memberMaster.setContactNumber(memberDtlsDto.getContactNumber());
-			memberMaster.setEmailId(memberDtlsDto.getEmailId());
+	  /*      RlmsMemberMaster rlmsMemberMaster = memberDao.getMemberByContactNumber(memberDtlsDto.getContactNumber());
+	        if(rlmsMemberMaster == null) {
+	        	  memberMaster.setContactNumber(memberDtlsDto.getContactNumber());
+	        }
+	        else {
+	        	return 	RlmsErrorType.USER_MOBILE_NUMBER_ALREADY_REGISTERED
+						.getMessage();
+	        }*/
+	        memberMaster.setContactNumber(memberDtlsDto.getContactNumber());
+		    memberMaster.setEmailId(memberDtlsDto.getEmailId());
 			memberMaster.setFirstName(memberDtlsDto.getFirstName());
 			memberMaster.setLastName(memberDtlsDto.getLastName());
 			memberMaster.setCity(memberDtlsDto.getCity());
