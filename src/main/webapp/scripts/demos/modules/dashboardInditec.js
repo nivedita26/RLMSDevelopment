@@ -39,15 +39,11 @@ angular.module('theme.demos.dashboard.indi', [
         });
       };
     });
-    
-    
     //spinner end
-    
-    
+
     $scope.showCompanies=false;
     $scope.showAmc=true;
     $scope.showBranches=false;
-    
     $rootScope.showDasboardForInditech=false;
     $rootScope.showDasboardForOthers=false;
     //$rootScope.showDashboardForOperator=false;

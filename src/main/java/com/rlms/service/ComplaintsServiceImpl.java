@@ -497,6 +497,9 @@ private boolean isServiceCallToShow(Date regDate,Date serviceStartDate){
 			dto.setRemark(rlmsComplaintMaster.getRemark());
 			dto.setServiceStartDate(rlmsComplaintMaster.getServiceStartDate());
 			dto.setLiftCustoMapId(rlmsComplaintMaster.getLiftCustomerMap().getLiftCustomerMapId());
+			dto.setTitle(rlmsComplaintMaster.getTitle());
+			dto.setLiftAddress(rlmsComplaintMaster.getLiftCustomerMap().getLiftMaster().getAddress());
+			
 			if(Status.PENDING.getStatusId().equals(rlmsComplaintMaster.getStatus())){
 				dto.setStatus(Status.PENDING.getStatusMsg());
 			}else if(Status.ASSIGNED.getStatusId().equals(rlmsComplaintMaster.getStatus())){
