@@ -2759,12 +2759,12 @@ angular.module('theme.demos.dashboard.indi', [
 	  	  	                		
 	  	  	                		if(largeLoad[i].totolEventCount!=null){
 	  	  	                			totalCount=totalCount+largeLoad[i].totolEventCount;
-	  	  	                			
+	  	  	                		 $scope.event.todaysEvents.text=totalCount;
 	  	  	                		}else{
-	  	  	                			$scope.event.todaysEvents.text="0";
+	  	  	                			$scope.event.todaysEvents.text==='0';
 	  	  	                		}
 	  	  	                	}
-	  	  	                	 $scope.event.todaysEvents.text=totalCount;
+	  	  	                	
 	  		                }
 	  	            	  if (eventType=="Error") {
 	  		                  /*$scope.error = largeLoad.filter(function (item) {
@@ -2774,12 +2774,12 @@ angular.module('theme.demos.dashboard.indi', [
 	  	  	                	for (var i = 0; i < largeLoad.length; i++) {
 	  	  	                		if(largeLoad[i].totalErrorCount!=null){
 	  	  	                			totalCount=totalCount+largeLoad[i].totalErrorCount;
-	  	  	                			
+	  	  	                		$scope.event.todaysErrors.text=totalCount;
 	  	  	                		}else{
-	  	  	                			$scope.event.todaysErrors.text="0";
+	  	  	                			$scope.event.todaysErrors.text==='0';
 	  	  	                		}
 	  	  	                	}
-	  	  	                	$scope.event.todaysErrors.text=totalCount;
+	  	  	                	
 
 	  	            	  }
 	  	            	  if (eventType=="Response") {
@@ -2787,12 +2787,12 @@ angular.module('theme.demos.dashboard.indi', [
 	    	                	for (var i = 0; i < largeLoad.length; i++) {
 	    	                		if(largeLoad[i].totalResCount!=null){
 	    	                			totalCount=totalCount+largeLoad[i].totalResCount;
-	    	                			
+	    	                			$scope.event.todaysResponses.text=totalCount;
 	    	                		}else{
-	    	                			$scope.event.todaysResponses.text="0";
+	    	                			$scope.event.todaysResponses.text==='0';
 	    	                		}
 	    	                	}
-	    	                	$scope.event.todaysResponses.text=totalCount;
+	    	                	
 	  	            	  }
 	  	                //  $scope.event.inout.text=largeLoad.length;
 	  	              });
