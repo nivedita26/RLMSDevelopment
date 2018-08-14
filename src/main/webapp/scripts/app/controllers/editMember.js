@@ -50,18 +50,23 @@
 					pinCode:$scope.editMember.pinCode,
 					};
 			serviceApi.doPostWithData("/RLMS/admin/validateAndUpdateMember",memberData)
-			.then(function(response){
-				$scope.showAlert = true;
-				var key = Object.keys(response);
-				var successMessage = response[key[0]];
-				$scope.alert.msg = successMessage;
-				$scope.alert.type = "success";
-				initEditMember();
-				//$scope.addMemberForm.$setPristine();
-				//$scope.addMemberForm.$setUntouched();
+			.then(function(response){$scope.showAlert = true;
+			var key = Object.keys(response);
+			var successMessage = response[key[0]];
+				if(successMessage){
+					$scope.alert.msg = "You successfully Added Member.";
+					$scope.alert.type = "success";
+					initAddMember();
+					$scope.addBranchForm.$setPristine();
+					$scope.addBranchForm.$setUntouched();
+				}else{
+					$scope.showAlert = true;
+					$scope.alert.msg =  response[key[1]];
+					$scope.alert.type="danger";
+				}
 			},function(error){
-				$scope.showAlert = true;
-				$scope.alert.msg = error.exceptionMessage;
+				$scope.showAlert = false;
+				$scope.alert.msg = error;
 				$scope.alert.type = "danger";
 			});
 		}

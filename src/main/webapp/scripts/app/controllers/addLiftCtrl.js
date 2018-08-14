@@ -201,7 +201,7 @@
 			$scope.selectedCustomer = {};
 			$scope.selectedCustomerType={};
 			$scope.selectedAlarm={};
-			$scope.selectedIntercommType={};
+			$scope.selectedIntercomm={};
 			$scope.selectedAMCType={};
 			$scope.selectedDoorType={};
 			$scope.selectedEngineMachineType={};
@@ -363,9 +363,9 @@
 					amcType : 0,
 					amcAmount : 0,
 
-					doorType : 0,
+					doorType : '',
 					noOfStops : 0,
-					engineType : 0,
+					engineType : '',
 					machineMake : '',
 					machineCapacity : '',
 					machineCurrent : '',
@@ -377,10 +377,10 @@
 					batteryMake : '',
 					copMake : '',
 					lopMake : '',
-					collectiveType : 0,
-					simplexDuplex : 0,
+					collectiveType : '',
+					simplexDuplex : '',
 					autoDoorMake : '',
-					wiringShceme : 0,
+					wiringShceme : '',
 					fireMode : 0,
 					intercomm : '',
 					alarm : '',
@@ -552,7 +552,7 @@
 				}
 				$scope.alert.type=' ';
 			},function(error){
-				$scope.showAlert = true;
+				$scope.showAlert = false;
 				$scope.alert.msg = error.exceptionMessage;
 				$scope.alert.type = "danger";
 			});

@@ -90,7 +90,7 @@
 					if(successMessage){
 						$scope.alert.msg = "You successfully Added Member.";
 						$scope.alert.type = "success";
-						initAddCustomer();
+						initAddMember();
 						$scope.addBranchForm.$setPristine();
 						$scope.addBranchForm.$setUntouched();
 					}else{

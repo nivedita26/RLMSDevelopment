@@ -6,7 +6,6 @@
 		initAddBranch();
 		loadCompayInfo();
 		$scope.alert = { type: 'success', msg: 'You successfully Added Branch.',close:true };
-		//$scope.alert = { type: 'error', msg: 'Please fill the Required Field',close:true };
 		//loadBranchListInfo();
 		$scope.showCompany = false;
 		$scope.showAlert = false;

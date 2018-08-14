@@ -702,7 +702,7 @@
 						$rootScope.viewLift.area=row.Area;
 						$rootScope.viewLift.liftNumber=row.Lift_Number;
 						$rootScope.viewLift.amcEndDate=row.Amc_End_Date;
-						$rootScope.viewLift.amcType=row.amcType;
+						$rootScope.viewLift.amcType=row.amcTypeStr;
 						$rootScope.viewLift.amcAmount=row.Amc_Amount;
 						$rootScope.viewLift.pinCode=row.PinCode;						
 						$rootScope.viewLift.latitude=row.Latitude;

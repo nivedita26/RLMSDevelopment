@@ -52,7 +52,7 @@ angular
    	          label: 'Manage Operations',
    	          url: '#/complaint-management'
    	      },{
-   	          label: 'View Lifts',
+   	          label: 'Manage Lifts',
    	          url: '#/lift-view-management'
    	      }
    	      ]

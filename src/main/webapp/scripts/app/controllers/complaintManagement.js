@@ -22,6 +22,7 @@
 //							loadBranchData();
 								$scope.showCompany = false;
 								$scope.showBranch = false;
+								$rootScope.showDashboardForOperator=true;
 								
 								$scope.goToAddComplaint = function() {
 									window.location.hash = "#/add-complaint";
@@ -964,8 +965,8 @@
 										}
 										dataToSend["listOfLiftCustoMapId"] = tempLiftIds;
 										dataToSend["statusList"] = tempStatus;
-										dataToSend["fromDate"]=moment($scope.datePicker.date.startDate).format('YYYY-MM-DD');//$scope.date.startDate;
-										dataToSend["toDate"]=moment($scope.datePicker.date).format('YYYY-MM-DD');
+										//dataToSend["fromDate"]=moment($scope.datePicker.date.startDate).format('YYYY-MM-DD');//$scope.date.startDate;
+										//dataToSend["toDate"]=moment($scope.datePicker.date).format('YYYY-MM-DD');
 									}
 									return dataToSend;
 								}
