@@ -441,7 +441,7 @@
 		    	var serviceEdDate=new Date();
 		    	serviceEdDate.setMonth(serviceStDate.getMonth()+warrantyPeriod);
 		    	serviceEdDate.setDate(serviceStDate.getDate()-1);
-		    	//serviceEdDate.setFullYear(serviceStDate.getFullYear());
+		    	serviceEdDate.setFullYear(serviceStDate.getFullYear());
 		    	serviceEdDate=serviceEdDate.toISOString().slice(0, 10);
 		    	$scope.addLift.serviceEndDate=serviceEdDate;
 		    }
