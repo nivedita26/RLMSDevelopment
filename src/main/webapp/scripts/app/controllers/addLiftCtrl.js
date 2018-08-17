@@ -437,11 +437,12 @@
 		    	if ($scope.addLift.serviceStartDate){
 			    	  var serviceStDate=$scope.addLift.serviceStartDate;  	  
 			      }
+		    	serviceStDate.setDate(serviceStDate.getDate()+1);
 		    	var warrantyPeriod=$scope.warrantyPeriod;
-		    	var serviceEdDate=new Date();
+		    	var serviceEdDate=new Date(serviceStDate);
 		    	serviceEdDate.setMonth(serviceStDate.getMonth()+warrantyPeriod);
 		    	serviceEdDate.setDate(serviceStDate.getDate()-1);
-		    	serviceEdDate.setFullYear(serviceStDate.getFullYear());
+		    	//serviceEdDate.setFullYear(serviceStDate.getFullYear());
 		    	serviceEdDate=serviceEdDate.toISOString().slice(0, 10);
 		    	$scope.addLift.serviceEndDate=serviceEdDate;
 		    }

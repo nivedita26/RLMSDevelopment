@@ -176,110 +176,7 @@
 			$scope.selectedCollectiveType={};
 			$scope.selectedSimplexDuplex={};
 			$scope.selectedWiringScheme={};
-			$scope.customerType=[
-					{
-						id:0,
-						name:'Residential'
-					},
-					{
-						id:1,
-						name:'Commercial'
-					},
-					{
-						id:2,
-						name:'Bunglow'
-					},
-					{
-						id:3,
-						name:'Hospital'
-					},
-					{
-						id:4,
-						name:'Goods'
-					},
-					{
-						id:5,
-						name:"Dumb Waiter"
-					}
-			];
-/*			//AMC Type
-			$scope.AMCType=[
-				{
-					id:42,
-					name:'Comprehensive'
-				},
-				{
-					id:43,
-					name:'NonComprehensive'
-				},
-				{
-					id:44,
-					name:'On Demand'
-				},
-				{
-					id:45,
-					name:'Other'
-				},
-			];
-			//Door Type
-			$scope.DoorType=[
-				{
-					id:0,
-					name:'Auto Door'
-				},
-				{
-					id:1,
-					name:'Manual Door'
-				}
-			];
-			//Engine-Machine Type
-			$scope.EngineMachineType=[
-				{
-					id:0,
-					name:'Geared'
-				},
-				{
-					id:1,
-					name:'Gearless'
-				}
-			];
-			//Collective Type
-			$scope.CollectiveType=[
-				{
-					id:0,
-					name:'Down Collective'
-				},
-				{
-					id:1,
-					name:'Full Collective'
-				}
-			];
-			//SimplexDuplex - Group
-			$scope.SimplexDuplex=[
-				{
-					id:0,
-					name:'Simplex'
-				},
-				{
-					id:1,
-					name:'Duplex'
-				},
-				{
-					id:1,
-					name:'Group'
-				}
-			];
-			//WiringScheme
-			$scope.WiringScheme=[
-				{
-					id:0,
-					name:'Pluggable'
-				},
-				{
-					id:1,
-					name:'NonPluggable'
-				}
-			];*/
+
 			$scope.addLift={
 					customerName:'',
 					fyaTranId:null,
@@ -459,29 +356,26 @@
 			
 			}
 			
-			/*parseBase64();
+		/*	parseBase64();
 			//addLift.customerType = $scope.selectedCustomerType;
 			
-        if($scope.selectedAMCType.selected){
-	      $scope.addLift.amcType = $scope.selectedAMCType.selected.id;
-       }
 	    	if($scope.selectedAMCType.selected){
-	    			$scope.addLift.amcType = $scope.selectedAMCType.selected.id;
+	    			$scope.editLift.amcType = $scope.selectedAMCType.selected.id;
 		}
 			if($scope.selectedDoorType.selected){
-				$scope.addLift.doorType = $scope.selectedDoorType.selected.id;
+				$scope.editLift.doorType = $scope.selectedDoorType.selected.id;
 			}
 			if($scope.selectedEngineMachineType.selected){
-				$scope.addLift.engineType = $scope.selectedEngineMachineType.selected.id;
+				$scope.editLift.engineType = $scope.selectedEngineMachineType.selected.id;
 			}
 			if($scope.selectedCollectiveType.selected){
-				$scope.addLift.collectiveType = $scope.selectedCollectiveType.selected.id;
+				$scope.editLift.collectiveType = $scope.selectedCollectiveType.selected.id;
 		    }
 		   if($scope.selectedSimplexDuplex.selected){
-			   $scope.addLift.simplexDuplex = $scope.selectedSimplexDuplex.selected.id;
+			   $scope.editLift.simplexDuplex = $scope.selectedSimplexDuplex.selected.id;
 		   }
 		   if($scope.selectedWiringScheme.selected){
-			$scope.addLift.wiringShceme = $scope.selectedWiringScheme.selected.id;
+			$scope.editLift.wiringShceme = $scope.selectedWiringScheme.selected.id;
 		   }
 			
 			if($scope.addLift.fireMode){
@@ -497,7 +391,7 @@
 				$scope.showAlert = true;
 				var key = Object.keys(response);
 				var successMessage = response[key[0]];
-				if(successMessage!=false){
+				if(successMessage){
 				$scope.alert.msg = response[key[1]];
 				$scope.alert.type = "success";
 				//resetAddLift();
@@ -510,7 +404,7 @@
 					$scope.alert.msg =  response[key[1]];
 					$scope.alert.type="danger";
 				}
-				$scope.alert.type=' ';
+				//$scope.alert.type=' ';
 			},function(error){
 				$scope.showAlert = false;
 				$scope.alert.msg = error.exceptionMessage;

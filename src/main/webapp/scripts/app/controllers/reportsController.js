@@ -148,7 +148,7 @@
 	  	  }
 	  	  function constructDataToSend(){
 	  		var tempStatus = [];
-	 // 		if($scope.selectedStatus.selected){
+	 		if($scope.selectedStatus.selected){
 	  		//	if($scope.selectedStatus.selected.length===0){
 	  				//alert("Please select status");
 	  		//	}else{
@@ -156,7 +156,7 @@
 	  						tempStatus.push($scope.selectedStatus.selected.id);
 	  		//		}
 	  		//	}
-	  	///	}
+	  		}
 	  		
 			
 	  		var tempbranchCustomerMapIds = [];

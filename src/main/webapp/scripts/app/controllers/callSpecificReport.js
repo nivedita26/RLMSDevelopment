@@ -3,6 +3,7 @@
 	angular.module('rlmsApp')
 	.controller('callSpecificReportCtrl', ['$scope', '$filter','serviceApi','$route','$http','utility','$rootScope', function($scope, $filter,serviceApi,$route,$http,utility,$rootScope) {
 		initReport();
+		loadCompanyData();
 		$scope.cutomers=[];
 		$scope.showCompany = false;
 		$scope.showBranch = false;
@@ -10,6 +11,7 @@
 		  	      filterText: '',
 		  	      useExternalFilter: true
 		  	    };
+		
 		$scope.loadCustomerData = function(){
 			var branchData ={};
   	    	if($scope.showBranch == true){
@@ -43,6 +45,7 @@
 			 $scope.selectedCallID= {};
 			 $scope.selectedAmc = {};
 			 $scope.showMembers = false;
+			 loadCompanyData();
 			 			 
 		} 
 		// showCompnay Flag
@@ -111,7 +114,8 @@ $scope.loadCallID=function(){
 		}
 		serviceApi.doPostWithData('/RLMS/report/callSpecificReport',dataToSend)
 				.then(function(callData) {
-					$scope.complaintNumber = callData;
+					$scope.callID = callData;
+					$scope.selectedCallID.selected = undefined;
 				})
 	}
 		if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 1) {
@@ -801,15 +805,12 @@ $scope.loadCallID=function(){
 			}*/
 	  		//tempbranchCustomerMapIds.push($scope.selectedCustomer.selected.branchCustomerMapId);
 			
-			/*if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 3) {
-				$scope.companyBranchMapIdForCustomer=$rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls.companyBranchMapId;
-			}else{
-				$scope.companyBranchMapIdForCustomer=$scope.selectedBranch.selected.companyBranchMapId;
-			}*/
+	  		if($scope.selectedCallID.selected){
+	  			var complaintNo;
+	  			complaintNo=$scope.selectedCallID.selected.complaintNumber;
+	  		}
 	  		var data = {
-	  				//listOfUserRoleIds:tempListOfUserRoleIds,
-	  				//listOfEventTypeIds:tempStatus,
-	  				complaintId:$scope.selectedCallID.selected.complaintNumber,
+	  				complaintId:complaintNo,
 	  				listOfLiftCustoMapId:tempLiftId,
 	  				branchCustomerMapId:$scope.selectedCustomer.selected.branchCustomerMapId
 	  		};

@@ -2764,7 +2764,6 @@ angular.module('theme.demos.dashboard.indi', [
 	  	  	                			$scope.event.todaysEvents.text==='0';
 	  	  	                		}
 	  	  	                	}
-	  	  	                	
 	  		                }
 	  	            	  if (eventType=="Error") {
 	  		                  /*$scope.error = largeLoad.filter(function (item) {
@@ -2779,8 +2778,6 @@ angular.module('theme.demos.dashboard.indi', [
 	  	  	                			$scope.event.todaysErrors.text==='0';
 	  	  	                		}
 	  	  	                	}
-	  	  	                	
-
 	  	            	  }
 	  	            	  if (eventType=="Response") {
 	  	            		  var totalCount= 0;
@@ -2792,7 +2789,6 @@ angular.module('theme.demos.dashboard.indi', [
 	    	                			$scope.event.todaysResponses.text==='0';
 	    	                		}
 	    	                	}
-	    	                	
 	  	            	  }
 	  	                //  $scope.event.inout.text=largeLoad.length;
 	  	              });
@@ -2815,10 +2811,10 @@ angular.module('theme.demos.dashboard.indi', [
 	      $scope.getCountForEvent("Event");
 	      $scope.getCountForEvent("Error");
 	      $scope.getCountForEvent("Response");
-          $scope.getPagedDataAsyncForEvents = function (pageSize,page, searchText, eventType,headerValue) {
+          $scope.getPagedDataAsyncForEvents = function (pageSize,page, searchText, eventType,headingValue) {
     	  var url;
     	  var dataToSend = $scope.constructDataToSendForAllLiftStatus();
-    	  if(headerValue==="Events" || headerValue==="Errors"|| headerValue==="Responses" ){
+    	  if(headingValue==="Events" || headingValue==="Errors"|| headingValue==="Responses" ){
     	     url = '/RLMS/dashboard/getEventCountForLift'
     	  }else{
     		  url = '/RLMS/dashboard/getTodaysEventCountForLift'
@@ -2941,9 +2937,6 @@ angular.module('theme.demos.dashboard.indi', [
   	            	  		}
   	            	  	}
   	            	  if (eventType=="Response") {  	            		  
-	            	  		/*largeLoad= largeLoad.filter(function (item) {
-		                    return item.eventType === "ERROR";
-		                  });*/
   	            		  for (var i = 0; i < largeLoad.length; i++) {
   	            			  if(largeLoad[i].totalResCount!=null){
   	            				var dataCount={};
@@ -3018,7 +3011,8 @@ angular.module('theme.demos.dashboard.indi', [
             scope: $scope
           });
         };
-        $scope.getCountAmcSrviceCalls = function (eventName) {
+        
+        /*$scope.getCountAmcSrviceCalls = function (eventName) {
 	        setTimeout(
 	          function () {
 	            serviceApi
@@ -3055,7 +3049,7 @@ angular.module('theme.demos.dashboard.indi', [
               scope: $scope
             });
           };
-            /*$scope.getCountAmcSrviceCalls("AmcServiceCall");
+            $scope.getCountAmcSrviceCalls("AmcServiceCall");
             $scope.getPagedDataAsyncForAmcServiceCalls = function (pageSize,
           	      page, searchText, activeFlag) {
           	      var url;
