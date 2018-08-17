@@ -141,6 +141,24 @@
 		    	
 		    });
 		}
+		
+		$scope.loadCustomerData = function(){
+			var branchData ={};
+  	    	if($scope.showBranch == true){
+  	    		branchData = {
+  	    			branchCompanyMapId : $scope.selectedBranch.selected.companyBranchMapId
+					}
+  	    	}else{
+  	    		branchData = {
+  	    			branchCompanyMapId : $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls.companyBranchMapId
+					}
+  	    	}
+  	    	serviceApi.doPostWithData('/RLMS/admin/getAllCustomersForBranch',branchData)
+ 	         .then(function(customerData) {
+ 	        	 $scope.cutomers = customerData;
+ 	         })
+		}
+		
 	    $scope.filterOptions = {
 	  	      filterText: '',
 	  	      useExternalFilter: true
@@ -160,7 +178,7 @@
 	  	      }
 	  	    };
 	  	    $scope.getPagedDataAsync = function(pageSize, page, searchText) {
-	  	    	var branchData ={};
+	  	    	/*var branchData ={};
 	  	    	if($scope.showBranch == true){
 	  	    		branchData = {
 	  	    			branchCompanyMapId : $scope.selectedBranch.selected.companyBranchMapId
@@ -169,7 +187,10 @@
 	  	    		branchData = {
 	  	    			branchCompanyMapId : $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls.companyBranchMapId
   					}
-	  	    	}
+	  	    	}*/
+	  	    	var dataToSend = {
+						branchCustomerMapId : $scope.selectedCustomer.selected.branchCustomerMapId
+					}
 	  	      setTimeout(function() {
 	  	        var data;
 	  	        if (searchText) {
@@ -184,7 +205,7 @@
 	  					}
 		  	    	}
 	  	          var ft = searchText.toLowerCase();
-	  	        serviceApi.doPostWithData('/RLMS/admin/getLiftDetailsForBranch',branchData)
+	  	        serviceApi.doPostWithData('/RLMS/admin/getLiftDetailsForBranch',dataToSend)
 	  	         .then(function(largeLoad) {
 	  	        	$scope.showTable= true;
 	  	        	  var userDetails=[];
@@ -289,7 +310,7 @@
 		  	    			branchCompanyMapId : $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls.companyBranchMapId
 	  					}
 		  	    	}
-	  	        	serviceApi.doPostWithData('/RLMS/admin/getLiftDetailsForBranch',branchData).then(function(largeLoad) {
+	  	        	serviceApi.doPostWithData('/RLMS/admin/getLiftDetailsForBranch',dataToSend).then(function(largeLoad) {
 	  	        		 $scope.showTable= true;
 	  	        	  var userDetails=[];
 	  	        	  for(var i=0;i<largeLoad.length;i++){
@@ -502,33 +523,28 @@
 	  	        		}
 	  	        		if(largeLoad[i].doorType=="0"||largeLoad[i].doorType=="1"){
 	  	        			userDetailsObj["doorType"] =largeLoad[i].doorType;
-	  	        		}else{
-	  	        			userDetailsObj["doorType"] ="";
 	  	        		}
+	  	        		
 	  	        		if(largeLoad[i].engineType=="0"||largeLoad[i].engineType=="1"){
 	  	        			userDetailsObj["engineType"] =largeLoad[i].engineType;
-	  	        		}else{
-	  	        			userDetailsObj["engineType"] ="";
 	  	        		}
+	  	        		
 	  	        		if(largeLoad[i].collectiveType=="0"||largeLoad[i].collectiveType=="1"){
 	  	        			userDetailsObj["collectiveType"] =largeLoad[i].collectiveType;
-	  	        		}else{
-	  	        			userDetailsObj["collectiveType"] ="";
 	  	        		}
+	  	        		
 	  	        		if(largeLoad[i].simplexDuplex=="0"||largeLoad[i].simplexDuplex=="1"){
 	  	        			userDetailsObj["simplexDuplex"] =largeLoad[i].simplexDuplex;
-	  	        		}else{
-	  	        			userDetailsObj["simplexDuplex"] ="";
 	  	        		}
+	  	        		
 	  	        		if(largeLoad[i].wiringShceme=="0"||largeLoad[i].wiringShceme=="1"){
 	  	        			userDetailsObj["wiringShceme"] =largeLoad[i].wiringShceme;
-	  	        		}else{
-	  	        			userDetailsObj["wiringShceme"] ="";
 	  	        		}
+	  	        		
 	  	        		if(!!largeLoad[i].machinePhoto){
 	  	        			userDetailsObj["machinePhoto"] =largeLoad[i].machinePhoto;
 	  	        		}else{
-	  	        			userDetailsObj["machinePhoto"] ="";
+	  	        			userDetailsObj["machinePhoto"] ="-";
 	  	        		}
 	  	        		if(!!largeLoad[i].panelPhoto){
 	  	        			userDetailsObj["panelPhoto"] =largeLoad[i].panelPhoto;
@@ -751,6 +767,7 @@
 						$rootScope.editLift.autoDoorHeaderPhoto=row.autoDoorHeaderPhoto;
 						$rootScope.editLift.wiringPhoto=row.wiringPhoto;
 						$rootScope.editLift.lobbyPhoto=row.lobbyPhoto;
+						
 						
 						//var technicianArray=$rootScope.techniciansForEditComplaints;
 						
