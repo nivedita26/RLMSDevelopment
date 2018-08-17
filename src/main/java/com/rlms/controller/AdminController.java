@@ -457,7 +457,6 @@ public class AdminController extends BaseController{
 	        	reponseDto.setResponse(this.userService.validateAndEditUser(dto, this.getMetaInfo()));
 	        }catch(ValidationException vex){
 	        	logger.error(ExceptionUtils.getFullStackTrace(vex));
-	        	
 	        	throw vex;
 	        }
 	        catch(Exception e){

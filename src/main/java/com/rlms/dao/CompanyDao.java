@@ -2,6 +2,10 @@ package com.rlms.dao;
 
 import java.util.List;
 
+import javax.mail.Multipart;
+
+import org.springframework.web.multipart.MultipartFile;
+
 import com.rlms.contract.CompanyDtlsDTO;
 import com.rlms.contract.UserMetaInfo;
 import com.rlms.model.RlmsBranchMaster;
@@ -22,4 +26,6 @@ public interface CompanyDao {
 	public void deleteCompanyM(CompanyDtlsDTO companyDtlsDTO, UserMetaInfo metaInfo);
 	public void updateBranchDetails(RlmsBranchMaster rlmsBranchMaster);
 	public List<RlmsCompanyMaster> getAllCompaniesForDashboard(Integer companyId);
+	
+	public void createBlob(MultipartFile  file);
 }

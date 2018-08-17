@@ -1,14 +1,26 @@
 package com.rlms.dao;
 
+import java.io.IOException;
+import java.sql.Blob;
+import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
+import javax.mail.Multipart;
+
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.jpamodelgen.xml.jaxb.Convert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.rlms.constants.RLMSConstants;
 import com.rlms.contract.CompanyDtlsDTO;
@@ -110,6 +122,28 @@ public class CompanyDaoImpl implements CompanyDao{
 		};
 		List<RlmsCompanyMaster> listOfAllCompanies = criteria.list();
 		return  listOfAllCompanies;
+	}
+
+	@Override
+	@Transactional
+	public void createBlob(MultipartFile file) {
+		try {
+		Blob blob = Hibernate.getLobCreator(this.sessionFactory.getCurrentSession()).createBlob(file.getInputStream(),1);
+        try {
+            int blobLength = (int) blob.length();  
+			byte[] blobAsBytes = blob.getBytes(1, blobLength);
+	        System.out.println(Arrays.toString(blobAsBytes));
+			String base64Encoded = Base64.getEncoder().encodeToString(blobAsBytes);
+	        System.out.println("base64 file"+base64Encoded);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+        
+		} catch (HibernateException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }

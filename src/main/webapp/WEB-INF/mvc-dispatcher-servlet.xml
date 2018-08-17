@@ -132,5 +132,9 @@
 	 </bean> 
   
      <bean id="schedular" class="com.rights.batches.ScheduleTesting"></bean>
+     
+     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+ <property name="maxUploadSize" value="268435456"/>
+</bean>
  
 	</beans>

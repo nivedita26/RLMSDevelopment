@@ -698,7 +698,7 @@ public class UserServiceImpl implements UserService {
 		}
 		else if(rlmsUsersMaster!=null && !rlmsUsersMaster.getIsLoggedIn()) {
 			responseDto.setStatus(false);
-			responseDto.setResponse("User already logout");
+			responseDto.setResponse("already logout");
 			return responseDto;
 		}
 		else {
@@ -756,7 +756,7 @@ public class UserServiceImpl implements UserService {
 			dto.setArea(rlmsUserRoles.getRlmsUserMaster().getArea());
 			dto.setPinCode(rlmsUserRoles.getRlmsUserMaster().getPincode());
 			dto.setUserRoleName(rlmsUserRoles.getRole());
-				if (null != rlmsUserRoles.getRlmsCompanyBranchMapDtls()) {
+			if (null != rlmsUserRoles.getRlmsCompanyBranchMapDtls()) {
 					dto.setBranchName(rlmsUserRoles.getRlmsCompanyBranchMapDtls()
 							.getRlmsBranchMaster().getBranchName());
 				} else {
