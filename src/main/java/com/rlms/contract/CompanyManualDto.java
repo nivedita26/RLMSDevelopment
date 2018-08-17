@@ -6,7 +6,14 @@ private Integer liftType;
 private byte[] userManual;
 private byte[] safetyGuide;
 private Integer  companyId;
+private String modelVersion;
 
+public String getModelVersion() {
+	return modelVersion;
+}
+public void setModelVersion(String modelVersion) {
+	this.modelVersion = modelVersion;
+}
 private Integer liftCustomerMapId;
 private Integer companyManualMapId;
 

@@ -4,13 +4,13 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 import java.io.Serializable;
 import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -52,8 +52,18 @@ public class RlmsCompanyManual implements Serializable {
 	
 	@Column(name="active_flag")
 	private Integer activeFlag;
-
 	
+	@Column(name="model_version")
+    private String modelVersion;
+	
+	public String getModelVersion() {
+		return modelVersion;
+	}
+
+	public void setModelVersion(String modelVersion) {
+		this.modelVersion = modelVersion;
+	}
+
 	public Integer getCompanyManualId() {
 		return companyManualId;
 	}

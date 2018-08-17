@@ -798,6 +798,10 @@ public class UserServiceImpl implements UserService {
 	private void sendForgotPasswordMail(String password,String emailId)
 			throws InvalidKeyException, Exception {
 		
-			this.messagingService.sendForgotPasswordEmail(password, emailId);
+			try {
+				this.messagingService.sendForgotPasswordEmail(password, emailId);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 	}
 }

@@ -3,20 +3,15 @@ package com.rlms.controller;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.rlms.constants.RLMSCallType;
 import com.rlms.constants.RlmsErrorType;
 import com.rlms.constants.Status;
@@ -56,8 +50,6 @@ import com.rlms.service.RlmsLiftEventService;
 import com.rlms.service.UserService;
 import com.rlms.utils.DateUtils;
 import com.rlms.utils.PropertyUtils;
-
-import net.sf.ehcache.hibernate.HibernateUtil;
 
 @RestController
 @RequestMapping(value="/API")
@@ -573,29 +565,25 @@ public class RestControllerController  extends BaseController {
           		RlmsLiftManualMapDtls liftManualMapDtls =  liftManualService.getLiftManualMapDtls(liftCustomerMap.getLiftCustomerMapId());
           		if(liftManualMapDtls!=null) {
           			safetyGuide = liftManualMapDtls.getCompanyManual().getSafetyGuide();
+          			response.setContentType("application/pdf");
+          			String filename = liftCustomerMap.getLiftMaster().getLiftNumber()+"_"+"safetyguide"+"."+"pdf";
+          			response.setHeader("Content-disposition", "attachment; filename="+ filename);
+          			OutputStream os=null;
+          			try {
+          				os = response.getOutputStream();
+          				os.write(safetyGuide);
+          			} finally {
+          				os.close();
+                    }
           		}
           	}
-          	  response.setContentType("application/pdf");
-              String filename = liftCustomerMap.getLiftMaster().getLiftNumber()+"_"+"safetyguide"+"."+"pdf";
-              response.setHeader("Content-disposition", "attachment; filename="+ filename);
-                OutputStream os=null;
-                try {
-              	  os = response.getOutputStream();
-              	  os.write(safetyGuide);
-                } finally {
-              	  os.close();
-                }
                 return "";
       	}
    	 
  	@RequestMapping(value = "/uploadLiftImg", method = RequestMethod.POST, headers = "content-type=multipart/form-data")
- 	public @ResponseBody String releaseUploadtest( HttpServletRequest request,HttpServletResponse response,@RequestParam("file") MultipartFile uploadFile) {
-	
- 		MultipartFile file = uploadFile;
- 		companyDao.createBlob(file);
- 	//	System.out.println("req param"+request.getParameter("liftId"));
- 	//	System.out.println("req param"+request.getParameter("liftId"));
- 	   return "";
+ 	public @ResponseBody ResponseDto releaseUploadtest( HttpServletRequest request,HttpServletResponse response,@RequestParam("file") MultipartFile uploadFile) {
+ 	
+ 	   return liftService.uploadLiftImg(uploadFile,request,this.getMetaInfo());
       }
   }
  

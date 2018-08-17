@@ -7,21 +7,16 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
-
-import javax.mail.Multipart;
-
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.jpamodelgen.xml.jaxb.Convert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.rlms.constants.RLMSConstants;
 import com.rlms.contract.CompanyDtlsDTO;
 import com.rlms.contract.UserMetaInfo;
@@ -104,16 +99,7 @@ public class CompanyDaoImpl implements CompanyDao{
 	public void updateBranchDetails(RlmsBranchMaster rlmsBranchMaster){
 		this.sessionFactory.getCurrentSession().update(rlmsBranchMaster);
 	}
-	
-	/*@SuppressWarnings("unchecked")
-	public RlmsCompanyRoleMap getCompanyRole(Integer companyId, Integer spocRoleId){
-		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(RlmsCompanyRoleMap.class);
-		criteria.add(Restrictions.eq("rlmsSpocRoleMaster.spocRoleId", spocRoleId));
-		criteria.add(Restrictions.eq("rlmsCompanyMaster.companyId", companyId));
-		RlmsCompanyRoleMap companyRoleMap = (RlmsCompanyRoleMap) criteria.uniqueResult();
-		return  companyRoleMap;
-	}*/
-	
+		
 	@SuppressWarnings("unchecked")
 	public List<RlmsCompanyMaster> getAllCompaniesForDashboard(Integer companyId){
 		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(RlmsCompanyMaster.class);
@@ -126,24 +112,19 @@ public class CompanyDaoImpl implements CompanyDao{
 
 	@Override
 	@Transactional
-	public void createBlob(MultipartFile file) {
-		try {
-		Blob blob = Hibernate.getLobCreator(this.sessionFactory.getCurrentSession()).createBlob(file.getInputStream(),1);
-        try {
-            int blobLength = (int) blob.length();  
-			byte[] blobAsBytes = blob.getBytes(1, blobLength);
+	public  byte[] createByteArrayOfImage(MultipartFile file) {
+		byte[] blobAsBytes = null;
+		  //  Blob blob = Hibernate.getLobCreator(this.sessionFactory.getCurrentSession()).createBlob(file.getInputStream());
+        //    int blobLength = (int) blob.length();  
+		//	blobAsBytes = blob.getBytes(1, blobLength);
+	        try {
+			blobAsBytes = file.getBytes();
 	        System.out.println(Arrays.toString(blobAsBytes));
 			String base64Encoded = Base64.getEncoder().encodeToString(blobAsBytes);
 	        System.out.println("base64 file"+base64Encoded);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-        
-		} catch (HibernateException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	    	} catch (IOException e) {
+				e.printStackTrace();
+			}
+	      return blobAsBytes;
 	}
-	
 }

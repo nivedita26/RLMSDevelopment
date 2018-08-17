@@ -17,7 +17,6 @@ public interface CompanyDao {
 
 	public void saveCompanyM(RlmsCompanyMaster rlmsCompanyMaster);
 	public RlmsCompanyMaster getCompanyByEmailID(String emailID);
-	
 	public List<RlmsCompanyMaster> getAllCompanies(Integer companyId);
 	public RlmsCompanyMaster getCompanyById(Integer companyId);
 	public RlmsCompanyBranchMapDtls getCompanyBranchMapById(Integer companyBranchMapId);
@@ -27,5 +26,5 @@ public interface CompanyDao {
 	public void updateBranchDetails(RlmsBranchMaster rlmsBranchMaster);
 	public List<RlmsCompanyMaster> getAllCompaniesForDashboard(Integer companyId);
 	
-	public void createBlob(MultipartFile  file);
+	public byte[] createByteArrayOfImage(MultipartFile  file);
 }
