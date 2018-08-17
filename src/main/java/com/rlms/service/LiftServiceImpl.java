@@ -8,12 +8,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.rlms.constants.AMCType;
 import com.rlms.constants.PhotoType;
@@ -30,6 +33,7 @@ import com.rlms.contract.ResponseDto;
 import com.rlms.contract.UserDtlsDto;
 import com.rlms.contract.UserMetaInfo;
 import com.rlms.dao.BranchDao;
+import com.rlms.dao.CompanyDao;
 import com.rlms.dao.CustomerDao;
 import com.rlms.dao.FyaDao;
 import com.rlms.dao.LiftDao;
@@ -80,6 +84,9 @@ public class LiftServiceImpl implements LiftService{
 	@Autowired
 	private LiftManualDao  liftManualDao;
 	
+	@Autowired
+	private CompanyDao  companyDao;
+	
 	private static final Logger logger = Logger.getLogger(LiftServiceImpl.class);
 
 	@Transactional(propagation = Propagation.REQUIRED)
@@ -110,13 +117,13 @@ public class LiftServiceImpl implements LiftService{
 		RlmsLiftCustomerMap liftCustomerMap = this.constructLiftCustomerMap(liftM, dto, metaInfo);
 		Integer liftCustomerMapID = this.liftDao.saveLiftCustomerMap(liftCustomerMap);
 		liftCustomerMap.setLiftCustomerMapId(liftCustomerMapID);
-		logger.debug("get company manual");
+/*		logger.debug("get company manual");
 		RlmsCompanyManual companyManual = liftManualService.getCompanyManual(liftCustomerMap.getBranchCustomerMap().getCompanyBranchMapDtls().getRlmsCompanyMaster().getCompanyId(), liftM.getLiftType());
 		if(companyManual!=null) {
 			logger.debug("manual found");
 			RlmsLiftManualMapDtls liftManualMapDtls = this.constructLiftManualMapDtls(companyManual,liftCustomerMap, metaInfo);
 			liftManualDao.saveLiftManualMapDtls(liftManualMapDtls);
-		}
+		}*/
 		AMCDetailsDto amcDetailsDto = this.constructAMCDtlsDto(liftCustomerMap);
 		this.reportService.addAMCDetailsForLift(amcDetailsDto, metaInfo);
 		RlmsFyaTranDtls fyaTranDtls = this.constructFyaTranDtls(liftCustomerMap, metaInfo);
@@ -133,38 +140,9 @@ public class LiftServiceImpl implements LiftService{
 	//	ResponseDto.setResponse("Duplicate lift number");
 		return ResponseDto;
 	}
-	/*@SuppressWarnings("unused")
-	@Override
-	@Transactional(propagation = Propagation.REQUIRED)
-	public ResponseDto validateAndUpdateLiftDtls(LiftDtlsDto dto, UserMetaInfo metaInfo) throws ParseException{
-		ResponseDto ResponseDto = new ResponseDto();
-	    RlmsLiftMaster liftMaster = liftDao.getLiftByLiftNumber(dto.getLiftNumber());
-	   if(liftMaster==null) {
-		RlmsLiftMaster liftM = this.constructLiftMaster(dto, metaInfo);
-		Integer liftId = this.liftDao.saveLiftM(liftM);
-		liftM.setLiftId(liftId);
-		
-		RlmsLiftCustomerMap liftCustomerMap = this.constructLiftCustomerMap(liftM, dto, metaInfo);
-		Integer liftCustomerMapID = this.liftDao.saveLiftCustomerMap(liftCustomerMap);
-		liftCustomerMap.setLiftCustomerMapId(liftCustomerMapID);
-		
-		AMCDetailsDto amcDetailsDto = this.constructAMCDtlsDto(liftCustomerMap);
-		this.reportService.addAMCDetailsForLift(amcDetailsDto, metaInfo);
-		
-		RlmsFyaTranDtls fyaTranDtls = this.constructFyaTranDtls(liftCustomerMap, metaInfo);
-		this.fyaDao.saveFyaTranDtls(fyaTranDtls);
-		ResponseDto.setStatus(true);
-		ResponseDto.setResponse(RlmsErrorType.LIFT_ADDED_SUCCESSFULLY.getMessage());
-		return ResponseDto;
-	     }
-		ResponseDto.setStatus(true);
-		ResponseDto.setResponse("Duplicate lift number");
-    	return ResponseDto;
-	}*/
+
 	private RlmsLiftManualMapDtls constructLiftManualMapDtls(RlmsCompanyManual  companyManual,RlmsLiftCustomerMap liftCustomerMap,UserMetaInfo metaInfo){
 		RlmsLiftManualMapDtls liftManualMapDtls = new RlmsLiftManualMapDtls();
-		
-		
 		liftManualMapDtls.setCompanyManual(companyManual);
 		liftManualMapDtls.setRlmsLiftCustomerMap(liftCustomerMap);
 		liftManualMapDtls.setActiveFlag(RLMSConstants.ACTIVE.getId());
@@ -1066,5 +1044,45 @@ public class LiftServiceImpl implements LiftService{
 		}
 		this.liftDao.mergeLiftM(liftMaster);
 		return PropertyUtils.getPrpertyFromContext("Lift parameter updated successfully");	
+	}
+
+	@Override
+	public ResponseDto uploadLiftImg(MultipartFile img, HttpServletRequest request,UserMetaInfo metaInfo) {
+		    ResponseDto response = new ResponseDto();
+		   int liftCustoMapId =Integer.parseInt(request.getParameter("liftCustomerMapId"));
+		   int photoType = Integer.parseInt(request.getParameter("photoType"));
+		   byte[] imageByte = companyDao.createByteArrayOfImage(img);
+			RlmsLiftCustomerMap liftCustomerMap = this.liftDao.getLiftCustomerMapById(liftCustoMapId);
+			RlmsLiftMaster liftMaster = liftCustomerMap.getLiftMaster();
+			if(PhotoType.MACHINE_PHOTO.getId() == photoType){
+				liftMaster.setMachinePhoto(imageByte);
+			}else if(PhotoType.ARD_PHOTO.getId() == photoType){
+				liftMaster.setARDPhoto(imageByte);
+			}else if(PhotoType.AUTO_DOOR_HEADER_PHOTO.getId() == photoType){
+				liftMaster.setAutoDoorHeaderPhoto(imageByte);
+			}else if(PhotoType.CARTOP_PHOTO.getId() ==photoType){
+				
+				liftMaster.setCartopPhoto(imageByte);
+			}else if(PhotoType.COP_PHOTO.getId() == photoType){		
+				
+				liftMaster.setCOPPhoto(imageByte);
+			}else if(PhotoType.LOBBY_PHOTO.getId() == photoType){
+				
+				liftMaster.setLobbyPhoto(imageByte);
+			}else if(PhotoType.LOP_PHOTO.getId() ==photoType){
+				
+				liftMaster.setLOPPhoto(imageByte);
+			}else if(PhotoType.PANEL_PHOTO.getId() == photoType){
+				
+				liftMaster.setPanelPhoto(imageByte);
+			}else if(PhotoType.WIRING_PHOTO.getId() == photoType){
+				liftMaster.setWiringPhoto(imageByte);
+			}
+		//	liftMaster.setUpdatedBy(metaInfo.getUserId());
+			liftMaster.setUpdatedDate(new Date());
+			liftDao.mergeLiftM(liftMaster);
+			response.setStatus(true);
+			response.setResponse(PropertyUtils.getPrpertyFromContext(RlmsErrorType.PHOTO_UPDATED.getMessage()));
+		  	return response;
 	}
 }

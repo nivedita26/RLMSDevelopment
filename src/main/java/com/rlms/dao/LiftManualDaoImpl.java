@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.rlms.constants.RLMSConstants;
+import com.rlms.contract.CompanyManualDto;
 import com.rlms.model.RlmsCompanyManual;
 import com.rlms.model.RlmsLiftManualMapDtls;
 
@@ -32,12 +33,13 @@ public class LiftManualDaoImpl  implements LiftManualDao{
 
 	@Override
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true, isolation = Isolation.DEFAULT)
-	public RlmsCompanyManual getCompanyManual(int companyId,int liftType) {
+	public RlmsCompanyManual getCompanyManual(CompanyManualDto companyManualDto) {
 		 Session session = this.sessionFactory.getCurrentSession();
 		 Criteria criteria = session.createCriteria(RlmsCompanyManual.class)
-		.add(Restrictions.eq("rlmsCompanyMaster.companyId",companyId))
-		.add(Restrictions.eq("liftType",liftType))
-		 .add(Restrictions.eq("activeFlag",RLMSConstants.ACTIVE.getId()));
+		.add(Restrictions.eq("rlmsCompanyMaster.companyId",companyManualDto.getCompanyId()))
+		.add(Restrictions.eq("liftType",companyManualDto.getLiftType()))
+		.add(Restrictions.eq("modelVersion",companyManualDto.getModelVersion()))
+	     .add(Restrictions.eq("activeFlag",RLMSConstants.ACTIVE.getId()));
 		 RlmsCompanyManual   rlmsCompanyManual =  (RlmsCompanyManual) criteria.uniqueResult();
 		 return rlmsCompanyManual;
      }

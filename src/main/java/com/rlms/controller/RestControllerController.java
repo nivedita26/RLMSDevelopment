@@ -1,23 +1,13 @@
 package com.rlms.controller;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.net.URLConnection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.ResponseBuilder;
-
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -25,26 +15,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.multipart.MultipartFile;
 import com.rlms.constants.RLMSCallType;
 import com.rlms.constants.RlmsErrorType;
 import com.rlms.constants.Status;
 import com.rlms.contract.ComplaintsDtlsDto;
 import com.rlms.contract.ComplaintsDto;
 import com.rlms.contract.LiftDtlsDto;
-import com.rlms.contract.LoginDtlsDto;
 import com.rlms.contract.MemberDtlsDto;
 import com.rlms.contract.ResponseDto;
 import com.rlms.contract.SiteVisitDtlsDto;
 import com.rlms.contract.UserDtlsDto;
 import com.rlms.contract.UserMetaInfo;
+import com.rlms.dao.CompanyDao;
 import com.rlms.dao.LiftDao;
 import com.rlms.exception.ExceptionCode;
 import com.rlms.exception.RunTimeException;
@@ -89,6 +78,9 @@ public class RestControllerController  extends BaseController {
 	
 	@Autowired
 	LiftManualService liftManualService;
+	
+	@Autowired
+	CompanyDao  companyDao;
 	
 	private static final Logger log = Logger.getLogger(RestControllerController.class);
 	   
@@ -573,150 +565,25 @@ public class RestControllerController  extends BaseController {
           		RlmsLiftManualMapDtls liftManualMapDtls =  liftManualService.getLiftManualMapDtls(liftCustomerMap.getLiftCustomerMapId());
           		if(liftManualMapDtls!=null) {
           			safetyGuide = liftManualMapDtls.getCompanyManual().getSafetyGuide();
+          			response.setContentType("application/pdf");
+          			String filename = liftCustomerMap.getLiftMaster().getLiftNumber()+"_"+"safetyguide"+"."+"pdf";
+          			response.setHeader("Content-disposition", "attachment; filename="+ filename);
+          			OutputStream os=null;
+          			try {
+          				os = response.getOutputStream();
+          				os.write(safetyGuide);
+          			} finally {
+          				os.close();
+                    }
           		}
           	}
-          	  response.setContentType("application/pdf");
-              String filename = liftCustomerMap.getLiftMaster().getLiftNumber()+"_"+"safetyguide"+"."+"pdf";
-              response.setHeader("Content-disposition", "attachment; filename="+ filename);
-                OutputStream os=null;
-                try {
-              	  os = response.getOutputStream();
-              	  os.write(safetyGuide);
-                } finally {
-              	  os.close();
-                }
                 return "";
       	}
+   	 
+ 	@RequestMapping(value = "/uploadLiftImg", method = RequestMethod.POST, headers = "content-type=multipart/form-data")
+ 	public @ResponseBody ResponseDto releaseUploadtest( HttpServletRequest request,HttpServletResponse response,@RequestParam("file") MultipartFile uploadFile) {
+ 	
+ 	   return liftService.uploadLiftImg(uploadFile,request,this.getMetaInfo());
+      }
   }
-   /* 	response.setContentType("application/pdf");
-    	response.setHeader("Content-Disposition", "filename=\"first\"");
-    	response.setContentLength(userGuide.length);
-    	OutputStream os = response.getOutputStream();
-
-    	try {
-    	   os.write(userGuide , 0, userGuide.length);
-    	} catch (Exception excp) {
-    	   //handle error
-    	} finally {
-    	    os.close();
-    	}*/
-    	//ResponseBuilder rsp = Response.ok("Your Content Here", "application/docx");    
-    //	rsp.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
-    	
-    	
-      /*   String  INTERNAL_FILE_PATH="C:\\Users\\USER\\Desktop\\first.pdf";
-	//	logger.debug("Internal zip file path"+ INTERNAL_FILE_PATH);
-		File file = new File(INTERNAL_FILE_PATH);
-		String mimeType = URLConnection.guessContentTypeFromName(file.getName());
-		if (mimeType == null) {
-			mimeType = "application/octet-stream";
-		}
-		response.setHeader("Content-Disposition", String.format("inline; filename=\"" + file.getName()+"\"" ));
-		//logger.debug("set response header");
-		response.setContentLength((int) file.length());
-	//	logger.debug("response length"+file.length());
-		InputStream	inputStream  =null;
-		try {
-	     inputStream = new BufferedInputStream(new FileInputStream(file));
-		//	logger.debug("inputstream"+file);
-			FileCopyUtils.copy(inputStream, response.getOutputStream());
-		}
-		finally {
-			inputStream.close();
-        }*/
-   /* int directoryfileCount;
-	final String OUTPUT_ZIP_FILE;
-	final String INTERNAL_FILE_PATH;
-	InputStream inputStream=null ;
-	int filestatus = restapidao.getfileStatus(deviceid);
-	if (filestatus >0){
-		File zipfilename=new File(deviceid + ".zip");
-		if(zipfilename.exists()){
-			zipfilename.delete();
-			logger.debug("previously present zip file deleted");
-		}
-		response.setContentType("application/zip");
-		OUTPUT_ZIP_FILE = Constant.zipfilepath + deviceid+ ".zip";
-		logger.debug("OUTPUT_ZIP_FILE "+OUTPUT_ZIP_FILE);
-		
-		directoryfileCount = getFileCountInDirectory(Constant.filepath + deviceid);//to avoid empty zip
-		logger.debug("no of files to zip in productId"+deviceid+"filecount:"+directoryfileCount);
-		
-		if (directoryfileCount>0){
-			Set<String> fileList = new HashSet<String>();
-				*//**
-				 * Generate List of files
-				 *//*
-			Set<String> zipfileList = generateFileList(new File(Constant.filepath + deviceid ),fileList);
-				*//**
-				 * Zip all files
-				 *//*
-			zipIt(OUTPUT_ZIP_FILE,deviceid,zipfileList);
-			INTERNAL_FILE_PATH=Constant.zipfilepath + deviceid + ".zip";
-					
-			logger.debug("Internal zip file path"+ INTERNAL_FILE_PATH);
-			File file = new File(INTERNAL_FILE_PATH);
-			String mimeType = URLConnection.guessContentTypeFromName(file.getName());
-			if (mimeType == null) {
-				mimeType = "application/octet-stream";
-			}
-			response.setHeader("Content-Disposition", String.format("inline; filename=\"" + file.getName()+"\"" ));
-			logger.debug("set response header");
-			response.setContentLength((int) file.length());
-			logger.debug("response length"+file.length());
-			try {
-				inputStream = new BufferedInputStream(new FileInputStream(file));
-				logger.debug("inputstream"+file);
-				FileCopyUtils.copy(inputStream, response.getOutputStream());
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			logger.debug("Response to App : Zip file for " + deviceid  + " sent successfully.");
-			File zipfile = new File(INTERNAL_FILE_PATH);
-			if(zipfile.exists()){
-				zipfile.delete();   
-				logger.debug("zip file deleted"+zipfile);
-				File productDirectoryPath = new File(Constant.filepath + deviceid);
-				if(productDirectoryPath.exists()){
-					FileUtils.cleanDirectory(productDirectoryPath);
-					FileUtils.deleteDirectory(productDirectoryPath);
-				}
-			}
-			return "";
-		} 
-		else {
-			logger.debug(" " +  deviceid  + " data  not present in directory.");
-			return "";
-		} 
-	}
-	logger.debug("Response Sent : " + deviceid + " is not present in Database.");
-	return "";*/
-      
-	/**
-	 * upload files on server
-	 */
-	/*@RequestMapping(value = "/uploadImageFiles", method = RequestMethod.POST, headers = "content-type=multipart/form-data")
-	public @ResponseBody String releaseUploadtest(ModelMap model,HttpSession session, HttpServletRequest request,HttpServletResponse response,
-												 @RequestParam("fileList") List<MultipartFile> files,@RequestParam("fileKeyList") List<String> fileTypesNameKey)
-												 throws IOException, ServletException, SQLException, Exception {
-		logger.trace("Request to Upload Release files for ");
-		String liveUser = null;
-		int userid = 0;
-		User user = (User) session.getAttribute("loggedInUser");
-		if (user == null) {
-			logger.info("Session timeout got user object NULL");
-			model.addAttribute("nullObjectfromUpload", "0");
-			return "home";
-		}
-		liveUser = user.getUserName(); // for logged user
-		userid = user.getUserId(); // logged user id
-		model.addAttribute("LoggedInUser", liveUser);
-		model.addAttribute("LoggedUserId", userid);
-		String userRole = user.getRole();
-		model.addAttribute("LoggedUserRole", userRole);
-
-		return releaseServiceObj.releaseUpload(request, files,fileTypesNameKey, liveUser);
-	}
-  }*/
+ 

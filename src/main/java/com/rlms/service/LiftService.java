@@ -2,6 +2,11 @@ package com.rlms.service;
 
 import java.text.ParseException;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.web.multipart.MultipartFile;
+
 import com.rlms.contract.CustomerDtlsDto;
 import com.rlms.contract.LiftDtlsDto;
 import com.rlms.contract.ResponseDto;
@@ -40,4 +45,6 @@ public interface LiftService {
 	public ResponseDto  getLiftDetailsList(UserDtlsDto dtlsDto);
 
 	public List<LiftDtlsDto> getAllLiftsForTechnician(Integer userRoleId);
+	
+	public ResponseDto uploadLiftImg(MultipartFile img,HttpServletRequest request,UserMetaInfo metaInfo);
 }

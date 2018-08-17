@@ -99,21 +99,19 @@ private static final Logger log = Logger.getLogger(MessagingServiceImpl.class);
 		}
 	public void sendEmail(MailDTO mailDto) throws UnsupportedEncodingException {
 	      // Recipient's email ID needs to be mentioned.
+		  try {
 	      List<String> to =mailDto.getToList();
 	      // Sender's email ID needs to be mentioned
 	      String from = mailDto.getFrom();
 	      final String username = "productapp@inditechsystems.com";//change accordingly
 	      final String password = "prap@indi41";//change accordingly
-
 	      // Assuming you are sending email through relay.jangosmtp.net
 	      String host = mailDto.getSmtpHost();
-
 	      Properties props = new Properties();
 	      props.put("mail.smtp.auth", "true");
-	      props.put("mail.smtp.starttls.enable", "true");
+	     //props.put("mail.smtp.starttls.enable", "true");
 	      props.put("mail.smtp.host", "mail.inditechsystems.com");
 	      props.put("mail.smtp.port", "587");
-
 	      // Get the Session object.
 	      Session session = Session.getInstance(props,
 	         new javax.mail.Authenticator() {
@@ -121,8 +119,6 @@ private static final Logger log = Logger.getLogger(MessagingServiceImpl.class);
 	               return new PasswordAuthentication(username, password);
 	            }
 		});
-
-	      try {
 	            // Create a default MimeMessage object.
 	            Message message = new MimeMessage(session);
 	            // Set From: header field of the header.
@@ -314,6 +310,7 @@ private static final Logger log = Logger.getLogger(MessagingServiceImpl.class);
 	}
 	@Override
 	public void sendForgotPasswordEmail(String password, String mailId) throws UnsupportedEncodingException {
+		try {
 		EmailTemplate emailTemplate = this.getEmailTemplate(EmailTemplateEnum.FORGOT_PASSWORD.getTemplateId());
 		List<String> toList = new ArrayList<String>();
 		toList.add(mailId);
@@ -323,8 +320,7 @@ private static final Logger log = Logger.getLogger(MessagingServiceImpl.class);
 		emailTemplate.setEmailContent(content);
 		MailDTO dto = this.constructMailDto(toList, emailTemplate.getEmailSubject(), emailTemplate.getEmailContent());
 		log.debug(content);
-		try {
-			this.sendEmail(dto);
+		this.sendEmail(dto);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

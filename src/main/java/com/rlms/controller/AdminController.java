@@ -457,14 +457,12 @@ public class AdminController extends BaseController{
 	        	reponseDto.setResponse(this.userService.validateAndEditUser(dto, this.getMetaInfo()));
 	        }catch(ValidationException vex){
 	        	logger.error(ExceptionUtils.getFullStackTrace(vex));
-	        	
 	        	throw vex;
 	        }
 	        catch(Exception e){
 	        	logger.error(ExceptionUtils.getFullStackTrace(e));
 	        	throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
 	        }
-	 
 	        return reponseDto;
 	  }
 	 
@@ -563,15 +561,13 @@ public class AdminController extends BaseController{
 		 ResponseDto reponseDto = new ResponseDto();
 	        try{
 	        	logger.info("Method :: validate and update customer");
-	        	this.liftManualService.saveCompanyManual(dto,this.getMetaInfo());
-	        	reponseDto.setStatus(true);
-	        	reponseDto.setResponse("company manual successfully saved");
+	        	return this.liftManualService.saveCompanyManual(dto,this.getMetaInfo());
+	        	
 	        }	        
 	        catch(Exception e){
 	        	logger.error(ExceptionUtils.getFullStackTrace(e));
 	        	throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
 	        }
-	        return reponseDto;
 	  }
 	 
 }
