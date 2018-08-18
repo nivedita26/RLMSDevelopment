@@ -135,16 +135,12 @@
 						$scope.alert.msg =  successMessage;
 						$scope.alert.type="danger";
 					}
-					/*$scope.alert.msg = successMessage;
-					$scope.alert.type = "success";
-					initAddCustomer();
-					$scope.addCustomerForm.$setPristine();
-					$scope.addCustomerForm.$setUntouched();*/
-				},function(error){
+					
+				}/*,function(error){
 					$scope.showAlert = true;
 					$scope.alert.msg = error.exceptionMessage;
 					$scope.alert.type = "danger";
-				});
+				}*/);
 			}
 			//reset add branch
 			$scope.resetAddCustomer = function(){
