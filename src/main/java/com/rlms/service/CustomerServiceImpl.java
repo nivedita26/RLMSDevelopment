@@ -580,7 +580,6 @@ public class CustomerServiceImpl implements CustomerService{
 					dto.setAmcTypeStr(AMCType.OTHER.getType());
 				}
 			}
-			
 			dto.setArd(liftM.getARD());
 			dto.setArdPhoto(liftM.getARDPhoto());
 			dto.setAutoDoorHeaderPhoto(liftM.getAutoDoorHeaderPhoto());

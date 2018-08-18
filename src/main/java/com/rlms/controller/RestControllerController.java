@@ -1,10 +1,15 @@
 package com.rlms.controller;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -509,12 +515,15 @@ public class RestControllerController  extends BaseController {
         }
     	return reponseDto;
     }
-    @RequestMapping(value = "/forgotPassword", method = RequestMethod.POST)
+    @RequestMapping(value = "/"
+    		+ ""
+    		+ ""
+    		+ "", method = RequestMethod.POST)
     public @ResponseBody ResponseDto forgotPassword(@RequestBody UserDtlsDto dto){
     	ResponseDto reponseDto = new ResponseDto();
     	try{
     	  reponseDto.setStatus(true);
-    	 reponseDto.setResponse(userService.forgotPassword(dto));
+    	  reponseDto.setResponse(userService.forgotPassword(dto));
     	}catch(Exception e){
         	log.error(ExceptionUtils.getFullStackTrace(e));
         	reponseDto.setStatus(false);
@@ -543,18 +552,31 @@ public class RestControllerController  extends BaseController {
     		RlmsLiftManualMapDtls liftManualMapDtls =  liftManualService.getLiftManualMapDtls(liftCustomerMap.getLiftCustomerMapId());
     		if(liftManualMapDtls!=null) {
     			 userManual = liftManualMapDtls.getCompanyManual().getUserManual();
-    		}
-    	}
-    	  response.setContentType("application/pdf");
-          String filename = liftCustomerMap.getLiftMaster().getLiftNumber()+"_"+"usermanual"+"."+"pdf";
-          response.setHeader("Content-disposition", "attachment; filename="+ filename);
-          OutputStream os=null;
+    			}
+    	    }
+    	   response.setContentType("application/pdf");
+           String filename = liftCustomerMap.getLiftMaster().getLiftNumber()+"_"+"usermanual"+"."+"pdf";
+           response.setHeader("Content-disposition", "attachment; filename="+ filename);
+           OutputStream os=null;
           try {
-        	  os = response.getOutputStream();
-        	  os.write(userManual);
+        	   os = response.getOutputStream();
+        	   os.write(userManual);
           } finally {
         	  os.close();
           }
+    	/* response.setContentType("application/pdf");
+         String filename = liftCustomerMap.getLiftMaster().getLiftNumber()+"_"+"usermanual"+"."+"pdf";
+         response.setHeader("Content-disposition", "attachment; filename="+ filename);
+    	 File f = new File("C:\\Users\\USER\\Desktop\\response.pdf");
+        try {
+             OutputStream os = response.getOutputStream();
+             InputStream   inputStream = new BufferedInputStream(new FileInputStream(f));
+			 FileCopyUtils.copy(userManual,response.getOutputStream());
+             os.close();
+             inputStream.close();
+        } catch (IOException e) { 
+            e.printStackTrace();
+        }*/
           return "";
     }
         @RequestMapping(value = "/downloadSafetyGuide", method = RequestMethod.POST)

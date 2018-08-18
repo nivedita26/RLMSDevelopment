@@ -51,6 +51,8 @@ import com.rlms.model.RlmsUserRoles;
 import com.rlms.utils.DateUtils;
 import com.rlms.utils.PropertyUtils;
 
+import javassist.expr.NewArray;
+
 @Service("LiftService")
 public class LiftServiceImpl implements LiftService{
 
@@ -301,10 +303,16 @@ public class LiftServiceImpl implements LiftService{
 	
 	@Transactional(propagation = Propagation.REQUIRED)
 	public List<LiftDtlsDto> getLiftDetailsForBranch(LiftDtlsDto liftDtlsDto, UserMetaInfo metaInfo){
-		List<RlmsLiftCustomerMap> listOFAllLifts = this.liftDao.getAllLiftsForBranchs(liftDtlsDto.getBranchCompanyMapId());
+		List<RlmsLiftCustomerMap> listOFLiftCustomerMap = new ArrayList<>();
+		if(liftDtlsDto.getListOfBranchCustomerMapId()!=null) {
+			listOFLiftCustomerMap = liftDao.getAllLiftsForCustomres(liftDtlsDto.getListOfBranchCustomerMapId());
+		}
+		else {
+		 listOFLiftCustomerMap = this.liftDao.getAllLiftsForBranchs(liftDtlsDto.getBranchCompanyMapId());
+		}
 		List<LiftDtlsDto> listOfAllDtos = new ArrayList<LiftDtlsDto>();
-		if(listOFAllLifts!=null && !listOFAllLifts.isEmpty()) {
-		for (RlmsLiftCustomerMap liftCustomerMap : listOFAllLifts) {
+		if(listOFLiftCustomerMap!=null && !listOFLiftCustomerMap.isEmpty()) {
+		for (RlmsLiftCustomerMap liftCustomerMap : listOFLiftCustomerMap) {
 			RlmsLiftMaster liftM = liftCustomerMap.getLiftMaster();
 			RlmsLiftAmcDtls amcDtls = liftDao.getRlmsLiftAmcDtlsByLiftCustomerMapId(liftCustomerMap.getLiftCustomerMapId());
 			LiftDtlsDto dto = new LiftDtlsDto();
@@ -367,25 +375,6 @@ public class LiftServiceImpl implements LiftService{
 			dto.setPanelMake(liftM.getPanelMake());
 			dto.setImei(liftM.getImei());
 			dto.setLmsEventFromContactNo(liftM.getLmsEventContactNumber());
-			
-			/*if(null != liftM.getAmcStartDate()){
-				dto.setAmcStartDateStr(DateUtils.convertDateToStringWithoutTime(liftCustomerMap.getLiftMaster().get));
-				dto.setAmcEndDateStr(DateUtils.convertDateToStringWithoutTime(liftM.getAmcEndDate()));
-			}
-			dto.setAmcType(liftM.getAmcType());
-			
-			if(liftM.getAmcType()!=null){
-				if (AMCType.COMPREHENSIVE.getId() == liftM.getAmcType()) {
-					dto.setAmcTypeStr(AMCType.COMPREHENSIVE.getType());
-				} else if (AMCType.NON_COMPREHENSIVE.getId() == liftM
-						.getAmcType()) {
-					dto.setAmcTypeStr(AMCType.NON_COMPREHENSIVE.getType());
-				} else if (AMCType.ON_DEMAND.getId() == liftM.getAmcType()) {
-					dto.setAmcTypeStr(AMCType.ON_DEMAND.getType());
-				} else if (AMCType.OTHER.getId() == liftM.getAmcType()) {
-					dto.setAmcTypeStr(AMCType.OTHER.getType());
-				}
-			}*/
 			dto.setArd(liftM.getARD());
 			//photo
 			dto.setArdPhoto(liftM.getARDPhoto());
@@ -397,7 +386,6 @@ public class LiftServiceImpl implements LiftService{
 			dto.setWiringPhoto(liftM.getWiringPhoto());
             dto.	setCopPhoto(liftM.getCOPPhoto());	
             dto.setLopPhoto(liftM.getLOPPhoto());
-            
             dto.setBatteryCapacity(liftM.getBatteryCapacity());
 			dto.setBatteryMake(liftM.getBatteryMake());
 			dto.setBranchName(liftCustomerMap.getBranchCustomerMap().getCompanyBranchMapDtls().getRlmsBranchMaster().getBranchName());;

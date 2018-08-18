@@ -135,7 +135,6 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 			isValidaDetails = false;
 			throw new ValidationException(ExceptionCode.VALIDATION_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.COMPLAINT_REMARK_BLANK.getMessage()));
 		}*/
-		
 		if(null == dto.getComplaintsRemark()){
 			isValidaDetails = false;
 			throw new ValidationException(ExceptionCode.VALIDATION_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.COMPLAINT_REMARK_BLANK.getMessage()));
@@ -153,7 +152,6 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 	private RlmsComplaintMaster counstructComplaintMaster(ComplaintsDtlsDto dto, UserMetaInfo metaInfo){
 		RlmsComplaintMaster complaintMaster = new RlmsComplaintMaster();
 		RlmsLiftCustomerMap liftCustomerMap = this.liftDao.getLiftCustomerMapById(dto.getLiftCustomerMapId());
-		
 		complaintMaster.setActiveFlag(RLMSConstants.ACTIVE.getId());
 		complaintMaster.setComplaintNumber(String.valueOf(Math.random()));
 		complaintMaster.setLiftCustomerMap(liftCustomerMap);
@@ -295,7 +293,6 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 			}
 			if(isToShow){
 					ComplaintsDto complaintsDto = this.constructComplaintDto(rlmsComplaintMaster);
-
   			         listOfAllComplaints.add(complaintsDto);
 		    }
 		}
