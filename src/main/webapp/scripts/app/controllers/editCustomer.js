@@ -187,11 +187,11 @@
 					initAddCustomer();
 					$scope.addCustomerForm.$setPristine();
 					$scope.addCustomerForm.$setUntouched();
-				},function(error){
+				}/*,function(error){
 					$scope.showAlert = true;
 					$scope.alert.msg = error.exceptionMessage;
 					$scope.alert.type = "danger";
-				});
+				}*/);
 			}
 			//reset add branch
 			$scope.resetAddCustomer = function(){
