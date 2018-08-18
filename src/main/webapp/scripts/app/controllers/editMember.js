@@ -54,9 +54,9 @@
 			var key = Object.keys(response);
 			var successMessage = response[key[0]];
 				if(successMessage){
-					$scope.alert.msg = "You successfully Added Member.";
+					$scope.alert.msg = "You successfully Edited Member.";
 					$scope.alert.type = "success";
-					initAddMember();
+					initEditMember();
 					$scope.addBranchForm.$setPristine();
 					$scope.addBranchForm.$setUntouched();
 				}else{

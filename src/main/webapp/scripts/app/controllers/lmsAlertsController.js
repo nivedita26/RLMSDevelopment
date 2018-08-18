@@ -249,6 +249,11 @@
 		  	        		}else{
 		  	        			detailsObj["CustomerName"] =" - ";
 		  	        		}
+	  	        			if(!!largeLoad[i].floorNo){
+		  	        			detailsObj["floorNo"] =largeLoad[i].floorNo;
+		  	        		}else{
+		  	        			detailsObj["floorNo"] =" - ";
+		  	        		}
 		  	        		if(!!largeLoad[i].branchName){
 		  	        			detailsObj["BranchName"] =largeLoad[i].branchName;
 		  	        		}else{
@@ -307,6 +312,11 @@
 			  	        			detailsObj["BranchName"] =largeLoad[i].branchName;
 			  	        		}else{
 			  	        			detailsObj["BranchName"] =" - ";
+			  	        		}
+			  	        		if(!!largeLoad[i].floorNo){
+			  	        			detailsObj["floorNo"] =largeLoad[i].floorNo;
+			  	        		}else{
+			  	        			detailsObj["floorNo"] =" - ";
 			  	        		}
 			  	        		if(!!largeLoad[i].liftNumber){
 			  	        			detailsObj["liftNumber"] =largeLoad[i].liftNumber;
@@ -395,6 +405,10 @@
 			  	  },{
 						field : "EventDateTime",
 						displayName:"Event DateTime",
+						width : 160
+			  	  },{
+						field : "floorNo",
+						displayName:"Floor No.",
 						width : 160
 			  	  },{
 						field : "Description",
