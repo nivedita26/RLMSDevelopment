@@ -79,6 +79,7 @@ public class LiftDaoImpl implements LiftDao{
 	}
 	
 	@Override
+	@Transactional
 	public Integer mergeLiftM(RlmsLiftMaster liftMaster){
 		Integer status=1;
 		try {

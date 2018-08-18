@@ -25,7 +25,7 @@ import javax.persistence.Table;
 	private RlmsLiftCustomerMap  rlmsLiftCustomerMap;
 	
 	@OneToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name = "company_manual_map_id")
+	@JoinColumn(name = "company_manual_id")
 	private RlmsCompanyManual  companyManual;
 	
 	@Column(name="created_date")

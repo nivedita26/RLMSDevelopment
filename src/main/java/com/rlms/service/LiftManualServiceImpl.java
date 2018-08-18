@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.rlms.constants.RLMSConstants;
 import com.rlms.contract.CompanyManualDto;
+import com.rlms.contract.ResponseDto;
 import com.rlms.contract.UserMetaInfo;
 import com.rlms.dao.CompanyDao;
 import com.rlms.dao.LiftManualDao;
@@ -27,29 +28,37 @@ import com.rlms.model.RlmsLiftManualMapDtls;
     
 	@Transactional(propagation = Propagation.REQUIRED)
 	@Override
-	public void saveCompanyManual(CompanyManualDto companyManualDto ,UserMetaInfo metaInfo) {
-	//RlmsCompanyManual companyManual = new RlmsCompanyManual();
-	RlmsCompanyManual companyManual = getCompanyManual(companyManualDto.getCompanyId(),companyManualDto.getLiftType());
+	public ResponseDto  saveCompanyManual(CompanyManualDto companyManualDto ,UserMetaInfo metaInfo) {
+    ResponseDto responseDto = new ResponseDto();
+	RlmsCompanyManual companyManual = getCompanyManual(companyManualDto);
 	if(companyManual ==null) { 
 	   	companyManual = new RlmsCompanyManual();
+		companyManual.setLiftType(companyManualDto.getLiftType());
+		RlmsCompanyMaster companyMaster = companyDao.getCompanyById(companyManualDto.getCompanyId());
+		if(companyMaster!=null){
+			companyManual.setRlmsCompanyMaster(companyMaster);
 		}
-			companyManual.setLiftType(companyManualDto.getLiftType());
-			RlmsCompanyMaster companyMaster = companyDao.getCompanyById(companyManualDto.getCompanyId());
-			if(companyMaster!=null){
-				companyManual.setRlmsCompanyMaster(companyMaster);
-			}
-			companyManual.setUserManual(companyManualDto.getUserManual());
-			companyManual.setSafetyGuide(companyManualDto.getSafetyGuide());
-			companyManual.setCreatedDate(new Date());
-			companyManual.setUpdatedDate(new Date());
-			companyManual.setActiveFlag(RLMSConstants.ACTIVE.getId());
-			//companyManual.setCreatedBy(metaInfo.getUserId());
-			//	companyManual.setUpdatedBy(metaInfo.getUserId());
-			liftManualDao.saveCompanyManual(companyManual);
+		companyManual.setUserManual(companyManualDto.getUserManual());
+		companyManual.setSafetyGuide(companyManualDto.getSafetyGuide());
+		companyManual.setModelVersion(companyManualDto.getModelVersion());
+		companyManual.setCreatedDate(new Date());
+		companyManual.setUpdatedDate(new Date());
+		companyManual.setActiveFlag(RLMSConstants.ACTIVE.getId());
+		//companyManual.setCreatedBy(metaInfo.getUserId());
+		//	companyManual.setUpdatedBy(metaInfo.getUserId());
+		liftManualDao.saveCompanyManual(companyManual);
+		responseDto.setStatus(true);
+		responseDto.setResponse("Company Manual added successfully");
+		return responseDto;
+	   }else {
+		   responseDto.setStatus(true);
+			responseDto.setResponse("Manual already present");
+		   return responseDto;
+	   }
 	}
 	@Override
-	public RlmsCompanyManual getCompanyManual(int companyId,int liftType) {
-		RlmsCompanyManual companyManual = liftManualDao.getCompanyManual(companyId,liftType);
+	public RlmsCompanyManual getCompanyManual(CompanyManualDto companyManualDto) {
+		RlmsCompanyManual companyManual = liftManualDao.getCompanyManual(companyManualDto);
 		 return companyManual;
 
 	}

@@ -918,10 +918,8 @@ public class DashBoardController extends BaseController {
 	public @ResponseBody List<RlmsEventDtls> getUnidentifiedImeiEventCount(@RequestBody int companyId)
 			throws RunTimeException {
 			List<RlmsEventDtls> eventDtls = null;
-	
 			logger.info("Method :: getAllBranchesForCompany");
 			eventDtls = this.dashboardService.getUnidentifiedEventCountDetails();
-	
 			return eventDtls;
 	}
 }
