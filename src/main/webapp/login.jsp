@@ -30,18 +30,18 @@
 										<input type="password" class="form-control" name="password" id="password" placeholder="Password">
 									</div>
 								</div>
-								<div class="clearfix">
+								<!-- <div class="clearfix">
 									<div class="pull-right"><label><input type="checkbox" checked=""> Remember Me</label></div>
-								</div>
+								</div> -->
 								<button type="submit" href="#/" class="btn btn-primary btn-block ng-isolate-scope" data-pulsate="{reach:10, pause: 2000}" style="outline: rgba(38, 133, 238, 0) solid 2px; box-shadow: rgba(38, 133, 238, 0) 0px 0px 6px; outline-offset: 10px;">Log In</button>
 							</form>
 						</div>
-						<div class="panel-footer">
+						<!-- <div class="panel-footer">
 							<a href="#/" class="pull-left btn btn-link" style="padding-left:0">Forgot password?</a>
 							<div class="pull-right" onClick="signup();">
 								<a class="btn btn-default">Signup</a>
 							</div>
-						</div>
+						</div> -->
 					</div>
 				</div>
 				</div> <!--wrap -->

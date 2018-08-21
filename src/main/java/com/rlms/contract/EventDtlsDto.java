@@ -1,6 +1,5 @@
 package com.rlms.contract;
 
-import java.util.Date;
 import java.util.List;
 
 import com.rlms.model.RlmsLiftCustomerMap;
@@ -9,7 +8,8 @@ public class EventDtlsDto {
 
 	//private Integer userRoleId;
 	private Integer companyId;
-	
+	private String customerName;
+	private String branchName;
 	private Integer eventId;
 	private String eventService;
 	private String imei;
@@ -20,10 +20,44 @@ public class EventDtlsDto {
 	private String date;
 	private String eventFromContactNo;
 	private List<Integer>branchCustomerMapId; 
+	private List<Integer>liftCustomerMapId; 
 	private RlmsLiftCustomerMap liftCustomerMap;
 	private String liftNumber;
 	private String liftAddress;
 	private String City;
+	private String lmsResponseContactNo;
+	private Integer activeFlag;
+	private Integer branchCompanyMapId;
+	
+	public String getCustomerName() {
+		return customerName;
+	}
+
+	public Integer getBranchCompanyMapId() {
+		return branchCompanyMapId;
+	}
+
+	public void setBranchCompanyMapId(Integer branchCompanyMapId) {
+		this.branchCompanyMapId = branchCompanyMapId;
+	}
+
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
+	}
+
+	public String getBranchName() {
+		return branchName;
+	}
+
+	public void setBranchName(String branchName) {
+		this.branchName = branchName;
+	}
+	public String getLmsResponseContactNo() {
+		return lmsResponseContactNo;
+	}
+	public void setLmsResponseContactNo(String lmsResponseContactNo) {
+		this.lmsResponseContactNo = lmsResponseContactNo;
+	}
 	
 	public String getLiftNumber() {
 		return liftNumber;
@@ -152,13 +186,12 @@ public class EventDtlsDto {
 	public void setActiveFlag(Integer activeFlag) {
 		this.activeFlag = activeFlag;
 	}
+	public List<Integer> getLiftCustomerMapId() {
+		return liftCustomerMapId;
+	}
 
-	//private Date generatedDate;
-	//private String generatedDateStr;
-	//private Integer generatedBy;
-	//private Date updatedDate;
-   //private String updatedDateStr;
-	//private Integer updatedBy;
-	private Integer activeFlag;
+	public void setLiftCustomerMapId(List<Integer> liftCustomerMapId) {
+		this.liftCustomerMapId = liftCustomerMapId;
+	}
 	
 }

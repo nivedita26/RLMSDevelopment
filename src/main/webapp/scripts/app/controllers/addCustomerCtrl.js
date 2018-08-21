@@ -1,10 +1,11 @@
 (function () {
     'use strict';
 	angular.module('rlmsApp')
-	.controller('addCustomerCtrl', ['$scope', '$filter','serviceApi','$route','utility','$window','$rootScope', function($scope, $filter,serviceApi,$route,utility,$window,$rootScope) {
+	.controller('addCustomerCtrl', ['$scope', '$filter','serviceApi','$route','utility','$window','$rootScope','$http', function($scope, $filter,serviceApi,$route,utility,$window,$rootScope,$http) {
 	initAddCustomer();
 			loadCompayInfo();
-			$scope.alert = { type: 'success', msg: 'You successfully Added Customer.',close:true };			
+			$scope.alert = { type: 'success', msg: 'You successfully Added Customer.',close:true };
+			//$scope.alert = { type: 'error', msg: 'Please fill the Required Field',close:true };
 			$scope.showAlert = false;
 			$scope.showCompany=false;
 			$scope.showBranch=false;
@@ -42,9 +43,7 @@
 						treasurerEmail :'',
 						watchmenName :'',
 						watchmenNumber :'',
-						watchmenEmail :'',
-					//	gstNumber:'',
-						
+						watchmenEmail :'',						
 						
 				};	
 				$scope.customerTypes = [
@@ -106,7 +105,7 @@
 			
 			if($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 1){
 				$scope.showCompany= true;
-				loadCompanyData();
+				loadCompayInfo();
 			}else{
 				$scope.showCompany= false;
 				$scope.loadBranchData();
@@ -117,24 +116,33 @@
 				//$scope.addCustomer.companyName = $scope.selectedCompany.selected.companyName;
 				$scope.addCustomer.branchName = $scope.selectedBranch.selected.rlmsBranchMaster.branchName;
 				$scope.addCustomer.branchCompanyMapId = $scope.selectedBranch.selected.companyBranchMapId;
-				$scope.addCustomer.customerType =$scope.selectedCustomerTypes.selected.id;
+				if($scope.selectedCustomerTypes.selected){
+					$scope.addCustomer.customerType =$scope.selectedCustomerTypes.selected.id;
+				}
 				serviceApi.doPostWithData("/RLMS/admin/validateAndRegisterNewCustomer",$scope.addCustomer)
 				.then(function(response){
 					$scope.showAlert = true;
 					var key = Object.keys(response);
 					var successMessage = response[key[0]];
-					$scope.alert.msg = successMessage;
-					$scope.alert.type = "success";
-					initAddCustomer();
-					$scope.addCustomerForm.$setPristine();
-					$scope.addCustomerForm.$setUntouched();
-				},function(error){
+					if(successMessage){
+						$scope.alert.msg = "You successfully Added Customer.";
+						$scope.alert.type = "success";
+						initAddCustomer();
+						$scope.addBranchForm.$setPristine();
+						$scope.addBranchForm.$setUntouched();
+					}else{
+						$scope.showAlert = true;
+						$scope.alert.msg =  successMessage;
+						$scope.alert.type="danger";
+					}
+					
+				}/*,function(error){
 					$scope.showAlert = true;
 					$scope.alert.msg = error.exceptionMessage;
 					$scope.alert.type = "danger";
-				});
+				}*/);
 			}
-			//rese add branch
+			//reset add branch
 			$scope.resetAddCustomer = function(){
 				initAddCustomer();
 			}

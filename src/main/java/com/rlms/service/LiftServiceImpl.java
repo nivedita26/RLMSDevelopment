@@ -8,11 +8,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.rlms.constants.AMCType;
 import com.rlms.constants.PhotoType;
@@ -22,22 +26,32 @@ import com.rlms.constants.SpocRoleConstants;
 import com.rlms.constants.Status;
 import com.rlms.contract.AMCDetailsDto;
 import com.rlms.contract.CustomerDtlsDto;
+import com.rlms.contract.CustomerLiftDtls;
+import com.rlms.contract.LiftCustomerMap;
 import com.rlms.contract.LiftDtlsDto;
 import com.rlms.contract.ResponseDto;
+import com.rlms.contract.UserDtlsDto;
 import com.rlms.contract.UserMetaInfo;
 import com.rlms.dao.BranchDao;
+import com.rlms.dao.CompanyDao;
 import com.rlms.dao.CustomerDao;
-import com.rlms.dao.DashboardDao;
 import com.rlms.dao.FyaDao;
 import com.rlms.dao.LiftDao;
+import com.rlms.dao.LiftManualDao;
+import com.rlms.dao.UserMasterDao;
 import com.rlms.dao.UserRoleDao;
 import com.rlms.model.RlmsBranchCustomerMap;
+import com.rlms.model.RlmsCompanyManual;
 import com.rlms.model.RlmsFyaTranDtls;
+import com.rlms.model.RlmsLiftAmcDtls;
 import com.rlms.model.RlmsLiftCustomerMap;
+import com.rlms.model.RlmsLiftManualMapDtls;
 import com.rlms.model.RlmsLiftMaster;
 import com.rlms.model.RlmsUserRoles;
 import com.rlms.utils.DateUtils;
 import com.rlms.utils.PropertyUtils;
+
+import javassist.expr.NewArray;
 
 @Service("LiftService")
 public class LiftServiceImpl implements LiftService{
@@ -55,6 +69,9 @@ public class LiftServiceImpl implements LiftService{
 	private UserRoleDao userRoleDao;
 	
 	@Autowired
+	private UserMasterDao userMasterDao;
+	
+	@Autowired
 	private FyaDao fyaDao;
 	
 	@Autowired
@@ -63,6 +80,17 @@ public class LiftServiceImpl implements LiftService{
 	@Autowired
 	private ReportService reportService;
 	
+	@Autowired
+	private LiftManualService liftManualService;
+	
+	@Autowired
+	private LiftManualDao  liftManualDao;
+	
+	@Autowired
+	private CompanyDao  companyDao;
+	
+	private static final Logger logger = Logger.getLogger(LiftServiceImpl.class);
+
 	@Transactional(propagation = Propagation.REQUIRED)
 	public List<RlmsLiftCustomerMap> getAllLiftsForBranch(Integer companyBranchMapId){
 		List<RlmsLiftCustomerMap> liftsForBranch = new ArrayList<RlmsLiftCustomerMap>();
@@ -81,36 +109,56 @@ public class LiftServiceImpl implements LiftService{
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public ResponseDto validateAndAddNewLiftDtls(LiftDtlsDto dto, UserMetaInfo metaInfo) throws ParseException{
+		
 		ResponseDto ResponseDto = new ResponseDto();
-	    RlmsLiftMaster liftMaster = liftDao.getLiftByLiftNumber(dto.getLiftNumber());
-	   if(liftMaster==null) {
+ 	   	RlmsLiftMaster liftMaster = liftDao.getLiftByLiftNumber(dto.getLiftNumber());
+ 	   	if(liftMaster==null) {
 		RlmsLiftMaster liftM = this.constructLiftMaster(dto, metaInfo);
 		Integer liftId = this.liftDao.saveLiftM(liftM);
 		liftM.setLiftId(liftId);
-		
 		RlmsLiftCustomerMap liftCustomerMap = this.constructLiftCustomerMap(liftM, dto, metaInfo);
 		Integer liftCustomerMapID = this.liftDao.saveLiftCustomerMap(liftCustomerMap);
 		liftCustomerMap.setLiftCustomerMapId(liftCustomerMapID);
-		
+/*		logger.debug("get company manual");
+		RlmsCompanyManual companyManual = liftManualService.getCompanyManual(liftCustomerMap.getBranchCustomerMap().getCompanyBranchMapDtls().getRlmsCompanyMaster().getCompanyId(), liftM.getLiftType());
+		if(companyManual!=null) {
+			logger.debug("manual found");
+			RlmsLiftManualMapDtls liftManualMapDtls = this.constructLiftManualMapDtls(companyManual,liftCustomerMap, metaInfo);
+			liftManualDao.saveLiftManualMapDtls(liftManualMapDtls);
+		}*/
 		AMCDetailsDto amcDetailsDto = this.constructAMCDtlsDto(liftCustomerMap);
 		this.reportService.addAMCDetailsForLift(amcDetailsDto, metaInfo);
-		
 		RlmsFyaTranDtls fyaTranDtls = this.constructFyaTranDtls(liftCustomerMap, metaInfo);
 		this.fyaDao.saveFyaTranDtls(fyaTranDtls);
 		ResponseDto.setStatus(true);
 		ResponseDto.setResponse(RlmsErrorType.LIFT_ADDED_SUCCESSFULLY.getMessage());
+	    }
+	   else {
+		   RlmsLiftCustomerMap liftCustomerMap = liftDao.getLiftCustomerMapByLiftId(liftMaster.getLiftId());
+		   if(liftCustomerMap.getBranchCustomerMap().getBranchCustoMapId()==dto.getBranchCustomerMapId()) {
+				ResponseDto.setResponse("Customer have already registered same lift number ");
+		   }
+	   }
+	//	ResponseDto.setResponse("Duplicate lift number");
 		return ResponseDto;
-	     }
-		ResponseDto.setStatus(true);
-		ResponseDto.setResponse("Duplicate lift number");
-    	return ResponseDto;
 	}
+
+	private RlmsLiftManualMapDtls constructLiftManualMapDtls(RlmsCompanyManual  companyManual,RlmsLiftCustomerMap liftCustomerMap,UserMetaInfo metaInfo){
+		RlmsLiftManualMapDtls liftManualMapDtls = new RlmsLiftManualMapDtls();
+		liftManualMapDtls.setCompanyManual(companyManual);
+		liftManualMapDtls.setRlmsLiftCustomerMap(liftCustomerMap);
+		liftManualMapDtls.setActiveFlag(RLMSConstants.ACTIVE.getId());
+		liftManualMapDtls.setCreatedDate(new Date());
+		liftManualMapDtls.setCreatedBy(metaInfo.getUserId());
+		liftManualMapDtls.setUpdatedBy(metaInfo.getUserId());
+		liftManualMapDtls.setUpdatedDate(new Date());
+		return liftManualMapDtls;
+	}
+	
 	private AMCDetailsDto constructAMCDtlsDto(RlmsLiftCustomerMap liftCustomerMap){
 		AMCDetailsDto dto = new AMCDetailsDto();
 		//if(liftCustomerMap.getLiftMaster().getAmcStartDate()!=null) {
-		
 		if(liftCustomerMap.getLiftMaster()!=null) {
-
 		dto.setAmcAmount(liftCustomerMap.getLiftMaster().getAmcAmount());
 		System.out.println(liftCustomerMap.getLiftMaster().getAmcStartDate());
        if(liftCustomerMap.getLiftMaster().getAmcStartDate()!=null  &&(liftCustomerMap.getLiftMaster().getAmcEndDate()!=null) ) {
@@ -120,8 +168,7 @@ public class LiftServiceImpl implements LiftService{
 			dto.setAmcDueDate(amcDueDate);
 			dto.setAmcType(liftCustomerMap.getLiftMaster().getAmcType());
        }
-      
-		dto.setLiftServiceStartDate(DateUtils.convertDateToStringWithoutTime(liftCustomerMap.getLiftMaster().getServiceStartDate()));
+        dto.setLiftServiceStartDate(DateUtils.convertDateToStringWithoutTime(liftCustomerMap.getLiftMaster().getServiceStartDate()));
 		dto.setLiftServiceEndDate(DateUtils.convertDateToStringWithoutTime(liftCustomerMap.getLiftMaster().getServiceEndDate()));
 		}
 		dto.setLiftCustoMapId(liftCustomerMap.getLiftCustomerMapId());
@@ -238,35 +285,61 @@ public class LiftServiceImpl implements LiftService{
 			dto.setCompanyName(liftCustomerMap.getBranchCustomerMap().getCompanyBranchMapDtls().getRlmsCompanyMaster().getCompanyName());
 			listOfDtos.add(dto);
 		}
-		
 		return listOfDtos;
 	}
-	
 	
 	@Transactional(propagation = Propagation.REQUIRED)
 	public String approveLift(LiftDtlsDto liftDtlsDto, UserMetaInfo metaInfo){
 		RlmsLiftCustomerMap liftCustomerMap = this.liftDao.getLiftCustomerMapByLiftId(liftDtlsDto.getLiftId());
-		
 		liftCustomerMap.getLiftMaster().setActiveFlag(RLMSConstants.ACTIVE.getId());
 		liftCustomerMap.getLiftMaster().setServiceStartDate(new Date());
 		liftCustomerMap.setActiveFlag(RLMSConstants.ACTIVE.getId());
 		this.liftDao.updateLiftCustomerMap(liftCustomerMap);
-		
 		RlmsFyaTranDtls fyaTranDtls = this.fyaDao.getFyaByFyaTranIDt(liftDtlsDto.getFyaTranId());
 		fyaTranDtls.setStatus(Status.COMPLETED.getStatusId());
 		this.fyaDao.updateFyaTranDtls(fyaTranDtls);
-		
 		return PropertyUtils.getPrpertyFromContext(RlmsErrorType.LIFT_APPROVED.getMessage());
-		
 	}
 	
 	@Transactional(propagation = Propagation.REQUIRED)
 	public List<LiftDtlsDto> getLiftDetailsForBranch(LiftDtlsDto liftDtlsDto, UserMetaInfo metaInfo){
-		List<RlmsLiftCustomerMap> listOFAllLifts = this.liftDao.getAllLiftsForBranchs(liftDtlsDto.getBranchCompanyMapId());
+		List<RlmsLiftCustomerMap> listOFLiftCustomerMap = new ArrayList<>();
+		if(liftDtlsDto.getListOfBranchCustomerMapId()!=null) {
+			listOFLiftCustomerMap = liftDao.getAllLiftsForCustomres(liftDtlsDto.getListOfBranchCustomerMapId());
+		}
+		else {
+		 listOFLiftCustomerMap = this.liftDao.getAllLiftsForBranchs(liftDtlsDto.getBranchCompanyMapId());
+		}
 		List<LiftDtlsDto> listOfAllDtos = new ArrayList<LiftDtlsDto>();
-		for (RlmsLiftCustomerMap liftCustomerMap : listOFAllLifts) {
+		if(listOFLiftCustomerMap!=null && !listOFLiftCustomerMap.isEmpty()) {
+		for (RlmsLiftCustomerMap liftCustomerMap : listOFLiftCustomerMap) {
 			RlmsLiftMaster liftM = liftCustomerMap.getLiftMaster();
+			RlmsLiftAmcDtls amcDtls = liftDao.getRlmsLiftAmcDtlsByLiftCustomerMapId(liftCustomerMap.getLiftCustomerMapId());
 			LiftDtlsDto dto = new LiftDtlsDto();
+			if(amcDtls!=null) {
+				if(amcDtls.getAmcStartDate()!=null && amcDtls.getAmcEndDate()!=null) {
+				dto.setAmcStartDateStr(DateUtils.convertDateToStringWithoutTime(amcDtls.getAmcStartDate()));
+				dto.setAmcEndDateStr(DateUtils.convertDateToStringWithoutTime(amcDtls.getAmcEndDate()));
+				dto.setAmcType(liftM.getAmcType());
+				}
+				if(amcDtls.getAmcType()!=null){
+					if (AMCType.COMPREHENSIVE.getId() == amcDtls.getAmcType()) {
+						dto.setAmcType(amcDtls.getAmcType());
+						dto.setAmcTypeStr(AMCType.COMPREHENSIVE.getType());
+					} else if (AMCType.NON_COMPREHENSIVE.getId() == amcDtls
+							.getAmcType()) {
+						dto.setAmcType(amcDtls.getAmcType());
+						dto.setAmcTypeStr(AMCType.NON_COMPREHENSIVE.getType());
+					} else if (AMCType.ON_DEMAND.getId() == amcDtls.getAmcType()) {
+						dto.setAmcType(amcDtls.getAmcType());
+						dto.setAmcTypeStr(AMCType.ON_DEMAND.getType());
+					} else if (AMCType.OTHER.getId() == amcDtls.getAmcType()) {
+						dto.setAmcType(amcDtls.getAmcType());
+						dto.setAmcTypeStr(AMCType.OTHER.getType());
+					}
+				}
+			}
+			dto.setLiftId(liftM.getLiftId());
 			dto.setAccessControl(liftM.getAccessControl());
 			dto.setAddress(liftM.getAddress());
 			dto.setArea(liftM.getArea());
@@ -276,28 +349,44 @@ public class LiftServiceImpl implements LiftService{
 			dto.setAlarmBattery(liftM.getAlarmBattery());
 			dto.setAmcAmount(liftM.getAmcAmount());
 			dto.setAmcStartDate(liftM.getAmcStartDate());
-			if(null != liftM.getAmcStartDate()){
-				dto.setAmcStartDateStr(DateUtils.convertDateToStringWithoutTime(liftM.getAmcStartDate()));
-			}
-			dto.setAmcType(liftM.getAmcType());
-			
-			if(liftM.getAmcType()!=null){
-				if (AMCType.COMPREHENSIVE.getId() == liftM.getAmcType()) {
-					dto.setAmcTypeStr(AMCType.COMPREHENSIVE.getType());
-				} else if (AMCType.NON_COMPREHENSIVE.getId() == liftM
-						.getAmcType()) {
-					dto.setAmcTypeStr(AMCType.NON_COMPREHENSIVE.getType());
-				} else if (AMCType.ON_DEMAND.getId() == liftM.getAmcType()) {
-					dto.setAmcTypeStr(AMCType.ON_DEMAND.getType());
-				} else if (AMCType.OTHER.getId() == liftM.getAmcType()) {
-					dto.setAmcTypeStr(AMCType.OTHER.getType());
-				}
-			}
-			
+			dto.setLatitude(liftM.getLatitude());
+			dto.setLongitude(liftM.getLongitude());
+			dto.setDoorType(liftM.getDoorType());
+			dto.setNoOfStops(liftM.getNoOfStops());
+			dto.setEngineType(liftM.getEngineType());
+			dto.setMachineMake(liftM.getMachineMake());
+			dto.setMachineCapacity(liftM.getMachineCapacity());
+			dto.setMachineCurrent(liftM.getMachineCurrent());
+			dto.setBreakVoltage(liftM.getBreakVoltage());
+			dto.setPanelPhoto(liftM.getPanelPhoto());
+			dto.setNoOfBatteries(liftM.getNoOfBatteries());
+			dto.setCopMake(liftM.getCOPMake());
+			dto.setLopMake(liftM.getLOPMake());
+			dto.setCollectiveType(liftM.getCollectiveType());
+			dto.setSimplexDuplex(liftM.getSimplexDuplex());
+			dto.setLopMake(liftM.getLOPMake());
+			dto.setCollectiveType(liftM.getCollectiveType());
+			dto.setSimplexDuplex(liftM.getSimplexDuplex());
+			dto.setAutoDoorMake(liftM.getAutoDoorMake());
+			dto.setWiringShceme(liftM.getWiringShceme());
+			dto.setFireMode(liftM.getFireMode());
+			dto.setIntercomm(liftM.getIntercomm());
+			dto.setLiftType(liftM.getLiftType());
+			dto.setPanelMake(liftM.getPanelMake());
+			dto.setImei(liftM.getImei());
+			dto.setLmsEventFromContactNo(liftM.getLmsEventContactNumber());
 			dto.setArd(liftM.getARD());
+			//photo
 			dto.setArdPhoto(liftM.getARDPhoto());
 			dto.setAutoDoorHeaderPhoto(liftM.getAutoDoorHeaderPhoto());
-			dto.setBatteryCapacity(liftM.getBatteryCapacity());
+			dto.setCartopPhoto(liftM.getCartopPhoto());
+			dto.setPanelPhoto(liftM.getPanelPhoto());
+			dto.setMachinePhoto(liftM.getMachinePhoto());
+			dto.setLobbyPhoto(liftM.getLobbyPhoto());
+			dto.setWiringPhoto(liftM.getWiringPhoto());
+            dto.	setCopPhoto(liftM.getCOPPhoto());	
+            dto.setLopPhoto(liftM.getLOPPhoto());
+            dto.setBatteryCapacity(liftM.getBatteryCapacity());
 			dto.setBatteryMake(liftM.getBatteryMake());
 			dto.setBranchName(liftCustomerMap.getBranchCustomerMap().getCompanyBranchMapDtls().getRlmsBranchMaster().getBranchName());;
 			dto.setCustomerName(liftCustomerMap.getBranchCustomerMap().getCustomerMaster().getCustomerName());
@@ -314,13 +403,12 @@ public class LiftServiceImpl implements LiftService{
 			if(null != liftM.getServiceEndDate()){
 				dto.setServiceEndDateStr(DateUtils.convertDateToStringWithoutTime(liftM.getServiceEndDate()));
 			}
+			dto.setLiftType(liftM.getLiftType());
 			listOfAllDtos.add(dto);
 		}
-		
-		return listOfAllDtos;
-		
 	}
-	
+		return listOfAllDtos;
+	}
 	@Transactional(propagation = Propagation.REQUIRED)
 	public String uploadPhoto(LiftDtlsDto dto){
 		
@@ -348,16 +436,11 @@ public class LiftServiceImpl implements LiftService{
 			
 			liftMaster.setPanelPhoto(dto.getPanelPhoto());
 		}else if(PhotoType.WIRING_PHOTO.getId() == dto.getPhotoType()){
-			
 			liftMaster.setWiringPhoto(dto.getWiringPhoto());
-			
 		}
-		
 		this.liftDao.mergeLiftM(liftMaster);
 		return PropertyUtils.getPrpertyFromContext(RlmsErrorType.PHOTO_UPDATED.getMessage());	
-		
 	}
-	
 	@Transactional(propagation = Propagation.REQUIRED)
 	public LiftDtlsDto getLiftMasterForType(LiftDtlsDto loftDtlsDto){
 		LiftDtlsDto dto = new LiftDtlsDto();
@@ -372,7 +455,6 @@ public class LiftServiceImpl implements LiftService{
 		if(null != luftCustomerMap){
 			dto.setBlank(false);
 			dto.setAccessControl(luftCustomerMap.getLiftMaster().getAccessControl());
-			
 			dto.setAlarm(luftCustomerMap.getLiftMaster().getAlarm());
 			dto.setAlarmBattery(luftCustomerMap.getLiftMaster().getAlarmBattery());
 			dto.setAmcAmount(luftCustomerMap.getLiftMaster().getAmcAmount());
@@ -426,10 +508,9 @@ public class LiftServiceImpl implements LiftService{
 			if(null != luftCustomerMap.getLiftMaster().getServiceEndDate()){
 				dto.setServiceEndDateStr(DateUtils.convertDateToStringWithoutTime(luftCustomerMap.getLiftMaster().getServiceEndDate()));
 			}
-		}else{
+		  }else{
 			dto.setBlank(true);
 		}
-		
 		return dto;
 	}
 	
@@ -446,9 +527,11 @@ public class LiftServiceImpl implements LiftService{
 		return dto;
 	}
 	
-	@Transactional(propagation = Propagation.REQUIRED)
+	/*@Transactional(propagation = Propagation.REQUIRED)
 	public String updateLiftDetails(LiftDtlsDto dto, UserMetaInfo userMetaInfo){
 		RlmsLiftCustomerMap liftCustomerMap = this.liftDao.getLiftCustomerMapById(dto.getLiftCustomerMapId());
+		
+		if(liftCustomerMap!=null) {
 		RlmsLiftMaster liftMaster = liftCustomerMap.getLiftMaster();
 		if(!StringUtils.isEmpty(dto.getArea())){
 			liftMaster.setArea(dto.getArea());			
@@ -498,15 +581,14 @@ public class LiftServiceImpl implements LiftService{
 			liftMaster.setLOPMake(dto.getLopMake());
 		}
 		this.liftDao.mergeLiftM(liftMaster);
-		return PropertyUtils.getPrpertyFromContext(RlmsErrorType.PHOTO_UPDATED.getMessage());	
-		
-	}
-	
+		return "lift updated successfully";	
+		}
+		return "lift details is not updated";	
+	}*/
 	@Transactional(propagation = Propagation.REQUIRED)
 	public List<LiftDtlsDto> getLiftStatusForBranch(List<Integer> companyBranchIds, UserMetaInfo metaInfo){
 		List<RlmsLiftCustomerMap> listOFAllLifts = this.liftDao.getAllLiftsStatusForBranchs(companyBranchIds);
 		List<LiftDtlsDto> listOfAllDtos = new ArrayList<LiftDtlsDto>();
-		Set<RlmsBranchCustomerMap> branchCustomerMapIdList = new HashSet<RlmsBranchCustomerMap>();
 		for (RlmsLiftCustomerMap liftCustomerMap : listOFAllLifts) {
 			RlmsLiftMaster liftM = liftCustomerMap.getLiftMaster();
 			LiftDtlsDto dto = new LiftDtlsDto();
@@ -557,19 +639,14 @@ public class LiftServiceImpl implements LiftService{
 		List<LiftDtlsDto> listOfAllDtos = new ArrayList<LiftDtlsDto>();
 		Set<RlmsBranchCustomerMap> branchCustomerMapIdList = new HashSet<RlmsBranchCustomerMap>();
 		for (RlmsLiftCustomerMap liftCustomerMap : listOFAllLifts) {
-			//new code
 			branchCustomerMapIdList.add(liftCustomerMap.getBranchCustomerMap());
 		}
 		for (RlmsBranchCustomerMap rlmsBranchCustomerMap : branchCustomerMapIdList) {
 			   List<Object []> liftCountObj =  liftDao.liftCountByBranchCustomerMapId(rlmsBranchCustomerMap.getBranchCustoMapId());
-		
 		            for (Object[] objects : liftCountObj) {
-		            	//RlmsLiftMaster liftMaster = new RlmsLiftMaster();
 		    			LiftDtlsDto dto = new LiftDtlsDto();
-
 		            	RlmsBranchCustomerMap  branchCustomerMap = new RlmsBranchCustomerMap();
 		            	BigInteger liftCount =  (BigInteger) objects[1];
-		            	
 		            	branchCustomerMap = liftDao.getBranchCustomerMapByBranchCustomerMapId((int)objects[0]);
 		            	dto.setBranchName(branchCustomerMap.getCompanyBranchMapDtls().getRlmsBranchMaster().getBranchName());
 		            	dto.setCustomerName(branchCustomerMap.getCustomerMaster().getCustomerName());
@@ -581,5 +658,419 @@ public class LiftServiceImpl implements LiftService{
         return listOfAllDtos;
 		
 	}
+	@Transactional(propagation = Propagation.REQUIRED)
+		public ResponseDto updateLiftParams(LiftDtlsDto liftMaster){
+		    ResponseDto responseDto = new ResponseDto();
+			RlmsLiftMaster liftM = this.liftDao.getLiftById(liftMaster.getLiftId());
+			
+			if(null != liftM){
+				if(null != liftMaster.getAccessControl() && !liftMaster.getAccessControl().isEmpty()){
+					liftM.setAccessControl(liftMaster.getAccessControl());
+				}
+				if(null != liftMaster.getAlarm() ){
+					liftM.setAlarm(liftMaster.getAlarm());
+				}
+				if(null != liftMaster.getAmcType()){
+					liftM.setAmcType(liftMaster.getAmcType());
+				}
+				if(null != liftMaster.getCollectiveType()){
+					liftM.setCollectiveType(liftMaster.getCollectiveType());
+				}
+				if(null != liftMaster.getDoorType() ){
+					liftM.setDoorType(liftMaster.getDoorType());
+				}
+				if(null != liftMaster.getEngineType()){
+					liftM.setEngineType(liftMaster.getEngineType());
+				}
+				if(null != liftMaster.getFireMode()){
+					liftM.setFireMode(liftMaster.getFireMode());
+				}
+				if(null != liftMaster.getLiftType()){
+					liftM.setLiftType(liftMaster.getLiftType());
+				}
+				if(null != liftMaster.getNoOfBatteries()){
+					liftM.setNoOfBatteries(liftMaster.getNoOfBatteries());
+				}
+				if(null != liftMaster.getPinCode()){
+					liftM.setPincode(liftMaster.getPinCode());
+				}
+				if(null != liftMaster.getSimplexDuplex()){
+					liftM.setSimplexDuplex(liftMaster.getSimplexDuplex());
+				}
+			//	if(null != liftMaster.getS()){
+			//		liftM.setStatus(liftMaster.getStatus());
+			//	}
+				
+				if(null != liftMaster.getWiringShceme()){
+					liftM.setWiringShceme(liftMaster.getWiringShceme());
+				}
+				if(null != liftMaster.getAddress() && !liftMaster.getAddress().isEmpty()){
+					liftM.setAddress(liftMaster.getAddress());
+				}
+				if(null != liftMaster.getAlarmBattery() && !liftMaster.getAlarmBattery().isEmpty()){
+					liftM.setAlarmBattery(liftMaster.getAlarmBattery());
+				}
+				if(null != liftMaster.getAmcAmount()){
+					liftM.setAmcAmount(liftMaster.getAmcAmount());
+				}
+				if(null != liftMaster.getAmcEndDate()){
+					liftM.setAmcEndDate(liftMaster.getAmcEndDate());
+				}
+				if(null != liftMaster.getAmcStartDate()){
+					liftM.setAmcStartDate(liftMaster.getAmcStartDate());
+				}
+				
+				if(null != liftMaster.getAmcType()){
+					liftM.setAmcType(liftMaster.getAmcType());
+				}
+				if(null != liftMaster.getArd()&& !liftMaster.getArd().isEmpty() ){
+					liftM.setARD(liftMaster.getArd());
+				}
+				if(null != liftMaster.getArdPhoto()){
+					liftM.setARDPhoto(liftMaster.getArdPhoto());
+				}
+				if(null != liftMaster.getArea() && !liftMaster.getArea().isEmpty()){
+					liftM.setArea(liftMaster.getArea());
+				}
+				if(null != liftMaster.getAutoDoorHeaderPhoto()){
+					liftM.setAutoDoorHeaderPhoto(liftMaster.getAutoDoorHeaderPhoto());
+				}
+				if(null != liftMaster.getAutoDoorMake() && !liftMaster.getAutoDoorMake().isEmpty()){
+					liftM.setAutoDoorMake(liftMaster.getAutoDoorMake());
+				}
+				if(null != liftMaster.getBatteryCapacity() && !liftMaster.getBatteryCapacity().isEmpty()){
+					liftM.setBatteryCapacity(liftMaster.getBatteryCapacity());
+				}
+				
+				if(null != liftMaster.getBatteryMake() && !liftMaster.getBatteryMake().isEmpty()){
+					liftM.setBatteryMake(liftMaster.getBatteryMake());
+				}
+				if(null != liftMaster.getBreakVoltage() && !liftMaster.getBreakVoltage().isEmpty()){
+					liftM.setBreakVoltage(liftMaster.getBreakVoltage());
+				}
+				if(null != liftMaster.getCartopPhoto()){
+					liftM.setCartopPhoto(liftMaster.getCartopPhoto());
+				}
+				if(null != liftMaster.getCity() && !liftMaster.getCity().isEmpty()){
+					liftM.setCity(liftMaster.getCity());
+				}
+				if(null != liftMaster.getCopMake() && !liftMaster.getCopMake().isEmpty()){
+					liftM.setCOPMake(liftMaster.getCopMake());
+				}
+				if(null != liftMaster.getCopPhoto()){
+					liftM.setCOPPhoto(liftMaster.getCopPhoto());
+				}
+				if(null != liftMaster.getDateOfInstallation()){
+					liftM.setDateOfInstallation(liftMaster.getDateOfInstallation());
+				}
+				
+				if(null != liftMaster.getIntercomm() && !liftMaster.getIntercomm().isEmpty()){
+					liftM.setIntercomm(liftMaster.getIntercomm());
+				}
+				if(null != liftMaster.getLatitude() && !liftMaster.getLatitude().isEmpty()){
+					liftM.setLatitude(liftMaster.getLatitude());
+				}
+				if(null != liftMaster.getLiftNumber() && !liftMaster.getLiftNumber().isEmpty()){
+					liftM.setLiftNumber(liftMaster.getLiftNumber());
+				}
+				if(null != liftMaster.getLobbyPhoto()){
+					liftM.setLobbyPhoto(liftMaster.getLobbyPhoto());
+				}
+				
+				if(null != liftMaster.getLongitude() && !liftMaster.getLongitude().isEmpty()){
+					liftM.setLongitude(liftMaster.getLongitude());
+				}
+				if(null != liftMaster.getLopMake() && !liftMaster.getLopMake().isEmpty()){
+					liftM.setLOPMake(liftMaster.getLopMake());
+				}
+				if(null != liftMaster.getLopPhoto()){
+					liftM.setLOPPhoto(liftMaster.getLopPhoto());
+				}
+				if(null != liftMaster.getMachineCapacity() && !liftMaster.getMachineCapacity().isEmpty()){
+					liftM.setMachineCapacity(liftMaster.getMachineCapacity());
+				}
+				if(null != liftMaster.getMachineCurrent() && !liftMaster.getMachineCurrent().isEmpty()){
+					liftM.setMachineCurrent(liftMaster.getMachineCurrent());
+				}
+				if(null != liftMaster.getMachineMake() && !liftMaster.getMachineMake().isEmpty()){
+					liftM.setMachineMake(liftMaster.getMachineMake());
+				}
+				if(null != liftMaster.getMachinePhoto()){
+					liftM.setMachinePhoto(liftMaster.getMachinePhoto());
+				}
+				if(null != liftMaster.getNoOfStops() && !liftMaster.getNoOfStops().isEmpty()){
+					liftM.setNoOfStops(liftMaster.getNoOfStops());
+				}
+				if(null != liftMaster.getPanelMake() && !liftMaster.getPanelMake().isEmpty()){
+					liftM.setPanelMake(liftMaster.getPanelMake());
+				}
+				if(null != liftMaster.getPanelPhoto()){
+					liftM.setPanelPhoto(liftMaster.getPanelPhoto());
+				}
+				if(null != liftMaster.getServiceEndDate()){
+					liftM.setServiceEndDate(liftMaster.getServiceEndDate());
+				}
+				if(null != liftMaster.getServiceStartDate()){
+					liftM.setServiceStartDate(liftMaster.getServiceStartDate());
+				}
+				if(null != liftMaster.getWiringPhoto() ){
+					liftM.setWiringPhoto(liftMaster.getWiringPhoto());
+				}
+				if(null != liftMaster.getImei() ){
+					liftM.setImei(liftMaster.getImei());
+				}
+				if(null != liftMaster.getLmsEventFromContactNo() ){
+					liftM.setLmsEventContactNumber(liftMaster.getLmsEventFromContactNo());
+				}
+				this.liftDao.mergeLiftM(liftM);
+				responseDto.setStatus(true);
+				responseDto.setResponse("Lift updated successfully");
+				}
+			return responseDto;
+		}
+	@Override
+	public ResponseDto  getLiftDetailsList(UserDtlsDto dtlsDto) {
+		ResponseDto responseDto = new ResponseDto();
+      List<Integer> branchCompanyMapId= new ArrayList<>();
+      List<CustomerLiftDtls> liftDtlsDtoList = new ArrayList<>();
+  	RlmsUserRoles  rlmsUserRoles = userRoleDao.getUserRoleByUserId(dtlsDto.getUserId());
+		if(rlmsUserRoles!=null) {
+			branchCompanyMapId.add(rlmsUserRoles.getRlmsCompanyBranchMapDtls().getCompanyBranchMapId());
+			List<RlmsBranchCustomerMap> rlmsBranchCustomerMaps = customerDao.getAllCustomersForTechician(branchCompanyMapId);
+			if(rlmsBranchCustomerMaps!=null && !rlmsBranchCustomerMaps.isEmpty()) {
+			   	  for (RlmsBranchCustomerMap rlmsBranchCustomerMap : rlmsBranchCustomerMaps) {
+			   		List<Integer> branchCustomerMapIDs = new ArrayList<>();
+					branchCustomerMapIDs.add(rlmsBranchCustomerMap.getBranchCustoMapId());
+			        CustomerLiftDtls  CustomerLiftDtlsDto = new CustomerLiftDtls();
+			   	    CustomerLiftDtlsDto.setCustomerName(rlmsBranchCustomerMap.getCustomerMaster().getCustomerName()+"("+ rlmsBranchCustomerMap.getCustomerMaster().getArea() +")");
+				    List<RlmsLiftCustomerMap> rlmsLiftCustomerMapsList =  liftDao.getAllLiftsForCustomres(branchCustomerMapIDs);
+			        if(rlmsLiftCustomerMapsList!=null && !rlmsLiftCustomerMapsList.isEmpty()) {
+			        	List<LiftCustomerMap> customerMapList = new ArrayList<>();
+			        	for (RlmsLiftCustomerMap rlmsLiftCustomerMap : rlmsLiftCustomerMapsList) {
+			        	      LiftCustomerMap liftCustomerMap = new LiftCustomerMap();
+								liftCustomerMap.setLiftNumber(rlmsLiftCustomerMap.getLiftMaster().getLiftNumber());
+								liftCustomerMap.setLiftCustomerMapId(rlmsLiftCustomerMap.getLiftCustomerMapId());
+								customerMapList.add(liftCustomerMap);
+						}
+				        CustomerLiftDtlsDto.setLiftCustomerMapList(customerMapList);
+			        }
+				    liftDtlsDtoList.add(CustomerLiftDtlsDto);
+				}
+			}
+			responseDto.setStatus(true);
+			responseDto.setResponse(liftDtlsDtoList);
+			return responseDto;
+		}
+		responseDto.setStatus(false);
+       responseDto.setResponse("invalid userId");
+		return responseDto;
+	}
+	@Transactional(propagation = Propagation.REQUIRED)
+	public List<LiftDtlsDto> getAllLiftsForTechnician(Integer userRoleId){
+		List<LiftDtlsDto> listOfDtos = new ArrayList<LiftDtlsDto>();
+		RlmsUserRoles userRole = this.userRoleDao.getUserRole(userRoleId);
+		List<RlmsLiftCustomerMap> listOfLifts = this.getAllLiftsForBranch(userRole.getRlmsCompanyBranchMapDtls().getCompanyBranchMapId());
+		for (RlmsLiftCustomerMap rlmsLiftCustomerMap : listOfLifts) {
+			LiftDtlsDto dto = new LiftDtlsDto();
+			dto.setLiftId(rlmsLiftCustomerMap.getLiftMaster().getLiftId());
+			dto.setLiftNumber(rlmsLiftCustomerMap.getLiftMaster().getLiftNumber());
+			dto.setLiftCustomerMapId(rlmsLiftCustomerMap.getLiftCustomerMapId());
+			listOfDtos.add(dto);
+		}
+		return listOfDtos;
+	}
+	@Transactional(propagation = Propagation.REQUIRED)
+	public String updateLiftDetails(LiftDtlsDto dto, UserMetaInfo userMetaInfo){
+		RlmsLiftCustomerMap liftCustomerMap = this.liftDao.getLiftCustomerMapById(dto.getLiftCustomerMapId());
+		RlmsLiftMaster liftMaster = liftCustomerMap.getLiftMaster();
+		
+		if(null != dto.getAccessControl() && !dto.getAccessControl().isEmpty()){
+			liftMaster.setAccessControl(dto.getAccessControl());
+		}
+		if(null != dto.getAddress() && !dto.getAddress().isEmpty()){
+			liftMaster.setAddress(dto.getAddress());
+		}
+		if(null != dto.getAlarm()){
+			liftMaster.setAlarm(dto.getAlarm());
+		}
+		if(null != dto.getAlarmBattery()){
+			liftMaster.setAlarmBattery(dto.getAlarmBattery());
+		}
+		if(null != dto.getAmcType()){
+			liftMaster.setAmcType(dto.getAmcType());
+		}
+		if(null != dto.getCollectiveType()){
+			liftMaster.setCollectiveType(dto.getCollectiveType());
+		}
+		if(null != dto.getEngineType()){
+			liftMaster.setEngineType(dto.getEngineType());
+		}
+		if(null != dto.getFireMode()){
+			liftMaster.setFireMode(dto.getFireMode());
+		}
+		if(null != dto.getLiftType()){
+			liftMaster.setLiftType(dto.getLiftType());
+		}
+		if(null != dto.getNoOfBatteries()){
+			liftMaster.setNoOfBatteries(dto.getNoOfBatteries());
+		}
+		if(null != dto.getSimplexDuplex()){
+			liftMaster.setSimplexDuplex(dto.getSimplexDuplex());
+		}
+		if(null != dto.getWiringShceme()){
+			liftMaster.setWiringShceme(dto.getWiringShceme());
+		}
+		if(null != dto.getAmcEndDate()){
+			liftMaster.setAmcEndDate(dto.getAmcEndDate());
+		}
+		if(null != dto.getAmcStartDate()){
+			liftMaster.setAmcStartDate(dto.getAmcStartDate());
+		}
+		if(null != dto.getArdPhoto()){
+			liftMaster.setARDPhoto(dto.getArdPhoto());
+		}
+		if(null != dto.getAutoDoorHeaderPhoto()){
+			liftMaster.setAutoDoorHeaderPhoto(dto.getAutoDoorHeaderPhoto());
+		}
+		if(null != dto.getAutoDoorMake() && !dto.getAutoDoorMake().isEmpty()){
+			liftMaster.setAutoDoorMake(dto.getAutoDoorMake());
+		}
+		
+		if(null != dto.getBatteryCapacity() && !dto.getBatteryCapacity().isEmpty()){
+			liftMaster.setBatteryCapacity(dto.getBatteryCapacity());
+		}
 	
+		if(null != dto.getBatteryMake() && !dto.getBatteryMake().isEmpty()){
+			liftMaster.setBatteryMake(dto.getBatteryMake());
+		}
+		if(null != dto.getCartopPhoto()){
+			liftMaster.setCartopPhoto(dto.getCartopPhoto());
+		}
+		if(null != dto.getCopPhoto()){
+			liftMaster.setCOPPhoto(dto.getCopPhoto());
+		}
+		if(null != dto.getDateOfInstallation()){
+			liftMaster.setDateOfInstallation(dto.getDateOfInstallation());
+		}
+		if(null != dto.getIntercomm() && !dto.getIntercomm().isEmpty()){
+			liftMaster.setIntercomm(dto.getIntercomm());
+		}
+	/*	if(null != dto.getLiftImei() && !dto.getLiftImei().isEmpty()){
+			liftMaster.setLiftImei(dto.getLiftImei());
+		}
+*/		if(null != dto.getLiftNumber() && !dto.getLiftNumber().isEmpty()){
+			liftMaster.setLiftNumber(dto.getLiftNumber());
+		}
+		if(null != dto.getLobbyPhoto()){
+			liftMaster.setLobbyPhoto(dto.getLobbyPhoto());
+		}
+		if(null != dto.getLopPhoto()){
+			liftMaster.setLOPPhoto(dto.getLopPhoto());
+		}
+		
+		if(null != dto.getPanelMake()){
+			liftMaster.setPanelMake(dto.getPanelMake());
+		}
+		
+		if(null != dto.getPanelPhoto()){
+			liftMaster.setPanelPhoto(dto.getPanelPhoto());
+		}
+		if(null != dto.getServiceEndDate()){
+			liftMaster.setServiceEndDate(dto.getServiceEndDate());
+		}
+		if(null != dto.getServiceStartDate()){
+			liftMaster.setServiceStartDate(dto.getServiceStartDate());
+		}
+		
+		if(!StringUtils.isEmpty(dto.getArea())){
+			liftMaster.setArea(dto.getArea());			
+		}if(!StringUtils.isEmpty(dto.getCity())){
+			liftMaster.setCity(dto.getCity());
+		}if(dto.getPinCode()!=null){
+			liftMaster.setPincode(dto.getPinCode());
+		}
+		if(!StringUtils.isEmpty(dto.getAmcAmount())){
+			liftMaster.setAmcAmount(dto.getAmcAmount());
+		}
+		/*if(!StringUtils.isEmpty(dto.getLatitude())){
+			liftMaster.setLatitude(dto.getLatitude());
+		}
+		
+		if(!StringUtils.isEmpty(dto.getLongitude())){
+			liftMaster.setLongitude(dto.getLongitude());
+		}*/
+		if(dto.getDoorType()!=null){
+			liftMaster.setDoorType(dto.getDoorType());
+		}
+		if(!StringUtils.isEmpty(dto.getNoOfStops())){
+			liftMaster.setNoOfStops(dto.getNoOfStops());
+		}
+		if(!StringUtils.isEmpty(dto.getMachineCapacity())){
+			liftMaster.setMachineCapacity(dto.getMachineCapacity());
+		}
+		if(!StringUtils.isEmpty(dto.getMachineCurrent())){
+			liftMaster.setMachineCurrent(dto.getMachineCurrent());
+		}
+		if(!StringUtils.isEmpty(dto.getMachineMake())){
+			liftMaster.setMachineMake(dto.getMachineMake());
+		}
+			
+		if(!StringUtils.isEmpty(dto.getBreakVoltage())){
+			liftMaster.setBreakVoltage(dto.getBreakVoltage());
+		}
+		if(!StringUtils.isEmpty(dto.getPanelMake())){
+			liftMaster.setPanelMake(dto.getPanelMake());
+		}
+		if(!StringUtils.isEmpty(dto.getArd())){
+			liftMaster.setARD(dto.getArd());
+		}
+		if(!StringUtils.isEmpty(dto.getCopMake())){
+			liftMaster.setCOPMake(dto.getCopMake());
+		}
+		if(!StringUtils.isEmpty(dto.getLopMake())){
+			liftMaster.setLOPMake(dto.getLopMake());
+		}
+		this.liftDao.mergeLiftM(liftMaster);
+		return PropertyUtils.getPrpertyFromContext("Lift parameter updated successfully");	
+	}
+
+	@Override
+	public ResponseDto uploadLiftImg(MultipartFile img, HttpServletRequest request,UserMetaInfo metaInfo) {
+		    ResponseDto response = new ResponseDto();
+		   int liftCustoMapId =Integer.parseInt(request.getParameter("liftCustomerMapId"));
+		   int photoType = Integer.parseInt(request.getParameter("photoType"));
+		   byte[] imageByte = companyDao.createByteArrayOfImage(img);
+			RlmsLiftCustomerMap liftCustomerMap = this.liftDao.getLiftCustomerMapById(liftCustoMapId);
+			RlmsLiftMaster liftMaster = liftCustomerMap.getLiftMaster();
+			if(PhotoType.MACHINE_PHOTO.getId() == photoType){
+				liftMaster.setMachinePhoto(imageByte);
+			}else if(PhotoType.ARD_PHOTO.getId() == photoType){
+				liftMaster.setARDPhoto(imageByte);
+			}else if(PhotoType.AUTO_DOOR_HEADER_PHOTO.getId() == photoType){
+				liftMaster.setAutoDoorHeaderPhoto(imageByte);
+			}else if(PhotoType.CARTOP_PHOTO.getId() ==photoType){
+				
+				liftMaster.setCartopPhoto(imageByte);
+			}else if(PhotoType.COP_PHOTO.getId() == photoType){		
+				
+				liftMaster.setCOPPhoto(imageByte);
+			}else if(PhotoType.LOBBY_PHOTO.getId() == photoType){
+				
+				liftMaster.setLobbyPhoto(imageByte);
+			}else if(PhotoType.LOP_PHOTO.getId() ==photoType){
+				
+				liftMaster.setLOPPhoto(imageByte);
+			}else if(PhotoType.PANEL_PHOTO.getId() == photoType){
+				
+				liftMaster.setPanelPhoto(imageByte);
+			}else if(PhotoType.WIRING_PHOTO.getId() == photoType){
+				liftMaster.setWiringPhoto(imageByte);
+			}
+		//	liftMaster.setUpdatedBy(metaInfo.getUserId());
+			liftMaster.setUpdatedDate(new Date());
+			liftDao.mergeLiftM(liftMaster);
+			response.setStatus(true);
+			response.setResponse(PropertyUtils.getPrpertyFromContext(RlmsErrorType.PHOTO_UPDATED.getMessage()));
+		  	return response;
+	}
 }

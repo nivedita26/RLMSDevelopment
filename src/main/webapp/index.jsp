@@ -172,7 +172,7 @@
 	<script src="bower_components/json3/lib/json3.min.js"></script>
 	<![endif]-->
 
-<script type='text/javascript' src='https://maps.googleapis.com/maps/api/js?key=AIzaSyASJa9SqRvfN3oCsBjCjDxHwug61C7hwuE'></script>
+<script type='text/javascript' src='https://maps.googleapis.com/maps/api/js?key=AIzaSyC9VVMAhdV_OlzHEuJSP37XI5wMKAJ-j-M'></script>
 
 	<!-- build:js scripts/vendor.js -->
 	<!-- bower:js -->
@@ -378,11 +378,13 @@
 	<script src="scripts/app/controllers/assignRoleCtrl.js"></script>
 	<script src="scripts/app/controllers/addUserCtrl.js"></script>
 	<script src="scripts/app/controllers/editUserCtrl.js"></script>
+	<script src="scripts/app/controllers/editProfile.js"></script>
 	<script src="scripts/app/controllers/companyManagement.js"></script>
 	<script src="scripts/app/controllers/userManagement.js"></script>
 	<script src="scripts/app/controllers/branchManagement.js"></script>
 	<script src="scripts/app/controllers/customerManagementCtrl.js"></script>
 	<script src="scripts/app/controllers/liftManagementCtrl.js"></script>
+	<script src="scripts/app/controllers/liftViewManagement.js"></script>
 	<script src="scripts/app/controllers/addLiftCtrl.js"></script>
 	<script src="scripts/app/controllers/workListCtrl.js"></script>
 	<script src="scripts/app/controllers/addCustomerCtrl.js"></script>
@@ -390,18 +392,25 @@
 	<script src="scripts/app/controllers/addMember.js"></script>
 	<script src="scripts/app/controllers/complaintManagement.js"></script>	
 	<script src="scripts/app/controllers/addComplaint.js"></script>
-	<script src="scripts/app/controllers/editComplaint.js"></script>	
+	<script src="scripts/app/controllers/editComplaint.js"></script>
+	<script src="scripts/app/controllers/editMember.js"></script>
+	<script src="scripts/app/controllers/callDetailReport.js"></script>
+	<script src="scripts/app/controllers/editCustomer.js"></script>	
+	<script src="scripts/app/controllers/editLift.js"></script>	
 	<script src="scripts/app/controllers/amcManagement.js"></script>
 	<script src="scripts/app/controllers/reportsController.js"></script>
 	<script src="scripts/app/controllers/lmsAlertsController.js"></script>
 	<script src="scripts/app/controllers/addAmcCtrl.js"></script>
+	<script src="scripts/app/controllers/responseReport.js"></script>
+	<script src="scripts/app/controllers/callSpecificReport.js"></script>
 	<script src="scripts/app/controllers/technicianReportCtrl.js"></script>
 	<script src="scripts/app/controllers/configureLiftController.js"></script>
 	<script src="scripts/demos/modules/dashboardInditec.js"></script>
 	<script src="scripts/demos/modules/dashboard.js"></script>
 	<script src="scripts/app/services/serviceApi.js"></script>
 	<script src="scripts/app/services/utility.js"></script>
-	<script src="scripts/app/controllers/mapCtrl.js"></script>
+	<script src="scripts/app/controllers/changePassword.js"></script>
+ 	<script src="scripts/app/controllers/mapCtrl.js"></script>
 	
 	<!-- App-->
 </body>

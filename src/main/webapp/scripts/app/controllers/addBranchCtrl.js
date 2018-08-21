@@ -1,12 +1,13 @@
 (function () {
     'use strict';
 	angular.module('rlmsApp')
-	.controller('addBranchCtrl', ['$scope', '$filter','serviceApi','$route','$http','utility','$window', function($scope, $filter,serviceApi,$route,$http,utility,$window) {
+	.controller('addBranchCtrl', ['$scope', '$filter','serviceApi','$route','$http','utility','$window','$rootScope', function($scope, $filter,serviceApi,$route,$http,utility,$window,$rootScope) {
 		//initialize add Branch
 		initAddBranch();
 		loadCompayInfo();
 		$scope.alert = { type: 'success', msg: 'You successfully Added Branch.',close:true };
 		//loadBranchListInfo();
+		$scope.showCompany = false;
 		$scope.showAlert = false;
 		$scope.companies = [];
 		function initAddBranch(){
@@ -17,9 +18,10 @@
 					branchAddress:'',
 					city:'',
 					area:'',
-					pinCode:''
+					pinCode:'',
 			};	
 		    $scope.branchList={};
+		    		    
 		}
 		//load compay dropdown data
 		function loadCompayInfo(){
@@ -28,9 +30,19 @@
 		    		$scope.companies = response;
 		    });
 		};
+		if($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel ==1){
+			$scope.showCompany=true;
+			loadCompayInfo();
+		}else{
+			$scope.showCompany=false;
+		}
 		//Post call add branch
 		$scope.submitAddBranch = function(){
-			$scope.addBranch.companyId = $scope.selectedCompany.selected.companyId;
+			if($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel ==1){
+				$scope.addBranch.companyId = $scope.selectedCompany.selected.companyId;
+			}else{
+				$scope.addBranch.companyId = $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyMaster.companyId;
+			}
 			serviceApi.doPostWithData("/RLMS/admin/addNewBranchInCompany",$scope.addBranch)
 			.then(function(response){
 				$scope.showAlert = true;
@@ -41,11 +53,11 @@
 				initAddBranch();
 				$scope.addBranchForm.$setPristine();
 				$scope.addBranchForm.$setUntouched();
-			},function(error){
+			}/*,function(error){
 				$scope.showAlert = true;
-				$scope.alert.msg = error.exceptionMessage;
+				$scope.alert.msg = error;
 				$scope.alert.type = "danger";
-			});
+			}*/);
 		}
 		//rese add branch
 		$scope.resetAddBranch = function(){

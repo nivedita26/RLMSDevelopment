@@ -5,7 +5,8 @@
 			//loadCompayInfo();
 			$scope.alert = { type: 'success', msg: 'You successfully Edited Complaint.',close:true };
 			$scope.showAlert = false;
-			
+			$scope.selectedComplaintTitle={};
+			$scope.selectedCallType={};
 			$scope.complaintTitle=[
 				{
 					id : 0,
@@ -78,7 +79,16 @@
 					name : 'LMS alert Call'
 				},{
 					id : 23,
-					name : 'Lift update Parameter'
+					name : 'Lift configuration Call'
+				},{
+					id : 24,
+					name : 'Under Warranty Support Call'
+				},{
+					id:25,
+					name :'Operator Initiated Call'
+				},{
+					id:26,
+					name :'Other'
 				}
 				];
 			
@@ -139,17 +149,17 @@
 				complaintsData = {
 						 complaintNumber:$scope.editComplaint.complaintsNumber,
 						 complaintId:$scope.editComplaint.complaintsNumber,
-						 registrationDateStr:$filter('date')($scope.editComplaint.regDate, "dd-MMM-yyyy"),
-						 serviceStartDateStr:$filter('date')($scope.editComplaint.serviceStartDate, "dd-MMM-yyyy"),
-						 actualServiceEndDateStr:$filter('date')($scope.editComplaint.serviceEndDate, "dd-MMM-yyyy"),
+						// title:$scope.editComplaint.complaintsTitle,
+						 title:$scope.editComplaint.complaintsTitle,
 						 liftAddress:$scope.editComplaint.complaintsAddress + $scope.editComplaint.complaintsCity,
-						 status:$scope.selectedComplaintStatus,
-						 title:$scope.editComplaint.complaintTitle,
+						 serviceCallType:$scope.editComplaint.serviceCallType,
+						 //serviceCallTypeStr:$scope.selectedCallType.selected.name,
 						 remark:$scope.editComplaint.complaintsRemark,
-						 technicianDtls:userName,
+						 //status:$scope.editComplaint.status,
+						 status:$scope.selectedComplaintStatus,
+						 technicianDtls:$scope.editComplaint.technicianDtls,
 						 userRoleId:userRole,
-						 serviceCallType:$rootScope.serviceCallTypeSelect
-				};
+						 };
 				serviceApi.doPostWithData("/RLMS/complaint/validateAndUpdateComplaint",complaintsData)
 				.then(function(response){
 					$scope.showAlert = true;
@@ -168,6 +178,7 @@
 			}
 		  	
 			$scope.resetEditComplaint = function(){
+				//$scope.addComplaintForm.$setPristine(true);
 				$window.history.back();
 			}
 			$scope.backPage =function(){

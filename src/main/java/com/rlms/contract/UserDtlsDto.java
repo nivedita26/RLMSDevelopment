@@ -17,11 +17,39 @@ public class UserDtlsDto {
 	private String appRegId;
 	private Double latitude;
 	private Double longitude;
+	private String msg;
+	private String oldPassword;
+	private String newPassword;
 	private String city;
 	private String area;
 	private Integer pinCode;
 	private String userRoleName;
-	
+	private String password;
+		
+	public String getNewPassword() {
+		return newPassword;
+	}
+	public void setNewPassword(String newPassword) {
+		this.newPassword = newPassword;
+	}
+	public String getMsg() {
+		return msg;
+	}
+	public void setMsg(String msg) {
+		this.msg = msg;
+	}
+	public String getOldPassword() {
+		return oldPassword;
+	}
+	public void setOldPassword(String oldPassword) {
+		this.oldPassword = oldPassword;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
 	public String getFirstName() {
 		return firstName;
 	}
@@ -136,7 +164,4 @@ public class UserDtlsDto {
 	public void setUserRoleName(String userRoleName) {
 		this.userRoleName = userRoleName;
 	}
-	
-	
-	
 }

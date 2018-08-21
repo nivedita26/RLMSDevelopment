@@ -9,7 +9,7 @@
 		  <legend>Call Details</legend>
 		  <div class="row seprator">
 			<div class="form-group col-sm-6">
-				<label class="col-sm-4 control-label">Number</label>
+				<label class="col-sm-4 control-label">Call ID</label>
 				<div class="col-sm-6">
 					<input disabled name="complaintsNumber" type="text" placeholder="Complaint Number" ng-model="editComplaint.complaintsNumber" class="form-control">
 				</div>
@@ -25,30 +25,35 @@
 			<div class="form-group">
 			<label class="col-sm-3 control-label">Call Type</label>
 			<div class="col-sm-6">
-			   <ui-select ng-model="selectedCallType.selected" title="Choose a call type">
+						<select ng-model="editComplaint.serviceCallType" class="form-control">
+						<option value="">--Select --</option>
+						<option ng-repeat="callType in callTypes" ng-selected="editComplaint.serviceCallType ==callType.id" value="{{callType.id}}">{{callType.name}}</option>
+						</select>
+			   <!-- <ui-select ng-model="selectedCallType.selected" title="Choose a call type" id="title">
 			    <ui-select-match placeholder="Select Call Type">{{$select.selected.name}}</ui-select-match>
 			    <ui-select-choices repeat="iterator in callType | filter: $select.search">
 			      <span ng-bind-html="iterator.name | highlight: $select.search"></span>
 			    </ui-select-choices>
-			  </ui-select>
+			  </ui-select> -->
 			  </div>
   			</div>
 			
 			<div class="form-group">
   			<label class="col-sm-3 control-label">Title </label>  			
 				<div class="col-sm-6">
-			   	<ui-select ng-model="selectedComplaintTitle.selected" title="Choose a complaint title">
-			    <ui-select-match placeholder="Select Call Title">{{$select.selected.name}}</ui-select-match>
-			    <ui-select-choices repeat="iterator in complaintTitle | filter: $select.search">
-			      <span ng-bind-html="iterator.name | highlight: $select.search"></span>
-			    </ui-select-choices>
-			  </ui-select>
+				<div class="select-container">
+						<select ng-model="editComplaint.complaintsTitle" class="form-control">
+						<option value="">--Select --</option>
+						<option ng-repeat="title in complaintTitles"  ng-selected="editComplaint.complaintsTitle ==title.name" value="{{title.name}}">{{title.name}}</option>
+						</select>
+					</div>
 			  </div>
   			</div>
+
 			<div class="form-group ">
 				<label class="col-sm-3 control-label">Details</label>
 				<div class="col-sm-6">
-					<input name="complaintsRemark" type="text" placeholder="Complaint Details" ng-model="editComplaint.complaintsRemark" class="form-control">
+					<input name="complaintsRemark" type="text" placeholder="Call Details" ng-model="editComplaint.complaintsRemark" class="form-control" >
 				</div>
 			</div>
 			
@@ -75,14 +80,17 @@
 			<div class="form-group ">
 			<label class="col-sm-3 control-label">Status</label>
 				<div class="col-sm-6">
-					<select ng-model="selectedComplaintStatus" ng-options="x for x in complaintStatusArray" class="form-control"></select>
+					<!-- <select ng-model="selectedComplaintStatus" ng-options="x for x in complaintStatusArray" class="form-control"></select>  -->
+					<input disabled name="status" type="text" placeholder="Status" ng-model="editComplaint.status" class="form-control">
+					
 				</div>
 			</div>
 			<div class="form-group ">
 				<label class="col-sm-3 control-label">Technician</label>
 				<div class="col-sm-6">
 					<div class="select-container">
-						<select ng-model="selectedTechnician" ng-options="x.name for x in techniciansForEditComplaints" class="form-control">
+						<!-- <select ng-model="selectedTechnician" ng-options="x.name for x in techniciansForEditComplaints" class="form-control"> -->
+						<input disabled name="technicianDtls" type="text" placeholder="Technician" ng-model="editComplaint.technicianDtls" class="form-control">
 						</select>
 				</div>
 					<!-- <input name="complaintsTechnician" type="text" placeholder="Technician" ng-model="editComplaint.complaintsTechnician" class="form-control"> -->

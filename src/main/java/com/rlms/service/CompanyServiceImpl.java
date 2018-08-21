@@ -48,8 +48,9 @@ public class CompanyServiceImpl implements CompanyService{
 	@Autowired
 	private LiftService liftService;
 	
+	@Autowired
+	private CustomerService  customerService;
 	
-
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void saveCompanyM(RlmsCompanyMaster rlmsCompanyMaster){
 		this.companyDao.saveCompanyM(rlmsCompanyMaster);
@@ -114,8 +115,9 @@ public class CompanyServiceImpl implements CompanyService{
 	
 	@Transactional(propagation = Propagation.REQUIRED)
 	public List<RlmsCompanyMaster> getAllCompanies(UserMetaInfo metaInfo){
-		RlmsUserRoles userRole = metaInfo.getUserRole();
 		List<RlmsCompanyMaster> listOfAllCompanies = null;
+		if(metaInfo!=null) {
+		RlmsUserRoles userRole = metaInfo.getUserRole();
 		if(null != userRole){
 			if(SpocRoleConstants.INDITECH_ADMIN.getSpocRoleId().equals(userRole.getRlmsSpocRoleMaster().getSpocRoleId()) ||
 					SpocRoleConstants.INDITECH_OPERATOR.getSpocRoleId().equals(userRole.getRlmsSpocRoleMaster().getSpocRoleId())){
@@ -123,6 +125,7 @@ public class CompanyServiceImpl implements CompanyService{
 			}else{
 				listOfAllCompanies = this.companyDao.getAllCompanies(userRole.getRlmsCompanyMaster().getCompanyId());
 			}
+		}
 		}
 		return listOfAllCompanies;
 	}
@@ -285,14 +288,14 @@ public class CompanyServiceImpl implements CompanyService{
 	public List<BranchDtlsDto> getListOfBranchDtls(Integer companyId, UserMetaInfo metaInfo){
 		List<Integer> listOfAllApplicableCompanies = new ArrayList<Integer>();
 		List<Integer> listOFApplicableBranches = new ArrayList<Integer>();
+		List<BranchDtlsDto> listOFBranchDtls = new ArrayList<BranchDtlsDto>();
 		listOfAllApplicableCompanies.add(companyId);
 		 List<RlmsCompanyBranchMapDtls> listOfAllBranches = this.branchDao.getAllBranchesForCopanies(listOfAllApplicableCompanies);
-		  for (RlmsCompanyBranchMapDtls rlmsCompanyBranchMapDtls : listOfAllBranches) {
+		 if(listOfAllBranches!=null) {
+		 for (RlmsCompanyBranchMapDtls rlmsCompanyBranchMapDtls : listOfAllBranches) {
 			  listOFApplicableBranches.add(rlmsCompanyBranchMapDtls.getCompanyBranchMapId());
 		  }
-		  
-		
-		List<BranchDtlsDto> listOFBranchDtls = new ArrayList<BranchDtlsDto>();
+	
 		for (Integer companyBranchMapId : listOFApplicableBranches) {
 			BranchDtlsDto branchDtlsDto = new BranchDtlsDto();
 			RlmsCompanyBranchMapDtls rlmsCompanyBranchMapDtls = this.branchDao.getCompanyBranchMapDtls(companyBranchMapId);
@@ -303,21 +306,23 @@ public class CompanyServiceImpl implements CompanyService{
 			branchDtlsDto.setCity(rlmsCompanyBranchMapDtls.getRlmsBranchMaster().getCity());
 			branchDtlsDto.setPinCode(rlmsCompanyBranchMapDtls.getRlmsBranchMaster().getPincode());
 			branchDtlsDto.setCompanyName(rlmsCompanyBranchMapDtls.getRlmsCompanyMaster().getCompanyName());
+			branchDtlsDto.setActiveFlag(rlmsCompanyBranchMapDtls.getRlmsBranchMaster().getActiveFlag());
 			List<UserDtlsDto> listOfAllTech = this.getListOFAllTEchnicians(companyBranchMapId);
-			branchDtlsDto.setListOfAllTechnicians(listOfAllTech);
+			//branchDtlsDto.setListOfAllTechnicians(listOfAllTech);
 			if(null != listOfAllTech && !listOfAllTech.isEmpty()){
 				branchDtlsDto.setNumberOfTechnicians(listOfAllTech.size());
 			}
 			List<LiftDtlsDto> listOfAllLifts = this.getListOfAllLifts(companyBranchMapId);
 			if(null != listOfAllLifts){
-				branchDtlsDto.setListOfAllLifts(listOfAllLifts);
+			//	branchDtlsDto.setListOfAllLifts(listOfAllLifts);
 			}
 			if(null != listOfAllLifts){
 				branchDtlsDto.setNumberOfLifts(listOfAllLifts.size());
 			}
 			listOFBranchDtls.add(branchDtlsDto);			
-		}
-		return listOFBranchDtls;
+		  }
+	   }
+			return listOFBranchDtls;
 	}
 	
 	private List<LiftDtlsDto> getListOfAllLifts(Integer companyBranchMapId){
@@ -410,6 +415,7 @@ public class CompanyServiceImpl implements CompanyService{
 		companyMaster.setOwnerNAme(companyDtlsDTO.getOwnerName());
 		companyMaster.setOwnerNumber(companyDtlsDTO.getOwnerNumber());
 		companyMaster.setOwnerEmailId(companyDtlsDTO.getOwnerEmail());
+		companyMaster.setActiveFlag(companyDtlsDTO.getActiveFlag());
 		companyMaster.setUpdatedDate(new Date());
 		companyMaster.setUpdatedBy(metaInfo.getUserId());
 		return companyMaster;
@@ -442,9 +448,21 @@ public class CompanyServiceImpl implements CompanyService{
 		branchMaster.setCity(dto.getCity());
 		branchMaster.setArea(dto.getArea());
 		branchMaster.setPincode(dto.getPinCode());
+		branchMaster.setActiveFlag(dto.getActiveFlag());
 		branchMaster.setUpdatedBy(userMetaInfo.getUserId());
 		branchMaster.setUdpatedDate(new Date());
 		this.companyDao.updateBranchDetails(branchMaster);
+		
+		RlmsCompanyBranchMapDtls companyBranchMapDtls = branchDao.getRlmsCompanyBranchMapDtls(branchMaster.getBranchId());
+		if(companyBranchMapDtls!=null) {
+			companyBranchMapDtls.setActiveFlag(dto.getActiveFlag());
+			branchDao.updateRlmsCompanyBranchMapDtls(companyBranchMapDtls);
+			RlmsBranchCustomerMap branchCustomerMap = branchDao.getBranchCustomerMapDtls(companyBranchMapDtls.getCompanyBranchMapId());
+			if(branchCustomerMap!=null) {
+				branchCustomerMap.setActiveFlag(dto.getActiveFlag());
+				branchDao.updateRlmsBranchCustomerMapDtls(branchCustomerMap);
+			}
+		}
 		statusMessage = PropertyUtils.getPrpertyFromContext(RlmsErrorType.BRANCH_CREATION_SUCCESSFUL.getMessage());
 		return statusMessage;
 	}
@@ -452,9 +470,7 @@ public class CompanyServiceImpl implements CompanyService{
 	@Transactional(propagation = Propagation.REQUIRED)
 	public List<CompanyDtlsDTO> getAllCompanyDetailsForDashboard(UserMetaInfo metaInfo){
 		List<CompanyDtlsDTO> listOfCompanyDtos = new ArrayList<CompanyDtlsDTO>();
-		
 		List<RlmsCompanyMaster> listOfCompanies = this.getAllCompaniesForDashboard(metaInfo);
-		
 		//Iterate over applicable companies to get details of each company
 		for (RlmsCompanyMaster rlmsCompanyMaster : listOfCompanies) {
 			CompanyDtlsDTO companyDto = new CompanyDtlsDTO();
@@ -462,7 +478,6 @@ public class CompanyServiceImpl implements CompanyService{
 			listOFCompanyIds.add(rlmsCompanyMaster.getCompanyId());
 			List<UserDtlsDto> listOfAllTechniciansOfCompany = new ArrayList<UserDtlsDto>();
 			List<LiftDtlsDto> listOfAllLiftsUnderCompany = new ArrayList<LiftDtlsDto>();
-			
 			//Set company Details
 			companyDto.setCompanyName(rlmsCompanyMaster.getCompanyName());
 			companyDto.setContactNumber(rlmsCompanyMaster.getContactNumber());
@@ -471,7 +486,6 @@ public class CompanyServiceImpl implements CompanyService{
 			companyDto.setArea(rlmsCompanyMaster.getArea());
 			companyDto.setCity(rlmsCompanyMaster.getCity());
 			companyDto.setPinCode(rlmsCompanyMaster.getPincode());
-			
 			companyDto.setOwnerName(rlmsCompanyMaster.getOwnerNAme());
 			companyDto.setOwnerNumber(rlmsCompanyMaster.getOwnerNumber());
 			companyDto.setOwnerEmail(rlmsCompanyMaster.getOwnerEmailId());
@@ -480,7 +494,6 @@ public class CompanyServiceImpl implements CompanyService{
 			companyDto.setVatNumber(rlmsCompanyMaster.getVatNumber());
 			companyDto.setCompanyId(rlmsCompanyMaster.getCompanyId());
 			companyDto.setActiveFlag(rlmsCompanyMaster.getActiveFlag());
-			
 			//Get All branches for company
 			List<BranchDtlsDto> listOfDtos = new ArrayList<BranchDtlsDto>();
 			List<RlmsCompanyBranchMapDtls> listOfAllBranches = this.branchDao.getAllBranchesForCopanies(listOFCompanyIds);
@@ -504,23 +517,19 @@ public class CompanyServiceImpl implements CompanyService{
 				listOfDtos.add(dto);
 				//List Of technicians under single branch of company
 				listOfAllTechniciansOfCompany.addAll(listOfAllTech);
-				
 				//List of lifts under single branch of company
 				listOfAllLiftsUnderCompany.addAll(listOfAllLifts);
 			}
-			
 			//List of all branches of company
 			companyDto.setListOfBranches(listOfDtos);
 			if(null != listOfDtos && !listOfDtos.isEmpty()){
 				companyDto.setNumberOfBranches(listOfDtos.size());
 			}
-			
 			//List of all technicians of company
 			companyDto.setListOfTechnicians(listOfAllTechniciansOfCompany);
 			if(null != listOfAllTechniciansOfCompany && !listOfAllTechniciansOfCompany.isEmpty()){
 				companyDto.setNumberOfTech(listOfAllTechniciansOfCompany.size());
 			}
-			
 			//List of all lifts of company
 			companyDto.setListOfAllLifts(listOfAllLiftsUnderCompany);
 			if(null != listOfAllLiftsUnderCompany && !listOfAllLiftsUnderCompany.isEmpty()){
@@ -528,11 +537,8 @@ public class CompanyServiceImpl implements CompanyService{
 			}
 		  listOfCompanyDtos.add(companyDto);
 		}
-		
 		return listOfCompanyDtos;
-		
 	}
-	
 	@Transactional(propagation = Propagation.REQUIRED)
 	public List<RlmsCompanyMaster> getAllCompaniesForDashboard(UserMetaInfo metaInfo){
 		RlmsUserRoles userRole = metaInfo.getUserRole();

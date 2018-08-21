@@ -1,9 +1,11 @@
 (function () {
     'use strict';
 	angular.module('rlmsApp')
-	.controller('addUserCtrl', ['$scope', '$filter','serviceApi','$route','$http','utility','$window','pinesNotifications','$rootScope','$modal', function($scope, $filter,serviceApi,$route,$http,utility,$window,pinesNotifications,$rootScope,$modal) {
+	.controller('addLiftCtrl', ['$scope', '$filter','serviceApi','$route','$http','utility','$window','pinesNotifications','$rootScope','$modal', function($scope, $filter,serviceApi,$route,$http,utility,$window,pinesNotifications,$rootScope,$modal) {
 		//initialize add Branch
 		initAddLift();
+		$scope.showIMEI=false;
+		$scope.showLmsCnt=false;
 		$scope.displayMachinePhoto=false;
 		$scope.displayPanelPhoto=false;
 		$scope.displayArdPhoto=false;
@@ -13,7 +15,6 @@
 		$scope.displayHeaderPhoto=false;
 		$scope.displayWiringPhoto=false;
 		$scope.displayLobbyPhoto=false;
-		
 		
 		//show popup for selecting lift
 		$scope.setMachinePhoto=function(element,photoType){
@@ -76,31 +77,23 @@
 					branchCustomerMapId:$scope.selectedCustomer.selected.branchCustomerMapId
 			}
 			$scope.addLift.liftType=liftTypeId;
+			if(liftTypeId == 1){
+				
+				var liftTypeName ="Geared"
+					
+			}else if(liftTypeId == 2){
+				
+				var liftTypeName ="Gearless"
+					
+			}else if(liftTypeId == 3){
+				
+				var liftTypeName ="Hydraulic"
+			}
+			$scope.liftTypeName=liftTypeName;
 			$scope.modalInstance.dismiss('cancel');
 			serviceApi.doPostWithData('/RLMS/admin/getLiftMasterForType',dataToSend)
 	         .then(function(liftdata) {
-	        	 if(liftdata.blank != true){
-	        		 for(var key in liftdata) {
-	        		        if(typeof liftdata[key] !== 'undefined' && typeof liftdata[key] !== 'null') {
-	        		        	if(key == "amcType"){
-	        		        		$scope.selectedAMCType.id = liftdata[key];
-	        		        	}else if(key == "doorType"){
-	        		        		$scope.selectedAMCType.id =liftdata[key];
-	        		        	}else if(key == "engineType"){
-	        		        		$scope.selectedEngineMachineType.id =utility.parseInteger(liftdata[key]);
-	        		        	}else if(key == "collectiveType"){
-	        		        		$scope.selectedCollectiveType.id = utility.parseInteger(liftdata[key]);
-	        		        	}else if(key == "simplexDuplex"){
-	        		        		$scope.selectedSimplexDuplex.id = utility.parseInteger(liftdata[key]);
-	        		        	}else if(key == "wiringShceme"){
-	        		        		$scope.selectedWiringScheme.id = utility.parseInteger(liftdata[key]);
-	        		        	}else{
-	        		        		$scope.addLift[key] = utility.parseInteger(liftdata[key]);
-	        		        	}
-	        		            
-	        		        }
-	        		    }
-	        	 }
+	        	
 	        	$scope.addLift["address"] = liftdata['address'];
 	        	$scope.addLift["city"] = liftdata['city'];
 	        	$scope.addLift["area"] = liftdata['area'];
@@ -122,7 +115,7 @@
 		    $scope.disabled = function(date, mode) {
 		      return (mode === 'day' && (date.getDay() === 0 || date.getDay() === 6));
 		    };
-
+		    
 		    $scope.toggleMin = function() {
 		      $scope.minDate = $scope.minDate ? null : new Date();
 		    };
@@ -133,12 +126,16 @@
 		    };
 
 		    $scope.initDate = new Date('2016-15-20');
-		    $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
-		    $scope.format = $scope.formats[0];
+		    $scope.formats = ['dd-MMMM-yyyy', 'yyyy-MM-dd', 'dd.MM.yyyy', 'shortDate'];
+		    $scope.format = $scope.formats[1];
+	    
 	    //Date Picker End
+		    
+		    
 		$scope.alert = { type: 'success', msg: 'You successfully Added Lift.',close:true };
 		$scope.alert = { type: 'error', msg: '',close:false };
 
+		
 		$scope.showAlert = false;
 		$scope.showCompany = false;
 		$scope.showBranch = false;
@@ -195,6 +192,7 @@
 			$scope.showBranch= true;
 		}else{
 			$scope.showBranch=false;
+			$scope.loadCustomerData();
 		}
 	  	
 		function initAddLift(){
@@ -202,12 +200,25 @@
 			$scope.selectedBranch = {};
 			$scope.selectedCustomer = {};
 			$scope.selectedCustomerType={};
+			$scope.selectedAlarm={};
+			$scope.selectedIntercomm={};
 			$scope.selectedAMCType={};
 			$scope.selectedDoorType={};
 			$scope.selectedEngineMachineType={};
 			$scope.selectedCollectiveType={};
 			$scope.selectedSimplexDuplex={};
 			$scope.selectedWiringScheme={};
+			$scope.selectedLmsAvailable={};
+			
+			$scope.lmsAvailable=[
+					{
+						id:0,
+						name:'No'
+					},{
+						id:1,
+						name:'Yes'
+					}];
+			
 			$scope.customerType=[
 					{
 						id:0,
@@ -297,8 +308,30 @@
 					name:'Duplex'
 				},
 				{
-					id:1,
+					id:2,
 					name:'Group'
+				}
+			];
+			//Intercom
+			$scope.Intercomm=[
+				{
+					id:1,
+					name:'Yes'
+				},
+				{
+					id:0,
+					name:'No'
+				}
+			];
+			//Alarm
+			$scope.Alarm=[
+				{
+					id:1,
+					name:'Yes'
+				},
+				{
+					id:0,
+					name:'No'
 				}
 			];
 			//WiringScheme
@@ -330,9 +363,9 @@
 					amcType : 0,
 					amcAmount : 0,
 
-					doorType : 0,
+					doorType : '',
 					noOfStops : 0,
-					engineType : 0,
+					engineType : '',
 					machineMake : '',
 					machineCapacity : '',
 					machineCurrent : '',
@@ -344,10 +377,10 @@
 					batteryMake : '',
 					copMake : '',
 					lopMake : '',
-					collectiveType : 0,
-					simplexDuplex : 0,
+					collectiveType : '',
+					simplexDuplex : '',
 					autoDoorMake : '',
-					wiringShceme : 0,
+					wiringShceme : '',
 					fireMode : 0,
 					intercomm : '',
 					alarm : '',
@@ -367,7 +400,20 @@
 					lobbyPhoto	 : '',
 			};
 			$scope.showWizard = false;
-			//$scope.addLift.serviceStartDate = new Date();
+			
+		}
+		$scope.lmsData=function(){
+		if($scope.selectedLmsAvailable.selected){
+			if($scope.selectedLmsAvailable.selected.id =="1"){
+				$scope.showIMEI=true;
+				$scope.showLmsCnt= true;
+			}else{
+				$scope.addLift.imei=0;
+				$scope.addLift.lmsEventFromContactNo=0;
+				$scope.showIMEI=false;
+				$scope.showLmsCnt= false;
+			}
+		}
 		}
 		$scope.openFlag={
 				serviceStartDate:false,
@@ -376,15 +422,44 @@
 				amcStartDate :false,
 				amcEndDate:false,
 		}
+		
 		$scope.open = function($event,which) {
 		      $event.preventDefault();
 		      $event.stopPropagation();
-		      if($scope.openFlag[which] != true)
-		    	  $scope.openFlag[which] = true;
-		      else
+		      if($scope.openFlag[which] != true){
+		    	  $scope.openFlag[which] = true;	   
+		      }
+		      else{
 		    	  $scope.openFlag[which] = false;
-		    };
-		//load compay dropdown data
+		      }
+		      };
+		    $scope.getDate=function(){
+		    	if ($scope.addLift.serviceStartDate){
+			    	  var serviceStDate=$scope.addLift.serviceStartDate;  	  
+			      }
+		    	serviceStDate.setDate(serviceStDate.getDate()+1);
+		    	var warrantyPeriod=$scope.warrantyPeriod;
+		    	var serviceEdDate=new Date(serviceStDate);
+		    	serviceEdDate.setMonth(serviceStDate.getMonth()+warrantyPeriod);
+		    	serviceEdDate.setDate(serviceStDate.getDate()-1);
+		    	//serviceEdDate.setFullYear(serviceStDate.getFullYear());
+		    	serviceEdDate=serviceEdDate.toISOString().slice(0, 10);
+		    	$scope.addLift.serviceEndDate=serviceEdDate;
+		    }
+		    
+		    $scope.getAmcDate=function(){
+		    	if ($scope.addLift.amcStartDate){
+			    	  var amcStDate=$scope.addLift.amcStartDate;  	  
+			      }		    	
+		    	var amcEdDate=new Date();
+		    	amcEdDate.setFullYear(amcStDate.getFullYear()+1);
+		    	amcEdDate.setDate(amcStDate.getDate()-1);
+		    	amcEdDate.setMonth(amcStDate.getMonth());
+		    	amcEdDate=amcEdDate.toISOString().slice(0, 10);
+		    	$scope.addLift.amcEndDate=amcEdDate;
+		    }
+
+		    //load compay dropdown data
 		//Post call add branch
 		function parseBase64(){
 			if($scope.addLift.machinePhoto != ''){
@@ -422,9 +497,15 @@
         if($scope.selectedAMCType.selected){
 	      $scope.addLift.amcType = $scope.selectedAMCType.selected.id;
        }
-	    	if($scope.selectedAMCType.selected){
+	    	/*if($scope.selectedAMCType.selected){
 	    			$scope.addLift.amcType = $scope.selectedAMCType.selected.id;
-		}
+		}*/
+	        if($scope.selectedIntercomm.selected){
+				$scope.addLift.intercomm = $scope.selectedIntercomm.selected.id;
+			}
+	        if($scope.selectedAlarm.selected){
+				$scope.addLift.alarm = $scope.selectedAlarm.selected.id;
+			}
 			if($scope.selectedDoorType.selected){
 				$scope.addLift.doorType = $scope.selectedDoorType.selected.id;
 			}
@@ -438,7 +519,7 @@
 			   $scope.addLift.simplexDuplex = $scope.selectedSimplexDuplex.selected.id;
 		   }
 		   if($scope.selectedWiringScheme.selected){
-			$scope.addLift.wiringShceme = $scope.selectedWiringScheme.selected.id;
+			   $scope.addLift.wiringShceme = $scope.selectedWiringScheme.selected.id;
 		   }
 			
 			if($scope.addLift.fireMode){
@@ -446,6 +527,11 @@
 			}else{
 				$scope.addLift.fireMode = 0;
 			}
+			if($scope.selectedLmsAvailable.selected.name=="No"){
+				$scope.addLift.imei=="0";
+				$scope.addLift.lmsEventFromContactNo=="0";
+			}
+			//$scope.addLift.liftTypeName=$scope.addLift.liftTypeName;
 			$scope.addLift.branchCustomerMapId = $scope.selectedCustomer.selected.branchCustomerMapId
 			serviceApi.doPostWithData("/RLMS/admin/validateAndRegisterNewLift",$scope.addLift)
 			.then(function(response){
@@ -464,11 +550,10 @@
 					$scope.showAlert = true;
 					$scope.alert.msg =  response[key[1]];
 					$scope.alert.type="danger";
-					
 				}
 				$scope.alert.type=' ';
 			},function(error){
-				$scope.showAlert = true;
+				$scope.showAlert = false;
 				$scope.alert.msg = error.exceptionMessage;
 				$scope.alert.type = "danger";
 			});

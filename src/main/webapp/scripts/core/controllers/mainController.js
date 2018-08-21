@@ -268,19 +268,11 @@ angular.module('theme.core.main_controller', ['theme.core.services'])
 			}else{
 				$scope.showBranches=false;
 			}*/
-			 $scope.loggedInuserDetails.userName.firstName=response.data.userRole.rlmsUserMaster.firstName
-			 console.log("*****"+response.data.userRole.rlmsCompanyMaster.companyName);
-			 console.log("+++++"+response.data.userRole.rlmsSpocRoleMaster.roleName);
-			 $scope.loggedInuserDetails.userCompany.companyName=response.data.userRole.rlmsCompanyMaster.companyName;
 			
+			 $scope.loggedInuserDetails.userName.firstName=response.data.userRole.rlmsUserMaster.firstName
+			 $scope.loggedInuserDetails.userCompany.companyName=response.data.userRole.rlmsCompanyMaster.companyName;
 			 $scope.loggedInuserDetails.userRole.roleName=response.data.userRole.rlmsSpocRoleMaster.roleName
-			 
-		
-/*
-			 console.log($scope.loggedInUserDetails.userName.companyName = response.data.userRole.rlmsCompanyMaster.companyName);
-
-		     console.log($scope.loggedInuserDetails.userName.firstName);*/
-		
+		   
 		}, function errorCallback(response) {
 		  });
     

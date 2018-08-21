@@ -5,10 +5,15 @@
 		$scope.goToAddBranch =function(){
 			window.location.hash = "#/add-branch";
 		};
+	
 		$scope.showTable = false;
 		loadCompanyData();
 		$scope.selectedCompany={};
+		$scope.selectedActiveFlag = {};
+		$scope.selectedStatus = {};
 		$scope.showCompany = false;
+		$scope.showBranch = false;
+		
 		function loadCompanyData(){
 			serviceApi.doPostWithoutData('/RLMS/admin/getAllApplicableCompanies')
 		    .then(function(response){
@@ -16,6 +21,16 @@
 		    });
 		}
 		$rootScope.editBranch={};
+		$rootScope.activeFlags=[
+			{	
+				id:1,
+				name:'Active'
+			},
+			{	
+				id:0,
+				name:'Inactive'
+			}
+		];
 		$scope.editBranchDetails=function(row){
 			$rootScope.editBranch.branchId=row.Branch_Id;
 			$rootScope.editBranch.branchName=row.Branch_Name;
@@ -23,8 +38,10 @@
 			$rootScope.editBranch.area=row.Area;
 			$rootScope.editBranch.city=row.City;
 			$rootScope.editBranch.pinCode=row.PinCode;
+			$rootScope.editBranch.activeFlag=row.Active_Flag;
 			window.location.hash = "#/edit-branch";
 		};
+				
 		
 		//-------Branch Details Table---------
 	    $scope.filterOptions = {
@@ -84,6 +101,7 @@
 	  	        		brachDetailsObj["Number_Of_Lifts"] =largeLoad[i].numberOfLifts;
 	  	        		brachDetailsObj["PinCode"] =largeLoad[i].pinCode;
 	  	        		brachDetailsObj["Area"] =largeLoad[i].area;
+	  	        		brachDetailsObj["Active_Flag"] =largeLoad[i].activeFlag;
 	  	        		branchDetails.push(brachDetailsObj);
 	  	        	  }
 	  	            data = branchDetails.filter(function(item) {
@@ -116,6 +134,7 @@
 	  	        		brachDetailsObj["Number_Of_Lifts"] =largeLoad[i].numberOfLifts;
 	  	        		brachDetailsObj["PinCode"] =largeLoad[i].pinCode;
 	  	        		brachDetailsObj["Area"] =largeLoad[i].area;
+	  	        		brachDetailsObj["Active_Flag"] =largeLoad[i].activeFlag;
 	  	        		branchDetails.push(brachDetailsObj);
 	  	        	  }
 	  	            $scope.setPagingData(branchDetails, page, pageSize);
@@ -130,9 +149,13 @@
 		  	 }
 		  	if($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 1){
 				$scope.showCompany= true;
-			}else{
+				$scope.showBranch = true;
+			}else if($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 2){
+				$scope.showCompany= false;
+				$scope.showBranch = true;
 				$scope.loadBranchInfo();
 			}
+		  	
 
 	  	    $scope.$watch('pagingOptions', function(newVal, oldVal) {
 	  	      if (newVal !== oldVal) {
@@ -170,14 +193,9 @@
 				}, {
 					field : "City",
 					displayName:"City"
-				}
-				,{
-					cellTemplate :  
-			             '<button ng-click="$event.stopPropagation(); editBranchDetails(row.entity);" title="Edit" style="margin-top: 2px;height: 38px;width :38px;" class="btn-sky"><span class="glyphicon glyphicon-pencil"></span></button>',
-					width : 40
 				},{
 					cellTemplate :  
-			             '<button ng-click="$event.stopPropagation(); deleteBranchDetails(row.entity);" title="Delete" style="margin-top: 2px;height: 38px;width :38px;" class="btn-sky"><span class="glyphicon glyphicon-remove"></span></button>',
+			             '<button ng-click="$event.stopPropagation(); editBranchDetails(row.entity);" title="Edit" style="margin-top: 2px;height: 38px;width :38px;" class="btn-sky"><span class="glyphicon glyphicon-pencil"></span></button>',
 					width : 40
 				}
 				]

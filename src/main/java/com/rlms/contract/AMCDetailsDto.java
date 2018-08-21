@@ -14,6 +14,13 @@ public class AMCDetailsDto {
 	private List<Integer> listOFStatusIds;
 	
 	private String liftNumber;
+	private String BranchName;
+	public String getBranchName() {
+		return BranchName;
+	}
+	public void setBranchName(String branchName) {
+		BranchName = branchName;
+	}
 	private String customerName;
 	private String amcStartDate;
 	private String amcEndDate;
@@ -50,8 +57,6 @@ public class AMCDetailsDto {
 	public void setLiftServiceEndDate(String liftServiceEndDate) {
 		this.liftServiceEndDate = liftServiceEndDate;
 	}
-	
-	
 	public Date getServiceStDate() {
 		return serviceStDate;
 	}

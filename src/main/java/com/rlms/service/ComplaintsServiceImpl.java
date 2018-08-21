@@ -1,17 +1,14 @@
 package com.rlms.service;
 
-import java.io.IOException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
-import org.jivesoftware.smack.SmackException;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mysql.fabric.xmlrpc.base.Array;
-import com.mysql.jdbc.Messages;
+import com.rlms.constants.RLMSCallType;
 import com.rlms.constants.RLMSConstants;
 import com.rlms.constants.RLMSMessages;
 //import com.rlms.constants.RLMSMessages;
@@ -29,20 +25,17 @@ import com.rlms.constants.Status;
 //import com.rlms.constants.XMPPServerDetails;
 import com.rlms.contract.ComplaintsDtlsDto;
 import com.rlms.contract.ComplaintsDto;
-import com.rlms.contract.CustomerDtlsDto;
 import com.rlms.contract.LiftDtlsDto;
-import com.rlms.contract.MemberDtlsDto;
 import com.rlms.contract.SiteVisitDtlsDto;
-import com.rlms.contract.SiteVisitReportDto;
 import com.rlms.contract.UserAppDtls;
 import com.rlms.contract.UserDtlsDto;
 //import com.rlms.contract.UserAppDtls;
 import com.rlms.contract.UserMetaInfo;
 import com.rlms.contract.UserRoleDtlsDTO;
-import com.rlms.controller.RestControllerController;
 import com.rlms.dao.ComplaintsDao;
-import com.rlms.dao.CustomerDao;
 import com.rlms.dao.LiftDao;
+import com.rlms.dao.UserMasterDao;
+import com.rlms.dao.UserRoleDao;
 import com.rlms.exception.ExceptionCode;
 import com.rlms.exception.ValidationException;
 import com.rlms.model.RlmsComplaintMaster;
@@ -51,7 +44,6 @@ import com.rlms.model.RlmsCustomerMemberMap;
 import com.rlms.model.RlmsLiftCustomerMap;
 import com.rlms.model.RlmsMemberMaster;
 import com.rlms.model.RlmsSiteVisitDtls;
-import com.rlms.model.RlmsUserApplicationMapDtls;
 import com.rlms.model.RlmsUserRoles;
 import com.rlms.utils.DateUtils;
 import com.rlms.utils.PropertyUtils;
@@ -67,6 +59,12 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 	
 	@Autowired
 	private LiftDao liftDao;
+	
+	@Autowired
+	private  UserMasterDao userMasterDao;
+	
+	@Autowired
+	private  UserRoleDao userRoleDao;
 	
 	@Autowired
 	private UserService userService;
@@ -88,15 +86,19 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 			ComplaintsDto dto = new ComplaintsDto();
 			dto.setActualServiceEndDate(complaintTechMapDtls.getComplaintMaster().getActualServiceEndDate());
 			dto.setComplaintNumber(complaintTechMapDtls.getComplaintMaster().getComplaintNumber());
+			dto.setServiceCallTypeStr(RLMSCallType.getStringFromID(complaintTechMapDtls.getComplaintMaster().getCallType()));
 			dto.setCustomerName(complaintTechMapDtls.getComplaintMaster().getLiftCustomerMap().getBranchCustomerMap().getCustomerMaster().getCustomerName());
 			dto.setLatitude(complaintTechMapDtls.getComplaintMaster().getLiftCustomerMap().getLiftMaster().getLatitude());
 			dto.setLongitude(complaintTechMapDtls.getComplaintMaster().getLiftCustomerMap().getLiftMaster().getLongitude());
 			dto.setLiftNumber(complaintTechMapDtls.getComplaintMaster().getLiftCustomerMap().getLiftMaster().getLiftNumber());
+            dto.setLiftAddress(complaintTechMapDtls.getComplaintMaster().getLiftCustomerMap().getLiftMaster().getAddress());		
 			dto.setRegistrationDate(complaintTechMapDtls.getComplaintMaster().getRegistrationDate());
 			dto.setRemark(complaintTechMapDtls.getComplaintMaster().getRemark());
 			dto.setServiceStartDate(complaintTechMapDtls.getComplaintMaster().getServiceStartDate());
 			dto.setComplaintId(complaintTechMapDtls.getComplaintMaster().getComplaintId());
 			dto.setComplaintTechMapId(complaintTechMapDtls.getComplaintTechMapId());
+			dto.setServiceCallType(complaintTechMapDtls.getComplaintMaster().getCallType());
+			dto.setTitle(complaintTechMapDtls.getComplaintMaster().getTitle());
 			if(Status.PENDING.getStatusId().equals(complaintTechMapDtls.getComplaintMaster().getStatus())){
 				dto.setStatus(Status.PENDING.getStatusMsg());
 			}else if(Status.ASSIGNED.getStatusId().equals(complaintTechMapDtls.getComplaintMaster().getStatus())){
@@ -128,26 +130,28 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 	}
 	private boolean validateComplaintDetails(ComplaintsDtlsDto dto) throws ValidationException{
 		boolean isValidaDetails = true;
+	/*	RlmsComplaintMaster complaintMaster = complaintsDao.getComplaintByLiftCustoMapIdAndCallType(dto);
+		if(complaintMaster!=null && complaintMaster.getCallType()!=RLMSCallType.AMC_CALL.getId()) {
+			isValidaDetails = false;
+			throw new ValidationException(ExceptionCode.VALIDATION_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.COMPLAINT_REMARK_BLANK.getMessage()));
+		}*/
 		if(null == dto.getComplaintsRemark()){
 			isValidaDetails = false;
 			throw new ValidationException(ExceptionCode.VALIDATION_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.COMPLAINT_REMARK_BLANK.getMessage()));
 		}
-		if(null == dto.getComplaintsTitle()){
+	/*	if(null == dto.getComplaintsTitle()){
 			isValidaDetails = false;
 			throw new ValidationException(ExceptionCode.VALIDATION_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.COMPLAINT_TITLE_BLANK.getMessage()));
-		}
-		
+		}*/
 		if(null == dto.getLiftCustomerMapId()){
 			isValidaDetails = false;
 			throw new ValidationException(ExceptionCode.VALIDATION_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.LIFT_CUSTOMER_BLANK.getMessage()));
 		}
-		
 		return isValidaDetails;
 	}
 	private RlmsComplaintMaster counstructComplaintMaster(ComplaintsDtlsDto dto, UserMetaInfo metaInfo){
 		RlmsComplaintMaster complaintMaster = new RlmsComplaintMaster();
 		RlmsLiftCustomerMap liftCustomerMap = this.liftDao.getLiftCustomerMapById(dto.getLiftCustomerMapId());
-		
 		complaintMaster.setActiveFlag(RLMSConstants.ACTIVE.getId());
 		complaintMaster.setComplaintNumber(String.valueOf(Math.random()));
 		complaintMaster.setLiftCustomerMap(liftCustomerMap);
@@ -155,8 +159,18 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 		complaintMaster.setRegistrationType(dto.getRegistrationType());
 		complaintMaster.setRemark(dto.getComplaintsRemark());
 		complaintMaster.setStatus(Status.PENDING.getStatusId());
-		complaintMaster.setTitle(dto.getComplaintsTitle());
-		complaintMaster.setCallType(0);
+	
+		if(dto.getCallType()==null) {
+			complaintMaster.setCallType(RLMSCallType.USER_RAIGED_CALL_THROUGH_APP.getId());
+		}
+	   else {
+			complaintMaster.setCallType(RLMSCallType.getIdFromString(RLMSCallType.getStringFromID(dto.getCallType())));
+		}
+			//complaintMaster.setCallType(dto.getCallType());
+		if(dto.getComplaintsTitle()!=null) {
+		    complaintMaster.setTitle(dto.getComplaintsTitle());
+		}
+				
 		if(RLMSConstants.COMPLAINT_REG_TYPE_ADMIN.getId() == dto.getRegistrationType()){
 				complaintMaster.setCreatedBy(metaInfo.getUserId());				
 				complaintMaster.setUpdatedBy(metaInfo.getUserId());				
@@ -171,24 +185,39 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 		complaintMaster.setCreatedDate(new Date());
 		return complaintMaster;
 	}
-	
-	
 	private ComplaintsDto constructComplaintDto(RlmsComplaintMaster complaintMaster){
+	//	RlmsUsersMaster  rlmsUsersMaster  = userMasterDao.getUserByUserId(complaintMaster.getCreatedBy());
 		ComplaintsDto dto = new ComplaintsDto();
 		if(RLMSConstants.COMPLAINT_REG_TYPE_ADMIN.getId().equals(complaintMaster.getRegistrationType())){
+			RlmsUserRoles  rlmsUserRoles  = userRoleDao.getUserRoleByUserId(complaintMaster.getCreatedBy());
 			dto.setRegistrationTypeStr(RLMSConstants.COMPLAINT_REG_TYPE_ADMIN.getName());
+	    	dto.setRegisteredBy(rlmsUserRoles.getRlmsUserMaster().getFirstName() +" "+rlmsUserRoles.getRlmsUserMaster().getLastName()+"("+rlmsUserRoles.getRole()+")");
 		}else if(RLMSConstants.COMPLAINT_REG_TYPE_END_USER.getId().equals(complaintMaster.getRegistrationType())){
 			dto.setRegistrationTypeStr(RLMSConstants.COMPLAINT_REG_TYPE_END_USER.getName());
+			RlmsMemberMaster memberMaster = userService.getMemberById(complaintMaster.getCreatedBy());
+			if(memberMaster!=null) {
+		    	 dto.setRegisteredBy(memberMaster.getFirstName() +" "+memberMaster.getLastName()+"("+memberMaster.getContactNumber()+")");
+			}
 		}else if(RLMSConstants.COMPLAINT_REG_TYPE_LIFT_EVENT.getId().equals(complaintMaster.getRegistrationType())){
 			dto.setRegistrationTypeStr(RLMSConstants.COMPLAINT_REG_TYPE_LIFT_EVENT.getName());
 		}
+	   if(RLMSCallType.AMC_CALL.getId() == complaintMaster.getCallType()){
+	    	 dto.setRegisteredBy("Autogenerated AMC Call");
+		}
 		dto.setComplaintId(complaintMaster.getComplaintId());
 		dto.setComplaintNumber(complaintMaster.getComplaintNumber());
+		dto.setBranchName(complaintMaster.getLiftCustomerMap().getBranchCustomerMap().getCompanyBranchMapDtls().getRlmsBranchMaster().getBranchName());
 		dto.setCustomerName(complaintMaster.getLiftCustomerMap().getBranchCustomerMap().getCustomerMaster().getCustomerName());
+		dto.setLiftNumber(complaintMaster.getLiftCustomerMap().getLiftMaster().getLiftNumber());
 		dto.setLiftAddress(complaintMaster.getLiftCustomerMap().getLiftMaster().getAddress());
 		dto.setRegistrationDate(complaintMaster.getRegistrationDate());
 		dto.setRemark(complaintMaster.getRemark());
 		dto.setCity(complaintMaster.getLiftCustomerMap().getLiftMaster().getCity());
+		
+		/*if(RLMSCallType.AMC_CALL.getId() == complaintMaster.getCallType()){
+			//dto.setRegistrationDateStr(DateUtils.convertDateToStringWithoutTime(complaintMaster.getRegistrationDate()));
+			
+		}*/
 		if(null != complaintMaster.getRegistrationDate()){
 			dto.setRegistrationDateStr(DateUtils.convertDateToStringWithoutTime(complaintMaster.getRegistrationDate()));
 		}
@@ -196,7 +225,9 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 		if(null != complaintMaster.getActualServiceEndDate()){
 			dto.setActualServiceEndDateStr(DateUtils.convertDateToStringWithoutTime(complaintMaster.getActualServiceEndDate()));
 		}
-		dto.setRemark(complaintMaster.getRemark());
+		//dto.setActualServiceEndDate(actualServiceEndDate);
+		dto.setServiceCallType(complaintMaster.getCallType());
+		dto.setServiceCallTypeStr(RLMSCallType.getStringFromID(complaintMaster.getCallType()));
 		dto.setTitle(complaintMaster.getTitle());
 		dto.setServiceStartDate(complaintMaster.getServiceStartDate());
 		if(null != complaintMaster.getServiceStartDate()){
@@ -205,8 +236,17 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 		if(!Status.PENDING.getStatusId().equals(complaintMaster.getStatus())){
 			RlmsComplaintTechMapDtls complaintTechMapDtls = this.complaintsDao.getComplTechMapObjByComplaintId(complaintMaster.getComplaintId());
 			if(null != complaintTechMapDtls){
+						if(complaintTechMapDtls.getStatus()==Status.RESOLVED.getStatusId()) {
+							dto.setResolvedDateStr(DateUtils.convertDateTimestampToStringWithTime(complaintTechMapDtls.getUpdatedDate()));
+						}
+						else if(complaintTechMapDtls.getStatus()==Status.RESOLVED.getStatusId() ||complaintTechMapDtls.getStatus()==Status.INPROGESS.getStatusId() ) {
+						    dto.setLastVisitedDateStr(DateUtils.convertDateTimestampToStringWithTime(complaintTechMapDtls.getUpdatedDate()));
+						}
+				/////
 				String techDtls = complaintTechMapDtls.getUserRoles().getRlmsUserMaster().getFirstName() + " " + complaintTechMapDtls.getUserRoles().getRlmsUserMaster().getLastName() + " (" + complaintTechMapDtls.getUserRoles().getRlmsUserMaster().getContactNumber() + ")";			
 				dto.setTechnicianDtls(techDtls);
+			//	DateUtils.PparseDateStrictly("04/05/2003:10:15:16", "MM/dd/yyyy:hh:mm:ss");
+				dto.setCallAssignedDateStr(DateUtils.convertDateTimestampToStringWithTime(complaintTechMapDtls.getAssignedDate()));
 			}
 		}else{
 			dto.setTechnicianDtls("-");
@@ -238,23 +278,43 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 			complaintent = RLMSConstants.COMPLAINT_REG_TYPE_LIFT_EVENT.getName();
 		}
 		dto.setComplaintent(complaintent);
-		
-		
 		return dto;
 	}
-	
 	@Transactional(propagation = Propagation.REQUIRED)
 	public List<ComplaintsDto> getListOfComplaintsBy(ComplaintsDtlsDto dto){
 		List<ComplaintsDto> listOfAllComplaints = new ArrayList<ComplaintsDto>();
-		List<RlmsComplaintMaster> listOfComplaints = this.complaintsDao.getAllComplaintsForGivenCriteria(dto.getBranchCompanyMapId(), dto.getBranchCustomerMapId(), dto.getListOfLiftCustoMapId(), dto.getStatusList(),dto.getFromDate(), dto.getToDate(),dto.getServiceCallType());
-		for (RlmsComplaintMaster rlmsComplaintMaster : listOfComplaints) {
-			ComplaintsDto complaintsDto = this.constructComplaintDto(rlmsComplaintMaster);
-			listOfAllComplaints.add(complaintsDto);
-		}
 		
+		List<RlmsComplaintMaster> listOfComplaints = this.complaintsDao.getAllComplaintsForGivenCriteria(dto.getBranchCompanyMapId(), dto.getBranchCustomerMapId(), dto.getListOfLiftCustoMapId(), dto.getStatusList(),dto.getFromDate(), dto.getToDate(),dto.getServiceCallType());
+		if(listOfComplaints!=null && !listOfComplaints.isEmpty()) {
+		for (RlmsComplaintMaster rlmsComplaintMaster : listOfComplaints) {
+			boolean isToShow = true;
+			if(RLMSCallType.AMC_CALL.getId() == rlmsComplaintMaster.getCallType()){
+				isToShow = this.isServiceCallToShow(rlmsComplaintMaster.getRegistrationDate(),rlmsComplaintMaster.getRegistrationDate());
+			}
+			if(isToShow){
+					ComplaintsDto complaintsDto = this.constructComplaintDto(rlmsComplaintMaster);
+  			         listOfAllComplaints.add(complaintsDto);
+		    }
+		}
+	}
 		return listOfAllComplaints;
 	}
 	
+private boolean isServiceCallToShow(Date regDate,Date serviceStartDate){
+	//Date pivotDate = DateUtils.addDaysToDate(new Date(), 8);
+	Date today = null;
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	try {
+			today = sdf.parse(sdf.format(new Date()));
+	} catch (ParseException e) {
+		
+	}
+	int diff = DateUtils.daysBetween(today,serviceStartDate);
+	if(diff!=0&& diff>0) {
+		return false;
+	}
+	return true;
+}
 	@Transactional(propagation = Propagation.REQUIRED)
 	public List<RlmsComplaintMaster> getAllComplaintsForGivenCriteria(ComplaintsDtlsDto dto){
 		return this.complaintsDao.getAllComplaintsForGivenCriteria(dto.getBranchCompanyMapId(), dto.getBranchCustomerMapId(), dto.getListOfLiftCustoMapId(), dto.getStatusList(),dto.getFromDate(), dto.getToDate(),0);
@@ -279,9 +339,7 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 		String statusMessage = PropertyUtils.getPrpertyFromContext(RlmsErrorType.COMPLAINT_ASSIGNED_SUUCESSFULLY.getMessage()) + " " + techName;
 		this.sendNotificationsAboutComplaintAssign(complaintTechMapDtls);
 		return statusMessage;
-		
 	}
-	
 	private RlmsComplaintTechMapDtls constructComplaintTechMapDtlsDto(ComplaintsDto complaintsDto, UserMetaInfo metaInfo){
 		RlmsComplaintTechMapDtls complaintTechMapDtls = new RlmsComplaintTechMapDtls();
 		RlmsComplaintMaster complaintMaster = this.complaintsDao.getComplaintMasterObj(complaintsDto.getComplaintId(),complaintsDto.getServiceCallType());
@@ -302,15 +360,30 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 	public List<LiftDtlsDto> getAllLiftsForBranchsOrCustomer(LiftDtlsDto dto){
 		List<LiftDtlsDto> listOfLiftDtls = new ArrayList<LiftDtlsDto>();
 		List<RlmsLiftCustomerMap> listOfLifts = this.liftDao.getAllLiftsForBranchsOrCustomer(dto);
+		if(listOfLifts!=null && !listOfLifts.isEmpty()) {
 		for (RlmsLiftCustomerMap rlmsLiftCustomerMap : listOfLifts) {
 			LiftDtlsDto lift = new LiftDtlsDto();
 			lift.setLiftId(rlmsLiftCustomerMap.getLiftCustomerMapId());
 			lift.setLiftNumber(rlmsLiftCustomerMap.getLiftMaster().getLiftNumber());
-			listOfLiftDtls.add(lift);
+			
+			lift.setServiceStartDate(rlmsLiftCustomerMap.getLiftMaster().getServiceStartDate());
+			lift.setServiceEndDate(rlmsLiftCustomerMap.getLiftMaster().getServiceEndDate());
+			
+			lift.setServiceStartDateStr(DateUtils.convertDateToStringWithoutTime(rlmsLiftCustomerMap.getLiftMaster().getServiceStartDate()));
+			lift.setServiceEndDateStr(DateUtils.convertDateToStringWithoutTime(rlmsLiftCustomerMap.getLiftMaster().getServiceEndDate()));
+			
+			if((rlmsLiftCustomerMap.getLiftMaster().getAmcStartDate()!=null)&&(rlmsLiftCustomerMap.getLiftMaster().getAmcEndDate()!=null)) {
+				//lift.setAmcStartDateStr(DateUtils.convertStringToDateWithTime(rlmsLiftCustomerMap.getLiftMaster().getAmcStartDate()));
+				//lift.setAmcEndDateStr(rlmsLiftCustomerMap.getLiftMaster().getAmcEndDate());
+				lift.setAmcStartDateStr(DateUtils.convertDateToStringWithoutTime(rlmsLiftCustomerMap.getLiftMaster().getAmcStartDate()));
+				lift.setAmcEndDateStr(DateUtils.convertDateToStringWithoutTime(rlmsLiftCustomerMap.getLiftMaster().getAmcStartDate()));
+			}
+		  listOfLiftDtls.add(lift);
 		}
+	}
 		return listOfLiftDtls;
 	}
-	
+
 	@Transactional(propagation = Propagation.REQUIRED)
 	public List<UserAppDtls> getRegIdsOfAllApplicableUsers(Integer liftCustomerMapId){
 		List<UserAppDtls> listOfAllApplicableDtls = new ArrayList<UserAppDtls>();
@@ -383,10 +456,8 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 		
 	}
 	private void sendNotificationsToMembers(RlmsComplaintTechMapDtls complaintTechMapDtls){
-	//	Map<String, String> dataPayload = new HashMap<String, String>();
 		JSONObject dataPayload = new JSONObject();
 		String techDtls = complaintTechMapDtls.getUserRoles().getRlmsUserMaster().getFirstName() + " " + complaintTechMapDtls.getUserRoles().getRlmsUserMaster().getLastName() + " (" + complaintTechMapDtls.getUserRoles().getRlmsUserMaster().getContactNumber() + ")";
-
 		try {
 			dataPayload.put(Util.PAYLOAD_ATTRIBUTE_TITLE, PropertyUtils.getPrpertyFromContext(RLMSMessages.COMPLAINT_REGISTERED.getMessage()) + " - " + complaintTechMapDtls.getComplaintMaster().getTitle());
 			dataPayload.put(Util.PAYLOAD_ATTRIBUTE_MESSAGE, complaintTechMapDtls.getComplaintMaster().getRemark());
@@ -394,9 +465,7 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 		} catch (JSONException e1) {
 			e1.printStackTrace();
 		}
-		
 		List<UserAppDtls> listOfUsers = this.getRegIdsOfAllApplicableUsers(complaintTechMapDtls.getComplaintMaster().getLiftCustomerMap().getLiftCustomerMapId());
-		
 		for (UserAppDtls userAppDtls : listOfUsers) {
 			try{
 				log.debug("sendNotificationsAboutComplaintRegistration :: Sending notification");
@@ -425,6 +494,9 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 			dto.setRemark(rlmsComplaintMaster.getRemark());
 			dto.setServiceStartDate(rlmsComplaintMaster.getServiceStartDate());
 			dto.setLiftCustoMapId(rlmsComplaintMaster.getLiftCustomerMap().getLiftCustomerMapId());
+			dto.setTitle(rlmsComplaintMaster.getTitle());
+			dto.setLiftAddress(rlmsComplaintMaster.getLiftCustomerMap().getLiftMaster().getAddress());
+			
 			if(Status.PENDING.getStatusId().equals(rlmsComplaintMaster.getStatus())){
 				dto.setStatus(Status.PENDING.getStatusMsg());
 			}else if(Status.ASSIGNED.getStatusId().equals(rlmsComplaintMaster.getStatus())){
@@ -442,25 +514,35 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 	
 	@Transactional(propagation = Propagation.REQUIRED)
 	public List<UserRoleDtlsDTO> getAllTechniciansToAssignComplaint(ComplaintsDtlsDto complaintsDtlsDto){
-   	 
+   	    int todaysAssignedComplaintsCount=0;
+   		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+   		Date today =null;
+		try {
+			today = sdf.parse(sdf.format(new Date()));
+		} catch (ParseException e) {
+		}
 		RlmsComplaintMaster complaintMaster = this.complaintsDao.getComplaintMasterObj(complaintsDtlsDto.getComplaintId(),complaintsDtlsDto.getServiceCallType());
 		List<UserRoleDtlsDTO> listOFUserAdtls = new ArrayList<UserRoleDtlsDTO>();
+		if(complaintMaster!=null) {
 		List<RlmsUserRoles> listOfAllTechnicians = this.userService.getListOfTechniciansForBranch(complaintMaster.getLiftCustomerMap().getBranchCustomerMap().getCompanyBranchMapDtls().getCompanyBranchMapId());
+		if(listOfAllTechnicians !=null && !listOfAllTechnicians.isEmpty()) {
 		for (RlmsUserRoles rlmsUserRoles : listOfAllTechnicians) {
 			UserRoleDtlsDTO dto = new UserRoleDtlsDTO();
 			dto.setUserId(rlmsUserRoles.getRlmsUserMaster().getUserId());
-			
-			
 			dto.setCompanyBranchMapId(rlmsUserRoles.getRlmsCompanyBranchMapDtls().getCompanyBranchMapId());
 			dto.setName(rlmsUserRoles.getRlmsUserMaster().getFirstName() + " " + rlmsUserRoles.getRlmsUserMaster().getLastName());
 			dto.setContactNumber(rlmsUserRoles.getRlmsUserMaster().getContactNumber());
 			dto.setUserRoleId(rlmsUserRoles.getUserRoleId());
-			
-			
-			
-			dto.setLongitude(rlmsUserRoles.getRlmsUserApplicationMapDetails().getLongitude());
-			dto.setLatitude(rlmsUserRoles.getRlmsUserApplicationMapDetails().getLatitude());
-			
+					
+			if(null != complaintMaster.getLiftCustomerMap().getLiftMaster().getAddress() && !complaintMaster.getLiftCustomerMap().getLiftMaster().getAddress().isEmpty()){
+				dto.setLiftAdd(complaintMaster.getLiftCustomerMap().getLiftMaster().getAddress());
+			}
+			if(null != complaintMaster.getLiftCustomerMap().getLiftMaster().getLatitude() && !complaintMaster.getLiftCustomerMap().getLiftMaster().getLatitude().isEmpty()){
+				dto.setLiftLatitude(Double.valueOf(complaintMaster.getLiftCustomerMap().getLiftMaster().getLatitude()));
+			}
+			if(null != complaintMaster.getLiftCustomerMap().getLiftMaster().getLongitude() && !complaintMaster.getLiftCustomerMap().getLiftMaster().getLatitude().isEmpty()){
+				dto.setLiftLongitude(Double.valueOf(complaintMaster.getLiftCustomerMap().getLiftMaster().getLongitude()));
+			}
 			
 			 List<Integer> statusList = new ArrayList<Integer>();
 		   	 statusList.add(Status.ASSIGNED.getStatusId());
@@ -470,13 +552,29 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 			 if(null != listOfAssignedComplaints && !listOfAssignedComplaints.isEmpty()){
 				 dto.setCountOfComplaintsAssigned(listOfAssignedComplaints.size());
 			 }
-			 
-			 UserAppDtls userAppDtls = this.customerService.getUserAppDtls(rlmsUserRoles.getRlmsUserMaster().getUserId(), RLMSConstants.MEMBER_TYPE.getId());
+			for (RlmsComplaintTechMapDtls rlmsComplaintTechMapDtls : listOfAssignedComplaints) {
+				int diff = DateUtils.daysBetween(rlmsComplaintTechMapDtls.getAssignedDate(), today);
+				if(diff==0) {
+					todaysAssignedComplaintsCount=todaysAssignedComplaintsCount+1;
+				}
+			}
+			/*	if(DateUtils.isBeforeOrEqualToDate
+				if(rlmsComplaintTechMapDtls.getAssignedDate().equals(today)) {
+					
+					todaysAssignedComplaintsCount=todaysAssignedComplaintsCount+1;
+				}
+			}*/
+			 dto.setTodaysAssignedCalls(todaysAssignedComplaintsCount);
+			 UserAppDtls userAppDtls = this.customerService.getUserAppDtls(rlmsUserRoles.getUserRoleId(), RLMSConstants.USER_ROLE_TYPE.getId());
 			 if(null != userAppDtls){
 				 dto.setCurrentAddress(userAppDtls.getAddress());
+				 dto.setLongitude(userAppDtls.getLongitude());
+				dto.setLatitude(userAppDtls.getLatitude());
 			 }
 			 listOFUserAdtls.add(dto);
+		    }
 		}
+	}
 		return listOFUserAdtls;
 	}
 	
@@ -495,29 +593,48 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 			statusId = Status.RESOLVED.getStatusId();
 			complaintMaster.setActualServiceEndDate(new Date());
 		}
+		complaintMaster.setUpdatedDate(new Date());
 		complaintMaster.setStatus(statusId);
 		this.complaintsDao.mergeComplaintM(complaintMaster);
+		RlmsComplaintTechMapDtls complaintTechMapDtls = complaintsDao.getComplTechMapObjByComplaintId(dto.getComplaintId());
+		if(complaintTechMapDtls!=null) {
+			complaintTechMapDtls.setStatus(statusId);
+			complaintTechMapDtls.setUpdatedDate(new Date());
+			complaintsDao.updateComplaints(complaintTechMapDtls);
+		}
 		String resultMessage = PropertyUtils.getPrpertyFromContext(RlmsErrorType.STATUS_UPDATED.getMessage()) + " " + dto.getStatus() + " " + PropertyUtils.getPrpertyFromContext(RlmsErrorType.SUCCESSFULLY.getMessage());
 		return resultMessage;
-		
 	}
-	
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void saveComplaintSiteVisitDtls(RlmsSiteVisitDtls siteVisitDtls){
 		this.complaintsDao.saveComplaintSiteVisitDtls(siteVisitDtls);
 	}
-	
-	
 	@Transactional(propagation = Propagation.REQUIRED)
 	public String validateAndSaveSiteVisitDtls(SiteVisitDtlsDto dto) throws ValidationException, ParseException{
 		//this.validateVisitDtls(dto);
 		RlmsSiteVisitDtls visitDtls = this.constructVisitDtls(dto);
 		this.saveComplaintSiteVisitDtls(visitDtls);
+		if(visitDtls.getComplaintTechMapDtls().getStatus()==Status.ASSIGNED.getStatusId()||visitDtls.getComplaintTechMapDtls().getStatus()==Status.INPROGESS.getStatusId()) {
+		     RlmsComplaintTechMapDtls complaintTechMapDtls = visitDtls.getComplaintTechMapDtls();
+			complaintTechMapDtls.setStatus(Status.INPROGESS.getStatusId());
+			complaintTechMapDtls.setUpdatedDate(new Date());
+			complaintsDao.updateComplaints(complaintTechMapDtls);
+			RlmsComplaintMaster complaintMaster = visitDtls.getComplaintTechMapDtls().getComplaintMaster();
+			if(complaintMaster.getStatus()==Status.ASSIGNED.getStatusId()||complaintMaster.getStatus()==Status.INPROGESS.getStatusId()) {
+				complaintMaster.setStatus(Status.INPROGESS.getStatusId());
+				complaintMaster.setUpdatedDate(new Date());
+				complaintsDao.updateComplaintsMatser(complaintMaster);
+			}
+		}
 		return PropertyUtils.getPrpertyFromContext(RlmsErrorType.VISIT_UPDATED_SUCCESS.getMessage());
 	}
-	
 	private RlmsSiteVisitDtls constructVisitDtls(SiteVisitDtlsDto dto) throws ParseException{
 		RlmsComplaintTechMapDtls complaintTechMapDtls = this.complaintsDao.getComplTechMapByComplaintTechMapId(dto.getComplaintTechMapId());
+		//complaintTechMapDtls.setUpdatedDate(new Date());
+		//complaintsDao.updateComplaints(complaintTechMapDtls);
+	//	RlmsComplaintMaster complaintMaster = complaintTechMapDtls.getComplaintMaster();
+	//	complaintMaster.setUpdatedDate(new Date());
+	//	complaintsDao.updateComplaintsMatser(complaintMaster);
 		RlmsUserRoles userRoles = this.userService.getUserRoleObjhById(dto.getUserRoleId());
 		RlmsSiteVisitDtls visitDtls = new RlmsSiteVisitDtls();
 		visitDtls.setComplaintTechMapDtls(complaintTechMapDtls);
@@ -539,11 +656,9 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 		if(null == userRoles){
 			throw new ValidationException(RlmsErrorType.INVALID_USER_ROLE_ID.getCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.INVALID_USER_ROLE_ID.getMessage()));
 		}
-		
 		if(null == dto.getFromDate() || null == dto.getToDate() || null == dto.getComplaintTechMapId()){
 			throw new ValidationException(RlmsErrorType.INVALID_USER_ROLE_ID.getCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.INCOMPLETE_DATA.getMessage()));
 		}
-		
 		return errorMesage;
 	}
 	
@@ -554,8 +669,8 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 		for (RlmsSiteVisitDtls rlmsSiteVisitDtls : listOfAllVisits) {
 			SiteVisitDtlsDto dto = new SiteVisitDtlsDto();
 			dto.setComplaintTechMapId(rlmsSiteVisitDtls.getComplaintTechMapDtls().getComplaintTechMapId());
-			dto.setFromDateDtr(DateUtils.convertDateToStringWithTime(rlmsSiteVisitDtls.getFromDate()));
-			dto.setToDateStr(DateUtils.convertDateToStringWithTime(rlmsSiteVisitDtls.getToDate()));
+			dto.setFromDateDtr(DateUtils.convertDateTimestampToStringWithTime(rlmsSiteVisitDtls.getFromDate()));
+			dto.setToDateStr(DateUtils.convertDateTimestampToStringWithTime(rlmsSiteVisitDtls.getToDate()));
 			String totalTime = DateUtils.convertTimeIntoDaysHrMin(DateUtils.getDateDiff(rlmsSiteVisitDtls.getFromDate(), rlmsSiteVisitDtls.getToDate(), TimeUnit.SECONDS), TimeUnit.SECONDS);
 			if(null != totalTime){
 				dto.setTotalTime(totalTime);
@@ -589,6 +704,7 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 			this.assignComplaint(complaintsDto, metaInfo);
 		}else{			
 			RlmsComplaintMaster complaintMaster = this.complaintsDao.getComplaintMasterObj(complaintsDto.getComplaintId(),complaintsDto.getServiceCallType());			
+			if(complaintMaster!=null) {
 			if(complaintsDto.getRegistrationDateStr()!=null && !(" - ".equals(complaintsDto.getRegistrationDateStr()))){
 				complaintMaster.setRegistrationDate(DateUtils.convertStringToDateWithoutTime(complaintsDto.getRegistrationDateStr()));
 			}if(complaintsDto.getServiceStartDateStr()!=null && !(" - ".equals(complaintsDto.getServiceStartDateStr()))){
@@ -597,6 +713,7 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 				complaintMaster.setActualServiceEndDate(DateUtils.convertStringToDateWithoutTime(complaintsDto.getActualServiceEndDateStr()));
 			}
 			complaintMaster.setTitle(complaintsDto.getTitle());
+			complaintMaster.setCallType(complaintsDto.getServiceCallType());
 			complaintMaster.setRemark(complaintsDto.getRemark());
 			if("Assigned".equalsIgnoreCase(complaintsDto.getStatus()) && null!=complaintsDto.getUserRoleId()){
 				complaintMaster.setStatus(Status.ASSIGNED.getStatusId());		
@@ -612,28 +729,25 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 			}
 			complaintMaster.setUpdatedBy(metaInfo.getUserId());
 			complaintMaster.setUpdatedDate(new Date());
-			if(null!=complaintTechMapDtls && !"Pending".equalsIgnoreCase(complaintsDto.getStatus())){
+		if(null!=complaintTechMapDtls && !"Pending".equalsIgnoreCase(complaintsDto.getStatus())){
 				complaintTechMapDtls.setUpdatedBy(metaInfo.getUserId());
 				complaintTechMapDtls.setUpdatedDate(new Date());
 				RlmsUserRoles userRoles = this.userService.getUserRoleObjhById(complaintsDto.getUserRoleId());
 				complaintTechMapDtls.setUserRoles(userRoles);
 				complaintTechMapDtls.setComplaintMaster(complaintMaster);
 				this.complaintsDao.updateComplaints(complaintTechMapDtls);
-				
-			}else{
-				this.complaintsDao.updateComplaintsMatser(complaintMaster);
+		}else{
+			this.complaintsDao.updateComplaintsMatser(complaintMaster);
+		}
+		return PropertyUtils.getPrpertyFromContext("Complaint Updated Successfully");
 			}
 		}
-		
-		String statusMessage = PropertyUtils.getPrpertyFromContext("Complaint Updated Successfully");
-		return statusMessage;
-		
+			return "not updated";
 	}
 	@Transactional(propagation = Propagation.REQUIRED)
 	private void deleteComplaintsTechMapDetails(Integer complaintTechMapId) {
 		this.complaintsDao.deleteComplaintsTechMap(complaintTechMapId);
 	}	
-	
 	@Transactional(propagation = Propagation.REQUIRED)
 	public String deleteComplaint(ComplaintsDto dto){
 		RlmsComplaintMaster complaintMaster = this.complaintsDao.getComplaintMasterObj(dto.getComplaintId(),0);
@@ -641,5 +755,20 @@ public class ComplaintsServiceImpl implements ComplaintsService{
 		this.complaintsDao.mergeComplaintM(complaintMaster);
 		String resultMessage = PropertyUtils.getPrpertyFromContext(RlmsErrorType.COMPLAINT_DELETE_SUCCESFUL.getMessage());
 		return resultMessage;
+	}
+	@Override
+	public String validateAndUpdateComplaints(ComplaintsDto dto, UserMetaInfo metaInfo)
+			throws ValidationException, ParseException {
+        RlmsComplaintMaster complaintMaster = complaintsDao.getComplaintMasterByComplaintId(dto.getComplaintId());
+        	if(complaintMaster!=null) {
+        		complaintMaster.setCallType(dto.getServiceCallType());
+        		complaintMaster.setTitle(dto.getTitle());
+        		complaintMaster.setRemark(dto.getRemark());
+        		complaintMaster.setUpdatedDate(new Date());
+        		complaintMaster.setUpdatedBy(metaInfo.getUserId());
+        		complaintsDao.updateComplaintsMatser(complaintMaster);
+        		return PropertyUtils.getPrpertyFromContext("Complaint Updated Successfully");
+        	}
+		return null;
 	}
 }

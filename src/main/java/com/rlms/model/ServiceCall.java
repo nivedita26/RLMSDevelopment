@@ -5,6 +5,7 @@ import java.util.Date;
 public class ServiceCall {
 	private String title;
 	private Date serviceDate;
+	
 	public String getTitle() {
 		return title;
 	}

@@ -9,13 +9,14 @@ import com.rlms.model.RlmsMemberMaster;
 import com.rlms.model.RlmsUserApplicationMapDtls;
 
 public interface CustomerDao {
-
-	
 	public RlmsCustomerMaster getCustomerByEmailId(String emailId);
 	public Integer saveCustomerM(RlmsCustomerMaster customerMaster);
 	public List<RlmsBranchCustomerMap> getAllCustomersForBranches(	List<Integer> listOfBranchCompanyMapId);
 	public RlmsMemberMaster getMemberByCntNo(String phoneNumber);
 	public Integer saveMemberM(RlmsMemberMaster memberMaster);
+	public void updateMember(RlmsMemberMaster memberMaster);
+	public void updateCustomerMemberMap(RlmsCustomerMemberMap customerMemberMap);
+	public void deleteMember(RlmsMemberMaster memberMaster);
 	public RlmsCustomerMaster getCustomerById(Integer customerId);
 	public Integer saveCustomerMemberMap(RlmsCustomerMemberMap customerMemberMap);
 	public List<RlmsCustomerMemberMap> getAllCustomersForMember(Integer memberId);
@@ -25,4 +26,9 @@ public interface CustomerDao {
 	public RlmsMemberMaster getMemberById(Integer memeberId);
 	public List<RlmsBranchCustomerMap> getCustomerByName(String custoName, Integer companyBranchMapId, Integer companyId);
 	public List<RlmsBranchCustomerMap> getAllCustomersForDashboard(List<Integer> listOfBranchCompanyMapId);
+	public void updateCustomer(RlmsCustomerMaster customerMaster);
+	public RlmsCustomerMemberMap getCustomerMemberMapByMemberId(int id);
+	public List<RlmsBranchCustomerMap> getAllCustomersForTechician(	List<Integer> listOfBranchCompanyMapId);
+
+   
 }

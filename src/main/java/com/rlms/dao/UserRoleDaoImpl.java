@@ -1,19 +1,19 @@
 package com.rlms.dao;
 
+import java.util.ArrayList;
 import java.util.List;
-
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
+import org.springframework.transaction.annotation.Transactional;
 import com.rlms.constants.RLMSConstants;
 import com.rlms.constants.SpocRoleConstants;
+import com.rlms.contract.BranchDtlsDto;
+import com.rlms.contract.UserDtlsDto;
 import com.rlms.contract.UserMetaInfo;
-import com.rlms.model.RlmsBranchCustomerMap;
-import com.rlms.model.RlmsCompanyRoleMap;
 import com.rlms.model.RlmsSpocRoleMaster;
 import com.rlms.model.RlmsUserApplicationMapDtls;
 import com.rlms.model.RlmsUserRoles;
@@ -21,8 +21,7 @@ import com.rlms.model.RlmsUsersMaster;
 
 
 @Repository
-public class UserRoleDaoImpl implements
-UserRoleDao{
+public class UserRoleDaoImpl implements UserRoleDao{
 
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -30,8 +29,6 @@ UserRoleDao{
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
-	
-	
 	
 	public RlmsUserRoles getUserRoleObj(Integer userID, String userName, String password){
 		 Session session = this.sessionFactory.getCurrentSession();
@@ -44,6 +41,7 @@ UserRoleDao{
 		 return (RlmsUserRoles)criteria.uniqueResult();
 	}
 	
+	@Transactional 
 	public RlmsUserRoles getUserRoleByUserId(Integer userID){
 		 Session session = this.sessionFactory.getCurrentSession();
 		 Criteria criteria = session.createCriteria(RlmsUserRoles.class)
@@ -65,8 +63,15 @@ UserRoleDao{
 		 Session session = this.sessionFactory.getCurrentSession();
 		 Criteria criteria = session.createCriteria(RlmsSpocRoleMaster.class)
 				 .add(Restrictions.eq("activeFlag", 1))
-				 .add(Restrictions.gt("roleLevel", metaInfo.getUserRole().getRlmsSpocRoleMaster().getRoleLevel()))
-				 .add(Restrictions.ne("spocRoleId", 8));
+			  	  .add(Restrictions.ne("spocRoleId", 8));
+				// .add(Restrictions.ge("roleLevel", metaInfo.getUserRole().getRlmsSpocRoleMaster().getRoleLevel()));
+				 if(metaInfo.getUserRole().getRlmsSpocRoleMaster().getSpocRoleId()==1) {//||metaInfo.getUserRole().getRlmsSpocRoleMaster().getSpocRoleId()==3||metaInfo.getUserRole().getRlmsSpocRoleMaster().getSpocRoleId()==5) {
+					 criteria.add(Restrictions.gt("roleLevel", metaInfo.getUserRole().getRlmsSpocRoleMaster().getRoleLevel()));
+				 }
+				 else  {
+					 criteria.add(Restrictions.ge("roleLevel", metaInfo.getUserRole().getRlmsSpocRoleMaster().getRoleLevel()));
+					 criteria.add(Restrictions.ne("spocRoleId", metaInfo.getUserRole().getRlmsSpocRoleMaster().getSpocRoleId()));
+				 }
 		 List<RlmsSpocRoleMaster> listOfAllRoles = criteria.list();
 		 return listOfAllRoles;
 	}
@@ -123,6 +128,7 @@ UserRoleDao{
 	}*/
 	
 	@SuppressWarnings("unchecked")
+	@Transactional(readOnly=true)
 	public List<RlmsUserRoles> getAllUserWithRoleForBranch(Integer commpBranchMapId, Integer spocRoleId){
 		 Session session = this.sessionFactory.getCurrentSession();
 		 Criteria criteria = session.createCriteria(RlmsUserRoles.class)
@@ -135,6 +141,7 @@ UserRoleDao{
 	}
 	
 	@SuppressWarnings("unchecked")
+	@Transactional(readOnly=true)
 	public RlmsUserRoles getUserWithRoleForCompany(Integer companyId, Integer spocRoleId){
 		 Session session = this.sessionFactory.getCurrentSession();
 		 Criteria criteria = session.createCriteria(RlmsUserRoles.class)
@@ -161,17 +168,13 @@ UserRoleDao{
 		 List<RlmsUserRoles> listOfAllTechnicians =  criteria.list();
 		 return listOfAllTechnicians;
 	}
-	
-	public RlmsUserRoles getUserByUserName(String username)
-	{
+	public RlmsUserRoles getUserByUserName(String username){
 		 Session session = this.sessionFactory.getCurrentSession();
 		 Criteria criteria = session.createCriteria(RlmsUserRoles.class)
 				 .add(Restrictions.eq("username", username))
 				 .add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
-		 
 		 return (RlmsUserRoles)criteria.uniqueResult();
 	}
-	
 	@Override
 	public RlmsUserRoles getUserRoleForCompany(Integer cmpanyId, Integer spocRoleId){
 		 Session session = this.sessionFactory.getCurrentSession();
@@ -183,7 +186,6 @@ UserRoleDao{
 		 RlmsUserRoles userRole = (RlmsUserRoles) criteria.uniqueResult();
 		 return userRole;
 	}
-	
 	@Override
 	public RlmsUserRoles getTechnicianRoleObjByMblNo(String mblNumber, Integer spocRoleId){
 		 Session session = this.sessionFactory.getCurrentSession();
@@ -193,19 +195,66 @@ UserRoleDao{
 				 .add(Restrictions.eq("um.contactNumber", mblNumber))
 		 	     .add(Restrictions.eq("sm.spocRoleId", spocRoleId))
 		 	     .add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
-		 
 		 RlmsUserRoles userRole = (RlmsUserRoles) criteria.uniqueResult();
 		 return userRole;
 	}
-	
 	@Override
 	public void saveUserAppDlts(RlmsUserApplicationMapDtls userApplicationMapDtls){
 		 this.sessionFactory.getCurrentSession().save(userApplicationMapDtls);
 	}
-	
 	@Override
 	public void mergeUserAppDlts(RlmsUserApplicationMapDtls userApplicationMapDtls){
 		 this.sessionFactory.getCurrentSession().merge(userApplicationMapDtls);
+	}
+	@Override
+	public RlmsUserRoles getTechnicianRoleObjByUserNameAndPassword(UserDtlsDto dtlsDto, int roleId) {
+		 Session session = this.sessionFactory.getCurrentSession();
+		 Criteria criteria = session.createCriteria(RlmsUserRoles.class)
+				 .createAlias("rlmsUserMaster", "um")
+		 		 .createAlias("rlmsSpocRoleMaster", "sm")
+				 .add(Restrictions.eq("um.username", dtlsDto.getUserName()))
+				 .add(Restrictions.eq("um.password", dtlsDto.getPassword()))
+		 	     .add(Restrictions.eq("sm.spocRoleId", roleId))
+		 	     .add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
+		 
+		 RlmsUserRoles userRole = (RlmsUserRoles) criteria.uniqueResult();
+		 return userRole;
+	}
+
+	@Override
+	public List<RlmsUserRoles> getUsersForBranch(BranchDtlsDto dto) {
+	List<Integer> roleIdList = new ArrayList<>();
+	roleIdList.add(SpocRoleConstants.TECHNICIAN.getSpocRoleId());
+	roleIdList.add(SpocRoleConstants.BRANCH_OPERATOR.getSpocRoleId());
+	roleIdList.add(SpocRoleConstants.BRANCH_ADMIN.getSpocRoleId());
+
+		Session session = this.sessionFactory.getCurrentSession();
+		 Criteria criteria = session.createCriteria(RlmsUserRoles.class)
+		 		 .createAlias("rlmsSpocRoleMaster", "sm")
+				 .add(Restrictions.eq("rlmsCompanyMaster.companyId", dto.getCompanyId()))
+				 .add(Restrictions.eq("rlmsCompanyBranchMapDtls.companyBranchMapId",dto.getBranchCompanyMapId()))
+		 	     .add(Restrictions.in("sm.spocRoleId",roleIdList))
+		 	     .add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
+		 
+		 @SuppressWarnings("unchecked")
+		List<RlmsUserRoles> userRole = (List<RlmsUserRoles>) criteria.list();
+		 return userRole;
+	}
+
+	@Override
+	public List<RlmsUserRoles> getAllUsersForBranch(UserDtlsDto dtlsDto) {
+		 Session session = this.sessionFactory.getCurrentSession();
+		 Criteria criteria = session.createCriteria(RlmsUserRoles.class);
+				 if(null != dtlsDto.getBranchCompanyMapId()){
+					criteria.add(Restrictions.eq("rlmsCompanyBranchMapDtls.companyBranchMapId", dtlsDto.getBranchCompanyMapId()));
+				 }
+				 if(null != dtlsDto.getCompanyId()){
+					criteria.add(Restrictions.eq("rlmsCompanyMaster.companyId", dtlsDto.getCompanyId()));
+				 }
+				
+				 criteria.add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
+		 List<RlmsUserRoles> listOfAllUsersForBranch =  criteria.list();
+		 return listOfAllUsersForBranch;
 	}
 	
 }

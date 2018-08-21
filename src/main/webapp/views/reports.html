@@ -8,7 +8,7 @@
 	</div> -->
 	<div class="filter-section">
 		<div class="form-group margin-b10">
-			<label class="control-label" ng-show="showCompany">Select Company : </label>
+			<label class="control-label" ng-show="showCompany">Select Company </label>
 			<div class="select-container" ng-show="showCompany">
 				  <ui-select ng-model="selectedCompany.selected" title="Choose a Company" on-select="loadBranchData();">
 				    <ui-select-match placeholder="Select company">{{$select.selected.companyName}}</ui-select-match>
@@ -37,8 +37,8 @@
 			</div>
 			<label class="control-label">Select Status</label>
 			<div class="select-container ">
-			   <ui-select multiple ng-model="selectedStatus.selected" close-on-select="false"  title="Choose a status">
-			    <ui-select-match placeholder="Select status from the list...">{{$select.selected[$index].name}}</ui-select-match>
+			   <ui-select  ng-model="selectedStatus.selected" close-on-select="false"  title="Choose a status">
+			    <ui-select-match placeholder="Select status from the list...">{{$select.selected.name}}</ui-select-match>
 			    <ui-select-choices repeat="iterator in status | filter: $select.search">
 			      <span ng-bind-html="iterator.name | highlight: $select.search"></span>
 			    </ui-select-choices>
@@ -74,7 +74,7 @@
 		</div>
 	</div>
 	<div class="container-fluid" ng-show="showMembers">
-	<h5 class="rlms-info"><span class="fa fa-info-circle"></span>Site Vist Report</h5>
+	<h5 class="rlms-info"><span class="fa fa-info-circle"></span>Site Visit Report</h5>
 	<div class="input-icon right mb10">
      <i class="fa fa-search"></i>
      <input type="text" ng-model="filterOptions.filterText" class="form-control" placeholder="Search Filter">
@@ -101,7 +101,7 @@
 				  	</table>
 				  </th>
 				 <th> Total Time Taken</th>
-				  <th>User Rating</th>
+				  <!-- <th>User Rating</th> -->
 				 </tr>
 				 <tr rowspan="{{report.listOFAllVisits.length}}" class="table-active" ng-repeat="report in siteViseReport">
 				 {{report.listOFAllVisits.length}}				  
@@ -123,7 +123,7 @@
 				  	</table>
 				  </td>
 				  <td>{{report.totalTimeTaken}}</td>
-				  <td ng-if="(report.userRating == 1)">
+				<!--   <td ng-if="(report.userRating == 1)">
 				  <ul class="star-rating" class='readonly'>
 				   	<li class="star filled"><i class="fa fa-star"></i></li>
 				  </ul>
@@ -157,7 +157,7 @@
 				   	<li class="star filled"><i class="fa fa-star"></i></li>
 				   	<li class="star filled"><i class="fa fa-star"></i></li>
 				  </ul>
-        		 </td>
+        		 </td> -->
         		 
 				 </tr>
 				</table>

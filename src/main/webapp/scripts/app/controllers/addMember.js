@@ -5,8 +5,12 @@
 	initAddMember();
 			loadCompayInfo();
 			$scope.alert = { type: 'success', msg: 'You successfully Added Member.',close:true };
+			//$scope.alert = { type: 'error', msg: 'Please fill the required fields.',close:false };
 			//loadBranchListInfo();
 			$scope.showAlert = false;
+			$scope.showAlert1 = false;
+			$scope.showCompany = false;
+			$scope.showBranch = false;
 			$scope.companies = [];
 			$scope.branches = [];
 			function initAddMember(){
@@ -21,7 +25,7 @@
 						area:'',
 						pinCode:'',
 						emailId:'',
-						contactNumber:0,
+						contactNumber:'',
 						branchCustoMapId:0
 						
 				};	
@@ -33,6 +37,7 @@
 			    		$scope.companies = response;
 			    });
 			};
+			
 			$scope.loadBranchData = function(){
 				var companyData={};
 				if($scope.showCompany == true){
@@ -53,6 +58,7 @@
 			    	$scope.myData = emptyArray;
 			    });
 			}
+			
 			$scope.loadCustomerData = function(){
 				var branchData ={};
 	  	    	if($scope.showBranch == true){
@@ -72,6 +78,7 @@
 			    	$scope.myData = emptyArray;
 	 	         })
 			}
+			
 			//Post call add customer
 			$scope.submitAddCustomer = function(){
 				$scope.addMember.branchCustoMapId = $scope.selectedCustomer.selected.branchCustomerMapId;
@@ -80,34 +87,46 @@
 					$scope.showAlert = true;
 					var key = Object.keys(response);
 					var successMessage = response[key[0]];
-					$scope.alert.msg = successMessage;
+					if(successMessage){
+						$scope.alert.msg = "You successfully Added Member.";
+						$scope.alert.type = "success";
+						initAddMember();
+						$scope.addBranchForm.$setPristine();
+						$scope.addBranchForm.$setUntouched();
+					}else{
+						$scope.showAlert = true;
+						$scope.alert.msg =  response[key[1]];
+						$scope.alert.type="danger";
+					}
+					/*$scope.alert.message = successMessage;
 					$scope.alert.type = "success";
 					initAddMember();
 					$scope.addMemberForm.$setPristine();
-					$scope.addMemberForm.$setUntouched();
-				},function(error){
-					$scope.showAlert = true;
-					$scope.alert.msg = error.exceptionMessage;
+					$scope.addMemberForm.$setUntouched();*/
+				}/*,function(error){
+					$scope.showAlert1 = true;
+					$scope.alert.message = error;
 					$scope.alert.type = "danger";
-				});
+				}*/);
 			}
 			 //showCompnay Flag
 			if($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 1){
 				$scope.showCompany= true;
-				$scope.loadCompanyData();
+				$scope.showBranch=true;
+				loadCompayInfo();
 			}else{
 				$scope.showCompany= false;
-				$scope.loadBranchData();
+				//$scope.loadBranchData();
 			}
 		  	
 		  	//showBranch Flag
-		  	if($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel < 3){
+		  	if($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 2){
 				$scope.showBranch= true;
-				$scope.showCompany=false
 				$scope.loadBranchData();
-				$scope.loadCustomerData();
+				//$scope.loadCustomerData();
 			}else{
-				$scope.showBranch=false;
+				//$scope.showBranch=false;
+				$scope.loadCustomerData();
 			}
 			//reset add branch
 			$scope.resetAddMember = function(){

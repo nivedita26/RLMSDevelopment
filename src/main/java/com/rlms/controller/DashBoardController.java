@@ -23,6 +23,7 @@ import com.rlms.contract.AMCStatusCount;
 import com.rlms.contract.BranchCountDtls;
 import com.rlms.contract.BranchDtlsDto;
 import com.rlms.contract.CompanyDtlsDTO;
+import com.rlms.contract.ComplaintsCount;
 import com.rlms.contract.ComplaintsDtlsDto;
 import com.rlms.contract.ComplaintsDto;
 import com.rlms.contract.CustomerCountDtls;
@@ -40,6 +41,7 @@ import com.rlms.exception.ValidationException;
 import com.rlms.model.RlmsBranchCustomerMap;
 import com.rlms.model.RlmsCompanyBranchMapDtls;
 import com.rlms.model.RlmsComplaintTechMapDtls;
+import com.rlms.model.RlmsEventDtls;
 import com.rlms.model.RlmsLiftCustomerMap;
 import com.rlms.model.RlmsSiteVisitDtls;
 import com.rlms.service.CompanyService;
@@ -59,6 +61,7 @@ public class DashBoardController extends BaseController {
 
 	@Autowired
 	private CompanyService companyService;
+	
 	@Autowired
 	private LiftDao liftDao;
 
@@ -85,41 +88,37 @@ public class DashBoardController extends BaseController {
 
 		List<AMCDetailsDto> listOFAmcDtls = null;
 		List<RlmsCompanyBranchMapDtls> listOfAllBranches = null;
-
 		List<Integer> companyBranchIds = new ArrayList<>();
-
 		try {
 			logger.info("Method :: getAllBranchesForCompany");
 			listOfAllBranches = this.companyService.getAllBranches(amcDetailsDto.getCompanyId());
+			if(listOfAllBranches !=null && !listOfAllBranches.isEmpty()) {
 			for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
 				companyBranchIds.add(companyBranchMap.getCompanyBranchMapId());
 			}
-
 			List<CustomerDtlsDto> allCustomersForBranch = dashboardService.getAllCustomersForBranch(companyBranchIds);
 			List<Integer> liftCustomerMapIds = new ArrayList<>();
+			if(allCustomersForBranch!=null && !allCustomersForBranch.isEmpty()) {
 			for (CustomerDtlsDto customerDtlsDto : allCustomersForBranch) {
 				LiftDtlsDto dto = new LiftDtlsDto();
 				dto.setBranchCustomerMapId(customerDtlsDto.getBranchCustomerMapId());
 				List<RlmsLiftCustomerMap> list = dashboardService.getAllLiftsForBranchsOrCustomer(dto);
+				if(list!=null && !list.isEmpty()) {
 				for (RlmsLiftCustomerMap rlmsLiftCustomerMap : list) {
 					liftCustomerMapIds.add(rlmsLiftCustomerMap.getLiftCustomerMapId());
 				}
 			}
+			}
 			listOFAmcDtls = this.dashboardService.getAMCDetailsForDashboard(liftCustomerMapIds, amcDetailsDto);
-
-			/*
-			 * //testing of complaintAssignment API ComplaintsDto complaintsDto = new
-			 * ComplaintsDto(); complaintsDto.setComplaintId(2);
-			 * complaintsDto.setUserRoleId(17); complaintsDto.setServiceCallType(0);
-			 * complaintsService.assignComplaint(complaintsDto, this.getMetaInfo());
-			 */
-
-		} catch (Exception e) {
+			} 
+		}
+		}catch (Exception e) {
 			e.printStackTrace();
 			logger.error(ExceptionUtils.getFullStackTrace(e));
 			throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(),
 					PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
-		}
+		
+	}
 		return listOFAmcDtls;
 	}
 
@@ -131,17 +130,19 @@ public class DashBoardController extends BaseController {
 		List<AMCDetailsDto> listOFAmcDtls = null;
 		List<RlmsCompanyBranchMapDtls> listOfAllBranches = null;
 		List<Integer> companyBranchIds = new ArrayList<>();
-
 		try {
 			logger.info("Method :: getAllBranchesForCompany");
+			if(amcDetailsDto.getBranchCompanyMapId()!=null) {
+				companyBranchIds.add(amcDetailsDto.getBranchCompanyMapId());
+			}
+			else {
 			listOfAllBranches = this.companyService.getAllBranches(amcDetailsDto.getCompanyId());
-
 			if (listOfAllBranches != null && !listOfAllBranches.isEmpty()) {
-
 				for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
 					companyBranchIds.add(companyBranchMap.getCompanyBranchMapId());
-				}
-
+				 }
+			 }
+		 }
 				List<CustomerDtlsDto> allCustomersForBranch = dashboardService
 						.getAllCustomersForBranch(companyBranchIds);
 
@@ -161,8 +162,9 @@ public class DashBoardController extends BaseController {
 
 							amcStatusCounts = this.dashboardService.getAMCDetailsCountForDashboard(liftCustomerMapIds,
 									amcDetailsDto);
+							AMCStatusCount amcStatusCount = new AMCStatusCount();
+
 							if (amcStatusCounts != null && !amcStatusCounts.isEmpty()) {
-								AMCStatusCount amcStatusCount = new AMCStatusCount();
 								for (AMCStatusCount statusCount : amcStatusCounts) {
 									if ((statusCount.getStatusId()) == (Status.UNDER_WARRANTY.getStatusId())) {
 										amcStatusCount.setUnderWarrantyCount(statusCount.getStatusCount());
@@ -176,11 +178,11 @@ public class DashBoardController extends BaseController {
 									if ((statusCount.getStatusId()) == (Status.UNDER_AMC.getStatusId())) {
 										amcStatusCount.setUnderAMCCount(statusCount.getStatusCount());
 									}
-								/*	if ((statusCount.getStatusId()) == (Status.NOT_UNDER_AMC.getStatusId())) {
+									/*if ((statusCount.getStatusId()) == (Status.NOT_UNDER_AMC.getStatusId())) {
 										amcStatusCount.setNotUnderAMCCount(statusCount.getStatusCount());
-									}
-*/
-									if ((statusCount.getStatusId()) == (Status.NOT_UNDER_Warranty.getStatusId())) {
+									}*/
+
+									if ((statusCount.getStatusId()) == (Status.WARRANTY_EXPIRED.getStatusId())) {
 										amcStatusCount.setNotUnderWarranty(statusCount.getStatusCount());
 									}
 								}
@@ -189,12 +191,11 @@ public class DashBoardController extends BaseController {
 								amcStatusCount.setCity(customerDtlsDto.getCity());
 								amcStatusCount.setTotalLiftCount(list.size());
 								amcStatusDetailsCountList.add(amcStatusCount);
-
 							}
 						}
 					}
 				}
-			}
+			//}
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error(ExceptionUtils.getFullStackTrace(e));
@@ -209,14 +210,12 @@ public class DashBoardController extends BaseController {
 			throws RunTimeException {
 		List<UserRoleDtlsDTO> listOfComplaints = null;
 		List<RlmsCompanyBranchMapDtls> listOfAllBranches = null;
-
 		List<Integer> companyBranchMapIds = new ArrayList<>();
 		List<Integer> branchCustomerMapIds = new ArrayList<>();
 		listOfAllBranches = this.companyService.getAllBranches(dto.getCompanyId());
 		for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
 			companyBranchMapIds.add(companyBranchMap.getCompanyBranchMapId());
 		}
-
 		try {
 			logger.info("Method :: getListOfComplaints");
 			listOfComplaints = this.dashboardService.getListOfTechnicians(companyBranchMapIds);
@@ -229,79 +228,261 @@ public class DashBoardController extends BaseController {
 
 		return listOfComplaints;
 	}
-
 	@RequestMapping(value = "/getTotalCountOfTechniciansForBranch", method = RequestMethod.POST)
 	public @ResponseBody List<TechnicianCount> getTotalCountOfTechniciansForBranch(@RequestBody ComplaintsDtlsDto dto)
 			throws RunTimeException {
 		List<TechnicianCount> technicianCounts = null;
 		List<RlmsCompanyBranchMapDtls> listOfAllBranches = null;
 		List<Integer> companyBranchMapIds = new ArrayList<>();
+		
+		if(dto.getBranchCompanyMapId()!=null) {
+			companyBranchMapIds.add(dto.getBranchCompanyMapId());
+		}
+		else {
 		listOfAllBranches = this.companyService.getAllBranches(dto.getCompanyId());
-		for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
-			companyBranchMapIds.add(companyBranchMap.getCompanyBranchMapId());
+		if(listOfAllBranches!=null && !listOfAllBranches.isEmpty()) {
+			for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
+				companyBranchMapIds.add(companyBranchMap.getCompanyBranchMapId());
+			}
+		}
 		}
 		try {
 			logger.info("Method :: getListOfComplaints");
 			technicianCounts = this.dashboardService.getListOfTechniciansForBranch(companyBranchMapIds);
-
 		} catch (Exception e) {
 			logger.error(ExceptionUtils.getFullStackTrace(e));
 			throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(),
 					PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
 		}
-
 		return technicianCounts;
 	}
-
 	@RequestMapping(value = "/getListOfComplaintsForDashboard", method = RequestMethod.POST)
 	public @ResponseBody List<ComplaintsDto> getListOfComplaints(@RequestBody ComplaintsDtlsDto dto)
 			throws RunTimeException {
 		List<ComplaintsDto> listOfComplaints = null;
 		List<RlmsCompanyBranchMapDtls> listOfAllBranches = null;
 		List<Integer> companyBranchMapIds = new ArrayList<>();
-		List<Integer> branchCustomerMapIds = new ArrayList<>();
 		listOfAllBranches = this.companyService.getAllBranches(dto.getCompanyId());
+		if(listOfAllBranches!=null &&!listOfAllBranches.isEmpty()) {
 		for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
 			companyBranchMapIds.add(companyBranchMap.getCompanyBranchMapId());
 		}
 		List<CustomerDtlsDto> allCustomersForBranch = dashboardService.getAllCustomersForBranch(companyBranchMapIds);
 		List<Integer> liftCustomerMapIds = new ArrayList<>();
+		if(allCustomersForBranch!=null && !allCustomersForBranch.isEmpty()) {
 		for (CustomerDtlsDto customerDtlsDto : allCustomersForBranch) {
 			LiftDtlsDto dtoToGetLifts = new LiftDtlsDto();
 			dtoToGetLifts.setBranchCustomerMapId(customerDtlsDto.getBranchCustomerMapId());
 			List<RlmsLiftCustomerMap> list = dashboardService.getAllLiftsForBranchsOrCustomer(dtoToGetLifts);
+			if(list!=null &&!list.isEmpty()) {
 			for (RlmsLiftCustomerMap rlmsLiftCustomerMap : list) {
 				liftCustomerMapIds.add(rlmsLiftCustomerMap.getLiftCustomerMapId());
 			}
 		}
-		dto.setListOfLiftCustoMapId(liftCustomerMapIds);
-		try {
-			logger.info("Method :: getListOfComplaints");
+		if(liftCustomerMapIds!=null && !liftCustomerMapIds.isEmpty()) {
+			dto.setListOfLiftCustoMapId(liftCustomerMapIds);
 			listOfComplaints = this.dashboardService.getListOfComplaintsBy(dto);
-		} catch (Exception e) {
-			logger.error(ExceptionUtils.getFullStackTrace(e));
-			throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(),
-					PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
+		 }	}
 		}
+	}
 		return listOfComplaints;
 	}
-
+	@RequestMapping(value = "/getListOfTotalComplaintsCountByCallType", method = RequestMethod.POST)
+	public @ResponseBody List<ComplaintsCount> getListOfComplaintsCountByCallType(@RequestBody ComplaintsDtlsDto dto)
+			throws RunTimeException {
+		List<ComplaintsCount> listOfComplaintsCount = null;
+		List<RlmsCompanyBranchMapDtls> listOfAllBranches = null;
+		List<Integer> companyBranchMapIds = new ArrayList<>();
+		if(dto.getBranchCompanyMapId()!=null) {
+			companyBranchMapIds.add(dto.getBranchCompanyMapId());
+		}
+		else {
+		listOfAllBranches = this.companyService.getAllBranches(dto.getCompanyId());
+		if (listOfAllBranches!=null && !listOfAllBranches.isEmpty()) {
+		for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
+				companyBranchMapIds.add(companyBranchMap.getCompanyBranchMapId());
+		}}
+		}
+		List<CustomerDtlsDto> allCustomersForBranch = dashboardService.getAllCustomersForBranch(companyBranchMapIds);
+		List<Integer> liftCustomerMapIds = new ArrayList<>();
+		if(allCustomersForBranch!=null && !allCustomersForBranch.isEmpty()) {
+		for (CustomerDtlsDto customerDtlsDto : allCustomersForBranch) {
+			LiftDtlsDto dtoToGetLifts = new LiftDtlsDto();
+			dtoToGetLifts.setBranchCustomerMapId(customerDtlsDto.getBranchCustomerMapId());
+			List<RlmsLiftCustomerMap> list = dashboardService.getAllLiftsForBranchsOrCustomer(dtoToGetLifts);
+			if(list!=null && !list.isEmpty()){
+			for (RlmsLiftCustomerMap rlmsLiftCustomerMap : list) {
+				liftCustomerMapIds.add(rlmsLiftCustomerMap.getLiftCustomerMapId());
+			}	}
+		}
+		if(liftCustomerMapIds!=null && !liftCustomerMapIds.isEmpty()) {
+			dto.setListOfLiftCustoMapId(liftCustomerMapIds);
+			listOfComplaintsCount = this.dashboardService.getListOfTotalComplaintsCountByCallType(dto);
+		}}	
+		return listOfComplaintsCount;
+	}
+	@RequestMapping(value = "/getListOfTodaysComplaintsCountByCallType", method = RequestMethod.POST)
+	public @ResponseBody List<ComplaintsCount> getListOfTodaysComplaintsCountByCallType(@RequestBody ComplaintsDtlsDto dto)
+			throws RunTimeException {
+		List<ComplaintsCount> listOfComplaintsCount = null;
+		List<RlmsCompanyBranchMapDtls> listOfAllBranches = null;
+		List<Integer> companyBranchMapIds = new ArrayList<>();
+		if(dto.getBranchCompanyMapId()!=null) {
+			companyBranchMapIds.add(dto.getBranchCompanyMapId());
+		}
+		else {
+		listOfAllBranches = this.companyService.getAllBranches(dto.getCompanyId());
+		if(listOfAllBranches!=null &&!listOfAllBranches.isEmpty()) {
+		for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
+			companyBranchMapIds.add(companyBranchMap.getCompanyBranchMapId());
+			}
+			}
+		}
+		List<CustomerDtlsDto> allCustomersForBranch = dashboardService.getAllCustomersForBranch(companyBranchMapIds);
+		List<Integer> liftCustomerMapIds = new ArrayList<>();
+		if(allCustomersForBranch!=null  && !allCustomersForBranch.isEmpty() ) {
+		for (CustomerDtlsDto customerDtlsDto : allCustomersForBranch) {
+			LiftDtlsDto dtoToGetLifts = new LiftDtlsDto();
+			dtoToGetLifts.setBranchCustomerMapId(customerDtlsDto.getBranchCustomerMapId());
+			List<RlmsLiftCustomerMap> list = dashboardService.getAllLiftsForBranchsOrCustomer(dtoToGetLifts);
+			if(list!=null && !list.isEmpty()) {
+				for (RlmsLiftCustomerMap rlmsLiftCustomerMap : list) {
+					liftCustomerMapIds.add(rlmsLiftCustomerMap.getLiftCustomerMapId());
+					}}}
+			if(liftCustomerMapIds!=null && !liftCustomerMapIds.isEmpty()) {
+					dto.setListOfLiftCustoMapId(liftCustomerMapIds);
+					listOfComplaintsCount = this.dashboardService.getListOfTodaysComplaintsCountByCallType(dto);
+				}
+		}
+		return listOfComplaintsCount;
+	}
+	@RequestMapping(value = "/getListOfTotalComplaintsCountByStatus", method = RequestMethod.POST)
+	public @ResponseBody List<ComplaintsCount> getListOfTotalComplaintsCountByStatus(@RequestBody ComplaintsDtlsDto dto)
+			throws RunTimeException {
+		List<ComplaintsCount> listOfComplaintsCount = null;
+		List<RlmsCompanyBranchMapDtls> listOfAllBranches = null;
+		List<Integer> companyBranchMapIds = new ArrayList<>();
+		if(dto.getBranchCompanyMapId()!=null) {
+			companyBranchMapIds.add(dto.getBranchCompanyMapId());
+		}
+		else {
+		listOfAllBranches = this.companyService.getAllBranches(dto.getCompanyId());
+		if(listOfAllBranches!=null  && !listOfAllBranches.isEmpty() ) {
+			for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
+				companyBranchMapIds.add(companyBranchMap.getCompanyBranchMapId());
+			}
+		}
+		}
+		List<CustomerDtlsDto> allCustomersForBranch = dashboardService.getAllCustomersForBranch(companyBranchMapIds);
+		List<Integer> liftCustomerMapIds = new ArrayList<>();
+		if(allCustomersForBranch!=null  && !allCustomersForBranch.isEmpty() ) {
+		for (CustomerDtlsDto customerDtlsDto : allCustomersForBranch) {
+			LiftDtlsDto dtoToGetLifts = new LiftDtlsDto();
+			dtoToGetLifts.setBranchCustomerMapId(customerDtlsDto.getBranchCustomerMapId());
+			List<RlmsLiftCustomerMap> list = dashboardService.getAllLiftsForBranchsOrCustomer(dtoToGetLifts);
+				if(list!=null  && !list.isEmpty() ) {
+					for (RlmsLiftCustomerMap rlmsLiftCustomerMap : list) {
+						liftCustomerMapIds.add(rlmsLiftCustomerMap.getLiftCustomerMapId());
+					}
+				}
+		 }
+		 	if(liftCustomerMapIds!=null && !liftCustomerMapIds.isEmpty()) {
+		 		dto.setListOfLiftCustoMapId(liftCustomerMapIds);
+		 		listOfComplaintsCount = this.dashboardService.getListOfTotalComplaintsCountByStatus(dto);
+		    }
+		}
+		return listOfComplaintsCount;
+	}
+	
+	@RequestMapping(value = "/getListOfTodaysComplaintsCountByStatus", method = RequestMethod.POST)
+	public @ResponseBody List<ComplaintsCount> getListOfTodaysComplaintsCountByStatus(@RequestBody ComplaintsDtlsDto dto)
+			throws RunTimeException {
+		List<ComplaintsCount> listOfComplaintsCount = null;
+		List<RlmsCompanyBranchMapDtls> listOfAllBranches = null;
+		List<Integer> companyBranchMapIds = new ArrayList<>();
+		if(dto.getBranchCompanyMapId()!=null) {
+			companyBranchMapIds.add(dto.getBranchCompanyMapId());
+		}
+		else {
+		listOfAllBranches = this.companyService.getAllBranches(dto.getCompanyId());
+		if(listOfAllBranches!=null  && !listOfAllBranches.isEmpty() ) {
+			for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
+				companyBranchMapIds.add(companyBranchMap.getCompanyBranchMapId());
+			}
+		}
+		}
+		List<CustomerDtlsDto> allCustomersForBranch = dashboardService.getAllCustomersForBranch(companyBranchMapIds);
+		List<Integer> liftCustomerMapIds = new ArrayList<>();
+		if(allCustomersForBranch!=null  && !allCustomersForBranch.isEmpty() ) {
+			for (CustomerDtlsDto customerDtlsDto : allCustomersForBranch) {
+				LiftDtlsDto dtoToGetLifts = new LiftDtlsDto();
+				dtoToGetLifts.setBranchCustomerMapId(customerDtlsDto.getBranchCustomerMapId());
+				List<RlmsLiftCustomerMap> list = dashboardService.getAllLiftsForBranchsOrCustomer(dtoToGetLifts);
+				if(list!=null && !list.isEmpty()) {
+					for (RlmsLiftCustomerMap rlmsLiftCustomerMap : list) {
+						liftCustomerMapIds.add(rlmsLiftCustomerMap.getLiftCustomerMapId());
+					}
+				}
+			}
+				if(liftCustomerMapIds!=null && !liftCustomerMapIds.isEmpty()) {
+					dto.setListOfLiftCustoMapId(liftCustomerMapIds);
+					listOfComplaintsCount = this.dashboardService.getListOfTodaysComplaintsCountByStatus(dto);
+				}
+		}
+		return listOfComplaintsCount;
+	}
+	
+	@RequestMapping(value = "/getListOfTodaysTotalComplaintsCountByStatus", method = RequestMethod.POST)
+	public @ResponseBody List<ComplaintsCount> getListOfTodaysTotalComplaintsCountByStatus(@RequestBody ComplaintsDtlsDto dto)
+			throws RunTimeException {
+		List<ComplaintsCount> listOfComplaintsCount = null;
+		List<RlmsCompanyBranchMapDtls> listOfAllBranches = null;
+		List<Integer> companyBranchMapIds = new ArrayList<>();
+		if(dto.getBranchCompanyMapId()!=null) {
+			companyBranchMapIds.add(dto.getBranchCompanyMapId());
+		}
+		else {
+		listOfAllBranches = this.companyService.getAllBranches(dto.getCompanyId());
+		if(listOfAllBranches!=null && !listOfAllBranches.isEmpty()) {
+			for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
+				companyBranchMapIds.add(companyBranchMap.getCompanyBranchMapId());
+			}
+		}
+		}
+		List<CustomerDtlsDto> allCustomersForBranch = dashboardService.getAllCustomersForBranch(companyBranchMapIds);
+		List<Integer> liftCustomerMapIds = new ArrayList<>();
+		if(allCustomersForBranch!=null && !allCustomersForBranch.isEmpty()) {
+		for (CustomerDtlsDto customerDtlsDto : allCustomersForBranch) {
+			LiftDtlsDto dtoToGetLifts = new LiftDtlsDto();
+			dtoToGetLifts.setBranchCustomerMapId(customerDtlsDto.getBranchCustomerMapId());
+			List<RlmsLiftCustomerMap> list = dashboardService.getAllLiftsForBranchsOrCustomer(dtoToGetLifts);
+			if(list!=null && !list.isEmpty()) {
+				for (RlmsLiftCustomerMap rlmsLiftCustomerMap : list) {
+					liftCustomerMapIds.add(rlmsLiftCustomerMap.getLiftCustomerMapId());
+				}
+			}
+		}
+		if(liftCustomerMapIds!=null &&! liftCustomerMapIds.isEmpty()) {
+			dto.setListOfLiftCustoMapId(liftCustomerMapIds);
+			listOfComplaintsCount = this.dashboardService.getListOfTodaysTotalComplaintsCountByStatus(dto);
+		}
+		}
+		return listOfComplaintsCount;
+	}
 	@RequestMapping(value = "/getListOfComplaintsForSiteVisited", method = RequestMethod.POST)
 	public @ResponseBody List<ComplaintsDto> getListOfComplaintsForSiteVisited(@RequestBody ComplaintsDtlsDto dto)
 			throws RunTimeException {
 		List<ComplaintsDto> listOfComplaints = null;
 		List<RlmsCompanyBranchMapDtls> listOfAllBranches = null;
 		Set<Integer> siteVisitedTodayComplaintIds = new HashSet<>();
-
 		List<Integer> companyBranchMapIds = new ArrayList<>();
-		List<Integer> branchCustomerMapIds = new ArrayList<>();
 		listOfAllBranches = this.companyService.getAllBranches(dto.getCompanyId());
+		if(listOfAllBranches!=null && !listOfAllBranches.isEmpty()) {
 		for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
 			companyBranchMapIds.add(companyBranchMap.getCompanyBranchMapId());
+			}
 		}
-
 		List<CustomerDtlsDto> allCustomersForBranch = dashboardService.getAllCustomersForBranch(companyBranchMapIds);
-
 		List<Integer> liftCustomerMapIds = new ArrayList<>();
 		for (CustomerDtlsDto customerDtlsDto : allCustomersForBranch) {
 			LiftDtlsDto dtoToGetLifts = new LiftDtlsDto();
@@ -311,7 +492,6 @@ public class DashBoardController extends BaseController {
 				liftCustomerMapIds.add(rlmsLiftCustomerMap.getLiftCustomerMapId());
 			}
 		}
-
 		dto.setListOfLiftCustoMapId(liftCustomerMapIds);
 		try {
 			logger.info("Method :: getListOfComplaints");
@@ -349,16 +529,13 @@ public class DashBoardController extends BaseController {
 		}
 		return finalListOfComplaints;
 	}
-
 	@RequestMapping(value = "/getAllAMCDetails", method = RequestMethod.POST)
 	public @ResponseBody List<AMCDetailsDto> getAMCForDashboard(@RequestBody AMCDetailsDto amcDetailsDto)
 			throws RunTimeException, ValidationException {
 
 		List<AMCDetailsDto> listOFAmcDtls = null;
 		List<RlmsCompanyBranchMapDtls> listOfAllBranches = null;
-
 		List<Integer> companyBranchIds = new ArrayList<>();
-
 		try {
 			logger.info("Method :: getAllBranchesForCompany");
 			listOfAllBranches = this.companyService.getAllBranches(amcDetailsDto.getCompanyId());
@@ -393,14 +570,19 @@ public class DashBoardController extends BaseController {
 
 		List<LiftDtlsDto> listOfLifts = new ArrayList<LiftDtlsDto>();
 		List<RlmsCompanyBranchMapDtls> listOfAllBranches = null;
-
 		List<Integer> companyBranchIds = new ArrayList<>();
-
 		try {
 			logger.info("Method :: getAllBranchesForCompany");
+			if(liftDtlsDto.getBranchCompanyMapId()!=null) {
+				companyBranchIds.add(liftDtlsDto.getBranchCompanyMapId());
+			}
+			else {
 			listOfAllBranches = this.companyService.getAllBranches(liftDtlsDto.getCompanyId());
-			for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
-				companyBranchIds.add(companyBranchMap.getCompanyBranchMapId());
+			if(listOfAllBranches!=null && !listOfAllBranches.isEmpty()) {
+				for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
+					companyBranchIds.add(companyBranchMap.getCompanyBranchMapId());
+				}
+			}
 			}
 			listOfLifts = liftService.getLiftStatusForBranch(companyBranchIds, this.getMetaInfo());
 
@@ -416,20 +598,22 @@ public class DashBoardController extends BaseController {
 	@RequestMapping(value = "/getLiftCount", method = RequestMethod.POST)
 	public @ResponseBody List<LiftDtlsDto> getLiftCount(@RequestBody LiftDtlsDto liftDtlsDto)
 			throws RunTimeException, ValidationException {
-
 		List<LiftDtlsDto> listOfLifts = new ArrayList<LiftDtlsDto>();
 		List<RlmsCompanyBranchMapDtls> listOfAllBranches = null;
-
 		List<Integer> companyBranchIds = new ArrayList<>();
-
 		try {
 			logger.info("Method :: getAllBranchesForCompany");
+			if(liftDtlsDto.getBranchCompanyMapId()!=null) {
+				companyBranchIds.add(liftDtlsDto.getBranchCompanyMapId());
+			}
+			else {
 			listOfAllBranches = this.companyService.getAllBranches(liftDtlsDto.getCompanyId());
+			if(listOfAllBranches!=null && !listOfAllBranches.isEmpty()) {
 			for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
 				companyBranchIds.add(companyBranchMap.getCompanyBranchMapId());
+			}}
 			}
 			listOfLifts = liftService.getLiftCountForBranch(companyBranchIds, this.getMetaInfo());
-
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error(ExceptionUtils.getFullStackTrace(e));
@@ -442,20 +626,22 @@ public class DashBoardController extends BaseController {
 	@RequestMapping(value = "/getLiftStatusCountByCustomer", method = RequestMethod.POST)
 	public @ResponseBody List<LiftDtlsDto> getLiftStatusCountByCustomer(@RequestBody LiftDtlsDto liftDtlsDto)
 			throws RunTimeException, ValidationException {
-
 		List<LiftDtlsDto> listOfLifts = new ArrayList<LiftDtlsDto>();
 		List<RlmsCompanyBranchMapDtls> listOfAllBranches = null;
-
 		List<Integer> companyBranchIds = new ArrayList<>();
-
 		try {
 			logger.info("Method :: getAllBranchesForCompany");
+			if(liftDtlsDto.getBranchCompanyMapId()!=null) {
+				companyBranchIds.add(liftDtlsDto.getBranchCompanyMapId());
+			}
+			else {
 			listOfAllBranches = this.companyService.getAllBranches(liftDtlsDto.getCompanyId());
+			if(listOfAllBranches!=null && !listOfAllBranches.isEmpty()) {
 			for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
 				companyBranchIds.add(companyBranchMap.getCompanyBranchMapId());
 			}
+			}}
 			listOfLifts = liftService.getLiftStatusForBranch(companyBranchIds, this.getMetaInfo());
-
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error(ExceptionUtils.getFullStackTrace(e));
@@ -470,9 +656,7 @@ public class DashBoardController extends BaseController {
 			throws RunTimeException {
 		List<CustomerDtlsDto> listOfCustomers = null;
 		List<RlmsCompanyBranchMapDtls> listOfAllBranches = null;
-
 		List<Integer> companyBranchIds = new ArrayList<>();
-
 		try {
 			logger.info("Method :: getAllBranchesForCompany");
 			listOfAllBranches = this.companyService.getAllBranches(customerDtlsDto.getCompanyId());
@@ -486,12 +670,9 @@ public class DashBoardController extends BaseController {
 			logger.error(ExceptionUtils.getFullStackTrace(e));
 			throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(),
 					PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
-
 		}
-
 		return listOfCustomers;
 	}
-
 	@RequestMapping(value = "/getCustomerCountForDashboard", method = RequestMethod.POST)
 	public @ResponseBody List<CustomerCountDtls> getCustomerCountForDashboard(
 			@RequestBody CustomerDtlsDto customerDtlsDto) throws RunTimeException {
@@ -502,9 +683,33 @@ public class DashBoardController extends BaseController {
 		int inactiveCount = 0;
 		try {
 			logger.info("Method :: getAllBranchesForCompany");
+			if(customerDtlsDto.getBranchCompanyMapId()!=null) {
+				List<Integer> companyBranchIds = new ArrayList<>();
+				activeCount = 0; 
+				inactiveCount = 0;
+				companyBranchIds.add(customerDtlsDto.getBranchCompanyMapId());
+				listOfBranchCustomersMap = this.customerService
+						.getAllApplicableCustomersCountForDashboard(companyBranchIds, this.getMetaInfo());
+				if (listOfBranchCustomersMap != null && !listOfBranchCustomersMap.isEmpty()) {
+					for (RlmsBranchCustomerMap branchCustomerMap : listOfBranchCustomersMap) {
+
+						if (branchCustomerMap.getCustomerMaster().getActiveFlag() == 1) {
+							activeCount = activeCount + 1;
+						} else {
+							inactiveCount = inactiveCount + 1;
+						}
+					}
+					CustomerCountDtls countDtls = new CustomerCountDtls();
+					countDtls.setCustomerCount(listOfBranchCustomersMap.size());
+					countDtls.setActiveFlagCount(activeCount);
+					countDtls.setInactiveFlagCount(inactiveCount);
+					listOfCustomersCount.add(countDtls);
+				}
+			}
+			else {
 			listOfAllBranches = this.companyService.getAllBranches(customerDtlsDto.getCompanyId());
 			for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
-				activeCount = 0;
+				activeCount = 0; 
 				inactiveCount = 0;
 				List<Integer> companyBranchIds = new ArrayList<>();
 				companyBranchIds.add(companyBranchMap.getCompanyBranchMapId());
@@ -528,38 +733,32 @@ public class DashBoardController extends BaseController {
 					listOfCustomersCount.add(countDtls);
 				}
 			}
+			}
 		} catch (Exception e) {
 			logger.error(ExceptionUtils.getFullStackTrace(e));
 			throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(),
 					PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
-
 		}
-
 		return listOfCustomersCount;
 	}
 
 	@RequestMapping(value = "/getAllCompanyDetailsForDashboard", method = RequestMethod.POST)
 	public @ResponseBody List<CompanyDtlsDTO> getAllCompanyDetailsForDashboard() throws RunTimeException {
 		List<CompanyDtlsDTO> listOfApplicableCompaniesDetails = null;
-
 		try {
 			logger.info("Method :: getAllCompanyDetails");
 			listOfApplicableCompaniesDetails = this.companyService.getAllCompanyDetailsForDashboard(this.getMetaInfo());
-
 		} catch (Exception e) {
 			logger.error(ExceptionUtils.getFullStackTrace(e));
 			throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(),
 					PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
 		}
-
 		return listOfApplicableCompaniesDetails;
 	}
-
 	@RequestMapping(value = "/getAllBranchesForDashboard", method = RequestMethod.POST)
 	public @ResponseBody List<RlmsCompanyBranchMapDtls> getAllBranchesForDashboard(
 			@RequestBody CompanyDtlsDTO companyDtlsDTO) throws RunTimeException {
 		List<RlmsCompanyBranchMapDtls> listOfAllBranches = null;
-
 		try {
 			logger.info("Method :: getAllBranchesForCompany");
 			listOfAllBranches = this.dashboardService.getAllBranchesForDashBoard(companyDtlsDTO.getCompanyId());
@@ -569,10 +768,8 @@ public class DashBoardController extends BaseController {
 			throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(),
 					PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
 		}
-
 		return listOfAllBranches;
 	}
-
 	@RequestMapping(value = "/getListOfBranchDtlsForDashboard", method = RequestMethod.POST)
 	public @ResponseBody List<BranchDtlsDto> getListOfBranchDtls(@RequestBody BranchDtlsDto dto)
 			throws RunTimeException {
@@ -590,9 +787,9 @@ public class DashBoardController extends BaseController {
 	}
 
 	@RequestMapping(value = "/getListOfBranchCountDtlsForDashboard", method = RequestMethod.POST)
-	public @ResponseBody List<BranchCountDtls> getListOfBranchCountDtlsForDashboard(@RequestBody BranchDtlsDto dto)
+	public @ResponseBody Set<BranchCountDtls> getListOfBranchCountDtlsForDashboard(@RequestBody BranchDtlsDto dto)
 			throws RunTimeException {
-		List<BranchCountDtls> branchCountDtls = null;
+		Set<BranchCountDtls> branchCountDtls = null;
 		try {
 			logger.info("Method :: getListOfBranchDtls");
 			branchCountDtls = this.dashboardService.getListOfBranchCountDtlsForDashboard(dto.getCompanyId(),
@@ -604,59 +801,18 @@ public class DashBoardController extends BaseController {
 		}
 		return branchCountDtls;
 	}
-	/*
-	 * @RequestMapping(value = "/getListOfEvents", method = RequestMethod.POST)
-	 * public @ResponseBody List<EventDtlsDto> getAllInOutEventsData(@RequestBody
-	 * EventDtlsDto dto)throws RunTimeException { List<EventDtlsDto> listOfEvents =
-	 * null; List<RlmsCompanyBranchMapDtls> listOfAllBranches = null; List<Integer>
-	 * companyBranchIds = new ArrayList<>(); try {
-	 * logger.info("Method :: getAllBranchesForCompany"); listOfAllBranches =
-	 * this.companyService .getAllBranches(dto.getCompanyId()); for
-	 * (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
-	 * companyBranchIds.add(companyBranchMap.getCompanyBranchMapId()); }
-	 * List<CustomerDtlsDto> allCustomersForBranch = dashboardService
-	 * .getAllCustomersForBranch(companyBranchIds); List<Integer> liftCustomerMapIds
-	 * = new ArrayList<>(); for (CustomerDtlsDto customerDtlsDto :
-	 * allCustomersForBranch) { LiftDtlsDto dtoTemp = new LiftDtlsDto();
-	 * dtoTemp.setBranchCustomerMapId(customerDtlsDto .getBranchCustomerMapId());
-	 * List<RlmsLiftCustomerMap> list = dashboardService
-	 * .getAllLiftsForBranchsOrCustomer(dtoTemp); for (RlmsLiftCustomerMap
-	 * rlmsLiftCustomerMap : list) { liftCustomerMapIds.add(rlmsLiftCustomerMap
-	 * .getLiftCustomerMapId()); } }
-	 * logger.info("Method :: getAllBranchesForCompany"); listOfEvents =
-	 * this.dashboardService.getListOfEvetnDetails( liftCustomerMapIds,
-	 * this.getMetaInfo());
-	 * 
-	 * } catch (Exception e) { logger.error(ExceptionUtils.getFullStackTrace(e));
-	 * throw new RunTimeException(
-	 * ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(), PropertyUtils
-	 * .getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS
-	 * .getMessage()));
-	 * 
-	 * } //FCM testing JSONObject jsnOb = new JSONObject(); try {
-	 * jsnOb.put("title","RLMS"); jsnOb.put("body","TEST"); } catch (JSONException
-	 * e1) { // TODO Auto-generated catch block e1.printStackTrace(); } try {
-	 * messagingService.sendNotification(
-	 * "emDR9YQD4S0:APA91bG3XuXAMrTGfIWIxbSqXDEOH9oTHBc8mVFsHT7Hc1-GUO_b21_Iie4T0875k26argOzM608RIce8x8rAGqG9JcqMAlt2qeDfZkVaUyNlza-9PlaVBfB7d--6nxh1FpVCaSVEZ9x",
-	 * jsnOb); } catch (SmackException e) { e.printStackTrace(); } catch
-	 * (IOException e) { e.printStackTrace(); } return listOfEvents; }
-	 */
-
+	
 	@RequestMapping(value = "/getListOfAmcServiceCalls", method = RequestMethod.POST)
 	public @ResponseBody List<ComplaintsDto> getListOfAmcServiceCalls(@RequestBody ComplaintsDtlsDto dto)
 			throws RunTimeException {
 		List<ComplaintsDto> listOfComplaints = null;
 		List<RlmsCompanyBranchMapDtls> listOfAllBranches = null;
-
 		List<Integer> companyBranchMapIds = new ArrayList<>();
-		List<Integer> branchCustomerMapIds = new ArrayList<>();
 		listOfAllBranches = this.companyService.getAllBranches(dto.getCompanyId());
 		for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
 			companyBranchMapIds.add(companyBranchMap.getCompanyBranchMapId());
 		}
-
 		List<CustomerDtlsDto> allCustomersForBranch = dashboardService.getAllCustomersForBranch(companyBranchMapIds);
-
 		List<Integer> liftCustomerMapIds = new ArrayList<>();
 		for (CustomerDtlsDto customerDtlsDto : allCustomersForBranch) {
 			LiftDtlsDto dtoToGetLifts = new LiftDtlsDto();
@@ -666,27 +822,17 @@ public class DashBoardController extends BaseController {
 				liftCustomerMapIds.add(rlmsLiftCustomerMap.getLiftCustomerMapId());
 			}
 		}
-
 		dto.setListOfLiftCustoMapId(liftCustomerMapIds);
 		try {
 			logger.info("Method :: getListOfComplaints");
 			listOfComplaints = this.dashboardService.getListOfComplaintsBy(dto);
-
 		} catch (Exception e) {
 			logger.error(ExceptionUtils.getFullStackTrace(e));
 			throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(),
 					PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
 		}
-
 		return listOfComplaints;
 	}
-
-	/*
-	 * @RequestMapping(value = "/getListOfEvents", method = RequestMethod.POST)
-	 * public @ResponseBody List<EventDtlsDto> getListOfEventsByType(@RequestBody
-	 * RlmsEventDtls rlmsEventDtls ) { return
-	 * dashboardService.getListOfEventsByType(rlmsEventDtls); }
-	 */
 	@RequestMapping(value = "/getEventCountForLift", method = RequestMethod.POST)
 	public @ResponseBody List<EventCountDtls> getEventCountForLift(@RequestBody EventDtlsDto dto)
 			throws RunTimeException {
@@ -695,28 +841,85 @@ public class DashBoardController extends BaseController {
 		List<Integer> companyBranchIds = new ArrayList<>();
 		try {
 			logger.info("Method :: getAllBranchesForCompany");
+			if(dto.getBranchCompanyMapId()!=null) {
+				companyBranchIds.add(dto.getBranchCompanyMapId());
+			}
+			else {
 			listOfAllBranches = this.companyService.getAllBranches(dto.getCompanyId());
+			if(listOfAllBranches!=null && !listOfAllBranches.isEmpty()) {
 			for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
 				companyBranchIds.add(companyBranchMap.getCompanyBranchMapId());
+			}}
 			}
 			List<CustomerDtlsDto> allCustomersForBranch = dashboardService.getAllCustomersForBranch(companyBranchIds);
 			List<Integer> liftCustomerMapIds = new ArrayList<>();
+			if(allCustomersForBranch!=null && !allCustomersForBranch.isEmpty()) {
 			for (CustomerDtlsDto customerDtlsDto : allCustomersForBranch) {
 				LiftDtlsDto dtoTemp = new LiftDtlsDto();
 				dtoTemp.setBranchCustomerMapId(customerDtlsDto.getBranchCustomerMapId());
 				List<RlmsLiftCustomerMap> list = dashboardService.getAllLiftsForBranchsOrCustomer(dtoTemp);
+				if(list!=null && !list.isEmpty()) {
 				for (RlmsLiftCustomerMap rlmsLiftCustomerMap : list) {
 					liftCustomerMapIds.add(rlmsLiftCustomerMap.getLiftCustomerMapId());
 				}
+				}
 			}
-			logger.info("Method :: getAllBranchesForCompany");
 			eventCountDtls = this.dashboardService.getEventCountDetails(liftCustomerMapIds, this.getMetaInfo());
-
-		} catch (Exception e) {
+		} }catch (Exception e) {
 			logger.error(ExceptionUtils.getFullStackTrace(e));
 			throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(),
 					PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
 		}
 		return eventCountDtls;
+	}
+	
+	
+	@RequestMapping(value = "/getTodaysEventCountForLift", method = RequestMethod.POST)
+	public @ResponseBody List<EventCountDtls> getTodaysEventCountForLift(@RequestBody EventDtlsDto dto)
+			throws RunTimeException {
+		List<EventCountDtls> eventCountDtls = null;
+		List<RlmsCompanyBranchMapDtls> listOfAllBranches = null;
+		List<Integer> companyBranchIds = new ArrayList<>();
+		try {
+			logger.info("Method :: getAllBranchesForCompany");
+			if(dto.getBranchCompanyMapId()!=null) {
+				companyBranchIds.add(dto.getBranchCompanyMapId());
+			}
+			else {
+			listOfAllBranches = this.companyService.getAllBranches(dto.getCompanyId());
+			if(listOfAllBranches!=null && !listOfAllBranches.isEmpty()) {
+			for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
+				companyBranchIds.add(companyBranchMap.getCompanyBranchMapId());
+			}}
+			}
+			List<CustomerDtlsDto> allCustomersForBranch = dashboardService.getAllCustomersForBranch(companyBranchIds);
+			List<Integer> liftCustomerMapIds = new ArrayList<>();
+			if(allCustomersForBranch!=null && !allCustomersForBranch.isEmpty()) {
+			for (CustomerDtlsDto customerDtlsDto : allCustomersForBranch) {
+				LiftDtlsDto dtoTemp = new LiftDtlsDto();
+				dtoTemp.setBranchCustomerMapId(customerDtlsDto.getBranchCustomerMapId());
+				List<RlmsLiftCustomerMap> list = dashboardService.getAllLiftsForBranchsOrCustomer(dtoTemp);
+				if(list!=null && !list.isEmpty()) {
+				for (RlmsLiftCustomerMap rlmsLiftCustomerMap : list) {
+					liftCustomerMapIds.add(rlmsLiftCustomerMap.getLiftCustomerMapId());
+				}
+				}
+			}
+			eventCountDtls = this.dashboardService.getTodaysEventCountDetails(liftCustomerMapIds, this.getMetaInfo());
+		} }catch (Exception e) {
+			logger.error(ExceptionUtils.getFullStackTrace(e));
+			throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(),
+					PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
+		}
+		return eventCountDtls;
+	}
+	
+	@RequestMapping(value = "/getUnidentifiedImeiEventCount", method = RequestMethod.POST)
+	public @ResponseBody List<RlmsEventDtls> getUnidentifiedImeiEventCount(@RequestBody int companyId)
+			throws RunTimeException {
+			List<RlmsEventDtls> eventDtls = null;
+			logger.info("Method :: getAllBranchesForCompany");
+			eventDtls = this.dashboardService.getUnidentifiedEventCountDetails();
+			return eventDtls;
 	}
 }

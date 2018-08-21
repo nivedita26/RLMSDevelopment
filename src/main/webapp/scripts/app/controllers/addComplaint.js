@@ -4,13 +4,63 @@
 	.controller('addComplaintCtrl', ['$scope', '$filter','serviceApi','$route','utility','$window','$rootScope','$modal', function($scope, $filter,serviceApi,$route,utility,$window,$rootScope,$modal) {
 		initAddComplaint();
 			//loadCompayInfo();
-			$scope.alert = { type: 'success', msg: 'You successfully Added Complaint.',close:true };
+			$scope.alert = { type: 'success', msg: 'You successfully Added Call.',close:true };
 			$scope.showAlert = false;
 			$scope.showCompany = false;
 			$scope.showBranch = false;
 			$scope.companies = [];
 			$scope.branches = [];
 			$scope.cutomers=[];
+			
+			//load compay dropdown data
+			function loadCompayInfo(){
+				serviceApi.doPostWithoutData('/RLMS/admin/getAllApplicableCompanies')
+			    .then(function(response){
+			    		$scope.companies = response;
+			    });
+			};
+			$scope.loadBranchData = function(){
+				var companyData={};
+				if($scope.showCompany == true){
+	  	    		companyData = {
+							companyId : $scope.selectedCompany.selected!=undefined?$scope.selectedCompany.selected.companyId:0
+						}
+	  	    	}else{
+	  	    		companyData = {
+							companyId : $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyMaster.companyId
+						}
+	  	    	}
+			    serviceApi.doPostWithData('/RLMS/admin/getAllBranchesForCompany',companyData)
+			    .then(function(response){
+			    	$scope.branches = response;
+			    	$scope.selectedBranch.selected = undefined;
+			    	$scope.selectedCustomer.selected = undefined;
+			    	$scope.selectedLift.selected =undefined;
+			    	var emptyArray=[];
+			    	$scope.myData = emptyArray;
+			    });
+			}
+			
+			$scope.loadCustomerData = function(){
+				var branchData ={};
+	  	    	if($scope.showBranch == true){
+	  	    		branchData = {
+	  	    			branchCompanyMapId : $scope.selectedBranch.selected!=null?$scope.selectedBranch.selected.companyBranchMapId:0
+						}
+	  	    	}else{
+	  	    		branchData = {
+	  	    			branchCompanyMapId : $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls.companyBranchMapId
+						}
+	  	    	}
+	  	    	serviceApi.doPostWithData('/RLMS/admin/getAllCustomersForBranch',branchData)
+	 	         .then(function(customerData) {
+	 	        	 $scope.cutomers = customerData;
+	 	        	 $scope.selectedCustomer.selected = undefined;
+	 	        	 $scope.selectedLift.selected =undefined;
+	 	        	var emptyArray=[];
+			    	$scope.myData = emptyArray;
+	 	         })
+			}
 			function initAddComplaint() {
 				$scope.customerSelected = false;
 				$scope.selectedCompany = {};
@@ -20,21 +70,16 @@
 				$scope.selectedComplaintTitle = {};
 				$scope.selectedLift = {};			
 				$scope.companyName='';
-
-
-				$scope.branchName='';							
-
+				$scope.branchName='';				
 				$scope.addComplaint={
 						branchCompanyMapId:0,
 						liftCustomerMapId:0,
 						branchCustomerMapId:0,
 						companyId:0,
 						callType:'',
-						complaintTitle:'',
+						complaintsTitle:'',
 						complaintsRemark:'',
 						registrationType:2,
-						//fromDate:'',
-						//toDate:''
 				};
 				
 				$scope.complaintTitle=[
@@ -109,38 +154,41 @@
 						name : 'LMS alert Call'
 					},{
 						id : 23,
-						name : 'Lift update Parameter'
+						name : 'Lift configuration Call'
+					},{
+						id : 24,
+						name : 'Under Warranty Support Call'
+					},{
+						id:25,
+						name :'Operator Initiated Call'
+					},{
+						id:26,
+						name :'Other'
 					}
 					];
 				
 				$scope.callType=[
 					{
 						id: 1,
-						name:'Lift Installation call'
+						name:'Lift Installation Call'
 					},{
 						id: 2,
-						name:'Configuration/Settings call'
-					},{
-						id: 3,
-						name:'AMC call'
+						name:'Configuration/Settings Call'
 					},{
 						id: 4,
-						name:'Under Warranty Support call'
+						name:'Under Warranty Support Call'
 					},{
 						id: 5,
-						name:'LMS alert call'
+						name:'LMS Alert Call'
 					},{
 						id: 6,
-						name:'Operator assigned/Generic call'
-					},{
-						id: 7,
-						name:'User raised call through App'
+						name:'Operator Assigned/Generic Call'
 					},{
 						id: 8,
-						name:'User raised call through Telephone'
+						name:'User Raised Call Through Telephone'
 					},{
 						id: 9,
-						name:'Reassign call'
+						name:'Reassign Call'
 					}
 				];
 			}
@@ -156,39 +204,8 @@
 			      else
 			    	  $scope.openFlag[which] = false;
 			  }
-			//load compay dropdown data
-			/*function loadCompayInfo(){
-				serviceApi.doPostWithoutData('/RLMS/admin/getAllApplicableCompanies')
-			    .then(function(response){
-			    		$scope.companies = response;
-			    });
-			};
-			$scope.loadBranchData = function(){
-				var data = {
-					companyId : $scope.selectedCompany.selected.companyId
-				}
-			    serviceApi.doPostWithData('/RLMS/admin/getAllBranchesForCompany',data)
-			    .then(function(response){
-			    	$scope.branches = response;
-			    	
-			    });
-			}
-			$scope.loadCustomerData = function(){
-				var branchData ={};
-	  	    	if($scope.showBranch == true){
-	  	    		branchData = {
-	  	    			branchCompanyMapId : $scope.selectedBranch.selected.companyBranchMapId
-						}
-	  	    	}else{
-	  	    		branchData = {
-	  	    			branchCompanyMapId : $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls.companyBranchMapId
-						}
-	  	    	}
-	  	    	serviceApi.doPostWithData('/RLMS/admin/getAllCustomersForBranch',branchData)
-	 	         .then(function(customerData) {
-	 	        	 $scope.cutomers = customerData;
-	 	         })
-			}*/
+			
+		
 			$scope.loadLifts = function() {
 				
 				var dataToSend = {
@@ -210,7 +227,7 @@
 			//Post call add customer
 			$scope.submitAddComplaint = function(){
 				$scope.addComplaint.callType = $scope.selectedCallType.selected.id;
-				$scope.addComplaint.complaintTitle = $scope.selectedComplaintTitle.selected.id;
+				$scope.addComplaint.complaintsTitle = $scope.selectedComplaintTitle.selected.name;
 				$scope.addComplaint.liftCustomerMapId = $scope.selectedLift.selected.liftId;
 				$scope.addComplaint.registrationType = 31;
 				serviceApi.doPostWithData("/RLMS/complaint/validateAndRegisterNewComplaint",$scope.addComplaint)
@@ -232,7 +249,7 @@
 			 //showCompnay Flag
 		  	if($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 1){
 				$scope.showCompany= true;
-				//loadCompayInfo();
+				loadCompayInfo();
 			}else{
 				$scope.showCompany= false;
 				//$scope.loadBranchData();
@@ -240,19 +257,21 @@
 		  	
 		  	//showBranch Flag
 		  	if($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel < 3){
-				$scope.showBranch= true;
+		  		$scope.showBranch= true;
+				$scope.loadBranchData();
 			}else{
 				$scope.showBranch=false;
+				$scope.loadCustomerData();
 			}
-			//rese add branch
+			//reset add branch
 			$scope.resetaddComplaint = function(){
 				initAddComplaint();
 			}
 			$scope.backPage =function(){
 				 $window.history.back();
 			}
-			/*
-			$scope.searchCustomer = function(query){
+			
+			/*$scope.searchCustomer = function(query){
 				//console.log(query);
 				if(query && query.length > 1){
 				 var dataToSend = {
@@ -268,47 +287,9 @@
 				} 
 				
 			}*/
-			$scope.loadBranchData = function(){
-				var companyData={};
-				if($scope.showCompany == true){
-	  	    		companyData = {
-							companyId : $scope.selectedCompany.selected!=undefined?$scope.selectedCompany.selected.companyId:0
-						}
-	  	    	}else{
-	  	    		companyData = {
-							companyId : $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyMaster.companyId
-						}
-	  	    	}
-			    serviceApi.doPostWithData('/RLMS/admin/getAllBranchesForCompany',companyData)
-			    .then(function(response){
-			    	$scope.branches = response;
-			    	$scope.selectedBranch.selected = undefined;
-			    	$scope.selectedCustomer.selected = undefined;
-			    	var emptyArray=[];
-			    	$scope.myData = emptyArray;
-			    });
-			}
-			$scope.loadCustomerData = function(){
-				var branchData ={};
-	  	    	if($scope.showBranch == true){
-	  	    		branchData = {
-	  	    			branchCompanyMapId : $scope.selectedBranch.selected!=null?$scope.selectedBranch.selected.companyBranchMapId:0
-						}
-	  	    	}else{
-	  	    		branchData = {
-	  	    			branchCompanyMapId : $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls.companyBranchMapId
-						}
-	  	    	}
-	  	    	serviceApi.doPostWithData('/RLMS/admin/getAllCustomersForBranch',branchData)
-	 	         .then(function(customerData) {
-	 	        	 $scope.cutomers = customerData;
-	 	        	 $scope.selectedCustomer.selected = undefined;
-	 	        	var emptyArray=[];
-			    	$scope.myData = emptyArray;
-	 	         })
-			}
+
 			
-		  	if($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 1){
+		  /*	if($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 1){
 				$scope.showBranch= true;
 				$scope.loadBranchData();
 
@@ -316,6 +297,6 @@
 				$scope.showBranch=false;
 				$scope.loadCustomerData();
 
-			}
+			}*/
 	}]);
 })();

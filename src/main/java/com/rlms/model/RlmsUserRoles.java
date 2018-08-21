@@ -5,7 +5,6 @@ package com.rlms.model;
 import static javax.persistence.GenerationType.IDENTITY;
 
 import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -43,7 +42,6 @@ public class RlmsUserRoles implements java.io.Serializable {
 	private Date updatedDate;
 	private Integer updatedBy;
 	
-	
 	public RlmsUserRoles() {
 	}
 
@@ -53,7 +51,6 @@ public class RlmsUserRoles implements java.io.Serializable {
 	public Integer getUserRoleId() {
 		return userRoleId;
 	}
-
 	
 	public void setUserRoleId(Integer userRoleId) {
 		this.userRoleId = userRoleId;

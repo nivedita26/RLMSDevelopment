@@ -2,22 +2,19 @@ package com.rlms.dao;
 
 import java.util.Date;
 import java.util.List;
-import java.util.ListResourceBundle;
-
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
 import com.rlms.constants.RLMSConstants;
 import com.rlms.constants.Status;
-import com.rlms.contract.CompanyDtlsDTO;
+import com.rlms.contract.ComplaintsDtlsDto;
 import com.rlms.contract.SiteVisitReportDto;
 import com.rlms.contract.TechnicianWiseReportDTO;
-import com.rlms.contract.UserMetaInfo;
 import com.rlms.model.RlmsComplaintMaster;
 import com.rlms.model.RlmsComplaintTechMapDtls;
 import com.rlms.model.RlmsSiteVisitDtls;
@@ -107,10 +104,10 @@ public class ComplaintsDaoImpl implements ComplaintsDao{
 					 criteria.add(Restrictions.eq("callType", callType));
 				 }
 				 criteria.add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
+				 criteria.addOrder(Order.desc("registrationDate"));
 		 List<RlmsComplaintMaster> listOfAllcomplaints = criteria.list();
 		 return listOfAllcomplaints;
 	}
-	
 	@SuppressWarnings("unchecked")
 	public RlmsComplaintTechMapDtls getComplTechMapObjByComplaintId(Integer complaintId){
 		 Session session = this.sessionFactory.getCurrentSession();
@@ -141,21 +138,18 @@ public class ComplaintsDaoImpl implements ComplaintsDao{
 		 return complaintMapDtls;
 	}
 	
-	
-	
 	public RlmsComplaintMaster getComplaintMasterObj(Integer complaintId, Integer callType){
 		 Session session = this.sessionFactory.getCurrentSession();
 		 Criteria criteria = session.createCriteria(RlmsComplaintMaster.class)
 				 .add(Restrictions.eq("complaintId", complaintId))
 				 .add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
-		 if(null != callType){
-			 criteria.add(Restrictions.eq("callType", callType));
-		 }
+	/*	 if(null != callType && callType!=0){
+			criteria.add(Restrictions.eq("callType", callType));
+			// criteria.add(Restrictions.eq("callType", 1));
+		 }*/
 		 RlmsComplaintMaster complaintMaster = (RlmsComplaintMaster) criteria.uniqueResult();
 		 return complaintMaster;
 	}
-	
-	
 	@SuppressWarnings("unchecked")
 	public List<RlmsComplaintMaster> getAllComplaintsByMemberId(Integer memberId,Integer callType){
 		 Session session = this.sessionFactory.getCurrentSession();
@@ -171,7 +165,7 @@ public class ComplaintsDaoImpl implements ComplaintsDao{
 	
 	@SuppressWarnings("unchecked")
 	public List<RlmsComplaintTechMapDtls> getListOfComplaintDtlsForTechies(SiteVisitReportDto dto){
-		Session session = this.sessionFactory.getCurrentSession();
+ 		Session session = this.sessionFactory.getCurrentSession();
 		 Criteria criteria = session.createCriteria(RlmsComplaintTechMapDtls.class);
 		 criteria.createAlias("complaintMaster.liftCustomerMap", "lcm");
 		 criteria.createAlias("lcm.branchCustomerMap", "bcm");
@@ -185,7 +179,6 @@ public class ComplaintsDaoImpl implements ComplaintsDao{
 				 if(null != dto.getListOfBranchCustoMapIds() && !dto.getListOfBranchCustoMapIds().isEmpty()){
 					 criteria.add(Restrictions.in("bcm.branchCustoMapId", dto.getListOfBranchCustoMapIds()));
 				 }
-				
 				 if(null != dto.getListOfUserRoleIds()){
 					 criteria.add(Restrictions.in("role.userRoleId", dto.getListOfUserRoleIds())); 
 				 }
@@ -196,21 +189,26 @@ public class ComplaintsDaoImpl implements ComplaintsDao{
 				 if(null != dto.getListOfStatusIds() && !dto.getListOfStatusIds().isEmpty()){
 					 criteria.add(Restrictions.in("status", dto.getListOfStatusIds()));
 				 }
-				 criteria.add(Restrictions.eq("ccm.callType", dto.getServiceCallType()));
+			//	 criteria.add(Restrictions.eq("ccm.callType", 2));
+				 
+				 criteria.add(Restrictions.ne("status", Status.ASSIGNED.getStatusId()));
+				 
 				 criteria.add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
+				 
+				 criteria.addOrder(Order.desc("ccm.complaintId"));
+				 
 		 List<RlmsComplaintTechMapDtls> listOfAllcomplaints = criteria.list();
 		 return listOfAllcomplaints;
 	}
-	
 	@SuppressWarnings("unchecked")
 	public List<RlmsSiteVisitDtls> getAllVisitsForComnplaints(Integer complaintTechMapId){
 		 Session session = this.sessionFactory.getCurrentSession();
 		 Criteria criteria = session.createCriteria(RlmsSiteVisitDtls.class)
 				 .add(Restrictions.eq("complaintTechMapDtls.complaintTechMapId", complaintTechMapId));
-		 List<RlmsSiteVisitDtls> listOFAllVisits =  criteria.list();
+			   	 criteria.addOrder(Order.desc("updatedDate"));
+			   	 List<RlmsSiteVisitDtls> listOFAllVisits =  criteria.list();
 		 return listOFAllVisits;
 	}
-	
 	@SuppressWarnings("unchecked")
 	public List<RlmsComplaintTechMapDtls> getListOfComplaintDtlsForTechies(TechnicianWiseReportDTO dto){
 		Session session = this.sessionFactory.getCurrentSession();
@@ -219,9 +217,7 @@ public class ComplaintsDaoImpl implements ComplaintsDao{
 		 criteria.createAlias("lcm.branchCustomerMap", "bcm");
 		 criteria.createAlias("bcm.companyBranchMapDtls", "cbm");
 		 criteria.createAlias("cbm.rlmsCompanyMaster", "cm");
-		 
 		 criteria.createAlias("userRoles", "role");
-		 
 				 if(null != dto.getBranchCompanyMapId()){
 					 criteria.add(Restrictions.eq("cbm.companyBranchMapId", dto.getBranchCompanyMapId()));
 				 }
@@ -257,5 +253,48 @@ public class ComplaintsDaoImpl implements ComplaintsDao{
 		Query q = this.sessionFactory.getCurrentSession().createQuery("delete RlmsComplaintTechMapDtls where complaintTechMapId=:complaintTechMapId");
 		q.setParameter("complaintTechMapId", complaintsTechMapId);
 		q.executeUpdate();
+	}
+
+	@Override
+	public List<RlmsComplaintMaster>complaintMastersList (List<Integer> liftCustomerMapIds,ComplaintsDtlsDto dto){
+
+		Session session = this.sessionFactory.getCurrentSession();
+		Criteria criteria = session.createCriteria(RlmsComplaintMaster.class);
+		criteria.add(Restrictions.in("liftCustomerMap.liftCustomerMapId",liftCustomerMapIds));
+		if(dto.getServiceCallType()!=null) {
+			criteria.add(Restrictions.eq("callType", dto.getCallType()));
+		}
+		if(dto.getComplaintId()!=null) {
+			criteria.add(Restrictions.eq("complaintId", dto.getComplaintId()));
+		}
+		if(dto.getToDate()!=null && dto.getFromDate()!=null) {
+			 criteria.add(Restrictions.ge("registrationDate",dto.getFromDate()));
+			 criteria.add(Restrictions.le("registrationDate",dto.getToDate()));
+		}
+		
+		 criteria.addOrder(Order.desc("registrationDate"))
+		 .add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
+
+		 List<RlmsComplaintMaster> complaintList= criteria.list();
+	     return complaintList;
+	}
+	@Override
+	public RlmsComplaintMaster getComplaintMasterByComplaintId(int complaintId) {
+		Session session = this.sessionFactory.getCurrentSession();
+		 Criteria criteria = session.createCriteria(RlmsComplaintMaster.class)
+				 .add(Restrictions.eq("complaintId", complaintId))
+		         .add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
+       	 return  (RlmsComplaintMaster) criteria.uniqueResult();
+	}
+
+	@Override
+	public RlmsComplaintMaster getComplaintByLiftCustoMapIdAndCallType(ComplaintsDtlsDto complaintsDtlsDto) {
+		Session session = this.sessionFactory.getCurrentSession();
+		 Criteria criteria = session.createCriteria(RlmsComplaintMaster.class)
+				 .add(Restrictions.eq("liftCustomerMap.liftCustomerMapId", complaintsDtlsDto.getLiftCustomerMapId()))
+				.add(Restrictions.eq("callType",complaintsDtlsDto.getCallType()))	 
+		        .add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
+      	 return  (RlmsComplaintMaster) criteria.uniqueResult();
+		
 	}
 }
