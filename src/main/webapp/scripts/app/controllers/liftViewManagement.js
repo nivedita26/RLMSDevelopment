@@ -11,6 +11,7 @@
 		function initCustomerList(){
 			 $scope.selectedCompany={};
 			 $scope.selectedBranch = {};
+			 $scope.selectedCustomer= {};
 			 $scope.branches=[];
 			 $scope.showTable = false;
 		} 
@@ -187,14 +188,16 @@
 	  	    			branchCompanyMapId : $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls.companyBranchMapId
   					}
 	  	    	}*/
+	  	    	var branchCustomerMapId = [];
+	  	    	branchCustomerMapId.push($scope.selectedCustomer.selected.branchCustomerMapId);
 	  	    	var dataToSend = {
-						branchCustomerMapId : $scope.selectedCustomer.selected.branchCustomerMapId
+						branchCustomerMapId : branchCustomerMapId
 					}
 	  	      setTimeout(function() {
 	  	        var data;
 	  	        if (searchText) {
 	  	        	/*var branchData ={};
-		  	    	if($scope.showBranch == true){
+	  	        	if($scope.showBranch == true){
 		  	    		branchData = {
 		  	    			branchCompanyMapId : $scope.selectedBranch.selected.companyBranchMapId
 	  					}
@@ -203,8 +206,10 @@
 		  	    			branchCompanyMapId : $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls.companyBranchMapId
 	  					}
 		  	    	}*/
-	  	        	var dataToSend = {
-							branchCustomerMapId : $scope.selectedCustomer.selected.branchCustomerMapId
+	  	        	var branchCustomerMapId = [];
+		  	    	branchCustomerMapId.push($scope.selectedCustomer.selected.branchCustomerMapId);
+		  	    	var dataToSend = {
+							branchCustomerMapId : branchCustomerMapId
 						}
 	  	          var ft = searchText.toLowerCase();
 	  	        serviceApi.doPostWithData('/RLMS/admin/getLiftDetailsForBranch',dataToSend)
@@ -307,9 +312,12 @@
 		  	    			branchCompanyMapId : $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls.companyBranchMapId
 	  					}
 		  	    	}*/
-	  	        	var dataToSend = {
-							branchCustomerMapId : $scope.selectedCustomer.selected.branchCustomerMapId
+	  	        	var branchCustomerMapId = [];
+		  	    	branchCustomerMapId.push($scope.selectedCustomer.selected.branchCustomerMapId);
+		  	    	var dataToSend = {
+							branchCustomerMapId : branchCustomerMapId
 						}
+		  	    	
 	  	        	serviceApi.doPostWithData('/RLMS/admin/getLiftDetailsForBranch',dataToSend).then(function(largeLoad) {
 	  	        		 $scope.showTable= true;
 	  	        	  var userDetails=[];
