@@ -3,7 +3,7 @@ package com.rlms.dao;
 import java.util.Date;
 import java.util.List;
 
-import com.rlms.contract.EventDtlsDto;
+import com.rlms.contract.ComplaintsDtlsDto;
 import com.rlms.model.RlmsCompanyBranchMapDtls;
 import com.rlms.model.RlmsComplaintMaster;
 import com.rlms.model.RlmsComplaintTechMapDtls;
@@ -19,6 +19,11 @@ public interface DashboardDao {
 			Integer branchCompanyMapId, Integer branchCustomerMapId,
 			List<Integer> listOfLiftCustoMapId, List<Integer> statusList,
 			Date fromDate, Date toDate,Integer callType);
+	
+	public  List<Object[]> getTotalComplaintsCallTypeCount(List<Integer> liftCustomerMapIds);
+	public  List<Object[]> getTodaysComplaintsCallTypeCount(List<Integer> liftCustomerMapIds);
+	public  List<Object[]> getTotalComplaintsStatusCount(List<Integer> liftCustomerMapIds);
+	public  List<Object[]> getTodaysComplaintsStatusCount(List<Integer> liftCustomerMapIds);
 
 	public RlmsComplaintTechMapDtls getComplTechMapObjByComplaintId(Integer complaintId);
 	public List<RlmsUserRoles> getAllUserWithRoleFor(List<Integer> commpBranchMapId, Integer spocRoleId);
@@ -27,7 +32,7 @@ public interface DashboardDao {
 	public RlmsCompanyBranchMapDtls getCompanyBranchMapDtlsForDashboard(Integer compBranchMapId);
 
 	public List<RlmsEventDtls> getAllEventDtlsForDashboard(
-			List<Integer> companyBranchIds);
+			List<Integer> companyBranchIds,String eventType);
 	
 	public void saveEventDtls(RlmsEventDtls eventDtls);
 	
@@ -41,6 +46,16 @@ public interface DashboardDao {
     
     public List<Object[]> getEventCountDtlsForDashboard(
 			List<Integer> companyBranchIds);
+    
+    public List<Object[]> getTodaysEventCountDtlsForDashboard(
+			List<Integer> companyBranchIds);
 
+    public List<Object[]> getBranchCountDtlsForDashboard(
+			List<Integer> branchIds);
+    
+    public List<RlmsComplaintMaster> getAllComplaintsForAvgLogs(Date fromDate,Date toDate,ComplaintsDtlsDto dto);
 
+    public List<RlmsEventDtls> getUnidentifiedEventCountDtlsForDashboard();
+    
+    public List<Object[]> getTodaysTotalComplaintsStatusCount(List<Integer> liftCustomerMapIds);
 }

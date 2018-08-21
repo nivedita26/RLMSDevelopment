@@ -33,6 +33,8 @@ public class CustomerDtlsDto {
 	private String watchmenEmail;
 	private Integer activeFlag;
 	
+	private String customerTypeStr;
+	
 	private Integer branchCustomerMapId;
 	private Integer companyId;
 	private Integer customerId;
@@ -236,6 +238,11 @@ public class CustomerDtlsDto {
 		this.customerId = customerId;
 	}
 	
-	
+	public String getCustomerTypeStr() {
+		return customerTypeStr;
+	}
+	public void setCustomerTypeStr(String customerTypeStr) {
+		this.customerTypeStr = customerTypeStr;
+	}
 	
 }

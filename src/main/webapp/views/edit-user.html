@@ -10,7 +10,7 @@
 		  <div class="form-group col-sm-6">
 				<label class="col-sm-4 control-label">First Name</label>
 				<div class="col-sm-6">
-					<input name="firstname" type="text" required placeholder="Required Field" ng-model="editUser.firstName" class="form-control">
+					<input name="firstname" type="text" required placeholder="Required Field" onkeypress="return ((event.charCode > 64 && event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || event.charCode == 8 || event.charCode == 32);" ng-model="editUser.firstName" class="form-control">
 					<span class="help-block"
 						ng-show="addUserForm.firstname.$error.required && addUserForm.firstname.$dirty">This
 						field is required</span>
@@ -19,7 +19,7 @@
 			 <div class="form-group col-sm-6">
 				<label class="col-sm-4 control-label">Last Name</label>
 				<div class="col-sm-6">
-					<input name="lastName" type="text" required placeholder="Required Field" ng-model="editUser.lastName" class="form-control">
+					<input name="lastName" type="text" required placeholder="Required Field" onkeypress="return ((event.charCode > 64 && event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || event.charCode == 8 || event.charCode == 32);"ng-model="editUser.lastName" class="form-control">
 					<span class="help-block"
 						ng-show="addUserForm.lastName.$error.required && addUserForm.lastName.$dirty">This
 						field is required</span>
@@ -34,15 +34,16 @@
 			<div class="form-group col-sm-6">
 				<label class="col-sm-4 control-label">Contact Number</label>
 				<div class="col-sm-6">
-					<input name="contactnumber" required type="text" placeholder="Required Field" ng-model="editUser.contactnumber" class="form-control">
+					<input name="contactnumber" required type="text" placeholder="Required Field" ng-model="editUser.contactnumber" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : this.value.length<10" class="form-control">
 					<span class="help-block"
 						ng-show="addUserForm.contactnumber.$error.required && addUserForm.contactnumber.$dirty">This
 						field is required</span>
 				</div>
-			</div><div class="form-group col-sm-6">
+			</div>
+			<div class="form-group col-sm-6">
 				<label class="col-sm-4 control-label">Address</label>
 				<div class="col-sm-6">
-					<input name="address" type="text" placeholder="Address" ng-model="editUser.address" class="form-control">
+					<input name="address" type="text" placeholder="Address"  ng-model="editUser.address" class="form-control">
 				</div>
 			</div>
 			<div class="form-group col-sm-6">
@@ -54,13 +55,13 @@
 			<div class="form-group col-sm-6">
 			<label class="col-sm-4 control-label">City</label>
 				<div class="col-sm-6">
-					<input name="city" type="text" placeholder="City" ng-model="editUser.city" class="form-control">
+					<input name="city" type="text" placeholder="City" onkeypress="return ((event.charCode > 64 && event.charCode < 91) ||(event.charCode > 96 && event.charCode < 123) || event.charCode == 8 || event.charCode == 32);" ng-model="editUser.city" class="form-control">
 				</div>
 			</div>
 			<div class="form-group col-sm-6">
 			<label class="col-sm-4 control-label">Pincode</label>
 				<div class="col-sm-6">
-					<input name="pincode" type="text" placeholder="Pincode" ng-model="editUser.pincode" class="form-control">
+					<input name="pincode" type="text" placeholder="Pincode" maxlength="6" onkeypress="return (event.charCode > 47 && event.charCode < 58 );" ng-model="editUser.pincode" class="form-control">
 				</div>
 			</div>
 			<!-- <div class="form-group col-sm-6">
@@ -94,7 +95,7 @@
 				<div class="col-sm-6 ">
 					<div class="btn-toolbar">
 						<button class="btn-primary btn" ng-disabled="addUserForm.$invalid && addUserForm.$pristine" ng-click="submitEditUser()">Submit</button>
-						<button class="btn-default btn" ng-click="resetAddUser();">Reset</button>
+						<!-- <button class="btn-default btn" ng-click="initEditUser()">Reset</button> -->
 					</div>
 				</div>
 			</div>

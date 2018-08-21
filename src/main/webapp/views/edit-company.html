@@ -82,7 +82,7 @@
 					<div class="form-group col-sm-6">
 						<label class="col-sm-6 control-label">Pincode : </label>
 						<div class="col-sm-6">
-							<input name="pinCode" type="number" ng-model="editCompany.pinCode"
+							<input name="pinCode" type="text" ng-model="editCompany.pinCode" maxlength="6" onkeypress="return (event.charCode > 47 && event.charCode < 58 );"
 								placeholder="Pincode" class="form-control">
 						</div>
 					</div>
@@ -92,7 +92,7 @@
 						</label>
 						<div class="col-sm-6">
 							<input name="contactNumber" type="text"
-								placeholder="Contact Number" required
+								placeholder="Contact Number" required maxlength="6" onkeypress="return (event.charCode > 47 && event.charCode < 58 );"
 								ng-model="editCompany.contactNumber" class="form-control">
 							<span class="help-block"
 								ng-show="addCompanyForm.contactNumber.$error.required && addCompanyForm.contactNumber.$dirty">This
@@ -110,6 +110,17 @@
 								ng-show="addCompanyForm.emailId.$error.required && addCompanyForm.emailId.$dirty">This
 								field is required</span>
 						</div>
+					</div>
+					<div class="form-group col-sm-6">
+						<label class="col-sm-4 control-label">Status</label>
+						<div class="col-sm-6">
+				   		<ui-select ng-model="selectedStatus.selected" title="Choose a Status">
+				    		<ui-select-match placeholder="Select a Status">{{$select.selected.name}}</ui-select-match>
+				    		<ui-select-choices repeat="iterator in statusId | filter: $select.search">
+				     		<span ng-bind-html="iterator.name | highlight: $select.search"></span>
+				    		</ui-select-choices>
+			  			</ui-select>
+  						</div>
 					</div>
 				</fieldset>
 				<fieldset>
@@ -163,8 +174,8 @@
 								<button class="btn-primary btn"
 									ng-disabled="addCompanyForm.$invalid && addCompanyForm.$pristine"
 									ng-click="submitEditCompany();">Submit</button>
-								<button class="btn-default btn reset-btn"
-									ng-click="backPage();">Reset</button>
+								<!-- <button class="btn-default btn reset-btn"
+									ng-click="backPage();">Reset</button> -->
 							</div>
 						</div>
 					</div>

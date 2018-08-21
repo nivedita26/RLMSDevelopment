@@ -5,20 +5,19 @@ import java.security.InvalidKeyException;
 import java.util.List;
 
 import com.rlms.contract.AddNewUserDto;
+import com.rlms.contract.BranchDtlsDto;
 import com.rlms.contract.CompanyDtlsDTO;
 import com.rlms.contract.RegisterDto;
+import com.rlms.contract.ResponseDto;
 import com.rlms.contract.UserDtlsDto;
 import com.rlms.contract.UserMetaInfo;
 import com.rlms.contract.UserRoleDtlsDTO;
 import com.rlms.exception.ValidationException;
-import com.rlms.model.RlmsCompanyRoleMap;
+import com.rlms.model.RlmsMemberMaster;
 import com.rlms.model.RlmsSpocRoleMaster;
 import com.rlms.model.RlmsUserRoles;
 import com.rlms.model.RlmsUsersMaster;
 import com.rlms.model.User;
-
-
-
 public interface UserService {
 	
 	User findById(long id);
@@ -40,7 +39,7 @@ public interface UserService {
 	public RlmsUserRoles getUserByUserName(String userName);
 	public RlmsUserRoles getUserRoleObj(Integer userID, String userName, String password);
 	public List<RlmsSpocRoleMaster> getAllRoles(UserMetaInfo metaInfo);
-	public List<UserDtlsDto> getAllUsersForCompany( Integer companyId);
+	public List<UserDtlsDto> getAllUsersForCompany(UserDtlsDto dtlsDto);
 	
 	public String validateAndAssignRole(UserRoleDtlsDTO userRoleDtlsDTO, UserMetaInfo metaInfo) throws IOException, ValidationException, InvalidKeyException, Exception;
 	
@@ -66,4 +65,19 @@ public interface UserService {
 
 	public String updateTechnicianLocation(UserDtlsDto userDtlsDto,
 			UserMetaInfo metaInfo);
+	
+	public ResponseDto changePassword(UserDtlsDto userDto);
+	
+	public UserDtlsDto getTechnicianRoleObjByUserNameAndPassword(UserDtlsDto dtlsDto, UserMetaInfo metaInfo) throws ValidationException;
+	
+	public ResponseDto logout(UserDtlsDto userDto);
+	
+	public RlmsMemberMaster getMemberById(int id);
+	
+	public List<UserDtlsDto> getUsersForBranch(BranchDtlsDto dto);
+	
+	public String  forgotPassword(UserDtlsDto dto);
+	
+//	public RlmsUsersMaster getUserByMobileNumber(UserDtlsDto dtlsDto);
+	
 }

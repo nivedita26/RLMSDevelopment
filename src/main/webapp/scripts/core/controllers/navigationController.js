@@ -17,7 +17,7 @@ angular
    	      },
    	      {
    	        label: 'Manage Companies',
-   	        url: '#/company-management'
+   	        url: '#/company-management',
    	      },
    	      {
    	          label: 'Manage Branches',
@@ -46,11 +46,14 @@ angular
    	      ]
    	    },
    	    {
- 	      label: 'Complaints',
+ 	      label: 'Operations',
    	      iconClasses: 'glyphicon glyphicon-user ',
    	      children: [{
-   	          label: 'Manage Complaint',
+   	          label: 'Manage Operations',
    	          url: '#/complaint-management'
+   	      },{
+   	          label: 'Manage Lifts',
+   	          url: '#/lift-view-management'
    	      }
    	      ]
    	    },
@@ -74,6 +77,15 @@ angular
    	      },{
    	   	        label: 'LMS Alerts Report',
    	   	        url: '#/lms-alerts-report'
+   	      },{
+   	   	        label: 'Call Report',
+   	   	        url: '#/call-detail-report'
+   	      },{
+   	   	        label: 'Specific Call Report',
+   	   	        url: '#/call-specific-report'
+   	      },{
+   	   	        label: 'SMS Response Report',
+   	   	        url: '#/response-report'
    	      }]
    	    },
    	 {

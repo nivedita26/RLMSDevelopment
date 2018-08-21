@@ -18,8 +18,36 @@ public class ComplaintsDtlsDto {
 	private Date fromDate;
 	private Date toDate;
 	private Integer memberId;
+	private Integer  callType;
 	private Integer serviceCallType;
+	private Integer serviceCallTypeStr;
+	private Integer userRoleId;
+	private Integer status;
 	
+public Integer getStatus() {
+		return status;
+	}
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+public Integer getUserRoleId() {
+		return userRoleId;
+	}
+	public void setUserRoleId(Integer userRoleId) {
+		this.userRoleId = userRoleId;
+	}
+public Integer getServiceCallType() {
+		return serviceCallType;
+	}
+	public void setServiceCallType(Integer serviceCallType) {
+		this.serviceCallType = serviceCallType;
+	}
+	public Integer getServiceCallTypeStr() {
+		return serviceCallTypeStr;
+	}
+	public void setServiceCallTypeStr(Integer serviceCallTypeStr) {
+		this.serviceCallTypeStr = serviceCallTypeStr;
+	}
 	public Integer getLiftCustomerMapId() {
 		return liftCustomerMapId;
 	}
@@ -99,13 +127,10 @@ public class ComplaintsDtlsDto {
 	public void setMemberId(Integer memberId) {
 		this.memberId = memberId;
 	}
-	public Integer getServiceCallType() {
-		return serviceCallType;
+		public Integer getCallType() {
+		return callType;
 	}
-	public void setServiceCallType(Integer serviceCallType) {
-		this.serviceCallType = serviceCallType;
+	public void setCallType(Integer callType) {
+		this.callType = callType;
 	}
-	
-	
-	
 }

@@ -46,15 +46,9 @@
 			 $scope.selectedLift = {};
 			 $scope.selectedAmc = {};
 			 $scope.showMembers = false;
-			 $scope.status = [ {
-					id : 2,
-					name : 'Pending'
-				}, {
-					id : 3,
-					name : 'Assigned'
-				}, {
+			 $scope.status = [  {
 					id : 4,
-					name : 'Completed'
+					name : 'In Progress'
 				}, {
 					id : 5,
 					name : 'Resolved'
@@ -154,18 +148,14 @@
 	  	  }
 	  	  function constructDataToSend(){
 	  		var tempStatus = [];
-	  		if($scope.selectedStatus.selected){
-	  			if($scope.selectedStatus.selected.length===0){
-	  				alert("Please select status");
-	  			}else{
-	  				if($scope.selectedStatus.selected.length){
-	  					for (var j = 0; j < $scope.selectedStatus.selected.length; j++) {
-	  						tempStatus.push($scope.selectedStatus.selected[j].id);
-	  					}
-	  				}
-	  			}
-	  		}else{
-	  			alert("Please select status");
+	 		if($scope.selectedStatus.selected){
+	  		//	if($scope.selectedStatus.selected.length===0){
+	  				//alert("Please select status");
+	  		//	}else{
+	  				//if($scope.selectedStatus.selected.length){
+	  						tempStatus.push($scope.selectedStatus.selected.id);
+	  		//		}
+	  		//	}
 	  		}
 	  		
 			

@@ -1,0 +1,96 @@
+<div class="rlms-wrapper">
+<div class="rlms-container amc-management" ng-controller="respReportCtrl">
+	<h1 class="rlms-heading">SMS Response Report</h1>
+	<div class="filter-section">
+		<div class="form-group margin-b10">
+			<label class="control-label" ng-show="showCompany">Select Company : </label>
+			<div class="select-container" ng-show="showCompany">
+				  <ui-select ng-model="selectedCompany.selected" title="Choose a Company" on-select="loadBranchData();">
+				    <ui-select-match placeholder="Select company">{{$select.selected.companyName}}</ui-select-match>
+				    <ui-select-choices repeat="companyIterator in companies| filter: $select.search">
+				      <span ng-bind-html="companyIterator.companyName | highlight: $select.search"></span>
+				    </ui-select-choices>
+				  </ui-select>
+			</div>
+			
+			<label class="control-label" ng-show="showBranch">Select Branch</label>
+			<div class="select-container" ng-show="showBranch">
+				  <ui-select ng-model="selectedBranch.selected" title="Choose a Branch" on-select="loadCustomerData()">
+				    <ui-select-match placeholder="Select Branch">{{$select.selected.rlmsBranchMaster.branchName}}</ui-select-match>
+				    <ui-select-choices repeat="branchIterator in branches| filter: $select.search">
+				      <span ng-bind-html="branchIterator.rlmsBranchMaster.branchName | highlight: $select.search"></span>
+				    </ui-select-choices>
+				  </ui-select>
+			</div>
+			<label class=" control-label">Select Customer</label>
+					<div class="select-container">
+						  <ui-select ng-model="selectedCustomer.selected" title="Choose a Customer" on-select="loadLifts();">
+						    <ui-select-match placeholder="Select Customer">{{$select.selected.firstName}}</ui-select-match>
+						    <ui-select-choices repeat="customerIterator in cutomers| filter: $select.search">
+						      <span ng-bind-html="customerIterator.firstName | highlight: $select.search"></span>
+						    </ui-select-choices>
+						  </ui-select>
+					</div>
+		
+		<label class="control-label">Select Lift</label>
+			<div class="select-container">
+				  <ui-select multiple ng-model="selectedLift.selected" close-on-select="false" title="Choose lifts">
+				    <ui-select-match placeholder="Select lift from the List...">{{$select.selected[$index].liftNumber}}</ui-select-match>
+				    <ui-select-choices repeat="iterator in lifts | filter: $select.search">
+				      <span ng-bind-html="iterator.liftNumber | highlight: $select.search"></span>
+				    </ui-select-choices>
+				  </ui-select>
+			</div>	
+			</div>
+		<br>
+
+		<div class="row">
+			<div class="col-lg-12 align-right">
+				<button class="btn-sky btn" ng-click="loadEventList()">Proceed</button>
+				<button class="btn-sky btn margin-left-10" ng-click="resetReportList()">Reset</button>
+			</div>	
+		</div>
+	</div>
+	<div class="container-fluid" ng-show="showMembers">
+	<h5 class="rlms-info"><span class="fa fa-info-circle"></span>SMS Response Report</h5>
+	<div class="input-icon right mb10">
+     <i class="fa fa-search"></i>
+     <input type="text" ng-model="filterOptions.filterText" class="form-control" placeholder="Search Filter">
+    </div>
+    <div class ="data-table" style="min-height:300px;max-height:500px" ng-grid="gridOptions"></div>
+		<!-- <div class="row">
+	      <div class="col-md-12 report-container">		
+               <table class="table report-table table-bordered table-striped table-responsive">
+				 <tr class="table-active">
+				 <th >Sr.No.</th>
+				  <th>Branch</th>
+				  <th>Customer</th>
+				  <th>Lift Number</th>
+				  <th>Lift Address</th>
+				  <th>City</th>
+				  <th>Event Type</th>
+				 <th>Event DateTime</th>
+				 <th>Description</th>
+				 </tr>
+				 <tr rowspan="{{report.listOFAllVisits.length}}" class="table-active" ng-repeat="report in siteViseReport">
+				 {{report.listOFAllVisits.length}}
+				  <td>{{report.branchName}}</td>
+				  <td>{{report.customerName}}</td>
+				  <td>{{report.liftNumber}}</td>
+				  <td>{{report.address}}</td>
+				  <td>{{report.city}}</td>
+				  <td>{{report.eventType}}</td>
+				   <td>{{report.eventType}}</td>
+				  <td ng-if="(report.userRating == 1)">
+				  <ul class="star-rating" class='readonly'>
+				   	<li class="star filled"><i class="fa fa-star"></i></li>
+				  </ul>
+        		 </td>
+        		 
+				 </tr>
+				</table>
+	        </div>
+	    </div> -->
+	</div>
+</div>
+</div>

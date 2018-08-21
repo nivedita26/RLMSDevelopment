@@ -28,10 +28,8 @@ public class BranchDaoImpl implements BranchDao{
 	@Autowired
 	private SessionFactory sessionFactory;
 	
-	
 	public BranchDaoImpl() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public void setSessionFactory(SessionFactory sessionFactory) {
@@ -123,6 +121,24 @@ public class BranchDaoImpl implements BranchDao{
 		criteria.add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
 		RlmsBranchMaster branchMaster = (RlmsBranchMaster) criteria.uniqueResult();
 		return branchMaster;
-		
+	}
+
+	@Override
+	public RlmsCompanyBranchMapDtls getRlmsCompanyBranchMapDtls(int branchId) {
+		Session session = this.sessionFactory.getCurrentSession();
+		Criteria criteria = session.createCriteria(RlmsCompanyBranchMapDtls.class);
+		criteria.add(Restrictions.eq("rlmsBranchMaster.branchId", branchId));
+	     RlmsCompanyBranchMapDtls companyBranchMap= (RlmsCompanyBranchMapDtls) criteria.uniqueResult();
+		return companyBranchMap;
+	}
+
+	@Override
+	public void updateRlmsCompanyBranchMapDtls(RlmsCompanyBranchMapDtls companyBranchMapDtls) {
+		  this.sessionFactory.getCurrentSession().update(companyBranchMapDtls);
+	}
+
+	@Override
+	public void updateRlmsBranchCustomerMapDtls(RlmsBranchCustomerMap branchCustomerMap) {
+		  this.sessionFactory.getCurrentSession().update(branchCustomerMap);
 	}
 }

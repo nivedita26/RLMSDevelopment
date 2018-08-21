@@ -1,23 +1,29 @@
 package com.rlms.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
+import com.rlms.constants.SpocRoleConstants;
+import com.rlms.contract.ResponseDto;
+import com.rlms.contract.UserDtlsDto;
 import com.rlms.contract.UserMetaInfo;
-import com.rlms.model.RlmsUserRoles;
-import com.rlms.model.RlmsUsersMaster;
+import com.rlms.service.UserService;
 
 @Controller
 @RequestMapping("/")
 public class IndexController extends BaseController{
-
-	  @RequestMapping(value="index",method = RequestMethod.GET)
-	    public String getIndexPage() {
-		  RlmsUserRoles userrole = this.getLoggedInUser();
-		  System.out.println(userrole.getUsername());
+	@Autowired
+	UserService userService;
+	@RequestMapping(value="index",method = RequestMethod.GET)
+	    public  String getIndexPage() {
+		UserMetaInfo  userrole = this.getMetaInfo();
+		if(userrole!=null) {
+		  if(userrole.getUserRole().getRole().equals(SpocRoleConstants.TECHNICIAN.getSpocRoleName())) {
+			  return  "login.jsp";
+		  }
+		}
 	      return "index.jsp";
 	    }
 	  
@@ -35,6 +41,14 @@ public class IndexController extends BaseController{
 
 	  @RequestMapping(value="getLoggedInUser",method = RequestMethod.POST)
 	  public @ResponseBody UserMetaInfo getMetaInfoObj(){
+		
 		  return this.getMetaInfo();
 	  }
+	  
+	  @RequestMapping(value="changePassword",method = RequestMethod.POST)
+	  public @ResponseBody ResponseDto changePassword(UserDtlsDto userDto){
+		  
+		  return userService.changePassword(userDto);
+	  }
+	  
 }

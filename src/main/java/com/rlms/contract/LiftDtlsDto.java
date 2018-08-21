@@ -2,21 +2,22 @@ package com.rlms.contract;
 
 import java.math.BigInteger;
 import java.util.Date;
+import java.util.List;
 
 public class LiftDtlsDto {
-
 	private String liftNumber;
 	private String address;
 	private String customerName;
 	private String branchName;
 	private String companyName;
+	private List<Integer> listOfBranchCustomerMapId;
+
 	private String city;
 	private String area;
 	private Integer pinCode;
 	private Integer companyId;
 	private Integer branchCompanyMapId;
 	private Integer branchCustomerMapId;
-	
 	private Integer liftId;
 	private String latitude;
 	private String longitude;
@@ -72,7 +73,15 @@ public class LiftDtlsDto {
 	private boolean isBlank;
 	private Integer activeFlag;
 	private String imei;
+	public String lmsEventFromContactNo;
 	private BigInteger totalLiftCountForCustomer;
+	
+	public List<Integer> getListOfBranchCustomerMapId() {
+		return listOfBranchCustomerMapId;
+	}
+	public void setListOfBranchCustomerMapId(List<Integer> listOfBranchCustomerMapId) {
+		this.listOfBranchCustomerMapId = listOfBranchCustomerMapId;
+	}
 	
 	public BigInteger getTotalLiftCountForCustomer() {
 		return totalLiftCountForCustomer;
@@ -476,9 +485,6 @@ public class LiftDtlsDto {
 	public void setImei(String imei) {
 		this.imei = imei;
 	}
-	
-	public String lmsEventFromContactNo;
-
 	public String getLmsEventFromContactNo() {
 		return lmsEventFromContactNo;
 	}

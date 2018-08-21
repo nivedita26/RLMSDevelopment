@@ -27,13 +27,11 @@ public class RlmsLiftMaster implements Serializable{
 	private Date serviceStartDate;
 	private Date serviceEndDate;
 	private Date dateOfInstallation; 
-	
 	private Date amcStartDate;
 	private Date amcEndDate;
 	private Integer amcType;
 	private String amcAmount;
-	
-	private Integer doorType;
+   private Integer doorType;
 	private String noOfStops;
 	private Integer engineType; 
 	private String machineMake;
@@ -67,13 +65,13 @@ public class RlmsLiftMaster implements Serializable{
 	private byte[] lobbyPhoto;
 	private Integer liftType;
 	private Integer status;
+	private String imei;
+	private String lmsEventContactNumber;
 	private Integer activeFlag;
 	private Date createdDate;
 	private Integer createdBy;
 	private Date updatedDate;
 	private Integer updatedBy;
-	
-	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "lift_id", unique = true, nullable = true)
@@ -468,7 +466,6 @@ public class RlmsLiftMaster implements Serializable{
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
-
 	@Column(name = "city", unique = true, nullable = false)
 	public String getCity() {
 		return city;
@@ -477,16 +474,13 @@ public class RlmsLiftMaster implements Serializable{
 	public void setCity(String city) {
 		this.city = city;
 	}
-
 	@Column(name = "area", unique = true, nullable = false)
 	public String getArea() {
 		return area;
 	}
-
 	public void setArea(String area) {
 		this.area = area;
 	}
-
 	@Column(name = "pincode", unique = true, nullable = false)
 	public Integer getPincode() {
 		return pincode;
@@ -495,8 +489,6 @@ public class RlmsLiftMaster implements Serializable{
 	public void setPincode(Integer pincode) {
 		this.pincode = pincode;
 	}
-	
-	
 	@Column(name = "lift_type", unique = true, nullable = true)
 	public Integer getLiftType() {
 		return liftType;
@@ -512,19 +504,14 @@ public class RlmsLiftMaster implements Serializable{
 	public void setAmcEndDate(Date amcEndDate) {
 		this.amcEndDate = amcEndDate;
 	}
-	
+
 	@Column(name="imei")
-	private String imei;
-	
-	
 	public String getImei() {
 		return imei;
 	}
 	public void setImei(String imei) {
 		this.imei = imei;
 	}
-
-	private String lmsEventContactNumber;
 
 	@Column(name="lms_event_contact_no",unique = true, nullable = true)
   	public String getLmsEventContactNumber() {
@@ -533,6 +520,4 @@ public class RlmsLiftMaster implements Serializable{
 	public void setLmsEventContactNumber(String lmsEventContactNumber) {
 		this.lmsEventContactNumber = lmsEventContactNumber;
 	}
-
-	
 }

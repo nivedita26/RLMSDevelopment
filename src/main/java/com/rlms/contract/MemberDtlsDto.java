@@ -23,6 +23,14 @@ public class MemberDtlsDto {
 	private String area;
 	private Integer pinCode;
 	private Integer memberId;
+	private Integer activeFlag;
+
+	public Integer getActiveFlag() {
+		return activeFlag;
+	}
+	public void setActiveFlag(Integer activeFlag) {
+		this.activeFlag = activeFlag;
+	}
 	private Integer serviceCallType;
 	
 	

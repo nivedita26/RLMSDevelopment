@@ -3,8 +3,6 @@ package com.rlms.contract;
 public class LiftConfigurationDTO {
 	
 	private Integer liftCustoMapId;
-	
-	
 	private String p0;
 	private String p1;
 	private String p2;
@@ -15,7 +13,6 @@ public class LiftConfigurationDTO {
 	private String p7;
 	private String p8;
 	private String p9;
-	
 	private String b0;
 	private String b1;
 	private String b2;

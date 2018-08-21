@@ -2,12 +2,15 @@ package com.rlms.service;
 
 import java.util.List;
 
+import com.rlms.contract.CustomerCountDtls;
 import com.rlms.contract.CustomerDtlsDto;
 import com.rlms.contract.LiftDtlsDto;
 import com.rlms.contract.MemberDtlsDto;
 import com.rlms.contract.UserAppDtls;
+import com.rlms.contract.UserDtlsDto;
 import com.rlms.contract.UserMetaInfo;
 import com.rlms.exception.ValidationException;
+import com.rlms.model.RlmsBranchCustomerMap;
 import com.rlms.model.RlmsCustomerMaster;
 import com.rlms.model.RlmsCustomerMemberMap;
 import com.rlms.model.RlmsMemberMaster;
@@ -19,6 +22,8 @@ public interface CustomerService {
 	public List<CustomerDtlsDto> getAllCustomersForBranch(CustomerDtlsDto dto, UserMetaInfo metaInfo);
 	public MemberDtlsDto registerMemeberDeviceByMblNo(MemberDtlsDto dto, UserMetaInfo metaInfo) throws ValidationException;
 	public String validateAndRegisterNewMember(MemberDtlsDto memberDtlsDto, UserMetaInfo metaInfo) throws ValidationException;
+	public String validateAndUpdateNewMember(MemberDtlsDto memberDtlsDto, UserMetaInfo metaInfo) throws ValidationException;
+	public String  deleteMember(MemberDtlsDto memberDtlsDto, UserMetaInfo metaInfo) throws ValidationException;
 	public List<MemberDtlsDto> getListOfAllMemberDtls(MemberDtlsDto memberDtlsDto);
 	public UserAppDtls getUserAppDtls(Integer userId, Integer userType);
 	public List<RlmsCustomerMemberMap> getAllMembersForCustomer(
@@ -29,5 +34,8 @@ public interface CustomerService {
 	public CustomerDtlsDto getCustomerDtlsById(Integer branchCustomerMapId);
 	public List<CustomerDtlsDto> getAllApplicableCustomersForDashboard(
 			List<Integer> companyBranchIds, UserMetaInfo metaInfo);
+	public  List<RlmsBranchCustomerMap> getAllApplicableCustomersCountForDashboard(
+			List<Integer> companyBranchIds, UserMetaInfo metaInfo);
 	public List<LiftDtlsDto> getAllLiftParameters(Integer liftCustomerMapId);
+	public String validateAndEditCustomer(CustomerDtlsDto customerDtlsDto,UserMetaInfo metaInfo);
 }

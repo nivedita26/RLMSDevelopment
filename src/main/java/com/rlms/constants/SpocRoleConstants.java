@@ -47,7 +47,4 @@ public enum SpocRoleConstants {
 	public void setRoleLevel(Integer roleLevel) {
 		this.roleLevel = roleLevel;
 	}
-	
-	
-	
 }

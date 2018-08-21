@@ -5,25 +5,54 @@
 		initAddAMC();
 			//loadCompayInfo();
 			$scope.alert = { type: 'success', msg: 'You successfully Added AMC details.',close:true };
+			$scope.alert = { type: 'danger', message: 'Please fill the required fields',close:true };
 			$scope.showAlert = false;
 			$scope.showCompany = false;
 			$scope.showBranch = false;
 			$scope.companies = [];
 			$scope.newCallTypes={};
 			$scope.callTypesArray = [];
+		 
+			               
+							   $scope.Add = function () {
+					        	var date = new Date();
+					        	
+					            //Add the new item to the Array.
+					        	date=$scope.newCallTypes.serviceDate;
+					            var customer = {
+					            		title:'',
+					            		serviceDate:''
+					            };
+					            customer.title = $scope.newCallTypes.title;
+					            customer.serviceDate =date;
+					            $scope.callTypesArray.push(customer);
+					            
+					            //Clear the TextBoxes.
+					            $scope.newCallTypes.title = "";
+					            $scope.newCallTypes.serviceDate = "";
+					    	
+							   };
+			                
+			                $scope.submitAdd=function(){
+			                	if(($scope.newCallTypes.title &&$scope.newCallTypes.serviceDate)){
+			                		 $scope.showAlert1 = false;
+			                		 $scope.Add();
+			                	}else{
+			                			$scope.showAlert1 = true;
+										$scope.alert.message =  'Add Service Call Title and Date';
+										$scope.alert.type="danger";
+			                	}
+			                }
 
-			                $scope.Add = function () {
-			                    //Add the new item to the Array.
-			                    var customer = {};
-			                    customer.title = $scope.newCallTypes.title;
-			                    customer.serviceDate = $scope.newCallTypes.serviceDate;
-			                    $scope.callTypesArray.push(customer);
+			                $scope.dateOptions = {
+			          		      formatYear: 'yy',
+			          		      startingDay: 1,
+			          		    };
 
-			                    //Clear the TextBoxes.
-			                    $scope.newCallTypes.title = "";
-			                    $scope.newCallTypes.serviceDate = "";
-			                };
-
+			          		    $scope.initDate = new Date('2016-15-20');
+			          		    $scope.formats = ['dd-MMMM-yyyy', 'yyyy-MM-dd', 'dd.MM.yyyy', 'shortDate'];
+			          		    $scope.format = $scope.formats[1];
+			          		    
 			                $scope.Remove = function (index) {
 			                    //Find the record using Index from Array.
 			                    var name = $scope.callTypesArray[index].title;
@@ -32,7 +61,6 @@
 			                        $scope.callTypesArray.splice(index, 1);
 			                    }
 			                }
-			
 			function initAddAMC() {
 				$scope.customerSelected = false;
 				$scope.selectedCompany={};
@@ -92,12 +120,33 @@
 			$scope.open = function($event,which) {
 			      $event.preventDefault();
 			      $event.stopPropagation();
-			      if($scope.openFlag[which] != true)
+			      if($scope.openFlag[which] != true){
 			    	  $scope.openFlag[which] = true;
-			      else
+			      }
+			      else{
 			    	  $scope.openFlag[which] = false;
+			      }
 			}
-			
+
+			$scope.getDateTime=function(){
+				var amc_StartDate=$scope.addAMC.amcStDate ;
+				if ($scope.addAMC.amcStDate){
+					 var amcStartDate=amc_StartDate;  	  
+					 var amcEndDate=new Date();
+			     	    	
+					amcEndDate.setFullYear(amcStartDate.getFullYear()+1);
+					amcEndDate.setDate(amcStartDate.getDate()-1);
+					amcEndDate.setMonth(amcStartDate.getMonth());
+				 }	
+				amcEndDate=amcEndDate.toISOString().slice(0, 10);
+		    	$scope.addAMC.amcEdDate=amcEndDate;
+			}
+			 function loadCompanyData(){
+					serviceApi.doPostWithoutData('/RLMS/admin/getAllApplicableCompanies')
+				    .then(function(response){
+				    		$scope.companies = response;
+				    });
+				}
 			$scope.loadBranchData = function(){
 				var companyData={};
 				if($scope.showCompany == true){
@@ -165,6 +214,7 @@
 			 $scope.cancelAssign = function(){
 	        	  $scope.modalInstance.dismiss('cancel');
 	          }
+			 
 			//Post call add customer
 			$scope.submitaddAMC = function(){
 			//	$scope.addAMC.liftCustomerMapId =  $scope.selectedCustomer.selected.branchCustomerMapId;
@@ -172,8 +222,8 @@
 				$scope.addAMC.amcType=$scope.selectedAmc.selected.id;
 				$scope.addAMC.amcServiceCalls=$scope.callTypesArray;
 				//$scope.addAMC.amcType=42;
-				//$scope.addAMC.amcEdDate=$filter('date')($scope.addAMC.amcEdDate, "dd-MMM-yyyy");
-				//$scope.addAMC.amcStDate=$filter('date')($scope.addAMC.amcStDate, "dd-MMM-yyyy");
+				$scope.addAMC.amcEdDate=$filter('date')($scope.addAMC.amcEdDate, "yyyy-MM-dd");
+				$scope.addAMC.amcStDate=$filter('date')($scope.addAMC.amcStDate, "yyyy-MM-dd");
 				serviceApi.doPostWithData("/RLMS/report/addAMCDetailsForLift",$scope.addAMC)
 				.then(function(response){
 					$scope.showAlert = true;
@@ -186,7 +236,7 @@
 					$scope.addAMCForm.$setUntouched();
 				},function(error){
 					$scope.showAlert = true;
-					$scope.alert.msg = error.exceptionMessage;
+					$scope.alert.msg = error;
 					$scope.alert.type = "danger";
 				});
 			}
@@ -194,18 +244,24 @@
 		  
 			//rese add branch
 			$scope.resetaddAmc = function(){
-				initAddComplaint();
+				initAddAMC();
 			}
 			$scope.backPage =function(){
 				 $window.history.back();
 			}
 			
+			if($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel ==1){
+	  	  		$scope.showCompany= true;
+	  	  		loadCompanyData();
+	  	  	}else{
+	  	  		$scope.showCompany= false;
+	  	  	}
 		  	
 		  	//showBranch Flag
 		  	if($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel < 3){
 				$scope.showBranch= true;
 				$scope.loadBranchData();
-				$scope.loadCustomerData();
+//			$scope.loadCustomerData();
 
 			}else{
 				$scope.showBranch=false;

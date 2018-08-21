@@ -1,8 +1,7 @@
 package com.rlms.contract;
 
 import java.util.Date;
-
-import com.rlms.model.RlmsLiftCustomerMap;
+import java.util.List;
 
 public class ComplaintsDto {
 
@@ -14,7 +13,42 @@ public class ComplaintsDto {
 	private Date actualServiceEndDate;
 	private String actualServiceEndDateStr;
 	private String liftNumber;
+	private String branchName;
 	private String customerName;
+	private String customerAddress;
+	private String customerCity;
+	private Date fromDate;
+	private Date toDate;
+	private String fromDateStr;
+	private String  toDateStr;
+	private int totalAttempts;
+
+   public int getTotalAttempts() {
+		return totalAttempts;
+	}
+	public void setTotalAttempts(int totalAttempts) {
+		this.totalAttempts = totalAttempts;
+	}
+private SiteVisitReportDto siteVisitDetailsList ; 
+	
+	public SiteVisitReportDto getSiteVisitDetailsList() {
+	return siteVisitDetailsList;
+}
+public void setSiteVisitDetailsList(SiteVisitReportDto siteVisitDetailsList) {
+	this.siteVisitDetailsList = siteVisitDetailsList;
+}
+	public String getFromDateStr() {
+		return fromDateStr;
+	}
+	public void setFromDateStr(String fromDateStr) {
+		this.fromDateStr = fromDateStr;
+	}
+	public String getToDateStr() {
+		return toDateStr;
+	}
+	public void setToDateStr(String toDateStr) {
+		this.toDateStr = toDateStr;
+	}
 	private String liftAddress;
 	private String latitude;
 	private String longitude;
@@ -34,7 +68,102 @@ public class ComplaintsDto {
 	private String companyName;
 	private String city;
 	private Integer serviceCallType;
+	private String registeredBy ;
+	private String serviceCallTypeStr;
+	private Date CallAssignedDate;
+	private String CallAssignedDateStr;
+	private String resolvedDateStr;
+
+	public String getResolvedDateStr() {
+		return resolvedDateStr;
+	}
+	public void setResolvedDateStr(String resolvedDateStr) {
+		this.resolvedDateStr = resolvedDateStr;
+	}
+	public String getCallAssignedDateStr() {
+		return CallAssignedDateStr;
+	}
+	public void setCallAssignedDateStr(String callAssignedDateStr) {
+		CallAssignedDateStr = callAssignedDateStr;
+	}
+	private String  totalDaysForComplaint;
+	private Date lastVisitedDate;
+	private String lastVisitedDateStr;
+
+
+	public String getLastVisitedDateStr() {
+		return lastVisitedDateStr;
+	}
+	public void setLastVisitedDateStr(String lastVisitedDateStr) {
+		this.lastVisitedDateStr = lastVisitedDateStr;
+	}
+	public Date getFromDate() {
+		return fromDate;
+	}
+	public void setFromDate(Date fromDate) {
+		this.fromDate = fromDate;
+	}
+	public Date getToDate() {
+		return toDate;
+	}
+	public void setToDate(Date toDate) {
+		this.toDate = toDate;
+	}
+	public String getBranchName() {
+		return branchName;
+	}
+	public void setBranchName(String branchName) {
+		this.branchName = branchName;
+	}
+	public String getCustomerAddress() {
+		return customerAddress;
+	}
+	public void setCustomerAddress(String customerAddress) {
+		this.customerAddress = customerAddress;
+	}
+	public String getCustomerCity() {
+		return customerCity;
+	}
+	public void setCustomerCity(String customerCity) {
+		this.customerCity = customerCity;
+	}
 	
+	public Date getLastVisitedDate() {
+		return lastVisitedDate;
+	}
+	public void setLastVisitedDate(Date lastVisitedDate) {
+		this.lastVisitedDate = lastVisitedDate;
+	}
+	
+	public String getTotalDaysForComplaint() {
+		return totalDaysForComplaint;
+	}
+	public void setTotalDaysForComplaint(String totalDaysForComplaint) {
+		this.totalDaysForComplaint = totalDaysForComplaint;
+	}
+	public Date getCallAssignedDate() {
+		return CallAssignedDate;
+	}
+	public void setCallAssignedDate(Date callAssignedDate) {
+		CallAssignedDate = callAssignedDate;
+	}
+	
+	public String getServiceCallTypeStr() {
+		return serviceCallTypeStr;
+	}
+
+	public void setServiceCallTypeStr(String serviceCallTypeStr) {
+		this.serviceCallTypeStr = serviceCallTypeStr;
+	}
+
+	public String getRegisteredBy() {
+		return registeredBy;
+	}
+
+	public void setRegisteredBy(String registeredBy) {
+		this.registeredBy = registeredBy;
+	}
+
 	public String getComplaintNumber() {
 		return complaintNumber;
 	}
@@ -250,13 +379,10 @@ public class ComplaintsDto {
 	public void setCity(String city) {
 		this.city = city;
 	}
-
 	public Integer getServiceCallType() {
 		return serviceCallType;
 	}
-
 	public void setServiceCallType(Integer serviceCallType) {
 		this.serviceCallType = serviceCallType;
 	}
-
 }

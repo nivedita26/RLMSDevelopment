@@ -37,11 +37,12 @@ public class RlmsUsersMaster implements java.io.Serializable {
 	private String area;
 	private Integer pincode;
 	private Integer activeFlag;
+	private Boolean isLoggedIn;
 	private Date createdDate;
 	private Integer createdBy;
 	private Date updatedDate;
 	private Integer updatedBy;
-
+	
 	public RlmsUsersMaster() {
 	}
 
@@ -213,5 +214,13 @@ public class RlmsUsersMaster implements java.io.Serializable {
 	public void setPincode(Integer pincode) {
 		this.pincode = pincode;
 	}
-	
+
+	@Column(name = "is_logged_in")
+	public Boolean getIsLoggedIn() {
+		return isLoggedIn;
+	}
+
+	public void setIsLoggedIn(Boolean isLoggedIn) {
+		this.isLoggedIn = isLoggedIn;
+	}
 }

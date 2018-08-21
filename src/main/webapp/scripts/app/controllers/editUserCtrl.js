@@ -3,15 +3,15 @@
 	angular.module('rlmsApp')
 	.controller('editUserCtrl', ['$scope', '$filter','serviceApi','$route','$http','utility','$window','pinesNotifications','$rootScope', function($scope, $filter,serviceApi,$route,$http,utility,$window,pinesNotifications,$rootScope) {
 		//initialize add Branch
-		initAddUser();
+		initEditUser();
 		loadCompayInfo();
 		//loadBranchListInfo();
 		$scope.backPage = function(){
 			$window.history.back();
 		}
-		$scope.alert = { type: 'success', msg: 'You successfully Added new user.',close:true };
-		$scope.showAlert = false;
-		function initAddUser(){
+		//$scope.alert = { type: 'success', msg: 'You successfully edited user.',close:true };
+		//$scope.showAlert = false;
+		function initEditUser(){
 			$scope.selectedCompany = {};
 			$scope.addUser={
 				firstName:'',
@@ -30,7 +30,8 @@
 		
 		$scope.alert = { type: 'success', msg: 'You successfully edited user.',close:true };
 		$scope.showAlert = false;
-		//load compay dropdown data
+		
+		//load company dropdown data
 		function loadCompayInfo(){
 			serviceApi.doPostWithoutData('/RLMS/admin/getAllApplicableCompanies')
 		    .then(function(response){
@@ -86,12 +87,13 @@
 				$scope.alert.type = "danger";
 			});
 		}
-		//rese add branch
-		$scope.resetAddUser = function(){
+		//reset add branch
+		$scope.initEditUser = function(){
 			$scope.showAlert = false;
-			initAddUser();
-			$scope.addUserForm.$setPristine();
-			$scope.addUserForm.$setUntouched();
+			//initAddUser();
+			initEditUser();
+			//$scope.addUserForm.$setPristine();
+			//$scope.addUserForm.$setUntouched();
 		}
 		
 	}]);

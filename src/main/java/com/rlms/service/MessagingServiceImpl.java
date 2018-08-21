@@ -11,6 +11,9 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
 import javax.crypto.BadPaddingException;
@@ -19,6 +22,14 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.exception.ExceptionUtils;
@@ -26,6 +37,7 @@ import org.apache.log4j.Logger;
 import org.jivesoftware.smack.SmackException;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,13 +46,14 @@ import com.rlms.constants.EmailTemplateEnum;
 import com.rlms.constants.RlmsErrorType;
 import com.rlms.constants.XMPPServerDetails;
 import com.rlms.dao.EmailDao;
+import com.rlms.email.MailDTO;
 import com.rlms.exception.ExceptionCode;
 import com.rlms.exception.RunTimeException;
 import com.rlms.model.EmailTemplate;
 import com.rlms.model.RlmsUserRoles;
 import com.rlms.utils.PropertyUtils;
 import com.telesist.email.EmailService;
-import com.telesist.email.MailDTO;
+//import com.telesist.email.MailDTO;
 import com.telesist.xmpp.AndroidNotificationService;
 import com.telesist.xmpp.FCMMessaging;
 
@@ -48,25 +61,25 @@ import com.telesist.xmpp.FCMMessaging;
 @Service("MessagingService")
 public class MessagingServiceImpl implements MessagingService{
 
-	private static final Logger log = Logger.getLogger(MessagingServiceImpl.class);
+private static final Logger log = Logger.getLogger(MessagingServiceImpl.class);
 	
-	 
 	@Resource(name = "emailDao")
 	private EmailDao emailDao;
 	 
 	@Resource(name = "emailService")
 	private EmailService emailService;
-	 
+	
+	@Autowired
+	EmailDao dao;
+	
 	@Resource(name = "androidNotificationService")
 	private AndroidNotificationService androidNotificationService;
 	
 	@Transactional(propagation = Propagation.REQUIRED)
 	public EmailTemplate getEmailTemplate(Integer templateId){
-		return this.emailDao.getEmailTemplate(templateId);
+		return dao.getEmailTemplate(templateId);
 	}
-	
-	
-	/*public String replaceDyanamicValue(List<String> listOfDyanamicValues, String template){
+	public String replaceDyanamicValue(List<String> listOfDyanamicValues, String template){
 		int paramCount = 1;
 		String dynamictemplate = template;
 		for (String param : listOfDyanamicValues) {
@@ -79,33 +92,26 @@ public class MessagingServiceImpl implements MessagingService{
 		       
 		       if(matcher.find()){
 		       	dynamictemplate  = matcher.replaceFirst(param);	
-		       	
 		       }
-		       
 		       paramCount++;
 		}
-
 		return dynamictemplate;
 		}
-	*/
-	/*public void sendEmail(MailDTO mailDto) throws UnsupportedEncodingException {
+	public void sendEmail(MailDTO mailDto) throws UnsupportedEncodingException {
 	      // Recipient's email ID needs to be mentioned.
+		  try {
 	      List<String> to =mailDto.getToList();
-
 	      // Sender's email ID needs to be mentioned
 	      String from = mailDto.getFrom();
-	      final String username = "99transporters.dev@gmail.com";//change accordingly
-	      final String password = "Abcd@12345";//change accordingly
-
+	      final String username = "productapp@inditechsystems.com";//change accordingly
+	      final String password = "prap@indi41";//change accordingly
 	      // Assuming you are sending email through relay.jangosmtp.net
 	      String host = mailDto.getSmtpHost();
-
 	      Properties props = new Properties();
 	      props.put("mail.smtp.auth", "true");
-	      props.put("mail.smtp.starttls.enable", "true");
-	      props.put("mail.smtp.host", "smtp.gmail.com");
+	     //props.put("mail.smtp.starttls.enable", "true");
+	      props.put("mail.smtp.host", "mail.inditechsystems.com");
 	      props.put("mail.smtp.port", "587");
-
 	      // Get the Session object.
 	      Session session = Session.getInstance(props,
 	         new javax.mail.Authenticator() {
@@ -113,42 +119,29 @@ public class MessagingServiceImpl implements MessagingService{
 	               return new PasswordAuthentication(username, password);
 	            }
 		});
-
-	      try {
 	            // Create a default MimeMessage object.
 	            Message message = new MimeMessage(session);
-
-	   	   // Set From: header field of the header.
-		   message.setFrom(new InternetAddress(from,mailDto.getDisplayName()));
-		   
-
-		   // Set To: header field of the header.
-		   message.setRecipients(Message.RecipientType.TO,this.convertToListOfIntrntAddrss(to));
-		   
-		   message.setRecipients(Message.RecipientType.CC,this.convertToListOfIntrntAddrss(mailDto.getCcList()));
-		   
-		   
-
-		   // Set Subject: header field
-		   message.setSubject(mailDto.getSubject());
-
-		   // Send the actual HTML message, as big as you like
-		   message.setContent(
-	              mailDto.getContent(),
+	            // Set From: header field of the header.
+	            message.setFrom(new InternetAddress(from,mailDto.getDisplayName()));
+	            // Set To: header field of the header.
+	            message.setRecipients(Message.RecipientType.TO,this.convertToListOfIntrntAddrss(to));
+	            message.setRecipients(Message.RecipientType.CC,this.convertToListOfIntrntAddrss(mailDto.getCcList()));
+	            // Set Subject: header field
+	            message.setSubject(mailDto.getSubject());
+	            // Send the actual HTML message, as big as you like
+	            message.setContent(
+	            mailDto.getContent(),
 	             "text/html");
-
-		   // Send message
-		   Transport.send(message);
-
-		   System.out.println("Sent message successfully....");
-
+	            // Send message
+	            Transport.send(message);
+	            //System.out.println("Sent message successfully....");
 	      } catch (MessagingException e) {
 		   e.printStackTrace();
 		   throw new RuntimeException(e);
 	      }
-	   }*/
+	   }
 	
-	/*private InternetAddress[] convertToListOfIntrntAddrss(List<String> listOfEmailId) throws AddressException{
+	private InternetAddress[] convertToListOfIntrntAddrss(List<String> listOfEmailId) throws AddressException{
 		 InternetAddress[] recipientAddress = new InternetAddress[listOfEmailId.size()];
 		 int counter = 0;
 		 for (String recipient : listOfEmailId) {
@@ -156,17 +149,13 @@ public class MessagingServiceImpl implements MessagingService{
 		     counter++;
 		 }
 		 return recipientAddress;
-	 }*/
+	 }
 	
-	/*public MailDTO constructMailDto(List<String> toList, String subject, String content){
+	public MailDTO constructMailDto(List<String> toList, String subject, String content){
 		
-		String from = "sanket.tagalpallewar@gmail.com";
-		
+		String from ="productapp@inditechsystems.com";
 		List<String> ccList = new ArrayList<String>();
-		ccList.add("sanket.tagalpallewar@gmail.com");
-		
 		String displayName =  "RLMS";
-		
 		MailDTO mailDto = new MailDTO();
 		mailDto.setCcList(ccList);
 		mailDto.setToList(toList);
@@ -175,37 +164,30 @@ public class MessagingServiceImpl implements MessagingService{
 		mailDto.setFrom(from);
 		mailDto.setDisplayName(displayName);
 		return mailDto;
-	}*/
+	}
 	
 	public void sendAssgnRoleEmail(String userRoleId, RlmsUserRoles userRole) throws UnsupportedEncodingException{
 		EmailTemplate emailTemplate = this.getEmailTemplate(EmailTemplateEnum.USER_ROLE_ASSIGNED.getTemplateId());
 		List<String> toList = new ArrayList<String>();
 		toList.add(userRole.getRlmsUserMaster().getEmailId());
-		
 		List<String> listOfDyanamicValues = new ArrayList<String>();
 		listOfDyanamicValues.add(userRoleId.toString());
-		
-		String content = this.emailService.replaceDyanamicValue(listOfDyanamicValues, emailTemplate.getEmailContent());
-		
+		//String content = this.emailService.replaceDyanamicValue(listOfDyanamicValues, emailTemplate.getEmailContent());
+		String content = this.replaceDyanamicValue(listOfDyanamicValues, emailTemplate.getEmailContent());
 		emailTemplate.setEmailContent(content);
-		
-		MailDTO dto = this.emailService.constructMailDto(toList, emailTemplate.getEmailSubject(), emailTemplate.getEmailContent(), "sanket.tagalpallewar@gmail.com", toList);
-		
+		//MailDTO dto = this.emailService.constructMailDto(toList, emailTemplate.getEmailSubject(), emailTemplate.getEmailContent(), "sanket.tagalpallewar@gmail.com", toList);
+		MailDTO dto = this.constructMailDto(toList, emailTemplate.getEmailSubject(), emailTemplate.getEmailContent());
 		log.debug(content);
-		this.emailService.sendEmail(dto);
+		this.sendEmail(dto);
 	}
 	
 	public void sendAMCMail(List<String> listOfDyanamicValues, List<String> toList, Integer mailTemplateId) throws UnsupportedEncodingException{
 		
 		EmailTemplate emailTemplate = this.getEmailTemplate(mailTemplateId);
-		
-		String content = this.emailService.replaceDyanamicValue(listOfDyanamicValues, emailTemplate.getEmailContent());
-		
+		String content = this.replaceDyanamicValue(listOfDyanamicValues, emailTemplate.getEmailContent());
 		emailTemplate.setEmailContent(content);
-		
-		MailDTO dto = this.emailService.constructMailDto(toList, emailTemplate.getEmailSubject(), emailTemplate.getEmailContent(), "sanket.tagalpallewar@gmail.com", toList);
-		
-		this.emailService.sendEmail(dto);
+		MailDTO dto = this.constructMailDto(toList, emailTemplate.getEmailSubject(), emailTemplate.getEmailContent());
+		this.sendEmail(dto);
 	}
 	
 	public String encryptToByteArr(Integer id) throws InvalidKeyException, Exception{
@@ -259,15 +241,13 @@ public class MessagingServiceImpl implements MessagingService{
 			log.error(ExceptionUtils.getFullStackTrace(e));
 			throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.PUSH_NOTIFICATION_FAILED.getMessage()));
 		}
-		
 	}
-	
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void sendUserNotification(String appRegId, JSONObject dataPayload) throws SmackException, IOException{
 	//	String fcmProjectSenderId = PropertyUtils.getPrpertyFromContext(XMPPServerDetails.FCM_PROJECT_SENDER_ID.getMessage());
 	//	String fcmServerKey = PropertyUtils.getPrpertyFromContext(XMPPServerDetails.FCM_SERVER_KEY.getMessage());
 		String fcmApiUrl =PropertyUtils.getPrpertyFromContext(XMPPServerDetails.FCM_API_URL.getMessage());
-		String authKey =PropertyUtils.getPrpertyFromContext(XMPPServerDetails.FCM_USER_APP_AUTH_KEY.getMessage());
+		String authKey =PropertyUtils.getPrpertyFromContext(XMPPServerDetails.FCM_TECH_APP_AUTH_KEY.getMessage());
 		JSONObject json = new JSONObject();
     	try {
 				json.put("to",appRegId);
@@ -300,10 +280,8 @@ public class MessagingServiceImpl implements MessagingService{
 				e.printStackTrace();
 			}
 			pushFCMNotification(json,fcmApiUrl,authKey);
-	
 	//	this.androidNotificationService.sendNotification(appRegId, dataPayload, fcmProjectSenderId, fcmServerKey);
 	}
-	
 	public static void pushFCMNotification(JSONObject json,String fcmApiUrl,String authKey) {
 		log.trace("::start::FirebaseUtil:::::pushFCMNotification:::");
 		try {
@@ -328,6 +306,23 @@ public class MessagingServiceImpl implements MessagingService{
 		} catch (Exception e) {
 			e.printStackTrace();
 			log.error("::Error::::pushFCMNotification:::", e);
+		}
+	}
+	@Override
+	public void sendForgotPasswordEmail(String password, String mailId) throws UnsupportedEncodingException {
+		try {
+		EmailTemplate emailTemplate = this.getEmailTemplate(EmailTemplateEnum.FORGOT_PASSWORD.getTemplateId());
+		List<String> toList = new ArrayList<String>();
+		toList.add(mailId);
+		List<String> listOfDyanamicValues = new ArrayList<String>();
+		listOfDyanamicValues.add(password);
+		String content = this.replaceDyanamicValue(listOfDyanamicValues, emailTemplate.getEmailContent());
+		emailTemplate.setEmailContent(content);
+		MailDTO dto = this.constructMailDto(toList, emailTemplate.getEmailSubject(), emailTemplate.getEmailContent());
+		log.debug(content);
+		this.sendEmail(dto);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 }

@@ -61,7 +61,4 @@ public class SiteVisitDtlsDto {
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
-	
-	
-	
 }

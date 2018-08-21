@@ -13,22 +13,8 @@
 			 $scope.branches = [];
 			 $scope.companies = [];
 		} 
-		// showCompnay Flag
-		if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel < 3 ) {
-			$scope.showCompany = true;
-			loadCompanyData();
-		} else {
-			$scope.showCompany = false;
-			$scope.loadBranchData();
-		}
 		
-		// showBranch Flag
-		if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel < 3) {
-			$scope.showBranch = true;
-		} else {
-			$scope.showBranch = false;
-		}
-		
+
 		function loadCompanyData() {
 			serviceApi
 					.doPostWithoutData('/RLMS/admin/getAllApplicableCompanies')
@@ -36,6 +22,7 @@
 						$scope.companies = response;
 					});
 		}
+		
 		$scope.loadBranchData = function() {
 			var companyData = {};
 			if ($scope.showCompany == true) {
@@ -57,6 +44,40 @@
 					});
 		}
 		
+		$scope.loadTechnicianDetails=function(){
+			var branchData ={};
+  	    		branchData = {
+  	    			branchCompanyMapId : $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls.companyBranchMapId
+					}
+  	    	
+  	    	 serviceApi.doPostWithData('/RLMS/report/getTechnicianWiseReport',branchData)
+ 	         .then(function(data) {
+ 	        	 $scope.siteViseReport = data;
+ 	        	 
+ 	         });
+  	    	$scope.showMembers = true;
+		}
+		// showCompnay Flag
+		if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 1 ) {
+			$scope.showCompany = true;
+			loadCompanyData();
+		} else {
+			$scope.showCompany = false;
+			
+		}
+		// showBranch Flag
+		if ($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel < 3) {
+			$scope.showBranch = true;
+			$scope.loadBranchData();
+			//loadCompanyData();
+		} else {
+			$scope.showBranch = false;
+			//$scope.loadBranchData();
+			//$scope.siteViseReport;
+			$scope.loadTechnicianDetails();
+		}
+		
+
 		$scope.filterOptions.filterText='';
 		$scope.$watch('filterOptions', function(newVal, oldVal) {
 	  	      if (newVal !== oldVal) {
@@ -79,19 +100,22 @@
 	 	         serviceApi.doPostWithData('/RLMS/report/getTechnicianWiseReport',dataToSend)
 	 	         .then(function(data) {
 	 	        	 $scope.siteViseReport = data;
+	 	        	 
 	 	         })
 			}
 			$scope.showMembers = true;
 		}
-	   
-	  	 
+		
+		
 	  	  $scope.resetReportList = function(){
 	  		initReport();
 	  	  }
+	  	  
+	  	  
 	  	  function constructDataToSend(){
 	  		var data = {
-	  				'branchCompanyMapId':$scope.selectedBranch.selected.companyBranchMapId,
-	  				'companyId':$scope.selectedCompany.selected.companyId,
+	  				'branchCompanyMapId':$scope.selectedBranch.selected.companyBranchMapId
+	  				//'companyId':$scope.selectedCompany.selected.companyId,
 	  		};
 	  		return data;
 	  	  }

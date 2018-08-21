@@ -5,6 +5,123 @@
 			//loadCompayInfo();
 			$scope.alert = { type: 'success', msg: 'You successfully Edited Complaint.',close:true };
 			$scope.showAlert = false;
+			$scope.selectedComplaintTitle={};
+			$scope.selectedCallType={};
+			$scope.complaintTitle=[
+				{
+					id : 0,
+					name : 'Stucked between floor'
+				},{
+					id : 1,
+					name : 'Door open close issue'
+				},{
+					id : 2,
+					name : 'Door sensor not working'
+				},{
+					id : 3,
+					name : 'Level mismatch'
+				},{
+					id : 4,
+					name : 'Lift lights not working'
+				},{
+					id : 5,
+					name : 'Lift fan not working'
+				},{
+					id : 6,
+					name : 'Lift intercom'
+				},{
+					id : 7,
+					name : 'Buttons not working'
+				},{
+					id : 8,
+					name : 'call not taken from lop / cop'
+				},{
+					id : 9,
+					name : 'Auto call book'
+				},{
+					id : 10,
+					name : 'Display not working'
+				},{
+					id : 11,
+					name : 'Display error E'
+				},{
+					id : 12,
+					name : 'Display some error cod'
+				},{
+					id : 13,
+					name : 'Rescue not working'
+				},{
+					id : 14,
+					name : 'Jerks and rollbacks'
+				},{
+					id : 15,
+					name : 'Vibrates during running'
+				},{
+					id : 16,
+					name : 'Alarm not working'
+				},{	
+					id : 17,
+					name : 'Gate lock not operating'
+				},{
+					id : 18,
+					name : 'Wrong annoucement'
+				},{
+					id : 19,
+					name : 'Music is off'
+				},{
+					id : 20,
+					name : 'Lift Installation'
+				},{
+					id : 21,
+					name : 'AMC Service Call'
+				},{
+					id : 22,
+					name : 'LMS alert Call'
+				},{
+					id : 23,
+					name : 'Lift configuration Call'
+				},{
+					id : 24,
+					name : 'Under Warranty Support Call'
+				},{
+					id:25,
+					name :'Operator Initiated Call'
+				},{
+					id:26,
+					name :'Other'
+				}
+				];
+			
+			$scope.callType=[
+				{
+					id: 1,
+					name:'Lift Installation call'
+				},{
+					id: 2,
+					name:'Configuration/Settings call'
+				},{
+					id: 3,
+					name:'AMC call'
+				},{
+					id: 4,
+					name:'Under Warranty Support call'
+				},{
+					id: 5,
+					name:'LMS alert call'
+				},{
+					id: 6,
+					name:'Operator assigned/Generic call'
+				},{
+					id: 7,
+					name:'User raised call through App'
+				},{
+					id: 8,
+					name:'User raised call through Telephone'
+				},{
+					id: 9,
+					name:'Reassign call'
+				}
+			];
 	
 			$scope.editFlag={
 					regDate:false,
@@ -32,17 +149,17 @@
 				complaintsData = {
 						 complaintNumber:$scope.editComplaint.complaintsNumber,
 						 complaintId:$scope.editComplaint.complaintsNumber,
-						 registrationDateStr:$filter('date')($scope.editComplaint.regDate, "dd-MMM-yyyy"),
-						 serviceStartDateStr:$filter('date')($scope.editComplaint.serviceStartDate, "dd-MMM-yyyy"),
-						 actualServiceEndDateStr:$filter('date')($scope.editComplaint.serviceEndDate, "dd-MMM-yyyy"),
-						 liftAddress:$scope.editComplaint.complaintsAddress + $scope.editComplaint.complaintsCity,
-						 status:$scope.selectedComplaintStatus,
+						// title:$scope.editComplaint.complaintsTitle,
 						 title:$scope.editComplaint.complaintsTitle,
+						 liftAddress:$scope.editComplaint.complaintsAddress + $scope.editComplaint.complaintsCity,
+						 serviceCallType:$scope.editComplaint.serviceCallType,
+						 //serviceCallTypeStr:$scope.selectedCallType.selected.name,
 						 remark:$scope.editComplaint.complaintsRemark,
-						 technicianDtls:userName,
+						 //status:$scope.editComplaint.status,
+						 status:$scope.selectedComplaintStatus,
+						 technicianDtls:$scope.editComplaint.technicianDtls,
 						 userRoleId:userRole,
-						 serviceCallType:$rootScope.serviceCallTypeSelect
-				};
+						 };
 				serviceApi.doPostWithData("/RLMS/complaint/validateAndUpdateComplaint",complaintsData)
 				.then(function(response){
 					$scope.showAlert = true;
@@ -59,16 +176,9 @@
 					$scope.alert.type = "danger";
 				});
 			}
-			/* //showCompnay Flag
-		  	if($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 1){
-				$scope.showCompany= true;
-				//loadCompayInfo();
-			}else{
-				$scope.showCompany= false;
-				//$scope.loadBranchData();
-			}*/
 		  	
 			$scope.resetEditComplaint = function(){
+				//$scope.addComplaintForm.$setPristine(true);
 				$window.history.back();
 			}
 			$scope.backPage =function(){

@@ -8,13 +8,14 @@
   http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd
   http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+  
 
 	<context:component-scan base-package="com.rlms, com.telesist, com.rlms.tests">
 	 <context:exclude-filter type="regex" expression="com.rlms.model"/>
 	</context:component-scan>
 
 	<mvc:annotation-driven/>
-
+	
 	<mvc:default-servlet-handler/>
 	
 	<context:spring-configured/>
@@ -99,8 +100,9 @@
 			 <value>com.rlms.model.RlmsLiftAmcDtls</value>
 			 <value>com.rlms.model.RlmsSiteVisitDtls</value>
 			 <value>com.rlms.model.RlmsEventDtls</value>
-			 
-		     </list>
+			<value>com.rlms.model.RlmsCompanyManual</value>
+			<value>com.rlms.model.RlmsLiftManualMapDtls</value>
+	     </list>
 		</property> 
         <property name="hibernateProperties">
             <props>
@@ -118,8 +120,7 @@
         class="org.springframework.orm.hibernate4.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory" />
     </bean>
-	
-	
+    
  <bean id="PropertyUtils" class="com.rlms.utils.PropertyUtils">
 	 <property name="locations">
 	   <list>
@@ -130,8 +131,10 @@
 	  </property>
 	 </bean> 
   
-  <!-- <bean id="rlmsEventDao" class="com.rlms.dao.RlmsEventDaoImpl">
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean> -->
-
-</beans>
+     <bean id="schedular" class="com.rights.batches.ScheduleTesting"></bean>
+     
+     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+ <property name="maxUploadSize" value="268435456"/>
+</bean>
+ 
+	</beans>

@@ -7,21 +7,19 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.rlms.constants.RLMSConstants;
-import com.rlms.contract.CompanyDtlsDTO;
 import com.rlms.contract.UserDtlsDto;
 import com.rlms.contract.UserMetaInfo;
+import com.rlms.model.RlmsCustomerMaster;
 import com.rlms.model.RlmsUserRoles;
 import com.rlms.model.RlmsUsersMaster;
 
 @Repository("cbUserMasterDao")
 public class UserMasterDaoImpl implements
-
 
 UserMasterDao{
    
@@ -36,13 +34,12 @@ UserMasterDao{
 		this.sessionFactory = sessionFactory;
 	}
 
-	
-	
-	public RlmsUsersMaster getUserByEmailID(String emailId)
+	public RlmsUsersMaster getUserByEmailIdAndUserId(UserDtlsDto dtlsDto)
 	{
 		 Session session = this.sessionFactory.getCurrentSession();
 		 Criteria criteria = session.createCriteria(RlmsUsersMaster.class)
-				 .add(Restrictions.eq("emailId", emailId))
+				 .add(Restrictions.eq("userId", dtlsDto.getUserId()))
+				 .add(Restrictions.eq("emailId", dtlsDto.getEmailId()))
 				 .add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
 		 
 		 return (RlmsUsersMaster)criteria.uniqueResult();
@@ -55,6 +52,14 @@ UserMasterDao{
 				 .add(Restrictions.eq("userId", userId))
 				 .add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
 		 
+		 return (RlmsUsersMaster)criteria.uniqueResult();
+	}
+	
+	public RlmsUsersMaster getUserForLogout(Integer userId)
+	{
+		 Session session = this.sessionFactory.getCurrentSession();
+		 Criteria criteria = session.createCriteria(RlmsUsersMaster.class)
+				 .add(Restrictions.eq("userId", userId));
 		 return (RlmsUsersMaster)criteria.uniqueResult();
 	}
 	
@@ -84,7 +89,7 @@ UserMasterDao{
 	}
 	
 	public void updateUser(RlmsUsersMaster usermMaster){
-		this.sessionFactory.getCurrentSession().update(usermMaster);
+		this.sessionFactory.getCurrentSession().saveOrUpdate(usermMaster);
 	}
 	
 	public void mergerUser(RlmsUsersMaster usermMaster){
@@ -104,4 +109,32 @@ UserMasterDao{
 		q.executeUpdate();
 	}
 	
+	@Override
+	public RlmsUsersMaster getUserByUserIdAndPassword(UserDtlsDto dtlsDto) {
+		 Session session = this.sessionFactory.getCurrentSession();
+		 Criteria criteria = session.createCriteria(RlmsUsersMaster.class)
+				 .add(Restrictions.eq("userId", dtlsDto.getUserId()))
+		         .add(Restrictions.eq("password", dtlsDto.getOldPassword()));
+		 return (RlmsUsersMaster)criteria.uniqueResult();
+	}
+
+	@Override
+	public RlmsUsersMaster getUserByMobileNumber(String mobileNumber) {
+
+		Session session = this.sessionFactory.getCurrentSession();
+		 Criteria criteria = session.createCriteria(RlmsUsersMaster.class)
+				 .add(Restrictions.eq("contactNumber",mobileNumber))
+		         .add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
+		 return (RlmsUsersMaster)criteria.uniqueResult();
+	}
+
+	@Override
+	public RlmsUsersMaster getUserByMailId(String mailId) {
+		Session session = this.sessionFactory.getCurrentSession();
+		 Criteria criteria = session.createCriteria(RlmsUsersMaster.class)
+				 .add(Restrictions.eq("emailId",mailId))
+		       .add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
+		 return (RlmsUsersMaster)criteria.uniqueResult();
+	}
+
 }

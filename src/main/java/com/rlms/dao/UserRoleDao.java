@@ -2,12 +2,15 @@ package com.rlms.dao;
 
 import java.util.List;
 
+import com.rlms.contract.BranchDtlsDto;
+import com.rlms.contract.UserDtlsDto;
 import com.rlms.contract.UserMetaInfo;
 import com.rlms.model.RlmsBranchCustomerMap;
 import com.rlms.model.RlmsCompanyRoleMap;
 import com.rlms.model.RlmsSpocRoleMaster;
 import com.rlms.model.RlmsUserApplicationMapDtls;
 import com.rlms.model.RlmsUserRoles;
+import com.rlms.model.RlmsUsersMaster;
 
 
 
@@ -27,9 +30,15 @@ public interface UserRoleDao{
 	public RlmsUserRoles getUserRoleForCompany(Integer cmpanyId, Integer spocRoleId);
 	public RlmsUserRoles getTechnicianRoleObjByMblNo(String mblNumber,
 			Integer spocRoleId);
+	public RlmsUserRoles getTechnicianRoleObjByUserNameAndPassword(UserDtlsDto dtlsDto,int roleId);
 	public void saveUserAppDlts(RlmsUserApplicationMapDtls userApplicationMapDtls);
 	public void mergeUserAppDlts(RlmsUserApplicationMapDtls userApplicationMapDtls);
 	public List<RlmsUserRoles> getAllUserWithRoleForBranch(Integer commpBranchMapId, Integer companyId, Integer spocRoleId);
 	public RlmsUserRoles getUserIFRoleisAssigned(Integer userID);
 	public RlmsUserRoles getUserWithRoleForCompany(Integer companyId, Integer spocRoleId);
+	public List<RlmsUserRoles>  getUsersForBranch(BranchDtlsDto dto);
+	
+	   public List<RlmsUserRoles> getAllUsersForBranch(UserDtlsDto dtlsDto);
+
+
 }

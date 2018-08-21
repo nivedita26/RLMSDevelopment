@@ -6,13 +6,16 @@ public enum Status {
 	ASSIGNED(3,"Assigned"),
 	INPROGESS(4,"In Progress"),
 	RESOLVED(5,"Resolved"),
+	REASSIGNED(6,"Reassigned"),
 	PENDING_FOR_APPROVAL(9,"Pending For Approval"),
 	COMPLETED(10,"Completed"),
 	UNDER_WARRANTY(38,"Under Warranty"),
 	RENEWAL_DUE(39,"Renewal Due"),
-	AMC_PENDING(40,"AMC Pending"),
-	UNDER_AMC(41,"Under AMC");
-	
+	AMC_PENDING(40,"AMC Expired"),
+	UNDER_AMC(41,"Under AMC"),
+	NOT_UNDER_AMC(42,"Not Under AMC"),
+	WARRANTY_EXPIRED(42,"Warranty Expired");
+
 	private Integer statusId;
 	private String statusMsg;
 	
@@ -36,8 +39,6 @@ public enum Status {
 	public void setStatusMsg(String statusMsg) {
 		this.statusMsg = statusMsg;
 	}
-	
-	
 	public static String getStringFromID(Integer statusId){
 		if(statusId == Status.PENDING.getStatusId()){
 			return Status.PENDING.getStatusMsg();
@@ -62,8 +63,27 @@ public enum Status {
 		}else if(statusId == Status.UNDER_AMC.getStatusId()){
 			return Status.UNDER_AMC.getStatusMsg();
 		}
-		
+		else if(statusId == Status.WARRANTY_EXPIRED.getStatusId()){
+			return Status.WARRANTY_EXPIRED.getStatusMsg();
+		}
 		return "";
 	}
-	
+		public static int getIdFromString(String status){
+			if(status == Status.UNDER_WARRANTY.getStatusMsg()){
+				return Status.UNDER_WARRANTY.getStatusId();
+				
+			}else if(status == Status.RENEWAL_DUE.getStatusMsg()){
+				return Status.RENEWAL_DUE.getStatusId();
+				
+			}else  if(status == Status.AMC_PENDING.getStatusMsg()){
+				return Status.AMC_PENDING.getStatusId();
+				
+			}else if(status == Status.UNDER_AMC.getStatusMsg()){
+				return Status.UNDER_AMC.getStatusId();
+				
+			}else if(status == Status.WARRANTY_EXPIRED.getStatusMsg()){
+					return Status.WARRANTY_EXPIRED.getStatusId();
+			}
+		return 0;
+	}
 }

@@ -9,7 +9,7 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
+import org.springframework.transaction.annotation.Transactional;
 import com.rlms.constants.RLMSConstants;
 import com.rlms.model.RlmsBranchCustomerMap;
 import com.rlms.model.RlmsCustomerMaster;
@@ -59,7 +59,6 @@ public class CustomerDaoImpl implements CustomerDao{
 
 	@Override
 	public Integer saveCustomerM(RlmsCustomerMaster customerMaster) {
-		// TODO Auto-generated method stub
 		Integer customerId = (Integer) this.sessionFactory.getCurrentSession().save(customerMaster);
 		return customerId;
 		
@@ -67,7 +66,6 @@ public class CustomerDaoImpl implements CustomerDao{
 	
 	@Override
 	public Integer saveCustomerMemberMap(RlmsCustomerMemberMap customerMemberMap) {
-		// TODO Auto-generated method stub
 		Integer customerId = (Integer) this.sessionFactory.getCurrentSession().save(customerMemberMap);
 		return customerId;
 		
@@ -75,7 +73,6 @@ public class CustomerDaoImpl implements CustomerDao{
 	
 	@Override
 	public Integer saveMemberM(RlmsMemberMaster memberMaster) {
-		// TODO Auto-generated method stub
 		Integer customerId = (Integer) this.sessionFactory.getCurrentSession().save(memberMaster);
 		return customerId;
 		
@@ -91,11 +88,12 @@ public class CustomerDaoImpl implements CustomerDao{
 		 return (RlmsMemberMaster)criteria.uniqueResult();
 	}
 	
-	@Override
-	public RlmsMemberMaster getMemberById(Integer memeberId) {
+
+	public RlmsMemberMaster getMemberById(Integer memberId) {
+
 		 Session session = this.sessionFactory.getCurrentSession();
 		 Criteria criteria = session.createCriteria(RlmsMemberMaster.class)
-				 .add(Restrictions.eq("memberId", memeberId))
+				 .add(Restrictions.eq("memberId", memberId))
 				 .add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
 		 
 		 return (RlmsMemberMaster)criteria.uniqueResult();
@@ -166,13 +164,54 @@ public class CustomerDaoImpl implements CustomerDao{
 		 return criteria.list();
 	}
 	
+	@Transactional 
 	@Override
 	public List<RlmsBranchCustomerMap> getAllCustomersForDashboard(List<Integer> listOfBranchCompanyMapId) {
 		 Session session = this.sessionFactory.getCurrentSession();
 		 Criteria criteria = session.createCriteria(RlmsBranchCustomerMap.class)
-				 .add(Restrictions.in("companyBranchMapDtls.companyBranchMapId", listOfBranchCompanyMapId));
+				 		.add(Restrictions.in("companyBranchMapDtls.companyBranchMapId", listOfBranchCompanyMapId));
+		               // .add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
 		 List<RlmsBranchCustomerMap> listOfCustomers = criteria.list();
 		 return listOfCustomers;
 	}
+	@Override
+	public void updateCustomer(RlmsCustomerMaster customerMaster) {
+		this.sessionFactory.getCurrentSession().update(customerMaster);
+	}
+	@Override
+	public void updateMember(RlmsMemberMaster memberMaster) {
+		this.sessionFactory.getCurrentSession().update(memberMaster);
+	}
 
+	@Transactional
+	@Override
+	public void deleteMember(RlmsMemberMaster memberMaster) {
+		this.sessionFactory.getCurrentSession().update(memberMaster);
+
+	}
+
+	@Override
+	public RlmsCustomerMemberMap getCustomerMemberMapByMemberId(int id) {
+		 Session session = this.sessionFactory.getCurrentSession();
+		 Criteria criteria = session.createCriteria(RlmsCustomerMemberMap.class)
+				 		.add(Restrictions.eq("rlmsMemberMaster.memberId", id));
+		 RlmsCustomerMemberMap  customerMemberMap = (RlmsCustomerMemberMap) criteria.uniqueResult();
+		 return customerMemberMap;
+	}
+	
+	@Override
+	public void updateCustomerMemberMap(RlmsCustomerMemberMap customerMemberMap) {
+		this.sessionFactory.getCurrentSession().update(customerMemberMap);
+	}
+	
+	@Transactional
+	@Override
+	public List<RlmsBranchCustomerMap> getAllCustomersForTechician(List<Integer> listOfBranchCompanyMapId) {
+		 Session session = this.sessionFactory.getCurrentSession();
+		 Criteria criteria = session.createCriteria(RlmsBranchCustomerMap.class)
+				 		.add(Restrictions.in("companyBranchMapDtls.companyBranchMapId", listOfBranchCompanyMapId))
+		               .add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
+		 List<RlmsBranchCustomerMap> listOfCustomers = criteria.list();
+		 return listOfCustomers;
+	}
 }

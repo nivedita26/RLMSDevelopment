@@ -18,7 +18,7 @@ public enum RlmsErrorType {
 	INVALID_COMPANY_NAME(12,"invalid_company_name"),
 	INVALID_BRANCH_NAME(12,"invalid_branch_name"),
 	COMPANY_REG_SUCCESFUL(13,"company_reg_succesful"),
-	LIFT_ADDED_SUCCESSFULLY(14,"lift_added_successfully"),
+	LIFT_ADDED_SUCCESSFULLY(14,"lift added successfully"),
 	LIFT_APPROVED(15,"lift_approved"),
 	COMPLAINT_TITLE_BLANK(16,"complaint_title_blank"),
 	COMPLAINT_REMARK_BLANK(17,"complaint_remark_blank"),
@@ -26,6 +26,7 @@ public enum RlmsErrorType {
 	COMPLAINT_REG_SUCCESSFUL(19,"complaint_reg_successful"),
 	MEMBER_WITH_SAME_CONTACT_NO(20,"member_with_same_contact_no"),
 	MEMBER_REG_SUCCESSFUL(30,"member_reg_successful"),
+
 	INVALID_CONTACT_NUMBER(31,"invalid_contact_number"),
 	COMPLAINT_ASSIGNED_SUUCESSFULLY(32,"complaint_assigned_suucessfully"),
 	COMPLAINT_ASSIGNED_ALREADY(32,"complaint_assigned_already"),
@@ -42,10 +43,20 @@ public enum RlmsErrorType {
 	COMPANY_UPDATE_SUCCESFUL(43,"company_update_succesful"),
 	COMPANY_DELETE_SUCCESFUL(44,"company_delete_succesful"),
 	COMPLAINT_DELETE_SUCCESFUL(45,"complaint_delete_succesful"),
-	TECHNICIAN_LOCATION_UPDATED(46,"location_updated");
-	
+	TECHNICIAN_LOCATION_UPDATED(46,"location_updated"),
+	INVALID_USER_LOGIN_CREDENTIALS(47,"invalid_user_login_credentials"),
+	USER_ALREADY_LOGGED_IN(48,"user_already_loggedin "),
+	USER_LOGOUT(49,"user_logout"),
+	USER_DELETED(50,"user_deleted_successfully"),
+	USER_PASSWORD_CHANGED(51,"user_password_changed_successfully"),
+	USER_MOBILE_NUMBER_ALREADY_REGISTERED(52,"user_mobile_number_already_registered"),
+	COMPLAINT_ALREADY_REGISTERED(53,"complaint_already_resolved"),
+	MEMBER_EDIT_SUCCESSFUL(54,"member_edit_successful");
+
 	private Integer code;
 	private String message;
+	
+	
 	private RlmsErrorType(int code, String message){
 		this.code = code;
 		this.message = message;
@@ -62,6 +73,4 @@ public enum RlmsErrorType {
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	
-	
 }

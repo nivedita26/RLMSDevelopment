@@ -8,9 +8,9 @@
 		$scope.goToAddUser =function(){
 			window.location.hash = "#/add-user";
 		};
-		$scope.editUser =function(){
+/*		$scope.editUser =function(){
 			window.location.hash = "#/edit-user";
-		};
+		};*/
 		$scope.alert = { type: 'success', msg: 'You successfully Deleted User.',close:true };
 		$scope.showAlert = false;
 		$rootScope.editUser={};
@@ -98,6 +98,12 @@
   						companyId : $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyMaster.companyId
   					}
 	  	    	}
+	  	    	if($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 3){
+	  	    		var companyData={};
+	  	    		companyData={
+	  	    				branchCompanyMapId : $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls.companyBranchMapId
+	  	    		}
+	  	    	}
 	  	        serviceApi.doPostWithData('/RLMS/admin/getAllRegisteredUsers',companyData)
 	  	         .then(function(largeLoad) {
 	  	        	$scope.showTable= true;
@@ -173,6 +179,13 @@
 	  						companyId : $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyMaster.companyId
 	  					}
 		  	    	}
+		  	    	if($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 3){
+		  	    		var companyData={};
+		  	    		companyData={
+		  	    				companyId : $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyMaster.companyId,
+		  	    				branchCompanyMapId : $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls.companyBranchMapId
+		  	    		}
+		  	    	}
 	  	        	serviceApi.doPostWithData('/RLMS/admin/getAllRegisteredUsers',companyData).then(function(largeLoad) {
 	  	        		 $scope.showTable= true;
 	  	        	  var userDetails=[];
@@ -247,7 +260,9 @@
 		}else{
 			$scope.loadUsersInfo();
 		}
-
+	  	if($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 3){
+	  		$scope.loadUsersInfo();
+	  	}
 	  	    $scope.$watch('pagingOptions', function(newVal, oldVal) {
 	  	      if (newVal !== oldVal) {
 	  	        $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, $scope.filterOptions.filterText);

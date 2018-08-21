@@ -1,12 +1,14 @@
 (function () {
     'use strict';
 	angular.module('rlmsApp')
-	.controller('addCustomerCtrl', ['$scope', '$filter','serviceApi','$route','utility','$window', function($scope, $filter,serviceApi,$route,utility,$window) {
+	.controller('addCustomerCtrl', ['$scope', '$filter','serviceApi','$route','utility','$window','$rootScope','$http', function($scope, $filter,serviceApi,$route,utility,$window,$rootScope,$http) {
 	initAddCustomer();
 			loadCompayInfo();
 			$scope.alert = { type: 'success', msg: 'You successfully Added Customer.',close:true };
-			//loadBranchListInfo();
+			//$scope.alert = { type: 'error', msg: 'Please fill the Required Field',close:true };
 			$scope.showAlert = false;
+			$scope.showCompany=false;
+			$scope.showBranch=false;
 			$scope.companies = [];
 			$scope.branches = [];
 			function initAddCustomer(){
@@ -41,8 +43,7 @@
 						treasurerEmail :'',
 						watchmenName :'',
 						watchmenNumber :'',
-						watchmenEmail :'',
-						
+						watchmenEmail :'',						
 						
 				};	
 				$scope.customerTypes = [
@@ -51,7 +52,7 @@
 						id:15
 					},
 					{
-						name:"COMMERTIAL",
+						name:"COMMERCIAL",
 						id:16
 					},
 					{
@@ -72,6 +73,7 @@
 					}
 				]
 			}
+			
 			//load compay dropdown data
 			function loadCompayInfo(){
 				serviceApi.doPostWithoutData('/RLMS/admin/getAllApplicableCompanies')
@@ -79,6 +81,7 @@
 			    		$scope.companies = response;
 			    });
 			};
+			
 			$scope.loadBranchData = function(){
 				var companyData={};
 				if($scope.showCompany == true){
@@ -99,27 +102,45 @@
 			    	$scope.myData = emptyArray;
 			    });
 			}
+			
+			if($rootScope.loggedInUserInfo.data.userRole.rlmsSpocRoleMaster.roleLevel == 1){
+				$scope.showCompany= true;
+				loadCompayInfo();
+			}else{
+				$scope.showCompany= false;
+				$scope.loadBranchData();
+			}		  			
+			
 			//Post call add customer
 			$scope.submitAddCustomer = function(){
-				$scope.addCustomer.companyName = $scope.selectedCompany.selected.companyName;
+				//$scope.addCustomer.companyName = $scope.selectedCompany.selected.companyName;
 				$scope.addCustomer.branchName = $scope.selectedBranch.selected.rlmsBranchMaster.branchName;
 				$scope.addCustomer.branchCompanyMapId = $scope.selectedBranch.selected.companyBranchMapId;
-				$scope.addCustomer.customerType =$scope.selectedCustomerTypes.selected.id;
+				if($scope.selectedCustomerTypes.selected){
+					$scope.addCustomer.customerType =$scope.selectedCustomerTypes.selected.id;
+				}
 				serviceApi.doPostWithData("/RLMS/admin/validateAndRegisterNewCustomer",$scope.addCustomer)
 				.then(function(response){
 					$scope.showAlert = true;
 					var key = Object.keys(response);
 					var successMessage = response[key[0]];
-					$scope.alert.msg = successMessage;
-					$scope.alert.type = "success";
-					initAddCustomer();
-					$scope.addCustomerForm.$setPristine();
-					$scope.addCustomerForm.$setUntouched();
-				},function(error){
+					if(successMessage){
+						$scope.alert.msg = "You successfully Added Customer.";
+						$scope.alert.type = "success";
+						initAddCustomer();
+						$scope.addBranchForm.$setPristine();
+						$scope.addBranchForm.$setUntouched();
+					}else{
+						$scope.showAlert = true;
+						$scope.alert.msg =  successMessage;
+						$scope.alert.type="danger";
+					}
+					
+				}/*,function(error){
 					$scope.showAlert = true;
 					$scope.alert.msg = error.exceptionMessage;
 					$scope.alert.type = "danger";
-				});
+				}*/);
 			}
 			//reset add branch
 			$scope.resetAddCustomer = function(){
