@@ -21,7 +21,7 @@ angular.module('theme.demos.dashboard.indi', [
       $httpProvider.responseInterceptors.push('myHttpInterceptor');
 
       var spinnerFunction = function spinnerFunction(data, headersGetter) {
-        $("#spinner").show();
+        $("#mySpinner").show();
         return data;
       };
 
@@ -31,10 +31,10 @@ angular.module('theme.demos.dashboard.indi', [
     app.factory('myHttpInterceptor', function ($q, $window) {
       return function (promise) {
         return promise.then(function (response) {
-          $("#spinner").hide();
+          $("#mySpinner").hide();
           return response;
         }, function (response) {
-          $("#spinner").hide();
+          $("#mySpinner").hide();
           return $q.reject(response);
         });
       };

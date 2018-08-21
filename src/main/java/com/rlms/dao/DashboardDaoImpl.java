@@ -208,24 +208,23 @@ public class DashboardDaoImpl implements DashboardDao {
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public List<RlmsEventDtls> getAllEventDtlsForDashboard(
 			List<Integer> liftCustMapIds,String eventType) {
-		// .add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId())
-		List<RlmsEventDtls> eventDtls = new ArrayList<>();
-		try {
-			Session session = this.sessionFactory.getCurrentSession();
-			Criteria criteria = session.createCriteria(RlmsEventDtls.class).add(
-					Restrictions.in("rlmsLiftCustomerMap.liftCustomerMapId", liftCustMapIds));
-			if(eventType!=null&&eventType=="-1") {
-				criteria.add(Restrictions.ne("eventType","RES"));
-			}
-			else if(eventType!=null&&eventType!="-1") {
-				criteria.add(Restrictions.eq("eventType",eventType));
-			}
-			criteria.addOrder(Order.desc("generatedDate"));
-			eventDtls = criteria.list();
-		} catch (HibernateException e) {
-			e.printStackTrace();
-		}
-		return eventDtls;
+		    List<RlmsEventDtls> eventDtls = new ArrayList<>();
+		    try {
+		    	Session session = this.sessionFactory.getCurrentSession();
+		    	Criteria criteria = session.createCriteria(RlmsEventDtls.class).add(
+		    			Restrictions.in("rlmsLiftCustomerMap.liftCustomerMapId", liftCustMapIds));
+		    	if(eventType!=null&&eventType=="-1") {
+		    		criteria.add(Restrictions.ne("eventType","RES"));
+		    	}
+		    	if(eventType!=null&&eventType!="-1") {
+		    		criteria.add(Restrictions.eq("eventType",eventType));
+		    	}
+		    	criteria.addOrder(Order.desc("generatedDate"));
+		    	eventDtls = criteria.list();
+		    } catch (HibernateException e) {
+		    	e.printStackTrace();
+		    }
+		    return eventDtls;
 	}
 
 	@Override
