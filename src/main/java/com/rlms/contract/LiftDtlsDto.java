@@ -2,6 +2,7 @@ package com.rlms.contract;
 
 import java.math.BigInteger;
 import java.util.Date;
+import java.util.List;
 
 public class LiftDtlsDto {
 	private String liftNumber;
@@ -9,6 +10,8 @@ public class LiftDtlsDto {
 	private String customerName;
 	private String branchName;
 	private String companyName;
+	private List<Integer> listOfBranchCustomerMapId;
+
 	private String city;
 	private String area;
 	private Integer pinCode;
@@ -72,6 +75,13 @@ public class LiftDtlsDto {
 	private String imei;
 	public String lmsEventFromContactNo;
 	private BigInteger totalLiftCountForCustomer;
+	
+	public List<Integer> getListOfBranchCustomerMapId() {
+		return listOfBranchCustomerMapId;
+	}
+	public void setListOfBranchCustomerMapId(List<Integer> listOfBranchCustomerMapId) {
+		this.listOfBranchCustomerMapId = listOfBranchCustomerMapId;
+	}
 	
 	public BigInteger getTotalLiftCountForCustomer() {
 		return totalLiftCountForCustomer;
