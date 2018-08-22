@@ -191,7 +191,7 @@
 	  	    	var branchCustomerMapId = [];
 	  	    	branchCustomerMapId.push($scope.selectedCustomer.selected.branchCustomerMapId);
 	  	    	var dataToSend = {
-						branchCustomerMapId : branchCustomerMapId
+	  	    			listOfBranchCustomerMapId : branchCustomerMapId
 					}
 	  	      setTimeout(function() {
 	  	        var data;
@@ -209,7 +209,7 @@
 	  	        	var branchCustomerMapId = [];
 		  	    	branchCustomerMapId.push($scope.selectedCustomer.selected.branchCustomerMapId);
 		  	    	var dataToSend = {
-							branchCustomerMapId : branchCustomerMapId
+		  	    			listOfBranchCustomerMapId : branchCustomerMapId
 						}
 	  	          var ft = searchText.toLowerCase();
 	  	        serviceApi.doPostWithData('/RLMS/admin/getLiftDetailsForBranch',dataToSend)
@@ -315,7 +315,7 @@
 	  	        	var branchCustomerMapId = [];
 		  	    	branchCustomerMapId.push($scope.selectedCustomer.selected.branchCustomerMapId);
 		  	    	var dataToSend = {
-							branchCustomerMapId : branchCustomerMapId
+		  	    			listOfBranchCustomerMapId : branchCustomerMapId
 						}
 		  	    	
 	  	        	serviceApi.doPostWithData('/RLMS/admin/getLiftDetailsForBranch',dataToSend).then(function(largeLoad) {
