@@ -34,6 +34,7 @@
 		    		$scope.companies = response;
 		    });
 		};
+		
 		//Post call add branch
 		$scope.submitEditMember= function(){
 			var memberData = {};
@@ -70,24 +71,7 @@
 				$scope.alert.type = "danger";
 			});
 		}
-		/*$scope.submitAddMember = function(){
-			$scope.addMember.branchCustoMapId = $scope.selectedCustomer.selected.branchCustomerMapId;
-			serviceApi.doPostWithData("/RLMS/admin/validateAndRegisterNewMember",$scope.addMember)
-			.then(function(response){
-				$scope.showAlert = true;
-				var key = Object.keys(response);
-				var successMessage = response[key[0]];
-				$scope.alert.msg = successMessage;
-				$scope.alert.type = "success";
-				initEditMember();
-				$scope.addMemberForm.$setPristine();
-				$scope.addMemberForm.$setUntouched();
-			},function(error){
-				$scope.showAlert = true;
-				$scope.alert.msg = error.exceptionMessage;
-				$scope.alert.type = "danger";
-			});
-		}*/
+	
 		//reset add branch
 		$scope.resetEditMember = function(){
 			initEditMember();

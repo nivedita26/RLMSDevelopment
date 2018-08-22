@@ -539,7 +539,7 @@ angular.module('theme.demos.dashboard.indi', [
     	              	 var totalCount=0;
     	               	  for (var i = 0; i < largeLoad.length; i++)
     	               	  {
-    	               		 if(largeLoad[i].callStatus== "Assigned"){
+    	               		 if(largeLoad[i].callStatus== "Assigned"||largeLoad[i].callStatus== "In Progress"){
     	               			 if(largeLoad[i].todaysCallStatusCount!=null){
     	               				 totalCount=totalCount+largeLoad[i].todaysCallStatusCount;
     	               				$scope.complaintsData.todaysAssignedComplaints.text = totalCount;
