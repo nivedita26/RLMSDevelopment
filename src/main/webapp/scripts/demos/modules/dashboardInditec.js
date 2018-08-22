@@ -539,7 +539,7 @@ angular.module('theme.demos.dashboard.indi', [
     	              	 var totalCount=0;
     	               	  for (var i = 0; i < largeLoad.length; i++)
     	               	  {
-    	               		 if(largeLoad[i].callStatus== "Assigned"){
+    	               		 if(largeLoad[i].callStatus== "Assigned"||largeLoad[i].callStatus== "In Progress"){
     	               			 if(largeLoad[i].todaysCallStatusCount!=null){
     	               				 totalCount=totalCount+largeLoad[i].todaysCallStatusCount;
     	               				$scope.complaintsData.todaysAssignedComplaints.text = totalCount;
@@ -972,7 +972,8 @@ angular.module('theme.demos.dashboard.indi', [
 	                		if(largeLoad[i].callStatus=="Assigned" || largeLoad[i].callStatus== "In Progress"){
 	                			var dataCount={};
 	                			dataCount.callType=largeLoad[i].callType
-	                			dataCount.todaysCallStatusCount=largeLoad[i].todaysCallStatusCount	                			
+	                			dataCount.callStatus=largeLoad[i].callStatus
+	                			dataCount.todaysCallStatusCount=largeLoad[i].todaysCallStatusCount            			
 	                			data.push(dataCount);
 	                		}
 	                	}
@@ -998,6 +999,13 @@ angular.module('theme.demos.dashboard.indi', [
                           userDetailsObj["CallType"] = data[i].callType;
                         } else {
                           userDetailsObj["CallType"] = " - ";
+                        }
+                        if(headerValue==="Todays Assigned"){
+                        if (!!data[i].callStatus) {
+                            userDetailsObj["CallStatus"] = data[i].callStatus;
+                          } else {
+                            userDetailsObj["CallStatus"] = " - ";
+                          }
                         }
                         if (!!data[i].todaysCallStatusCount) {
                           userDetailsObj["TotalCount"] = data[i].todaysCallStatusCount;
@@ -1033,6 +1041,7 @@ angular.module('theme.demos.dashboard.indi', [
 	                		if(largeLoad[i].callStatus=="Assigned" ||largeLoad[i].callStatus== "In Progress"){
 	                			var dataCount={};
 	                			dataCount.callType=largeLoad[i].callType
+	                			dataCount.callStatus=largeLoad[i].callStatus
 	                			dataCount.todaysCallStatusCount=largeLoad[i].todaysCallStatusCount	                			
 	                			data.push(dataCount);
 	                		}
@@ -1060,6 +1069,13 @@ angular.module('theme.demos.dashboard.indi', [
                         } else {
                           userDetailsObj["CallType"] = " - ";
                         }
+                        if(headerValue==="Todays Total Assigned"){
+                            if (!!data[i].callStatus) {
+                                userDetailsObj["CallStatus"] = data[i].callStatus;
+                              } else {
+                                userDetailsObj["CallStatus"] = " - ";
+                              }
+                            }
                         if (!!data[i].todaysCallStatusCount) {
                           userDetailsObj["TotalCount"] = data[i].todaysCallStatusCount;
                         } else {
@@ -1106,6 +1122,7 @@ angular.module('theme.demos.dashboard.indi', [
 	                		if(largeLoad[i].callStatus=="Assigned" ||largeLoad[i].callStatus== "In Progress"){
 	                			var dataCount={};
 	                			dataCount.callType=largeLoad[i].callType
+	                			dataCount.callStatus=largeLoad[i].callStatus
 	                			dataCount.totalCallStatusCount=largeLoad[i].totalCallStatusCount	                			
 	                			data.push(dataCount);
 	                		}
@@ -1133,6 +1150,13 @@ angular.module('theme.demos.dashboard.indi', [
 		                  } else {
 		                    userDetailsObj["CallType"] = " - ";
 		                  }
+                          if(headerValue==="Total Assigned"){
+                              if (!!data[i].callStatus) {
+                                  userDetailsObj["CallStatus"] = data[i].callStatus;
+                                } else {
+                                  userDetailsObj["CallStatus"] = " - ";
+                                }
+                              }
                     	  if (!!data[i].totalCallStatusCount) {
                     		  userDetailsObj["TotalCount"] = data[i].totalCallStatusCount;
                     	  } else {

@@ -165,6 +165,17 @@
 					initAddCustomer();
 					$scope.editCustomerForm.$setPristine();
 					$scope.editCustomerForm.$setUntouched();
+					/*if(successMessage){
+						$scope.alert.msg = "You successfully Edited Customer.";
+						$scope.alert.type = "success";
+						initEditMember();
+						$scope.addBranchForm.$setPristine();
+						$scope.addBranchForm.$setUntouched();
+					}else{
+						$scope.showAlert = true;
+						$scope.alert.msg =  response[key[1]];
+						$scope.alert.type="danger";
+					}*/
 				},function(error){
 					$scope.showAlert = true;
 					$scope.alert.msg = error.exceptionMessage;

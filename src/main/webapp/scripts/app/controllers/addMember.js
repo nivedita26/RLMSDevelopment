@@ -80,7 +80,7 @@
 			}
 			
 			//Post call add customer
-			$scope.submitAddCustomer = function(){
+			$scope.submitAddMember = function(){
 				$scope.addMember.branchCustoMapId = $scope.selectedCustomer.selected.branchCustomerMapId;
 				serviceApi.doPostWithData("/RLMS/admin/validateAndRegisterNewMember",$scope.addMember)
 				.then(function(response){
