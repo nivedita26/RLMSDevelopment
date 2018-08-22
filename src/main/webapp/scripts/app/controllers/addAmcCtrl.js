@@ -184,8 +184,8 @@
 	 	        	 $scope.cutomers = customerData;
 	 	        	 $scope.selectedCustomer.selected = undefined;
 	 	        	 $scope.selectedLift.selected = undefined;
-	 	        	 $scope.addAMC.serviceStartDateStr=undefined;
-	 	        	 $scope.addAMC.serviceEndDateStr=undefined;
+	 	        	 $scope.serviceStartDateStr=undefined;
+	 	        	 $scope.serviceEndDateStr=undefined;
 	 	        	var emptyArray=[];
 			    	$scope.myData = emptyArray;
 	 	         })
@@ -200,8 +200,8 @@
 						.then(function(liftData) {
 							$scope.lifts = liftData;
 							 $scope.selectedLift.selected = undefined;
-							 $scope.addAMC.serviceStartDateStr=undefined;
-			 	        	 $scope.addAMC.serviceEndDateStr=undefined;
+							 $scope.serviceStartDateStr=undefined;
+			 	        	 $scope.serviceEndDateStr=undefined;
 
 						})
 				
@@ -221,10 +221,10 @@
 			}
 			 $scope.cancelAssign = function(){
 	        	  $scope.modalInstance.dismiss('cancel');
-	          }
+	         }
 			 $scope.loadWarrantyDate=function(){
-				 $scope.addAMC.serviceStartDateStr=$scope.selectedLift.selected.serviceStartDateStr;
-				 $scope.addAMC.serviceEndDateStr=$scope.selectedLift.selected.serviceEndDateStr;
+				 $scope.serviceStartDateStr=$scope.selectedLift.selected.serviceStartDateStr;
+				 $scope.serviceEndDateStr=$scope.selectedLift.selected.serviceEndDateStr;
 			 }
 			//Post call add customer
 			$scope.submitaddAMC = function(){
