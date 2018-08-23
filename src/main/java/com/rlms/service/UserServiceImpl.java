@@ -410,15 +410,8 @@ public class UserServiceImpl implements UserService {
 	private boolean validateUserDtls(AddNewUserDto userDto,
 			UserMetaInfo metaInfo) throws ValidationException {
 		boolean isValidUser = true;
-        if(userDto.getEmailId()==""||userDto.getContactNumber()==""||userDto.getFirstName()==""||userDto.getLastName()=="") {
-			isValidUser = false;
-			throw new ValidationException(
-					ExceptionCode.VALIDATION_EXCEPTION.getExceptionCode(),"please fill required field");
-        }
-        else {
 		RlmsUsersMaster user = this.userMasterDao.getUserByMailId(userDto.getEmailId());
 		if (null != user) {
-			  
 			isValidUser = false;
 			throw new ValidationException(
 					ExceptionCode.VALIDATION_EXCEPTION.getExceptionCode(),
@@ -426,9 +419,7 @@ public class UserServiceImpl implements UserService {
 							.getPrpertyFromContext(RlmsErrorType.USER_ALREADY_REGISTERED
 									.getMessage()));
 		}
-		else {
-			RlmsCompanyMaster companyMaster = this.companyService
-					.getCompanyById(userDto.getCompanyId());
+			RlmsCompanyMaster companyMaster = this.companyService.getCompanyById(userDto.getCompanyId());
 			if (null == companyMaster) {
 				isValidUser = false;
 				throw new ValidationException(
@@ -437,23 +428,15 @@ public class UserServiceImpl implements UserService {
 								.getPrpertyFromContext(RlmsErrorType.INVALID_COMPANY_NAME
 										.getMessage()));
 			}
-		}
-        
-		  if(user==null) {
 			  RlmsUsersMaster userMaster = userMasterDao.getUserByMobileNumber(userDto.getContactNumber());
-			  
 			  if(userMaster!=null) {
-				//  if( user.getContactNumber()==userDto.getContactNumber()) {
-              		isValidUser = false;
+					isValidUser = false;
           			throw new ValidationException(
           					ExceptionCode.VALIDATION_EXCEPTION.getExceptionCode(),
           					PropertyUtils
           							.getPrpertyFromContext(RlmsErrorType.USER_MOBILE_NUMBER_ALREADY_REGISTERED
           									.getMessage()));
-		       //}
-			  }
-			}
-        }
+		      }
 		return isValidUser;
 	}
 
@@ -712,9 +695,7 @@ public class UserServiceImpl implements UserService {
 		 JSONObject  dataPayload = new JSONObject();
 		try {
 			dataPayload.put("title",  rlmsUserRoles.getRlmsUserMaster().getFirstName()+" "+rlmsUserRoles.getRlmsUserMaster().getLastName());
-			dataPayload.put("body", "Your RLMS account has been deactivated"
-					+ ""
-					+ "");
+			dataPayload.put("body", "Your RLMS account has been deactivated");
 		} catch (JSONException e1) {
 			e1.printStackTrace();
 		}

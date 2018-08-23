@@ -558,13 +558,8 @@ https://mvnrepository.com/artifact/org.jboss.marshalling/jboss-marshalling
     <groupId>com.sun.jersey</groupId>
     <artifactId>jersey-core</artifactId>
     <version>1.18</version>
-</dependency>
-
-
-
+	</dependency>
 	</dependencies>
-
-
 	<build>
 		<pluginManagement>
 			<plugins>
