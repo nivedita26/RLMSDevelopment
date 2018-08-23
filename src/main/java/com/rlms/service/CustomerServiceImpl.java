@@ -3,19 +3,15 @@ package com.rlms.service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.mysql.fabric.xmlrpc.base.Member;
 import com.rlms.constants.AMCType;
 import com.rlms.constants.CustomerType;
 import com.rlms.constants.RLMSConstants;
 import com.rlms.constants.RlmsErrorType;
 import com.rlms.constants.SpocRoleConstants;
-import com.rlms.constants.Status;
 import com.rlms.contract.CustomerCountDtls;
 import com.rlms.contract.CustomerDtlsDto;
 import com.rlms.contract.LiftDtlsDto;
@@ -33,7 +29,6 @@ import com.rlms.model.RlmsBranchCustomerMap;
 import com.rlms.model.RlmsCompanyBranchMapDtls;
 import com.rlms.model.RlmsCustomerMaster;
 import com.rlms.model.RlmsCustomerMemberMap;
-import com.rlms.model.RlmsLiftAmcDtls;
 import com.rlms.model.RlmsLiftCustomerMap;
 import com.rlms.model.RlmsLiftMaster;
 import com.rlms.model.RlmsMemberMaster;

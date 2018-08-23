@@ -163,6 +163,7 @@
 			    	$scope.branches = response;
 			    	$scope.selectedBranch.selected = undefined;
 			    	$scope.selectedCustomer.selected = undefined;
+//			    	/$scope.selectedLift.selected = undefined;
 			    	var emptyArray=[];
 			    	$scope.myData = emptyArray;
 			    });
@@ -182,6 +183,9 @@
 	 	         .then(function(customerData) {
 	 	        	 $scope.cutomers = customerData;
 	 	        	 $scope.selectedCustomer.selected = undefined;
+	 	        	 $scope.selectedLift.selected = undefined;
+	 	        	 $scope.serviceStartDateStr=undefined;
+	 	        	 $scope.serviceEndDateStr=undefined;
 	 	        	var emptyArray=[];
 			    	$scope.myData = emptyArray;
 	 	         })
@@ -195,14 +199,18 @@
 				serviceApi.doPostWithData('/RLMS/complaint/getAllApplicableLifts',dataToSend)
 						.then(function(liftData) {
 							$scope.lifts = liftData;
+							 $scope.selectedLift.selected = undefined;
+							 $scope.serviceStartDateStr=undefined;
+			 	        	 $scope.serviceEndDateStr=undefined;
+
 						})
 				
-				serviceApi.doPostWithData('/RLMS/complaint/getCustomerDtlsById',dataToSend)
+				/*serviceApi.doPostWithData('/RLMS/complaint/getCustomerDtlsById',dataToSend)
 						.then(function(data) {
 							$scope.customerSelected = true;
 							$scope.companyName = data.companyName;
 							$scope.branchName = data.branchName
-						})
+						})*/
 			}
 			$scope.addServiceCall=function(){
 				$scope.callTypesArray = [];
@@ -213,8 +221,11 @@
 			}
 			 $scope.cancelAssign = function(){
 	        	  $scope.modalInstance.dismiss('cancel');
-	          }
-			 
+	         }
+			 $scope.loadWarrantyDate=function(){
+				 $scope.serviceStartDateStr=$scope.selectedLift.selected.serviceStartDateStr;
+				 $scope.serviceEndDateStr=$scope.selectedLift.selected.serviceEndDateStr;
+			 }
 			//Post call add customer
 			$scope.submitaddAMC = function(){
 			//	$scope.addAMC.liftCustomerMapId =  $scope.selectedCustomer.selected.branchCustomerMapId;

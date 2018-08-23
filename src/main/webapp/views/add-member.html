@@ -10,7 +10,7 @@
 			<span ng-bind-html="alert.msg | safe_html">
 			<!-- <span ng-bind-html="alert.message | safe_html"> -->
 			</alert>
-		<form class="form-horizontal row-border" name="addMemberForm">
+		<form class="form-horizontal row-border"  name="addMemberForm" novalidate ng-submit="addMemberForm.$valid && submitAddMember()">
 		<fieldset>
 		  <legend>Member Details</legend>
 		  <div class="form-group" ng-show="showCompany">
@@ -106,7 +106,7 @@
 			<div class="form-group">
 				<label class="col-sm-3 control-label">Contact Number<sup class="red font-12">*</sup></label>
 				<div class="col-sm-6">
-					<input name="cntNumber" type="text" placeholder="Required Field" maxlength="10" onkeypress="return (event.charCode > 47 && event.charCode < 58 );" required ng-model="addMember.contactNumber" class="form-control">
+					<input name="cntNumber" type="text" placeholder="Required Field" required maxlength="10" onkeypress="return (event.charCode > 47 && event.charCode < 58 );"  ng-model="addMember.contactNumber" class="form-control">
 					<span class="help-block"
 						ng-show="addMemberForm.cntNumber.$error.required && addMemberForm.cntNumber.$dirty">This
 						field is required</span>
@@ -121,7 +121,7 @@
 				</div>
 				<div class="col-sm-6 ">
 					<div class="btn-toolbar">
-						<button class="btn-primary btn" ng-disabled="addMemberForm.$invalid && addMemberForm.$pristine" ng-click="submitAddCustomer()">Submit</button>
+						<button class="btn-primary btn" type="submit"  ng-disabled="addMemberForm.$invalid && addMemberForm.$pristine" ng-click="submitAddMember()">Submit</button>
 						<button class="btn-default btn" ng-click="resetAddMember();">Reset</button>
 					</div>
 				</div>

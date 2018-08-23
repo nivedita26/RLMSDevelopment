@@ -44,10 +44,10 @@
 									//loadDefaultComplaintData();
 									//$scope.selectedComplaintsTitle={};
 									$scope.branches = [];
-									$scope.date = {
-									        /*startDate: moment().subtract(1, "days"),
-									        endDate: moment()*/
-									    };
+									/*$scope.date = {
+									        startDate: moment().subtract(1, "days"),
+									        endDate: moment()
+									    };*/
 									
 									$rootScope.complaintTitles=[
 										{
@@ -167,7 +167,9 @@
 									$scope.datePicker={};
 									$scope.isAssigned=true;
 									//var today = new Date().toISOString().slice(0, 10);
-									$scope.datePicker.date = {};
+									$scope.datePicker.date = {
+											startDate: null, endDate: null
+									};
 									$scope.status = [ {
 										id : 2,
 										name : 'Pending'
@@ -965,8 +967,8 @@
 										}
 										dataToSend["listOfLiftCustoMapId"] = tempLiftIds;
 										dataToSend["statusList"] = tempStatus;
-										//dataToSend["fromDate"]=moment($scope.datePicker.date.startDate).format('YYYY-MM-DD');//$scope.date.startDate;
-										//dataToSend["toDate"]=moment($scope.datePicker.date).format('YYYY-MM-DD');
+										dataToSend["fromDate"]=moment($scope.datePicker.date.startDate).format('YYYY-MM-DD');//$scope.date.startDate;
+										dataToSend["toDate"]=moment($scope.datePicker.date.endDate).format('YYYY-MM-DD');
 									}
 									return dataToSend;
 								}

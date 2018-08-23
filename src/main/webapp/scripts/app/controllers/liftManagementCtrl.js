@@ -112,6 +112,7 @@
 		function initCustomerList(){
 			 $scope.selectedCompany={};
 			 $scope.selectedBranch = {};
+			 $scope.selectedCustomer = {};
 			 $scope.branches=[];
 			 $scope.showTable = false;
 		} 
@@ -188,13 +189,15 @@
 	  	    			branchCompanyMapId : $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls.companyBranchMapId
   					}
 	  	    	}*/
+	  	    	var branchCustomerMapId = [];
+	  	    	branchCustomerMapId.push($scope.selectedCustomer.selected.branchCustomerMapId);
 	  	    	var dataToSend = {
-						branchCustomerMapId : $scope.selectedCustomer.selected.branchCustomerMapId
+	  	    			listOfBranchCustomerMapId : branchCustomerMapId
 					}
 	  	      setTimeout(function() {
 	  	        var data;
 	  	        if (searchText) {
-	  	        	var branchData ={};
+	  	        /*	var branchData ={};
 		  	    	if($scope.showBranch == true){
 		  	    		branchData = {
 		  	    			branchCompanyMapId : $scope.selectedBranch.selected.companyBranchMapId
@@ -203,7 +206,12 @@
 		  	    		branchData = {
 		  	    			branchCompanyMapId : $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls.companyBranchMapId
 	  					}
-		  	    	}
+		  	    	}*/
+	  	        	var branchCustomerMapId = [];
+		  	    	branchCustomerMapId.push($scope.selectedCustomer.selected.branchCustomerMapId);
+		  	    	var dataToSend = {
+		  	    			listOfBranchCustomerMapId : branchCustomerMapId
+						}
 	  	          var ft = searchText.toLowerCase();
 	  	        serviceApi.doPostWithData('/RLMS/admin/getLiftDetailsForBranch',dataToSend)
 	  	         .then(function(largeLoad) {
@@ -300,7 +308,7 @@
 	  	            $scope.setPagingData(data, page, pageSize);
 	  	          });
 	  	        } else {
-	  	        	var branchData ={};
+	  	        	/*var branchData ={};
 		  	    	if($scope.showBranch == true){
 		  	    		branchData = {
 		  	    			branchCompanyMapId : $scope.selectedBranch.selected.companyBranchMapId
@@ -309,7 +317,12 @@
 		  	    		branchData = {
 		  	    			branchCompanyMapId : $rootScope.loggedInUserInfo.data.userRole.rlmsCompanyBranchMapDtls.companyBranchMapId
 	  					}
-		  	    	}
+		  	    	}*/
+	  	        	var branchCustomerMapId = [];
+		  	    	branchCustomerMapId.push($scope.selectedCustomer.selected.branchCustomerMapId);
+		  	    	var dataToSend = {
+		  	    			listOfBranchCustomerMapId : branchCustomerMapId
+						}
 	  	        	serviceApi.doPostWithData('/RLMS/admin/getLiftDetailsForBranch',dataToSend).then(function(largeLoad) {
 	  	        		 $scope.showTable= true;
 	  	        	  var userDetails=[];

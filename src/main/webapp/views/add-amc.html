@@ -43,7 +43,7 @@
 				<div class="form-group">
 					<label class="col-sm-3  control-label">Select Lift</label>
 					<div class="col-sm-6 select-container">
-						  <ui-select ng-model="selectedLift.selected" title="Choose a Lift">
+						  <ui-select ng-model="selectedLift.selected" title="Choose a Lift" on-select="loadWarrantyDate();">
 						    <ui-select-match placeholder="Select Lift">{{$select.selected.liftNumber}}</ui-select-match>
 						    <ui-select-choices repeat="iterator in lifts | filter: $select.search">
 						      <span ng-bind-html="iterator.liftNumber | highlight: $select.search"></span>
@@ -51,6 +51,17 @@
 						  </ui-select>
 					</div>
 				</div>
+				
+				<div class="form-group">
+				<label class="col-sm-3 control-label">Warranty Start Date</label>
+					<div class="col-md-6"><input type="text"  class="form-control " ng-model="serviceStartDateStr" readonly/></div>
+				</div>
+				
+				<div class="form-group">
+				<label class="col-sm-3 control-label">Warranty End Date</label>
+					<div class="col-md-6"><input type="text"  class="form-control "  ng-model="serviceEndDateStr" readonly/></div>
+				</div>
+				
 				<div class="form-group">
 					<label class="col-sm-3  control-label">AMC Type  </label>
 					<div class="col-sm-6 select-container">
