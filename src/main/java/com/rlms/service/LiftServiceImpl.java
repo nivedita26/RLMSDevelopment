@@ -1031,7 +1031,7 @@ public class LiftServiceImpl implements LiftService{
 			liftMaster.setLOPMake(dto.getLopMake());
 		}
 		this.liftDao.mergeLiftM(liftMaster);
-		return PropertyUtils.getPrpertyFromContext("Lift parameter updated successfully");	
+		return "Lift parameter updated successfully";	
 	}
 
 	@Override
