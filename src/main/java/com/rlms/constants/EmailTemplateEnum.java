@@ -7,7 +7,6 @@ public enum EmailTemplateEnum {
 	AMC_EXPIRED(15,"AMC_EXPIRED"),
 	FORGOT_PASSWORD(16,"FORGOT_PASSWORD");
 	
-
 	private Integer templateId;
 	private String tempName;
 	
@@ -31,6 +30,4 @@ public enum EmailTemplateEnum {
 	public void setTempName(String tempName) {
 		this.tempName = tempName;
 	}
-	
-	
 }

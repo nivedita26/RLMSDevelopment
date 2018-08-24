@@ -74,12 +74,12 @@ public class ComplaintController extends BaseController{
 	        			dtoToGetLifts.setBranchCustomerMapId(customerDtlsDto.getBranchCustomerMapId());
 	        			List<RlmsLiftCustomerMap> list = dashboardService.getAllLiftsForBranchsOrCustomer(dtoToGetLifts);
 	        			if(list!=null && !list.isEmpty()) {
-	        			for (RlmsLiftCustomerMap rlmsLiftCustomerMap : list) {
-	        				liftCustomerMapIds.add(rlmsLiftCustomerMap.getLiftCustomerMapId());
+	        				for (RlmsLiftCustomerMap rlmsLiftCustomerMap : list) {
+	        					liftCustomerMapIds.add(rlmsLiftCustomerMap.getLiftCustomerMapId());
+	        				}
 	        			}
-	        			}
-	        			}
-	        			}
+	        		}
+	        		}
 	        		if(liftCustomerMapIds!=null && !liftCustomerMapIds.isEmpty()) {
 	        			dto.setListOfLiftCustoMapId(liftCustomerMapIds);
 	        		}
