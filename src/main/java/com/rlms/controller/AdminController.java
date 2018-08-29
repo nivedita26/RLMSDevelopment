@@ -538,17 +538,8 @@ public class AdminController extends BaseController{
 	 @RequestMapping(value = "/validateAndUpdateCustomer", method = RequestMethod.POST)
 	    public @ResponseBody ResponseDto validateAndUpdateCustomer(@RequestBody CustomerDtlsDto dto) throws RunTimeException, ValidationException {
 		 ResponseDto reponseDto = new ResponseDto();
-	        try{
-	        	logger.info("Method :: validate and update customer");
-	        	reponseDto.setStatus(true);
-
-	        	reponseDto.setResponse(this.customerService.validateAndEditCustomer(dto,this.getMetaInfo()));
-	        }	        
-	        catch(Exception e){
-	        	logger.error(ExceptionUtils.getFullStackTrace(e));
-	        	throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
-	        }
-	        return reponseDto;
+	       
+	        return customerService.validateAndEditCustomer(dto,this.getMetaInfo());
 	  }
 	 
 	 @RequestMapping(value = "/lift/updateLiftParams", method = RequestMethod.POST)

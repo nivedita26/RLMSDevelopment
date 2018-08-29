@@ -16,6 +16,7 @@ import com.rlms.contract.CustomerCountDtls;
 import com.rlms.contract.CustomerDtlsDto;
 import com.rlms.contract.LiftDtlsDto;
 import com.rlms.contract.MemberDtlsDto;
+import com.rlms.contract.ResponseDto;
 import com.rlms.contract.UserAppDtls;
 import com.rlms.contract.UserMetaInfo;
 import com.rlms.dao.BranchDao;
@@ -171,6 +172,7 @@ public class CustomerServiceImpl implements CustomerService{
 		if(listOfCustomers!=null && !listOfCustomers.isEmpty()) {
 		for (RlmsBranchCustomerMap branchCustomerMap : listOfCustomers) {
 			List<Integer> listOfCustomer = new ArrayList<Integer>();
+			if(branchCustomerMap.getCustomerMaster().getActiveFlag()==1) {
 			listOfCustomer.add(branchCustomerMap.getCustomerMaster().getCustomerId());
 			CustomerDtlsDto dto = new CustomerDtlsDto();
 			List<RlmsLiftCustomerMap> listOfLifts = this.liftDao.getAllLiftsForCustomers(listOfCustomer);
@@ -207,6 +209,7 @@ public class CustomerServiceImpl implements CustomerService{
 			dto.setCompanyName(branchCustomerMap.getCompanyBranchMapDtls().getRlmsCompanyMaster().getCompanyName());
 			dto.setCustomerName(branchCustomerMap.getCustomerMaster().getCustomerName());
 			listOFDtos.add(dto);
+		}
 		}
 	}
 		return listOFDtos;
@@ -270,7 +273,7 @@ public class CustomerServiceImpl implements CustomerService{
 			  if(!(memberDtlsDto.getContactNumber().equals(memberMaster.getContactNumber()))) {
 				  RlmsMemberMaster rlmsMemberMaster =   memberDao.getMemberByContactNumber(memberDtlsDto.getContactNumber());
 					if(rlmsMemberMaster!=null) {
-						return 	RlmsErrorType.MEMBER_WITH_SAME_CONTACT_NO.getMessage();
+						return 	(PropertyUtils.getPrpertyFromContext(RlmsErrorType.MEMBER_WITH_SAME_CONTACT_NO.getMessage()));
 					}
 				}
 		    memberMaster.setAddress(memberDtlsDto.getAddress());
@@ -604,15 +607,16 @@ public class CustomerServiceImpl implements CustomerService{
 		return listOfLiftDtls;
 	}
 	@Transactional(propagation = Propagation.REQUIRED)
-	public String validateAndEditCustomer(CustomerDtlsDto customerDtlsDto,UserMetaInfo metaInfo) {
+	public ResponseDto validateAndEditCustomer(CustomerDtlsDto customerDtlsDto,UserMetaInfo metaInfo) {
 		List<Integer> branchCustomerMapId = new ArrayList<>();
-		String statusMessage =  null;
-		List<Integer> liftCustomerMapList = new ArrayList<>();
+		ResponseDto  responseDto = new ResponseDto();
 		RlmsCustomerMaster  customerMaster = this.customerDao.getCustomerById(customerDtlsDto.getCustomerId());
 		if(!(customerDtlsDto.getCntNumber().equals(customerMaster.getCntNumber()))){
 			RlmsCustomerMaster rlmsCustomerMaster = customerDao.getCustomerByContactNumber(customerDtlsDto.getCntNumber());
 			if(rlmsCustomerMaster!=null) {
-				return " Customer Contact Number Already Registered";
+				responseDto.setStatus(false);
+				responseDto.setResponse("Customer Contact Number Already Registered");
+				return responseDto ;
 			}
 		}
 		customerMaster.setAddress(customerDtlsDto.getAddress());
@@ -623,7 +627,9 @@ public class CustomerServiceImpl implements CustomerService{
 		if(!(customerDtlsDto.getEmailID().equals(customerMaster.getEmailID()))) {
 			RlmsCustomerMaster rlmsCustomerMaster = customerDao.getCustomerByEmailId(customerDtlsDto.getEmailID());
 			if(rlmsCustomerMaster!=null) {
-				return  PropertyUtils.getPrpertyFromContext(RlmsErrorType.CUSTOMER_ALREADY_ADDED.getMessage());
+				responseDto.setStatus(false);
+				responseDto.setResponse(PropertyUtils.getPrpertyFromContext(RlmsErrorType.CUSTOMER_ALREADY_ADDED.getMessage()));
+				return  responseDto;
 			}
 		}
 		customerMaster.setEmailID(customerDtlsDto.getEmailID());
@@ -668,20 +674,22 @@ public class CustomerServiceImpl implements CustomerService{
 		    		amcDtls.setActiveFlag(customerDtlsDto.getActiveFlag());
 		    		liftDao.saveLiftAMCDtls(amcDtls);
 		    		}*/
+		    		}
+		    	}
+		    List< RlmsCustomerMemberMap> customerMemberMapList = customerDao.getAllMembersForCustomer(branchCustomerMap.getBranchCustoMapId());
+		    if(customerMemberMapList!=null) {
+		    	for (RlmsCustomerMemberMap rlmsCustomerMemberMap : customerMemberMapList) {
+		    		rlmsCustomerMemberMap.setActiveFlag(customerDtlsDto.getActiveFlag());
+		    		customerDao.updateCustomerMemberMap(rlmsCustomerMemberMap);
+		    		RlmsMemberMaster memberMaster = rlmsCustomerMemberMap.getRlmsMemberMaster();
+		    		memberMaster.setActiveFlag(customerDtlsDto.getActiveFlag());
 		    	}
 		    }
-		  List< RlmsCustomerMemberMap> customerMemberMapList = customerDao.getAllMembersForCustomer(branchCustomerMap.getBranchCustoMapId());
-		  if(customerMemberMapList!=null) {
-			  for (RlmsCustomerMemberMap rlmsCustomerMemberMap : customerMemberMapList) {
-				  rlmsCustomerMemberMap.setActiveFlag(customerDtlsDto.getActiveFlag());
-				  customerDao.updateCustomerMemberMap(rlmsCustomerMemberMap);
-				  RlmsMemberMaster memberMaster = rlmsCustomerMemberMap.getRlmsMemberMaster();
-				  memberMaster.setActiveFlag(customerDtlsDto.getActiveFlag());
-			  	}
-		  	}
-			}
 		}
-		return "Customer Updated Successfully";
+		}
+			responseDto.setStatus(true);
+			responseDto.setResponse( "Customer Updated Successfully");
+			return responseDto;
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)

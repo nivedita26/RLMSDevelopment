@@ -61,8 +61,8 @@
             <value>/WEB-INF/jdbc.properties</value>
             <value>/WEB-INF/messages.properties</value>
              <value>/WEB-INF/classes/LsmEventIndexConfiguration.properties</value>
-           <!--   <value>/WEB-INF/validations.properties</value>
-	     <value>/WEB-INF/messages.properties</value>
+             <value>/WEB-INF/validations.properties</value>
+	     <!--<value>/WEB-INF/messages.properties</value>
 	     <value>/WEB-INF/XMPPServerDetails.properties</value> -->
         </list>
     </property>

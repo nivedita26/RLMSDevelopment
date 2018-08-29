@@ -18,7 +18,7 @@ public class AMCMonitor {
 	
 	//@Scheduled(cron="0 28 13 * * ?")
    //@Scheduled(fixedRate =60000)
-	@Scheduled(cron="0 01 00 * * ?")
+	@Scheduled(cron="0 57 10 * * ?")
 	 public void schedule() {
 		logger.debug("Batch start");
 		 try {

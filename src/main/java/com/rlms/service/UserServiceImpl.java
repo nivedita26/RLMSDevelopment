@@ -578,7 +578,7 @@ public class UserServiceImpl implements UserService {
 			RlmsUsersMaster usersMaster =  userMasterDao.getUserByMobileNumber(userDto.getContactNumber());
 			if(usersMaster!=null) {
 				responseDto.setStatus(false);
-				responseDto.setResponse(RlmsErrorType.USER_MOBILE_NUMBER_ALREADY_REGISTERED.getMessage());
+				responseDto.setResponse(PropertyUtils.getPrpertyFromContext(RlmsErrorType.USER_MOBILE_NUMBER_ALREADY_REGISTERED.getMessage()));
 				return responseDto;
 			}
 		}
@@ -586,7 +586,7 @@ public class UserServiceImpl implements UserService {
 			RlmsUsersMaster usersMaster = userMasterDao.getUserByMailId(userDto.getEmailId());
 			if(usersMaster!=null) {
 				responseDto.setStatus(false);
-                responseDto.setResponse(RlmsErrorType.USER_ALREADY_REGISTERED.getMessage());
+                responseDto.setResponse(PropertyUtils.getPrpertyFromContext(RlmsErrorType.USER_ALREADY_REGISTERED.getMessage()));
 				return 	responseDto;
 			}
 		}

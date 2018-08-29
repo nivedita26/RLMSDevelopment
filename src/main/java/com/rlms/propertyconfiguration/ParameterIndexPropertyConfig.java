@@ -6,10 +6,7 @@ import org.springframework.context.annotation.PropertySource;
 @Configuration
 @PropertySource("classpath:LsmEventIndexConfiguration.properties")
 public class ParameterIndexPropertyConfig {
-	
-	/*@Value("${PARAMETERCOUNT}")
-	private int parameterCount;*/
-	
+		
 	public int getResMsgTime() {
 		return resMsgTime;
 	}
