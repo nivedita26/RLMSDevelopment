@@ -59,7 +59,7 @@ public interface UserService {
 	
 	public RlmsUserRoles getUserRoleObjhById(Integer userRoleId);
 	
-	public String validateAndEditUser(UserDtlsDto userDto, UserMetaInfo metaInfo)
+	public ResponseDto validateAndEditUser(UserDtlsDto userDto, UserMetaInfo metaInfo)
 			throws ValidationException;
 	public String deleteUserObj(UserDtlsDto dto, UserMetaInfo metaInfo);
 

@@ -61,8 +61,8 @@
             <value>/WEB-INF/jdbc.properties</value>
             <value>/WEB-INF/messages.properties</value>
              <value>/WEB-INF/classes/LsmEventIndexConfiguration.properties</value>
-           <!--   <value>/WEB-INF/validations.properties</value>
-	     <value>/WEB-INF/messages.properties</value>
+             <value>/WEB-INF/validations.properties</value>
+	     <!--<value>/WEB-INF/messages.properties</value>
 	     <value>/WEB-INF/XMPPServerDetails.properties</value> -->
         </list>
     </property>
@@ -131,7 +131,7 @@
 	  </property>
 	 </bean> 
   
-     <bean id="schedular" class="com.rights.batches.ScheduleTesting"></bean>
+     <bean id="schedular" class="com.rights.batches.AMCMonitor"></bean>
      
      <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
  <property name="maxUploadSize" value="268435456"/>

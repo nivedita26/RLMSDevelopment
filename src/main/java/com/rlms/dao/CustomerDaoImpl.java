@@ -214,4 +214,16 @@ public class CustomerDaoImpl implements CustomerDao{
 		 List<RlmsBranchCustomerMap> listOfCustomers = criteria.list();
 		 return listOfCustomers;
 	}
+
+	@Override
+	public RlmsCustomerMaster getCustomerByContactNumber(String contactNumber) {
+		 Session session = this.sessionFactory.getCurrentSession();
+		 Criteria criteria = session.createCriteria(RlmsCustomerMaster.class)
+				 .add(Restrictions.eq("cntNumber", contactNumber))
+				 .add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
+		 
+		 return (RlmsCustomerMaster)criteria.uniqueResult();
+		
+		
+	}
 }

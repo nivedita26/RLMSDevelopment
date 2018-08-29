@@ -69,7 +69,6 @@ UserMasterDao{
 		 Criteria criteria = session.createCriteria(RlmsUsersMaster.class)
 				 .add(Restrictions.eq("username", username))
 		         .add(Restrictions.eq("password", password));
-		 
 		 return (RlmsUsersMaster)criteria.uniqueResult();
 	}
 	
@@ -81,7 +80,6 @@ UserMasterDao{
 		query.add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
 		List<RlmsUsersMaster> listOfAllUsers = query.list();
 		return listOfAllUsers;
-		
 	}
 
 	public void saveUser(RlmsUsersMaster usermMaster){
@@ -136,5 +134,4 @@ UserMasterDao{
 		       .add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
 		 return (RlmsUsersMaster)criteria.uniqueResult();
 	}
-
 }
