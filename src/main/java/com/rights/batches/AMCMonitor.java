@@ -1,38 +1,31 @@
 package com.rights.batches;
 
-import java.io.UnsupportedEncodingException;
-
-import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
-import com.rlms.service.ReportService;
+import com.rlms.service.AMCMonitorService;
 
+@Configuration
+@EnableScheduling
 public class AMCMonitor {
-	
 	private static final Logger logger = Logger.getLogger(AMCMonitor.class);
-	
+
 	@Autowired
-	private ReportService reportService;
+  AMCMonitorService  aMCMonitorService;
 	
-	public static void main(String arg[])
-	{
-		System.out.println("Batch start");
-		ApplicationContext context = new ClassPathXmlApplicationContext("BatchBeans.xml");
-		 logger.debug(context);
-		 AMCMonitor amcMonitor = (AMCMonitor) context.getBean("aMCMonitor");
+	//@Scheduled(cron="0 28 13 * * ?")
+   //@Scheduled(fixedRate =60000)
+	@Scheduled(cron="0 57 10 * * ?")
+	 public void schedule() {
+		logger.debug("Batch start");
 		 try {
-			 amcMonitor.executeAMCBatch();
+			 aMCMonitorService.getAllAMCDtlsAndUpdateStatus();
 		} catch (Exception e) {
 			e.printStackTrace();
-			logger.error(ExceptionUtils.getFullStackTrace(e));	 
 		}
 	}
-	private void executeAMCBatch() throws UnsupportedEncodingException{
-		this.reportService.changeStatusToAMCExpiryAndNotifyUser();
-		this.reportService.changeStatusToAMCRenewalAndNotifyUser();
-	}
+	
 }

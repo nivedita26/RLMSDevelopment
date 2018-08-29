@@ -364,7 +364,6 @@ public class UserServiceImpl implements UserService {
 			RlmsUserRoles givenRoleObj) throws ValidationException {
 		RlmsUserRoles userRoles = this.userRoleDao.getUserByUserName(dto
 				.getUserName());
-
 		//if (null != userRoles && useRoleId.equals(userRoles.getUserRoleId())) {
 		if (null != userRoles) {
 			//throw new ValidationException(
@@ -410,15 +409,8 @@ public class UserServiceImpl implements UserService {
 	private boolean validateUserDtls(AddNewUserDto userDto,
 			UserMetaInfo metaInfo) throws ValidationException {
 		boolean isValidUser = true;
-        if(userDto.getEmailId()==""||userDto.getContactNumber()==""||userDto.getFirstName()==""||userDto.getLastName()=="") {
-			isValidUser = false;
-			throw new ValidationException(
-					ExceptionCode.VALIDATION_EXCEPTION.getExceptionCode(),"please fill required field");
-        }
-        else {
 		RlmsUsersMaster user = this.userMasterDao.getUserByMailId(userDto.getEmailId());
 		if (null != user) {
-			  
 			isValidUser = false;
 			throw new ValidationException(
 					ExceptionCode.VALIDATION_EXCEPTION.getExceptionCode(),
@@ -426,9 +418,7 @@ public class UserServiceImpl implements UserService {
 							.getPrpertyFromContext(RlmsErrorType.USER_ALREADY_REGISTERED
 									.getMessage()));
 		}
-		else {
-			RlmsCompanyMaster companyMaster = this.companyService
-					.getCompanyById(userDto.getCompanyId());
+			RlmsCompanyMaster companyMaster = this.companyService.getCompanyById(userDto.getCompanyId());
 			if (null == companyMaster) {
 				isValidUser = false;
 				throw new ValidationException(
@@ -437,23 +427,15 @@ public class UserServiceImpl implements UserService {
 								.getPrpertyFromContext(RlmsErrorType.INVALID_COMPANY_NAME
 										.getMessage()));
 			}
-		}
-        
-		  if(user==null) {
 			  RlmsUsersMaster userMaster = userMasterDao.getUserByMobileNumber(userDto.getContactNumber());
-			  
 			  if(userMaster!=null) {
-				//  if( user.getContactNumber()==userDto.getContactNumber()) {
-              		isValidUser = false;
+					isValidUser = false;
           			throw new ValidationException(
           					ExceptionCode.VALIDATION_EXCEPTION.getExceptionCode(),
           					PropertyUtils
           							.getPrpertyFromContext(RlmsErrorType.USER_MOBILE_NUMBER_ALREADY_REGISTERED
           									.getMessage()));
-		       //}
-			  }
-			}
-        }
+		      }
 		return isValidUser;
 	}
 
@@ -589,21 +571,29 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
-	public String validateAndEditUser(UserDtlsDto userDto, UserMetaInfo metaInfo)
-			throws ValidationException {
-		String statusMessage = "User updated successfully";
+	public ResponseDto validateAndEditUser(UserDtlsDto userDto, UserMetaInfo metaInfo)throws ValidationException {
 		RlmsUsersMaster userMaster = this.userMasterDao.getUserByUserId(userDto.getUserId());
+		ResponseDto responseDto = new ResponseDto();
+		if(!(userDto.getContactNumber().equals(userMaster.getContactNumber()))) {
+			RlmsUsersMaster usersMaster =  userMasterDao.getUserByMobileNumber(userDto.getContactNumber());
+			if(usersMaster!=null) {
+				responseDto.setStatus(false);
+				responseDto.setResponse(PropertyUtils.getPrpertyFromContext(RlmsErrorType.USER_MOBILE_NUMBER_ALREADY_REGISTERED.getMessage()));
+				return responseDto;
+			}
+		}
+		if(!(userDto.getEmailId().equals(userMaster.getEmailId()))) {
+			RlmsUsersMaster usersMaster = userMasterDao.getUserByMailId(userDto.getEmailId());
+			if(usersMaster!=null) {
+				responseDto.setStatus(false);
+                responseDto.setResponse(PropertyUtils.getPrpertyFromContext(RlmsErrorType.USER_ALREADY_REGISTERED.getMessage()));
+				return 	responseDto;
+			}
+		}
 		userMaster.setFirstName(userDto.getFirstName());
 		userMaster.setLastName(userDto.getLastName());
 		userMaster.setAddress(userDto.getAddress());
-		/*RlmsUsersMaster usersMaster =  userMasterDao.getUserByMobileNumber(userDto.getContactNumber());
-		if(usersMaster == null) {
-			userMaster.setContactNumber(userDto.getContactNumber());
-		}
-		else {
-			return 	RlmsErrorType.USER_MOBILE_NUMBER_ALREADY_REGISTERED
-						.getMessage();
-		}*/
+		userMaster.setContactNumber(userDto.getContactNumber());
 		userMaster.setEmailId(userDto.getEmailId());
 		userMaster.setCity(userDto.getCity());
 		userMaster.setArea(userDto.getArea());
@@ -611,12 +601,14 @@ public class UserServiceImpl implements UserService {
 		userMaster.setUpdatedDate(new Date());
 		userMaster.setUpdatedBy(metaInfo.getUserId());
 		this.userMasterDao.updateUser(userMaster);
-		return statusMessage;
+		responseDto.setStatus(true);
+		responseDto.setResponse("User updated successfully");
+		return responseDto;
 	}
 	@Transactional(propagation = Propagation.REQUIRED)
 	public String deleteUserObj(UserDtlsDto dto, UserMetaInfo metaInfo){
 		String statusMesage = null;
-		RlmsUsersMaster usersMaster = userMasterDao.getUserByUserId(dto.getUserId());
+ 		RlmsUsersMaster usersMaster = userMasterDao.getUserByUserId(dto.getUserId());
 		if(usersMaster!=null) {
 			usersMaster.setActiveFlag(RLMSConstants.INACTIVE.getId());
 			usersMaster.setUpdatedBy(metaInfo.getUserId());
@@ -712,9 +704,7 @@ public class UserServiceImpl implements UserService {
 		 JSONObject  dataPayload = new JSONObject();
 		try {
 			dataPayload.put("title",  rlmsUserRoles.getRlmsUserMaster().getFirstName()+" "+rlmsUserRoles.getRlmsUserMaster().getLastName());
-			dataPayload.put("body", "Your RLMS account has been deactivated"
-					+ ""
-					+ "");
+			dataPayload.put("body", "Your RLMS account has been deactivated");
 		} catch (JSONException e1) {
 			e1.printStackTrace();
 		}

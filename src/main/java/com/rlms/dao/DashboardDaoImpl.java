@@ -213,10 +213,10 @@ public class DashboardDaoImpl implements DashboardDao {
 		    	Session session = this.sessionFactory.getCurrentSession();
 		    	Criteria criteria = session.createCriteria(RlmsEventDtls.class).add(
 		    			Restrictions.in("rlmsLiftCustomerMap.liftCustomerMapId", liftCustMapIds));
-		    	if(eventType!=null&&eventType=="-1") {
+		    	if(eventType!=null&&(eventType.equals("-1"))) {
 		    		criteria.add(Restrictions.ne("eventType","RES"));
 		    	}
-		    	if(eventType!=null&&eventType!="-1") {
+		    	if(eventType!=null&&!(eventType.equals("-1"))) {
 		    		criteria.add(Restrictions.eq("eventType",eventType));
 		    	}
 		    	criteria.addOrder(Order.desc("generatedDate"));
@@ -260,7 +260,6 @@ public class DashboardDaoImpl implements DashboardDao {
 	    	SQLQuery query = session.createSQLQuery(sql);
 		 	List<Object[]>EventCount = query.list();
 			return EventCount;
-		
 	}
 
 	@Override
@@ -280,7 +279,6 @@ public class DashboardDaoImpl implements DashboardDao {
 	    	SQLQuery query = session.createSQLQuery(sql);
 		 	List<Object[]>EventCount = query.list();
 			return EventCount;
-		
 	}
 
 @Override
@@ -388,7 +386,7 @@ public List<Object[]> getTodaysTotalComplaintsStatusCount(List<Integer> liftCust
 		}
 	}
 	Session session = this.sessionFactory.getCurrentSession();
-	String sql ="SELECT call_type,status,count(*) FROM rlms_complaint_master where (DATE(updated_date)=CURDATE()) and status in("+Status.ASSIGNED.getStatusId()+","+Status.RESOLVED.getStatusId()+") and lift_customer_map_id in ("+str+") group by status,call_type";
+	String sql ="SELECT call_type,status,count(*) FROM rlms_complaint_master where (DATE(updated_date)=CURDATE()) and status in("+Status.ASSIGNED.getStatusId()+","+Status.RESOLVED.getStatusId()+","+Status.INPROGESS.getStatusId()+") and lift_customer_map_id in ("+str+") group by status,call_type";
 	SQLQuery query = session.createSQLQuery(sql);
 	 	@SuppressWarnings("unchecked")
 		List<Object[]>complaintCount = query.list();

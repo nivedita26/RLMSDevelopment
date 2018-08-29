@@ -1,5 +1,6 @@
 package com.rlms.controller;
 
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -117,7 +118,6 @@ public class DashBoardController extends BaseController {
 			logger.error(ExceptionUtils.getFullStackTrace(e));
 			throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(),
 					PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
-		
 	}
 		return listOFAmcDtls;
 	}
@@ -125,6 +125,7 @@ public class DashBoardController extends BaseController {
 	@RequestMapping(value = "/getAllAMCDetailsCount", method = RequestMethod.POST)
 	public @ResponseBody List<AMCStatusCount> getAMCDetailsCountForDashboard(@RequestBody AMCDetailsDto amcDetailsDto)
 			throws RunTimeException, ValidationException {
+			
 		List<AMCStatusCount> amcStatusDetailsCountList = new ArrayList<>();
 		List<AMCStatusCount> amcStatusCounts = new ArrayList<>();
 		List<AMCDetailsDto> listOFAmcDtls = null;
@@ -446,8 +447,7 @@ public class DashBoardController extends BaseController {
 		if(listOfAllBranches!=null && !listOfAllBranches.isEmpty()) {
 			for (RlmsCompanyBranchMapDtls companyBranchMap : listOfAllBranches) {
 				companyBranchMapIds.add(companyBranchMap.getCompanyBranchMapId());
-			}
-		}
+			}}
 		}
 		List<CustomerDtlsDto> allCustomersForBranch = dashboardService.getAllCustomersForBranch(companyBranchMapIds);
 		List<Integer> liftCustomerMapIds = new ArrayList<>();

@@ -1,5 +1,6 @@
 package com.rlms.controller;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.lang.exception.ExceptionUtils;
@@ -450,7 +451,7 @@ public class AdminController extends BaseController{
 	 }
 	 @RequestMapping(value = "/validateAndUpdateUser", method = RequestMethod.POST)
 	    public @ResponseBody ResponseDto validateAndUpdateUser(@RequestBody UserDtlsDto dto) throws RunTimeException, ValidationException {
-		 ResponseDto reponseDto = new ResponseDto();
+	/*	 ResponseDto reponseDto = new ResponseDto();
 	        try{
 	        	logger.info("Method :: validateAndRegisterNewUser");
 	        	reponseDto.setStatus(true);
@@ -462,8 +463,8 @@ public class AdminController extends BaseController{
 	        catch(Exception e){
 	        	logger.error(ExceptionUtils.getFullStackTrace(e));
 	        	throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
-	        }
-	        return reponseDto;
+	        }*/
+	        return this.userService.validateAndEditUser(dto, this.getMetaInfo());
 	  }
 	 
 	 @RequestMapping(value = "/deleteUser", method = RequestMethod.POST)
@@ -537,17 +538,8 @@ public class AdminController extends BaseController{
 	 @RequestMapping(value = "/validateAndUpdateCustomer", method = RequestMethod.POST)
 	    public @ResponseBody ResponseDto validateAndUpdateCustomer(@RequestBody CustomerDtlsDto dto) throws RunTimeException, ValidationException {
 		 ResponseDto reponseDto = new ResponseDto();
-	        try{
-	        	logger.info("Method :: validate and update customer");
-	        	reponseDto.setStatus(true);
-
-	        	reponseDto.setResponse(this.customerService.validateAndEditCustomer(dto,this.getMetaInfo()));
-	        }	        
-	        catch(Exception e){
-	        	logger.error(ExceptionUtils.getFullStackTrace(e));
-	        	throw new RunTimeException(ExceptionCode.RUNTIME_EXCEPTION.getExceptionCode(), PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
-	        }
-	        return reponseDto;
+	       
+	        return customerService.validateAndEditCustomer(dto,this.getMetaInfo());
 	  }
 	 
 	 @RequestMapping(value = "/lift/updateLiftParams", method = RequestMethod.POST)
@@ -562,7 +554,7 @@ public class AdminController extends BaseController{
 	        try{
 	        	logger.info("Method :: validate and update customer");
 	        	return this.liftManualService.saveCompanyManual(dto,this.getMetaInfo());
-	        	
+
 	        }	        
 	        catch(Exception e){
 	        	logger.error(ExceptionUtils.getFullStackTrace(e));

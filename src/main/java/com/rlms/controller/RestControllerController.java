@@ -1,15 +1,10 @@
 package com.rlms.controller;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -408,7 +402,6 @@ public class RestControllerController  extends BaseController {
         	log.error(ExceptionUtils.getFullStackTrace(e));
         	reponseDto.setStatus(false);
         	reponseDto.setResponse(PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage()));
-        
         }
     	return reponseDto;
     }
@@ -515,10 +508,7 @@ public class RestControllerController  extends BaseController {
         }
     	return reponseDto;
     }
-    @RequestMapping(value = "/"
-    		+ ""
-    		+ ""
-    		+ "", method = RequestMethod.POST)
+    @RequestMapping(value = "/forgotPassword"	, method = RequestMethod.POST)
     public @ResponseBody ResponseDto forgotPassword(@RequestBody UserDtlsDto dto){
     	ResponseDto reponseDto = new ResponseDto();
     	try{
@@ -543,7 +533,7 @@ public class RestControllerController  extends BaseController {
         }
     	return responseDto;
     }
-    
+
     @RequestMapping(value = "/downloadUserManual", method = RequestMethod.POST)
 	public String downloadUserManual(@RequestBody LiftDtlsDto dtlsDto,HttpServletResponse response) throws FileNotFoundException, SQLException, IOException {
     	byte[] userManual = null;
@@ -554,7 +544,7 @@ public class RestControllerController  extends BaseController {
     			 userManual = liftManualMapDtls.getCompanyManual().getUserManual();
     			}
     	    }
-    	   response.setContentType("application/pdf");
+           response.setContentType("application/pdf");
            String filename = liftCustomerMap.getLiftMaster().getLiftNumber()+"_"+"usermanual"+"."+"pdf";
            response.setHeader("Content-disposition", "attachment; filename="+ filename);
            OutputStream os=null;
@@ -564,7 +554,7 @@ public class RestControllerController  extends BaseController {
           } finally {
         	  os.close();
           }
-    	/* response.setContentType("application/pdf");
+    	/*response.setContentType("application/pdf");
          String filename = liftCustomerMap.getLiftMaster().getLiftNumber()+"_"+"usermanual"+"."+"pdf";
          response.setHeader("Content-disposition", "attachment; filename="+ filename);
     	 File f = new File("C:\\Users\\USER\\Desktop\\response.pdf");
@@ -604,7 +594,6 @@ public class RestControllerController  extends BaseController {
    	 
  	@RequestMapping(value = "/uploadLiftImg", method = RequestMethod.POST, headers = "content-type=multipart/form-data")
  	public @ResponseBody ResponseDto releaseUploadtest( HttpServletRequest request,HttpServletResponse response,@RequestParam("file") MultipartFile uploadFile) {
- 	
  	   return liftService.uploadLiftImg(uploadFile,request,this.getMetaInfo());
       }
   }

@@ -70,11 +70,7 @@ public class RlmsLiftEventServiceImpl implements RlmsLiftEventService{
 				 rlmsLiftCustomerMap = liftDao.getLiftCustomerMapByLiftId(rlmsLiftMaster.getLiftId());
 			     if(rlmsLiftCustomerMap!=null) {
 			    	 eventDtls = this.constructLmsEventDtls(lmsParamArray,rlmsLiftCustomerMap);
-			    /*	 if(lmsParamArray.length==9) {
-						 String lmsResContactNo = lmsParamArray[paramIndex.getLmsResponseUserContactNo()];
-						 eventDtls.setLmsResponseUserContactNo(lmsResContactNo.split(" ")[1]);
-					 }*/
-			     }
+			      }
 				 }
 				else {
 					eventDtls = this.constructLmsEventDtls(lmsParamArray,rlmsLiftCustomerMap);
@@ -99,8 +95,6 @@ public class RlmsLiftEventServiceImpl implements RlmsLiftEventService{
 			}
 		}
 		return LMSEventError.FAIL.getId();
-	
-		//return PropertyUtils.getPrpertyFromContext(RlmsErrorType.UNNKOWN_EXCEPTION_OCCHURS.getMessage());
 	}
 	@Transactional(propagation = Propagation.REQUIRED)
 	public RlmsEventDtls constructLmsEventDtls(String[] eventParam,RlmsLiftCustomerMap liftCustomerMap){
