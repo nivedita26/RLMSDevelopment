@@ -41,7 +41,9 @@ private static final Logger logger = Logger.getLogger(AMCMonitorServiceImpl.clas
 	public RlmsLiftAmcDtls getAllAMCDtlsAndUpdateStatus() throws UnsupportedEncodingException {
 		 List<RlmsLiftAmcDtls>  amcDtlsList = amcMonitorDao.getAllAMCDetails();
 		 for (RlmsLiftAmcDtls rlmsLiftAmcDtls : amcDtlsList) {
-			 if(rlmsLiftAmcDtls.getAmcStartDate()!=null && rlmsLiftAmcDtls.getAmcEndDate()!=null) { }
+			 if(rlmsLiftAmcDtls.getAmcStartDate()!=null && rlmsLiftAmcDtls.getAmcEndDate()!=null) { 
+				 
+			 }
 		}
 		return null;
 	}

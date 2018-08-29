@@ -29,6 +29,8 @@ public interface CustomerDao {
 	public void updateCustomer(RlmsCustomerMaster customerMaster);
 	public RlmsCustomerMemberMap getCustomerMemberMapByMemberId(int id);
 	public List<RlmsBranchCustomerMap> getAllCustomersForTechician(	List<Integer> listOfBranchCompanyMapId);
-
+     
+	public RlmsCustomerMaster getCustomerByContactNumber(String contactNumber);
+	 
    
 }

@@ -6,4 +6,6 @@ public interface MemberDao {
 
 	public RlmsMemberMaster getMemberById(int id);
 	public RlmsMemberMaster getMemberByContactNumber(String contactNumber);
+	public RlmsMemberMaster getMemberByEmailId(String EmailId);
+
 }

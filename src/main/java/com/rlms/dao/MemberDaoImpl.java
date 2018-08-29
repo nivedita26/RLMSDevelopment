@@ -38,4 +38,14 @@ public class MemberDaoImpl  implements MemberDao{
     	RlmsMemberMaster  memberMaster = (RlmsMemberMaster) criteria.uniqueResult();
 		 return memberMaster;
 	}
+
+	@Override
+	public RlmsMemberMaster getMemberByEmailId(String EmailId) {
+		 Session session = this.sessionFactory.getCurrentSession();
+		 Criteria criteria = session.createCriteria(RlmsMemberMaster.class)
+		.add(Restrictions.eq("emailId",EmailId))
+		 .add(Restrictions.eq("activeFlag", RLMSConstants.ACTIVE.getId()));
+    	RlmsMemberMaster  memberMaster = (RlmsMemberMaster) criteria.uniqueResult();
+		 return memberMaster;
+	}
 }

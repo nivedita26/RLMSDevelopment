@@ -6,6 +6,7 @@ public enum RlmsErrorType {
 	ACCOUNT_CREATION_SUCCESS(2,"account_creation_success"),
 	USER_ALREADY_REGISTERED(3,"user_already_registered"),
 	CUSTOMER_ALREADY_ADDED(3,"customer_already_added"),
+	
 	PLEASE_PROVIDE_EMAILID(4,"please_provide_emailid"),
 	BRANCH_CREATION_SUCCESSFUL(5,"branch_creation_successful"),
 	BRANCH_ALREADY_EXISTS(6,"branch_already_exists"),
