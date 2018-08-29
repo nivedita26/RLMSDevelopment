@@ -41,8 +41,21 @@ private static final Logger logger = Logger.getLogger(AMCMonitorServiceImpl.clas
 	public RlmsLiftAmcDtls getAllAMCDtlsAndUpdateStatus() throws UnsupportedEncodingException {
 		 List<RlmsLiftAmcDtls>  amcDtlsList = amcMonitorDao.getAllAMCDetails();
 		 for (RlmsLiftAmcDtls rlmsLiftAmcDtls : amcDtlsList) {
-			 if(rlmsLiftAmcDtls.getAmcStartDate()!=null && rlmsLiftAmcDtls.getAmcEndDate()!=null) { 
-				 
+			 if(rlmsLiftAmcDtls.getAmcStartDate()!=null && rlmsLiftAmcDtls.getAmcEndDate()!=null) {
+				 Date amcStartDate = 	rlmsLiftAmcDtls.getAmcStartDate();
+				 Date amcEndDate = rlmsLiftAmcDtls.getAmcEndDate();
+				 int status =  calculateAMCStatus(amcStartDate,amcEndDate);
+				 rlmsLiftAmcDtls.setStatus(status);
+				 rlmsLiftAmcDtls.setUpdatedDate(new Date());
+				 if(status==Status.AMC_PENDING.getStatusId()||status==Status.RENEWAL_DUE.getStatusId()) {
+				 liftDao.mergeLiftAMCDtls(rlmsLiftAmcDtls);
+				 }
+				 if(status==Status.getIdFromString(Status.AMC_PENDING.getStatusMsg())) {
+					 this.AMCExpiredstatusNotifyToUser(rlmsLiftAmcDtls);
+				 }
+				if(status==Status.getIdFromString(Status.RENEWAL_DUE.getStatusMsg())) {
+					this.AMCRenewalAndNotifyUser(rlmsLiftAmcDtls);
+				 }
 			 }
 		}
 		return null;
